@@ -1,14 +1,14 @@
 {
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "type": "java",
-            "name": "Debug Spring Boot",
-            "request": "launch",
-            "mainClass": "it.SistemaBibliotecaApplication",
-            "projectName": "sistema-biblioteca",
-            "args": "",
-            "vmArgs": "-Dspring.profiles.active=dev"
-        }
-    ]
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Debug Spring Boot",
+      "request": "launch",
+      "mainClass": "it.SistemaBibliotecaApplication",
+      "projectName": "sistema-biblioteca",
+      "vmArgs": "-Dspring.profiles.active=dev",
+      "javaExec": "C:\\Program Files\\Java\\jdk-25\\bin\\java.exe"
+    }
+  ]
 }

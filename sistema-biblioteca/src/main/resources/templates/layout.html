@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html th:fragment="master(titolo, contenuto)" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <!-- <title th:text="${titolo}"></title> -->
+    
+        <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/login.css}">
+</head>
+<body>
+
+    <nav>
+        <a href="/">Home</a>
+        <a href="/utenti">Utenti</a>
+        <a href="/contatti">Contatti</a>
+    </nav>
+
+    <main th:replace="${contenuto}">
+        Contenuto di fallback (non si vedrà quasi mai)
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Il Mio Progetto Spring Boot</p>
+    </footer>
+
+</body>
+</html>
