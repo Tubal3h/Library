@@ -1,0 +1,252 @@
+
+
+/* ============================================================
+   ANIMAZIONI DI APERTURA
+   ============================================================ */
+@keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(28px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from { opacity: 0; transform: scale(1.04); }
+    to   { opacity: 1; transform: scale(1); }
+}
+
+/* Stato iniziale — tutto invisibile fino al trigger JS */
+body.page-loading #left-panel,
+body.page-loading #right-panel { opacity: 0; }
+
+/* Pannello sinistro: zoom-in lento */
+body.page-ready #left-panel {
+    animation: scaleIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Pannello destro: sale dal basso con leggero ritardo */
+body.page-ready #right-panel {
+    animation: fadeSlideUp 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+}
+
+/* Logo */
+body.page-ready #right-logo {
+    animation: fadeSlideUp 0.6s ease 0.3s both;
+}
+
+/* Titolo e sottotitolo */
+body.page-ready #form-title {
+    animation: fadeSlideUp 0.55s ease 0.4s both;
+}
+body.page-ready #form-subtitle {
+    animation: fadeSlideUp 0.55s ease 0.48s both;
+}
+
+/* Ogni input-group a cascata */
+body.page-ready #login-form .input-group:nth-child(1) {
+    animation: fadeSlideUp 0.5s ease 0.55s both;
+}
+body.page-ready #login-form .input-group:nth-child(2) {
+    animation: fadeSlideUp 0.5s ease 0.63s both;
+}
+
+/* form-options e bottone */
+body.page-ready #form-options {
+    animation: fadeSlideUp 0.45s ease 0.7s both;
+}
+body.page-ready #login-btn {
+    animation: fadeSlideUp 0.45s ease 0.77s both;
+}
+
+/* Footer */
+body.page-ready #right-footer {
+    animation: fadeIn 0.5s ease 0.9s both;
+}
+
+/* ============================================================
+   WRAPPER
+   ============================================================ */
+#login-wrapper {
+    height: 100vh;
+    background-color: var(--color-bg);
+}
+
+/* ============================================================
+   PANNELLO SINISTRO
+   ============================================================ */
+#left-panel {
+    flex: 1.1;
+    background-image: url('/img/library.jpg');
+    background-size: cover;
+    background-position: center;
+    margin: 16px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+}
+
+#left-overlay {
+    inset: 0;
+    background: linear-gradient(
+        to bottom,
+        rgba(10, 8, 5, 0.45) 0%,
+        rgba(10, 8, 5, 0.15) 40%,
+        rgba(10, 8, 5, 0.65) 100%
+    );
+}
+
+/* ============================================================
+   PANNELLO DESTRO
+   ============================================================ */
+#right-panel {
+    flex: 1;
+    justify-content: space-between;
+    background-color: var(--color-surface);
+    padding: 32px 48px;
+}
+
+#right-logo { width: 130px; }
+
+#right-form-wrapper { gap: 0; }
+
+#form-title {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    color: var(--color-brand);
+    line-height: 1.2;
+    margin-bottom: 8px;
+}
+
+#form-subtitle {
+    font-size: 0.95rem;
+    color: var(--color-text-muted);
+    margin-bottom: 32px;
+}
+
+/* --- Messaggio errore --- */
+#error-msg {
+    gap: 8px;
+    background: rgba(198, 40, 40, 0.08);
+    border: 1px solid var(--color-error);
+    color: var(--color-error);
+    font-size: 0.85rem;
+    padding: 10px 14px;
+    margin-bottom: 20px;
+}
+
+/* --- Form --- */
+#login-form { gap: 18px; }
+
+.input-group { gap: 6px; }
+
+.input-group label {
+    font-size: 0.82rem;
+    color: var(--color-text-muted);
+    letter-spacing: 0.03em;
+}
+
+.input-wrapper { position: relative; }
+
+.input-icon {
+    position: absolute;
+    left: 14px;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    transition: color 0.2s;
+}
+
+.input-wrapper:focus-within .input-icon { color: var(--color-accent); }
+
+.input-wrapper input {
+    width: 100%;
+    padding: 13px 44px 13px 42px;
+    border: 1.5px solid var(--color-border);
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    font-family: var(--font-main);
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.input-wrapper input::placeholder { color: var(--color-border); }
+
+.input-wrapper input:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.15);
+}
+
+/* Toggle password */
+.toggle-pw-btn {
+    position: absolute;
+    right: 14px;
+    background: none;
+    border: none;
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+}
+.toggle-pw-btn:hover { color: var(--color-accent); }
+
+/* --- Opzioni --- */
+#form-options { margin-top: -4px; }
+
+#remember-label {
+    gap: 8px;
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+}
+
+#remember-label input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--color-accent);
+}
+
+/* --- Bottone login --- */
+#login-btn {
+    margin-top: 8px;
+    padding: 14px 24px;
+    background-color: var(--color-accent);
+    color: #fff;
+    border: none;
+    font-family: var(--font-main);
+    font-size: 1rem;
+    letter-spacing: 0.02em;
+    gap: 10px;
+    transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+    box-shadow: 0 4px 20px rgba(245, 166, 35, 0.35);
+}
+
+#login-btn:hover {
+    background-color: var(--color-accent-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 28px rgba(245, 166, 35, 0.45);
+}
+
+#login-btn:active { transform: translateY(0); }
+
+#btn-icon { transition: transform 0.2s ease; }
+#login-btn:hover #btn-icon { transform: translateX(4px); }
+
+/* --- Footer --- */
+#right-footer p {
+    font-size: 0.78rem;
+    color: var(--color-border);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 900px) {
+    #left-panel  { display: none; }
+    #right-panel { flex: 1; padding: 32px 28px; }
+}
+
+@media (max-width: 480px) {
+    #right-panel { padding: 24px 20px; }
+    #form-title  { font-size: 1.8rem; }
+}

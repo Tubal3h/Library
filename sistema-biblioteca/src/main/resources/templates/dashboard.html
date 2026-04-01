@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html th:replace="~{fragments/layout :: master(titolo='Library | Dashboard', contenuto=~{::main})}" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <!-- Questo head viene scartato dal th:replace, tranne se usi layout-dialect specifici. I frammenti head dipendono dal setup puro vs dialect -->
+</head>
+<body>
+    
+
+    <main class="flex-1 flex flex-column gap-3 p-3 w-100 mw-1200 mx-auto pt-100px pb-40px">
+
+    </main>
+    <script th:src="@{/js/dashboard.js}"></script>
+
+</body>
+</html>

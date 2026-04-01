@@ -51,7 +51,10 @@
 }
 
 body{
-    height: 100vh;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
     font-family: var(--font-main);
     background-color: var(--color-bg);
     color: var(--color-text);
@@ -251,3 +254,66 @@ a {font-size: clamp(.8rem, 1vw, 1.2rem);}
 .left-0 {left: 0;}
 .right-0 {right: 0;}
 /* -------------------------------------------------------------------------- */
+
+/* ----------------------------- Overflow ----------------------------------- */
+.overflow-hidden { overflow: hidden; }
+.overflow-auto   { overflow: auto; }
+.overflow-y-auto { overflow-y: auto; }
+
+/* ----------------------------- Align self --------------------------------- */
+.self-start  { align-self: flex-start; }
+.self-center { align-self: center; }
+.self-end    { align-self: flex-end; }
+
+/* ----------------------------- Font weight -------------------------------- */
+.fw-400 { font-weight: 400; }
+.fw-600 { font-weight: 600; }
+.fw-700 { font-weight: 700; }
+
+/* ----------------------------- Border radius ------------------------------ */
+.radius-4   { border-radius: 4px; }
+.radius-8   { border-radius: 8px; }
+.radius-10  { border-radius: 10px; }
+.radius-12  { border-radius: 12px; }
+.radius-20  { border-radius: 20px; }
+.radius-full { border-radius: 999px; }
+.radius-circle { border-radius: 50%; }
+
+/* ----------------------------- Text utils --------------------------------- */
+.uppercase    { text-transform: uppercase; }
+.italic       { font-style: italic; }
+.no-select    { user-select: none; }
+.no-pointer   { pointer-events: none; }
+
+/* ----------------------------- Cursor ------------------------------------- */
+.cursor-pointer { cursor: pointer; }
+
+/* ----------------------------- Max Width ---------------------------------- */
+.mw-400 { max-width: 400px; }
+.mw-600 { max-width: 600px; }
+.mw-1200 { max-width: 1200px; }
+
+/* ----------------------------- Z-index ------------------------------------ */
+.z-1 { z-index: 1; }
+.z-2 { z-index: 2; }
+
+/* ----------------------------- Borders ------------------------------------ */
+.border-b { border-bottom: 1px solid var(--color-border); }
+
+/* ----------------------------- Buttons ------------------------------------ */
+.btn-primary {
+    background-color: var(--color-accent);
+    color: #fff;
+    border: none;
+    transition: background-color 0.2s, transform 0.2s;
+}
+.btn-primary:hover {
+    background-color: var(--color-accent-hover);
+    transform: scale(1.02);
+}
+
+/* ----------------------------- Layout Helpers ----------------------------- */
+.mx-auto { margin-left: auto; margin-right: auto; }
+.m-0 { margin: 0 !important; }
+.pt-100px { padding-top: 100px !important; }
+.pb-40px  { padding-bottom: 40px !important; }

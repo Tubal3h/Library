@@ -1,0 +1,96 @@
+/* ============================================================
+   NAVBAR.CSS - Floating Pill Navbar
+   Usa esattamente surface, text, border da style.css così eredita 
+   la dark mode automaticamente senza mapping manuali di colore.
+   ============================================================ */
+#main-nav {
+    position: fixed;
+    top: 24px;
+    left: 0;
+    width: 100%;
+    pointer-events: none; /* lascia passare i click fuori */
+}
+
+/* Il contenitore prende il colore surface di style.css */
+.nav-container {
+    pointer-events: auto;
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    padding: 8px;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+    gap: 8px;
+    /* Effetto glass leggero */
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    min-width: 320px;
+    border: 1px solid var(--color-border);
+}
+
+/* Logo Cerchio */
+.nav-logo {
+    width: 44px;
+    height: 44px;
+    background-color: transparent;
+    transition: transform 0.2s ease;
+}
+.nav-logo:hover { 
+    transform: scale(1.05); 
+}
+.nav-logo img {
+    width: 36px;
+    height: 36px;
+    /* In light mode il logo è nero puro, non serve filtro. */
+    transition: filter 0.3s;
+}
+
+/* In Dark mode il logo nero "sparisce" sul surface scuro, quindi invertiamo! */
+[data-theme="dark"] .nav-logo img {
+    filter: invert(1) brightness(1.5);
+}
+
+/* Divisori con il root border color */
+.nav-divider {
+    width: 1px;
+    height: 24px;
+    background-color: var(--color-border);
+}
+
+/* Links centrali */
+.nav-links {
+    padding: 0 16px;
+    gap: 24px;
+}
+.nav-links a {
+    color: var(--color-text-muted);
+    font-size: 0.95rem;
+    transition: color 0.2s ease;
+}
+.nav-links a:hover { 
+    color: var(--color-accent); 
+}
+
+/* Bottone Logout a destra */
+.nav-btn {
+    padding: 10px 20px;
+    background-color: transparent;
+    color: var(--color-text);
+    font-size: 0.95rem;
+    /* Usa un root border, supportando automaticamente theme switch */
+    border: 1px solid var(--color-border);
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+/* Hover sul logout diventa root warning o accent */
+.nav-btn:hover {
+    background-color: var(--color-accent);
+    color: #fff;
+    border-color: var(--color-accent);
+    transform: scale(1.02);
+}
+
+/* Mobile: Nasconde i link testuali centrali mantenendo logo e bottone */
+@media (max-width: 600px) {
+    .nav-links { display: none; }
+    .nav-divider:first-of-type { display: none; }
+}

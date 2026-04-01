@@ -1,0 +1,6 @@
+/* ============================================================
+   LAYOUT.CSS
+   File deprecato dal refactoring. 
+   Tutte le regole globali (html, body, padding main) sono state inglobate
+   in style.css per evitare duplicazioni e aumentare il riuso delle utility.
+   ============================================================ */
