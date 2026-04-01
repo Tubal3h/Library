@@ -1,12 +1,98 @@
-!<!DOCTYPE html>
-<html th:replace="~{layout :: master('Home Page', ~{::main})}" xmlns:th="http://www.thymeleaf.org">
-<body>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library | Login</title>
 
-    <main>
-        <h1>Benvenuto nella mia App!</h1>
-        <p>Questa è la pagina principale.</p>
-        <button>Clicca qui</button>
-    </main>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/index.css}">
+</head>
+<body data-theme="light">
 
+    <div id="login-wrapper" class="flex w-100 overflow-hidden">
+
+        <!--  LEFT PANEL  -->
+        <div id="left-panel" class="flex flex-column justify-between p-relative radius-20 overflow-hidden">
+            <div id="left-overlay" class="p-absolute z-1"></div>
+
+
+        </div>
+
+        <!--  RIGHT PANEL  -->
+        <div id="right-panel" class="flex flex-column align-center overflow-y-auto">
+
+            <!-- logo in alto a sinistra -->
+            <div id="right-logo" class="self-start">
+                <img th:src="@{/img/logo_mba.svg}" alt="MBA Logo" class="w-100">
+            </div>
+
+            <!-- form al centro -->
+            <div id="right-form-wrapper" class="flex flex-column mw-400 w-100">
+                <h1 id="form-title" class="fw-700">Bentornato!</h1>
+                <p id="form-subtitle">Accedi al sistema biblioteca</p>
+
+                <!-- messaggio errore server-side da Spring Model Controller -->
+                <div th:if="${error != null}" class="flex align-center radius-10 p-2 mb-2" style="background: rgba(198, 40, 40, 0.08); border: 1px solid var(--color-error); color: var(--color-error); gap: 8px; font-size: 0.85rem;">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span th:text="${error}"></span>
+                </div>
+
+                <!-- messaggio errore client-side vecchio per js (in caso serva rimetterlo visibile) -->
+                <div id="error-msg" class="none flex align-center radius-10">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span id="error-text">Credenziali non valide.</span>
+                </div>
+
+                <form id="login-form" class="flex flex-column" th:action="@{/login}" method="post">
+                    <div class="input-group flex flex-column">
+                        <label for="username" class="fw-600 uppercase">Email</label>
+                        <div class="input-wrapper flex align-center radius-12">
+                            <i class="fa-solid fa-user input-icon no-pointer"></i>
+                            <input type="text" id="username" name="username"
+                                   placeholder="La tua email"
+                                   autocomplete="username" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group flex flex-column">
+                        <label for="password" class="fw-600 uppercase">Password</label>
+                        <div class="input-wrapper flex align-center radius-12">
+                            <i class="fa-solid fa-lock input-icon no-pointer"></i>
+                            <input type="password" id="password" name="password"
+                                   placeholder="La tua password"
+                                   autocomplete="current-password" required>
+                            <button type="button" id="toggle-password"
+                                    class="toggle-pw-btn cursor-pointer">
+                                <i class="fa-solid fa-eye" id="eye-icon"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- <div id="form-options" class="flex align-center justify-between">
+                        <label id="remember-label" class="flex align-center cursor-pointer no-select">
+                            <input type="checkbox" id="remember-me" name="remember-me">
+                            <span>Ricordami</span>
+                        </label>
+                    </div> -->
+
+                    <button type="submit" id="login-btn"
+                            class="flex align-center justify-center fw-700 radius-12 cursor-pointer w-100">
+                        <span id="btn-text">Accedi</span>
+                        <i class="fa-solid fa-arrow-right" id="btn-icon"></i>
+                    </button>
+                </form>
+            </div>
+
+            <!-- footer -->
+            <div id="right-footer" class="self-center text-center">
+                <p>© 2025 MBA · Sistema Biblioteca</p>
+            </div>
+        </div>
+
+    </div>
+
+<script th:src="@{/js/index.js}"></script>
 </body>
 </html>

@@ -1,0 +1,66 @@
+/* ============================================================
+   FOOTER.CSS - Stile per il footer
+   ============================================================ */
+#main-footer {
+    background-color: var(--color-surface);
+    border-top: 1px solid var(--color-border);
+    margin-top: auto; /* si assicura di stare sempre sul fondo della pagina flex */
+}
+
+/* Container principale del footer */
+.footer-container {
+    max-width: 1200px; /* allineato col max-width del main se lo si imposta */
+}
+
+/* Logo */
+.footer-logo {
+    width: 32px;
+    height: 32px;
+    transition: transform 0.2s ease;
+}
+
+.footer-logo:hover {
+    transform: scale(1.05);
+}
+
+/* Nel footer, se il tema è dark var(--color-surface) è scuro, il logo va schiarito */
+[data-theme="dark"] .footer-logo {
+    filter: invert(1) brightness(2);
+}
+
+/* Link del footer */
+.footer-links {
+    flex-wrap: wrap; /* per permettere al footer di sistemarsi su piccoli schermi */
+}
+
+.footer-link {
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.footer-link:hover {
+    color: var(--color-accent);
+}
+
+/* Barra Bottom Copyright */
+.footer-bottom {
+    background-color: var(--color-surface-2);
+}
+
+.color-muted {
+    color: var(--color-text-muted);
+}
+
+/* Mobile responsive per footer */
+@media (max-width: 768px) {
+    .footer-container {
+        flex-direction: column;
+        gap: 24px;
+        text-align: center;
+    }
+    .footer-links {
+        justify-content: center;
+    }
+}

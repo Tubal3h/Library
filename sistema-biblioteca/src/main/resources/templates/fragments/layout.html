@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html th:fragment="master(titolo, contenuto)" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${titolo} ?: 'Library | Sistema Biblioteca'"></title>
+    
+    <!-- Librerie esterne -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Stili Base -->
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    
+    <!-- Stili Frammenti (Layout, Navbar, Footer) -->
+    <link rel="stylesheet" th:href="@{/css/fragments/layout.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments/footer.css}">
+</head>
+<body data-theme="light">
+
+    <!-- Header (Navbar) -->
+    <header th:replace="~{fragments/navbar :: navbar}"></header>
+
+    <!-- Contenuto Principale -->
+    <main th:replace="${contenuto}">
+        Contenuto di fallback
+    </main>
+
+    <!-- Footer -->
+    <footer th:replace="~{fragments/footer :: footer}"></footer>
+
+    <!-- Script Globali e Frammenti -->
+    <script th:src="@{/js/fragments/layout.js}"></script>
+    <script th:src="@{/js/fragments/navbar.js}"></script>
+    <script th:src="@{/js/fragments/footer.js}"></script>
+</body>
+</html>

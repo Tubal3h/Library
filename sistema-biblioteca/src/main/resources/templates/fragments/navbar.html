@@ -1,0 +1,50 @@
+<!-- fragment navbar -->
+<nav th:fragment="navbar" id="main-nav" class="flex justify-center z-2 w-100">
+    <!-- Navbar Container -->
+    <div id="nav-container" class="nav-container flex align-center p-relative justify-between radius-full">
+        
+        <!-- Sinistra: Logo -->
+        <a href="/" class="nav-logo flex align-center justify-center radius-circle cursor-pointer">
+            <img th:src="@{/img/logo_mba.svg}" alt="MBA Logo">
+        </a>
+
+        <!-- Separatore -->
+        <div class="nav-divider"></div>
+
+        <!-- Centro: Links basati sul RUOLO in Sessione -->
+        <div class="nav-links flex align-center" th:if="${session.loggedUser != null}">
+            
+            <a href="/catalogo" class="fw-600">Catalogo</a>
+            
+            <!-- Visibile solo a ruolo USER (Prestiti) -->
+            <a th:if="${session.loggedUser.user_role == 'role_user'}" 
+               href="/prestiti" class="fw-600">Prestiti</a>
+               
+            <!-- Visibile solo a ruolo ADMIN (Utenti) -->
+            <a th:if="${session.loggedUser.user_role == 'role_admin'}" 
+               href="/utenti" class="fw-600">Utenti</a>
+               
+        </div>
+
+        <!-- Centro Fallback per utenti NON loggati -->
+        <div class="nav-links flex align-center" th:if="${session.loggedUser == null}">
+            <a href="/catalogo" class="fw-600">Catalogo</a>
+        </div>
+
+        <!-- Separatore -->
+        <div class="nav-divider"></div>
+
+        <!-- Destra: Logout (SOLO SE LOGGATO) -->
+        <form th:if="${session.loggedUser != null}" th:action="@{/logout}" method="post" class="m-0 flex align-center">
+            <button type="submit" class="nav-btn flex align-center justify-center fw-600 radius-full cursor-pointer">
+                Logout
+            </button>
+        </form>
+
+        <!-- Destra: Login (SOLO SE ANONIMO) -->
+        <a th:if="${session.loggedUser == null}" href="/login" class="nav-btn flex align-center justify-center fw-600 radius-full cursor-pointer">
+            Accedi
+        </a>
+
+    </div>
+</nav>
