@@ -1,5 +1,31 @@
 package it.model;
 
 public class Category {
+    private int category_id;
+    private String category_name;
+
+    public Category() {
+    }
+
+    public Category(String category_name) {
+        this.category_name = category_name;
+    }
+
+    public int getCategory_id() {
+        return category_id;
+    }
+
+    public String getCategory_name() {
+        return category_name;
+    }
+
+    public void setCategory_name(String category_name) {
+        this.category_name = category_name;
+    }
+
+    @Override
+    public String toString() {
+        return "Category [category_id=" + category_id + ", category_name=" + category_name + "]";
+    }
 
 }
