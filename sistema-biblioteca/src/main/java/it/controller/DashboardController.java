@@ -1,5 +1,7 @@
 package it.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,23 +19,25 @@ public class DashboardController {
         this.userRepository = userRepository;
     }
 
-    @GetMapping("/dashboard")
-    public String dashboard(@RequestParam(value = "email", required = false) String email, Model model) {
-        
-        if (email == null || email.isEmpty()) {
-            return "redirect:/"; // Se arrivi senza mail nell'URL cacciato al login
-        }
-        
-        // Riafferriamo l'utente dal Database grazie all'email passata dal form!
-        User user = userRepository.findByEmail(email);
-        
-        if (user == null) {
-            return "redirect:/";
-        }
-        
-        // Passiamo l'utente puro a Thymeleaf
-        model.addAttribute("user", user);
-        
-        return "dashboard";
+@GetMapping("/dashboard")
+public String dashboard(@RequestParam(value = "email", required = false) String email, Model model) {
+
+    if (email == null || email.isEmpty()) {
+        return "redirect:/";
     }
+
+    User user = userRepository.findByEmail(email);
+
+    if (user == null) {
+        return "redirect:/";
+    }
+
+    List<User> users = userRepository.findAll();
+
+    model.addAttribute("user", user);
+    model.addAttribute("users", users);
+
+    return "dashboard";
+}
+    
 }

@@ -7,7 +7,9 @@
     
 
     <main class="flex-1 flex flex-column gap-3 p-3 w-100 mw-1200 mx-auto pt-100px pb-40px">
-
+        <h1 class="text-3xl font-bold mb-4">Dashboard</h1>
+        <p class="text-lg">Benvenuto nella tua dashboard! Qui puoi gestire i tuoi libri, visualizzare le tue prenotazioni e molto altro.</p>
+        <div th:replace="~{fragments/users :: users}"></div>
     </main>
     <script th:src="@{/js/dashboard.js}"></script>
 </body>

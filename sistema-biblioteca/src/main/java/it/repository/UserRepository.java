@@ -23,5 +23,11 @@ public class UserRepository {
         return users.isEmpty() ? null : users.get(0);
     }
 
+    public List<User> findAll() {
+        String sql = "SELECT * FROM users";
+        List<User> users = jdbcTemplate.query(sql, userRowMapper);
+        return users.isEmpty() ? null : users;
+    }
+
 
 }

@@ -1,0 +1,19 @@
+<div th:fragment="users" id="users" class="users">
+    <h2 class="text-2xl font-bold mb-4">Lista Utenti</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nome</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user : ${users}">
+                <td th:text="${user.userId}"></td>
+                <td th:text="${user.userName}"></td>
+                <td th:text="${user.userEmail}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
