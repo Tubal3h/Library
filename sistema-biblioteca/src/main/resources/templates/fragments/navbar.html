@@ -12,22 +12,22 @@
         <div class="nav-divider"></div>
 
         <!-- Centro: Links basati sul RUOLO in Sessione -->
-        <div class="nav-links flex align-center" th:if="${session.loggedUser != null}">
+        <div class="nav-links flex align-center" th:if="${user  != null}">
             
             <a href="/catalogo" class="fw-600">Catalogo</a>
             
             <!-- Visibile solo a ruolo USER (Prestiti) -->
-            <a th:if="${session.loggedUser.user_role == 'role_user'}" 
+            <a th:if="${user.userRole == 'role_user'}" 
                href="/prestiti" class="fw-600">Prestiti</a>
                
             <!-- Visibile solo a ruolo ADMIN (Utenti) -->
-            <a th:if="${session.loggedUser.user_role == 'role_admin'}" 
+            <a th:if="${user.userRole == 'role_admin'}" 
                href="/utenti" class="fw-600">Utenti</a>
                
         </div>
 
         <!-- Centro Fallback per utenti NON loggati -->
-        <div class="nav-links flex align-center" th:if="${session.loggedUser == null}">
+        <div class="nav-links flex align-center" th:if="${user  == null}">
             <a href="/catalogo" class="fw-600">Catalogo</a>
         </div>
 
@@ -35,14 +35,14 @@
         <div class="nav-divider"></div>
 
         <!-- Destra: Logout (SOLO SE LOGGATO) -->
-        <form th:if="${session.loggedUser != null}" th:action="@{/logout}" method="post" class="m-0 flex align-center">
+        <form th:if="${user != null}" th:action="@{/logout}" method="post" class="m-0 flex align-center">
             <button type="submit" class="nav-btn flex align-center justify-center fw-600 radius-full cursor-pointer">
                 Logout
             </button>
         </form>
 
         <!-- Destra: Login (SOLO SE ANONIMO) -->
-        <a th:if="${session.loggedUser == null}" href="/login" class="nav-btn flex align-center justify-center fw-600 radius-full cursor-pointer">
+        <a th:if="${user == null}" href="/login" class="nav-btn flex align-center justify-center fw-600 radius-full cursor-pointer">
             Accedi
         </a>
 

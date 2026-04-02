@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (errorText) errorText.textContent = 'Username o password non corretti.';
     }
 
-    /* ---- Animazione invio form ---- */
+    /* ---- Rimosso intercettamento Javascript perché usiamo Controller classici! ---- */
     const loginForm = document.getElementById('login-form');
     const loginBtn = document.getElementById('login-btn');
     const btnText = document.getElementById('btn-text');
