@@ -1,13 +1,13 @@
 package it.model;
 
-public class Books_names {
-    public int books_name_id;
+public class BooksNames {
+    public int booksNameId;
     public String title;
-    public Books_names(String title) {
+    public BooksNames(String title) {
         this.title = title;
     }
-    public int getBooks_name_id() {
-        return books_name_id;
+    public int getBooksNameId() {
+        return booksNameId;
     }
     public String getTitle() {
         return title;

@@ -1,35 +1,35 @@
 package it.model;
 
 public class Author {
-    private int author_id;
-    private String author_name;
-    private String author_surname;
+    private int authorId;
+    private String authorName;
+    private String authorSurname;
     public Author() {
     }
-    public Author(String author_name, String author_surname) {
-        this.author_name = author_name;
-        this.author_surname = author_surname;
+    public Author(String authorName, String authorSurname) {
+        this.authorName = authorName;
+        this.authorSurname = authorSurname;
     }
     
-    public int getAuthor_id() {
-        return author_id;
+    public int getAuthorId() {
+        return authorId;
     }
 
-    public String getAuthor_name() {
-        return author_name;
+    public String getAuthorName() {
+        return authorName;
     }
-    public void setAuthor_name(String author_name) {
-        this.author_name = author_name;
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
-    public String getAuthor_surname() {
-        return author_surname;
+    public String getAuthorSurname() {
+        return authorSurname;
     }
-    public void setAuthor_surname(String author_surname) {
-        this.author_surname = author_surname;
+    public void setAuthorSurname(String authorSurname) {
+        this.authorSurname = authorSurname;
     }
     @Override
     public String toString() {
-        return "Author [author_id=" + author_id + ", author_name=" + author_name + ", author_surname="
-                + author_surname + "]";
+        return "Author [authorId=" + authorId + ", authorName=" + authorName + ", authorSurname="
+                + authorSurname + "]";
     }
 }

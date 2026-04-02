@@ -1,7 +1,7 @@
 package it.model;
 
 public class Isbn {
-    private int isbn_id;
+    private int isbnId;
     private String code;
 
     public Isbn() {
@@ -11,8 +11,8 @@ public class Isbn {
         this.code = code;
     }
 
-    public int getIsbn_id() {
-        return isbn_id;
+    public int getIsbnId() {
+        return isbnId;
     }
     public String getCode() {
         return code;
@@ -22,6 +22,6 @@ public class Isbn {
     }
     @Override
     public String toString() {
-        return "Isbn [isbn_id=" + isbn_id + ", code=" + code + "]";
+        return "Isbn [isbnId=" + isbnId + ", code=" + code + "]";
     }
 }

@@ -1,23 +1,23 @@
 package it.model;
 
 public class Publisher {
-    private int publisher_id;
-    private String publisher_name;
+    private int publisherId;
+    private String publisherName;
     
-    public Publisher(String publisher_name) {
-        this.publisher_name = publisher_name;
+    public Publisher(String publisherName) {
+        this.publisherName = publisherName;
     }
-    public int getPublisher_id() {
-        return publisher_id;
+    public int getPublisherId() {
+        return publisherId;
     }
-    public String getPublisher_name() {
-        return publisher_name;
+    public String getPublisherName() {
+        return publisherName;
     }
-    public void setPublisher_name(String publisher_name) {
-        this.publisher_name = publisher_name;
+    public void setPublisherName(String publisherName) {
+        this.publisherName = publisherName;
     }
     @Override
     public String toString() {
-        return "Publisher [publisher_id=" + publisher_id + ", publisher_name=" + publisher_name + "]";
+        return "Publisher [publisherId=" + publisherId + ", publisherName=" + publisherName + "]";
     }
 }
