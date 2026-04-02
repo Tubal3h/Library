@@ -1,0 +1,164 @@
+CREATE TABLE books_names(
+	book_name_id SERIAL PRIMARY KEY,
+	title TEXT UNIQUE 
+); 
+
+CREATE TABLE category(
+	category_id SERIAL PRIMARY KEY,
+	category_name TEXT UNIQUE 
+);
+
+
+CREATE TABLE isbn (
+	isbn_id SERIAL PRIMARY KEY,
+	code VARCHAR(13)
+);
+
+CREATE TABLE author(
+ 	author_id SERIAL PRIMARY KEY,
+	author_name VARCHAR(32),
+	author_last_name VARCHAR(32)
+);
+
+CREATE TABLE publisher(
+	publisher_id SERIAL PRIMARY KEY,
+	publisher_name VARCHAR(32)
+);	
+
+CREATE TABLE books(
+	book_id SERIAL PRIMARY KEY,
+	title INTEGER NOT NULL, 
+	author_id INTEGER NOT NULL,
+	publisher_id INTEGER NOT NULL,
+	publishing_date DATE,
+	isbn_id INTEGER NOT NULL,
+	category_id INTEGER NOT NULL,
+	status TEXT NOT NULL CHECK(status IN ('disponibilita', 'in prestito')),
+	FOREIGN KEY(author_id) REFERENCES author(author_id),
+	FOREIGN KEY(title) REFERENCES books_names(book_name_id),
+	FOREIGN KEY(publisher_id) REFERENCES publisher(publisher_id),
+	FOREIGN KEY(isbn_id) REFERENCES isbn(isbn_id),
+	FOREIGN KEY(category_id) REFERENCES category(category_id)
+);
+
+CREATE TABLE users(
+	users_id SERIAL PRIMARY KEY,
+	user_name VARCHAR(32),
+	user_last_name VARCHAR(32),
+	email VARCHAR(32) UNIQUE,
+	pass VARCHAR(32),
+	roles TEXT NOT NULL CHECK(roles IN ('role_user', 'role_admin'))
+);
+
+CREATE TABLE rental_record(
+	rental_id SERIAL PRIMARY KEY,
+	book_id INTEGER NOT NULL,
+	users_id INTEGER NOT NULL,
+	rental_date TIMESTAMP,
+	rental_expired DATE,
+	rental_ended TIMESTAMP NULL
+);
+
+-- BOOKS_NAMES
+INSERT INTO books_names (title) VALUES
+('I Promessi Sposi'),
+('La Divina Commedia'),
+('Il Nome della Rosa'),
+('1984'),
+('Il Piccolo Principe'),
+('Harry Potter'),
+('Don Chisciotte'),
+('Orgoglio e Pregiudizio'),
+('Il Processo'),
+('Delitto e Castigo');
+
+-- CATEGORY
+INSERT INTO category (category_name) VALUES
+('Narrativa'),
+('Poesia'),
+('Giallo'),
+('Fantascienza'),
+('Fantasy'),
+('Romanzo'),
+('Filosofia'),
+('Biografia'),
+('Storia'),
+('Thriller');
+
+-- ISBN
+INSERT INTO isbn (code) VALUES
+('978880410001'),
+('978880410002'),
+('978880410003'),
+('978880410004'),
+('978880410005'),
+('978880410006'),
+('978880410007'),
+('978880410008'),
+('978880410009'),
+('9788804100010');
+
+-- AUTHOR
+INSERT INTO author (author_name, author_last_name) VALUES
+('Alessandro', 'Manzoni'),
+('Dante', 'Alighieri'),
+('Umberto', 'Eco'),
+('George', 'Orwell'),
+('Antoine', 'Saint-Exupery'),
+('Joanne', 'Rowling'),
+('Miguel', 'Cervantes'),
+('Jane', 'Austen'),
+('Franz', 'Kafka'),
+('Fedor', 'Dostoevskij');
+
+-- PUBLISHER
+INSERT INTO publisher (publisher_name) VALUES
+('Mondadori'),
+('Einaudi'),
+('Bompiani'),
+('Salani'),
+('Feltrinelli'),
+('Rizzoli'),
+('Garzanti'),
+('Adelphi'),
+('Laterza'),
+('Il Saggiatore');
+
+-- BOOKS (con duplicati intenzionali su stesso titolo/autore)
+INSERT INTO books (title, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES
+(1, 1, 1, '1840-01-01', 1, 1, 'disponibilita'),   -- Promessi Sposi, Mondadori
+(1, 1, 2, '1840-01-01', 2, 1, 'in prestito'),      -- Promessi Sposi, Einaudi (duplicato)
+(2, 2, 2, '1320-01-01', 3, 2, 'disponibilita'),    -- Divina Commedia, Einaudi
+(2, 2, 6, '1320-01-01', 4, 2, 'in prestito'),      -- Divina Commedia, Rizzoli (duplicato)
+(3, 3, 3, '1980-06-01', 5, 3, 'disponibilita'),    -- Nome della Rosa
+(4, 4, 1, '1949-06-08', 6, 4, 'in prestito'),      -- 1984
+(4, 4, 5, '1949-06-08', 7, 4, 'disponibilita'),    -- 1984, Feltrinelli (duplicato)
+(5, 5, 2, '1943-04-06', 8, 1, 'disponibilita'),    -- Piccolo Principe
+(6, 6, 4, '1997-06-26', 9, 5, 'in prestito'),      -- Harry Potter
+(6, 6, 4, '1997-06-26', 10, 5, 'disponibilita');   -- Harry Potter (duplicato)
+
+-- USERS
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES
+('Mario', 'Rossi', 'mario.rossi@email.it', 'pass123', 'role_admin'),
+('Luigi', 'Verdi', 'luigi.verdi@email.it', 'pass123', 'role_user'),
+('Anna', 'Bianchi', 'anna.bianchi@email.it', 'pass123', 'role_user'),
+('Marco', 'Neri', 'marco.neri@email.it', 'pass123', 'role_user'),
+('Sara', 'Esposito', 'sara.esposito@email.it', 'pass123', 'role_admin'),
+('Luca', 'Ferrari', 'luca.ferrari@email.it', 'pass123', 'role_user'),
+('Giulia', 'Romano', 'giulia.romano@email.it', 'pass123', 'role_user'),
+('Paolo', 'Colombo', 'paolo.colombo@email.it', 'pass123', 'role_user'),
+('Elena', 'Ricci', 'elena.ricci@email.it', 'pass123', 'role_user'),
+('Franco', 'Marino', 'franco.marino@email.it', 'pass123', 'role_admin');
+
+-- RENTAL_RECORD
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES
+(1, 2, '2026-01-01 10:00:00', '2026-01-15', '2026-01-14 09:00:00'),  -- restituito
+(2, 3, '2026-01-05 11:00:00', '2026-01-20', NULL),                    -- ancora in corso
+(3, 4, '2026-01-10 09:00:00', '2026-01-25', '2026-01-24 10:00:00'),  -- restituito
+(4, 5, '2026-02-01 14:00:00', '2026-02-15', NULL),                    -- ancora in corso
+(6, 6, '2026-02-05 10:00:00', '2026-02-20', '2026-02-18 11:00:00'),  -- restituito
+(7, 7, '2026-02-10 15:00:00', '2026-02-25', NULL),                    -- ancora in corso
+(9, 8, '2026-03-01 09:00:00', '2026-03-15', '2026-03-14 08:00:00'),  -- restituito
+(10, 9, '2026-03-05 10:00:00', '2026-03-20', NULL),                   -- ancora in corso
+(1, 10, '2026-03-10 11:00:00', '2026-03-25', NULL),                   -- ancora in corso
+(3, 2, '2026-03-15 14:00:00', '2026-03-30', '2026-03-29 10:00:00');  -- restituito
