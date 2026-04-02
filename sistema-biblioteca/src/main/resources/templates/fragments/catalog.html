@@ -1,0 +1,53 @@
+<th:block th:fragment="catalog">
+    <!-- Icon-based Book Cards (No Image) -->
+    <div th:each="book, iter : ${books}" 
+         class="book-card-horizontal glass radius-24 p-0 shadow-card flex border-none animate-card overflow-hidden"
+         th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
+        
+        <!-- Left Column: Information (75%) -->
+        <div class="card-info-main flex-1 p-7 flex flex-column">
+            <!-- Header: Category & Status Badge -->
+        <div class="flex justify-between align-center mb-6 status-context" 
+             th:classappend="${book.status == 'disponibilita' ? 'status-vibrant-active' : 'status-vibrant-pending'}">
+            <span class="category-label font-mono font-size-xs uppercase fw-500 tracking-widest opacity-40" th:text="${book.categoryName}">CATEGORIA</span>
+            <div class="glass-indicator radius-full px-3 py-1 font-size-xs fw-800 uppercase tracking-widest flex align-center gap-2 p-2">
+                <span class="dot"></span>
+                <span th:text="${book.status}">STATO</span>
+            </div>
+        </div>
+
+            <!-- Middle: Title & Author -->
+            <div class="card-content mb-3">
+                <h2 class="text-2xl fw-900 mb-2 leading-tight tracking-tight" th:text="${book.title}">Titolo del Libro</h2>
+                <div class="flex align-center gap-2 opacity-70">
+                    <i class="fa-solid fa-feather-pointed text-xs"></i>
+                    <span class="fw-600 text-base" th:text="${book.authorFullName}">Autore</span>
+                </div>
+            </div>
+
+            <!-- Meta: Icons Row -->
+            <div class="card-meta mt-auto flex align-center gap-4 opacity-50">
+                <div class="flex align-center gap-2 font-size-small" th:title="${book.publisherName}">
+                    <i class="fa-solid fa-building-columns text-xs text-brand"></i>
+                    <span th:text="${book.publisherName}" class="text-truncate" style="max-width: 80px;">Editore</span>
+                </div>
+                <div class="flex align-center gap-2 font-size-small">
+                    <i class="fa-solid fa-calendar-check text-xs text-brand"></i>
+                    <span th:text="${book.publishingDate}">Data</span>
+                </div>
+                <div class="flex align-center gap-2 font-size-small">
+                    <i class="fa-solid fa-barcode text-xs text-brand"></i>
+                    <span th:text="${book.isbnCode}" class="font-mono">ISBN</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Action Section (110px) -->
+        <div class="card-action-column p-5 flex flex-column justify-end align-end border-l">
+            <button class="btn-modern-action pointer transition shadow-soft">
+                <span>Scopri</span>
+                <i class="fa-solid fa-arrow-right-long"></i>
+            </button>
+        </div>
+    </div>
+</th:block>

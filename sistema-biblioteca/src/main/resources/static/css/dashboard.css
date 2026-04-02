@@ -1,0 +1,72 @@
+/* ============================================================
+   DASHBOARD.CSS
+   Modern grid layout and specialized card components.
+   ============================================================ */
+
+.dashboard-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: auto;
+}
+
+/* Header Styles */
+.header-icon, .user-profile {
+    width: 42px;
+    height: 42px;
+    font-size: 1.1rem;
+}
+
+.btn-create {
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    height: 42px;
+    transition: transform 0.2s ease;
+}
+.btn-create:hover {
+    transform: scale(1.05);
+}
+
+/* Card Specializations */
+.card {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* Utils used in Dashboard */
+.text-xs { font-size: 0.75rem; }
+.font-size-xs { font-size: 0.7rem; }
+.font-size-small { font-size: 0.85rem; }
+.text-xl { font-size: 1.25rem; }
+.text-2xl { font-size: 1.5rem; }
+.text-3xl { font-size: 1.875rem; }
+.text-4xl { font-size: 2.25rem; }
+.text-brand { color: var(--color-accent); }
+.text-success { color: var(--color-success); }
+.text-warning { color: var(--color-warning); }
+
+.list-none { list-style: none; }
+.hover-opacity-100:hover { opacity: 1; }
+.transition { transition: all 0.3s ease; }
+
+/* Responsive Grid */
+@media (max-width: 1200px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}

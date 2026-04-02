@@ -1,50 +1,67 @@
 <!-- fragment navbar -->
-<nav th:fragment="navbar" id="main-nav" class="flex justify-center z-2 w-100">
-    <!-- Navbar Container -->
-    <div id="nav-container" class="nav-container flex align-center p-relative justify-between radius-full">
-        
-        <!-- Sinistra: Logo -->
-        <a href="/" class="nav-logo flex align-center justify-center radius-circle cursor-pointer">
-            <img th:src="@{/img/logo_mba.svg}" alt="MBA Logo">
+<nav th:fragment="navbar" id="sidebar" class="glass radius-32 flex flex-column shadow-soft animate-slide-in-left opacity-0 p-3">
+    <!-- Top: Logo -->
+    <div class="sidebar-header flex align-center justify-center pt-3">
+        <a th:href="@{/dashboard(email=${user.userEmail}, section='home')}" class="sidebar-logo flex align-center justify-center radius-12">
+            <img th:src="@{/img/logo_mba.svg}" alt="MBA Logo" class="sidebar-img">
         </a>
+    </div>
 
-        <!-- Separatore -->
-        <div class="nav-divider"></div>
+    <!-- Middle: Main Links -->
+    <div class="sidebar-content flex-1 p-2 overflow-y-auto">
+        <div class="nav-group mb-3">
+            <span class="nav-label font-size-small uppercase fw-700 opacity-50 px-2 mb-2 block">Menu</span>
+            
+            <a th:href="@{/dashboard(email=${user.userEmail}, section='home')}" 
+               class="sidebar-link flex align-center gap-2 p-2 radius-12"
+               th:classappend="${section == 'home' ? 'active' : ''}">
+                <i class="fa-solid fa-house"></i>
+                <span class="fw-600">Dashboard</span>
+            </a>
 
-        <!-- Centro: Links basati sul RUOLO in Sessione -->
-        <div class="nav-links flex align-center" th:if="${user  != null}">
-            
-            <a href="/catalogo" class="fw-600">Catalogo</a>
-            
-            <!-- Visibile solo a ruolo USER (Prestiti) -->
+            <a th:href="@{/dashboard(email=${user.userEmail}, section='catalog')}" 
+               class="sidebar-link flex align-center gap-2 p-2 radius-12"
+               th:classappend="${section == 'catalog' ? 'active' : ''}">
+                <i class="fa-solid fa-list-ul"></i>
+                <span class="fw-600">Catalogo</span>
+            </a>
+
+            <!-- User specific links -->
             <a th:if="${user.userRole == 'role_user'}" 
-               href="/prestiti" class="fw-600">Prestiti</a>
-               
-            <!-- Visibile solo a ruolo ADMIN (Utenti) -->
+               th:href="@{/dashboard(email=${user.userEmail}, section='rents')}" 
+               class="sidebar-link flex align-center gap-2 p-2 radius-12"
+               th:classappend="${section == 'rents' ? 'active' : ''}">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span class="fw-600">Prestiti</span>
+            </a>
+
             <a th:if="${user.userRole == 'role_admin'}" 
-               href="/utenti" class="fw-600">Utenti</a>
-               
+               th:href="@{/dashboard(email=${user.userEmail}, section='users')}" 
+               class="sidebar-link flex align-center gap-2 p-2 radius-12"
+               th:classappend="${section == 'users' ? 'active' : ''}">
+                <i class="fa-solid fa-users"></i>
+                <span class="fw-600">Utenti</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- Bottom: Theme & Logout -->
+    <div class="sidebar-footer p-2 border-t mt-auto flex flex-column gap-2">
+        <!-- Theme Toggle -->
+        <div class="theme-switch-container flex align-center justify-center p-2 radius-12 glass">
+            <label class="switch">
+                <input type="checkbox" id="theme-toggle">
+                <span class="slider round"></span>
+            </label>
         </div>
 
-        <!-- Centro Fallback per utenti NON loggati -->
-        <div class="nav-links flex align-center" th:if="${user  == null}">
-            <a href="/catalogo" class="fw-600">Catalogo</a>
+        <div class="footer-links flex flex-column gap-1">
+            <form th:if="${user != null}" th:action="@{/api/logout}" method="post" class="m-0">
+                <button type="submit" class="sidebar-link-sm flex align-center w-100 gap-2 p-2 radius-12 border-none bg-transparent cursor-pointer opacity-100">
+                    <i class="fa-solid fa-right-from-bracket text-sm"></i>
+                    <span class="fw-600 text-sm">Logout</span>
+                </button>
+            </form>
         </div>
-
-        <!-- Separatore -->
-        <div class="nav-divider"></div>
-
-        <!-- Destra: Logout (SOLO SE LOGGATO) -->
-        <form th:if="${user != null}" th:action="@{/logout}" method="post" class="m-0 flex align-center">
-            <button type="submit" class="nav-btn flex align-center justify-center fw-600 radius-full cursor-pointer">
-                Logout
-            </button>
-        </form>
-
-        <!-- Destra: Login (SOLO SE ANONIMO) -->
-        <a th:if="${user == null}" href="/login" class="nav-btn flex align-center justify-center fw-600 radius-full cursor-pointer">
-            Accedi
-        </a>
-
     </div>
 </nav>

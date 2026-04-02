@@ -36,9 +36,10 @@ public class AuthController {
         
         // Passiamo l'email nell'URL come parametro base GET (es: /dashboard?email=mario@...)
         // Questo elude la necessità della Sessione!
-        return "redirect:/dashboard?email=" + user.getUserEmail() + "&id=" + user.getUserId(); // Passiamo anche l'id per sicurezza, ma non è strettamente necessario
+        return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=home"; // Passiamo anche l'id per sicurezza, ma non è strettamente necessario
     }
-    @PostMapping("/logout")
+    
+    @PostMapping("/api/logout")
     public String logout() {
         // In un'applicazione reale, qui si invaliderebbe la sessione o si rimuoverebbe il token di autenticazione.
         return "redirect:/";

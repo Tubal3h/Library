@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 import it.model.RentalRecord;
 
 @Component
-public class RentRowMapper implements RowMapper<RentalRecord> {
+public class RentRecordRowMapper implements RowMapper<RentalRecord> {
 
     @Override
     public RentalRecord mapRow(java.sql.ResultSet rs, int rowNum) throws java.sql.SQLException {

@@ -25,8 +25,7 @@ public class UserRepository {
 
     public List<User> findAll() {
         String sql = "SELECT * FROM users";
-        List<User> users = jdbcTemplate.query(sql, userRowMapper);
-        return users.isEmpty() ? null : users;
+        return jdbcTemplate.query(sql, userRowMapper);
     }
 
 

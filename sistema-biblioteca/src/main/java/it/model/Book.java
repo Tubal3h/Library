@@ -2,7 +2,7 @@ package it.model;
 
 import java.util.Date;
 
-public class Books {
+public class Book {
     private int bookId;
     private int titleId;
     private int authorId;
@@ -12,7 +12,10 @@ public class Books {
     private int categoryId;
     private String status;
 
-    public Books(int titleId, int authorId, int publisherId, Date publishingDate, int isbnId, int categoryId, String status) {
+    public Book() {
+
+    }
+    public Book(int titleId, int authorId, int publisherId, Date publishingDate, int isbnId, int categoryId, String status) {
         this.titleId = titleId;
         this.authorId = authorId;
         this.publisherId = publisherId;
@@ -20,6 +23,12 @@ public class Books {
         this.isbnId = isbnId;
         this.categoryId = categoryId;
         this.status = status;
+    }
+    public int getBookId() {
+        return bookId;
+    }
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
     }
     public int getTitleId() {
         return titleId;

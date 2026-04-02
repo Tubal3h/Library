@@ -1,0 +1,159 @@
+/* ============================================================
+   CATALOG.CSS
+   Restored Horizontal Layout with Modern Circular Action
+   ============================================================ */
+
+.book-card-horizontal {
+    min-height: 280px;
+    height: 100%;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.05) !important;
+    display: flex;
+    position: relative;
+    z-index: 1;
+}
+
+.book-card-horizontal:hover {
+    transform: translateY(-8px);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    border-color: rgba(var(--color-brand-rgb), 0.1) !important;
+    z-index: 10;
+}
+
+/* Left Section: Information */
+.card-info-main {
+    min-width: 0;
+}
+
+/* Right Section: Action Column */
+.card-action-column {
+    width: 130px; /* Reduced to provide more space for text on the left */
+    background: rgba(255, 255, 255, 0.02);
+    border-left: 1px solid rgba(255, 255, 255, 0.05);
+    transition: all 0.4s ease;
+}
+
+.book-card-horizontal:hover .card-action-column {
+    background: rgba(var(--color-brand-rgb), 0.03);
+}
+
+/* NEW: Modern High-End Action Button (Magnetic Pill) */
+.btn-modern-action {
+    background: rgba(var(--color-text-rgb), 0.04);
+    color: var(--color-text);
+    padding: 8px 18px;
+    border-radius: 100px;
+    border: 1px solid rgba(var(--color-text-rgb), 0.1);
+    font-size: 0.55rem;
+    letter-spacing: 0.12em;
+    font-weight: 800;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(10px);
+    cursor: pointer;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+}
+
+.btn-modern-action i {
+    font-size: 1rem;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 0.6;
+}
+
+.btn-modern-action:hover {
+    background: var(--color-text);
+    color: var(--color-bg);
+    border-color: var(--color-text);
+    transform: translateY(-4px) scale(1.02);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.btn-modern-action:hover i {
+    transform: translateX(6px);
+    opacity: 1;
+}
+
+[data-theme="dark"] .btn-modern-action:hover {
+    background: #fff;
+    color: #111;
+}
+
+/* --- Precision Status Header --- */
+.glass-indicator {
+    backdrop-filter: blur(8px);
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.02);
+}
+
+.dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    position: relative;
+}
+
+/* Pulse Animation */
+@keyframes neonPulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.4); opacity: 0.6; box-shadow: 0 0 15px currentColor; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.status-vibrant-active .glass-indicator {
+    color: var(--color-success);
+    border: 1px solid rgba(var(--color-success-rgb, 76, 175, 80), 0.4) !important;
+    background: rgba(var(--color-success-rgb, 76, 175, 80), 0.06);
+}
+
+.status-vibrant-active .dot {
+    background: var(--color-success);
+    box-shadow: 0 0 10px rgba(var(--color-success-rgb, 76, 175, 80), 0.5);
+    color: var(--color-success); 
+    animation: neonPulse 2s infinite ease-in-out;
+}
+
+.status-vibrant-pending .glass-indicator {
+    color: var(--color-error);
+    border: 1px solid rgba(var(--color-error-rgb, 239, 83, 80), 0.4) !important;
+    background: rgba(var(--color-error-rgb, 239, 83, 80), 0.06);
+}
+
+.status-vibrant-pending .dot {
+    background: var(--color-error);
+    box-shadow: 0 0 10px rgba(var(--color-error-rgb, 239, 83, 80), 0.5);
+    color: var(--color-error); 
+    animation: neonPulse 2s infinite ease-in-out;
+}
+
+/* --- Entrance Animation --- */
+.animate-card {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation-delay: var(--delay, 0s);
+}
+
+@keyframes slideUpFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .book-card-horizontal {
+        flex-direction: column;
+    }
+    .card-action-column {
+        width: 100%;
+        height: 80px;
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+}

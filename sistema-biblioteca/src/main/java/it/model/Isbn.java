@@ -14,6 +14,11 @@ public class Isbn {
     public int getIsbnId() {
         return isbnId;
     }
+
+    public void setIsbnId(int isbnId) {
+        this.isbnId = isbnId;
+    }
+
     public String getCode() {
         return code;
     }

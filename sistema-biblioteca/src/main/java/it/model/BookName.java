@@ -1,9 +1,11 @@
 package it.model;
 
-public class BooksNames {
+public class BookName {
     public int booksNameId;
     public String title;
-    public BooksNames(String title) {
+    public BookName() {
+    }
+    public BookName(String title) {
         this.title = title;
     }
     public int getBooksNameId() {

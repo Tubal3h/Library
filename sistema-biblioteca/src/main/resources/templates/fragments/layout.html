@@ -14,24 +14,29 @@
     <!-- Stili Frammenti (Layout, Navbar, Footer) -->
     <link rel="stylesheet" th:href="@{/css/fragments/layout.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments/catalog.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/footer.css}">
 </head>
 <body data-theme="light">
+    <!-- Background Glow Effect (similar to image) -->
+    <div class="bg-glow"></div>
 
-    <!-- Header (Navbar) -->
-    <header th:replace="~{fragments/navbar :: navbar}"></header>
+    <div class="app-container flex w-100 h-100vh overflow-hidden">
+        <!-- Sidebar Navigation -->
+        <header th:replace="~{fragments/navbar :: navbar}"></header>
 
-    <!-- Contenuto Principale -->
-    <main th:replace="${contenuto}">
-        Contenuto di fallback
-    </main>
-
-    <!-- Footer -->
-    <footer th:replace="~{fragments/footer :: footer}"></footer>
+        <!-- Main Content Area -->
+        <main id="app-main" class="flex-1 overflow-y-auto p-relative animate-fade-in-up opacity-0 delay-1">
+            <div th:replace="${contenuto}">
+                Contenuto di fallback
+            </div>
+        </main>
+    </div>
 
     <!-- Script Globali e Frammenti -->
     <script th:src="@{/js/fragments/layout.js}"></script>
     <script th:src="@{/js/fragments/navbar.js}"></script>
+    <script th:src="@{/js/fragments/catalog.js}"></script>
     <script th:src="@{/js/fragments/footer.js}"></script>
 </body>
 </html>

@@ -8,7 +8,6 @@ CREATE TABLE category(
 	category_name TEXT UNIQUE 
 );
 
-
 CREATE TABLE isbn (
 	isbn_id SERIAL PRIMARY KEY,
 	code VARCHAR(13)
@@ -27,7 +26,7 @@ CREATE TABLE publisher(
 
 CREATE TABLE books(
 	book_id SERIAL PRIMARY KEY,
-	title INTEGER NOT NULL, 
+	title_id INTEGER NOT NULL, 
 	author_id INTEGER NOT NULL,
 	publisher_id INTEGER NOT NULL,
 	publishing_date DATE,
@@ -35,7 +34,7 @@ CREATE TABLE books(
 	category_id INTEGER NOT NULL,
 	status TEXT NOT NULL CHECK(status IN ('disponibilita', 'in prestito')),
 	FOREIGN KEY(author_id) REFERENCES author(author_id),
-	FOREIGN KEY(title) REFERENCES books_names(book_name_id),
+	FOREIGN KEY(title_id) REFERENCES books_names(book_name_id),
 	FOREIGN KEY(publisher_id) REFERENCES publisher(publisher_id),
 	FOREIGN KEY(isbn_id) REFERENCES isbn(isbn_id),
 	FOREIGN KEY(category_id) REFERENCES category(category_id)
@@ -45,7 +44,7 @@ CREATE TABLE users(
 	users_id SERIAL PRIMARY KEY,
 	user_name VARCHAR(32),
 	user_last_name VARCHAR(32),
-	email VARCHAR(32) UNIQUE,
+	email VARCHAR(64) UNIQUE,
 	pass VARCHAR(32),
 	roles TEXT NOT NULL CHECK(roles IN ('role_user', 'role_admin'))
 );
@@ -59,106 +58,126 @@ CREATE TABLE rental_record(
 	rental_ended TIMESTAMP NULL
 );
 
--- BOOKS_NAMES
+-- BOOKS_NAMES (Libri di Programmazione)
 INSERT INTO books_names (title) VALUES
-('I Promessi Sposi'),
-('La Divina Commedia'),
-('Il Nome della Rosa'),
-('1984'),
-('Il Piccolo Principe'),
-('Harry Potter'),
-('Don Chisciotte'),
-('Orgoglio e Pregiudizio'),
-('Il Processo'),
-('Delitto e Castigo');
+('Clean Code'),
+('The Pragmatic Programmer'),
+('Design Patterns'),
+('Introduction to Algorithms'),
+('Eloquent JavaScript');
 
 -- CATEGORY
 INSERT INTO category (category_name) VALUES
-('Narrativa'),
-('Poesia'),
-('Giallo'),
-('Fantascienza'),
-('Fantasy'),
-('Romanzo'),
-('Filosofia'),
-('Biografia'),
-('Storia'),
-('Thriller');
+('Ingegneria del Software'),
+('Sviluppo Web'),
+('Algoritmi e Strutture Dati'),
+('Architettura del Software'),
+('Linguaggi di Programmazione');
 
--- ISBN
-INSERT INTO isbn (code) VALUES
-('978880410001'),
-('978880410002'),
-('978880410003'),
-('978880410004'),
-('978880410005'),
-('978880410006'),
-('978880410007'),
-('978880410008'),
-('978880410009'),
-('9788804100010');
+-- ISBN (15 ISBN univoci per 15 copie totali - ORA CON TEXT)
+INSERT INTO isbn (code, link_img) VALUES
+('9780132350884'),
+('9780132350885'),
+('9780132350886'),
+('9780201616224'),
+('9780201616225'),
+('9780201616226'),
+('9780201633610'),
+('9780201633611'),
+('9780201633612'),
+('9780262033848'),
+('9780262033849'),
+('9780262033850'),
+('9781593279509'),
+('9781593279510'),
+('9781593279511');
 
 -- AUTHOR
 INSERT INTO author (author_name, author_last_name) VALUES
-('Alessandro', 'Manzoni'),
-('Dante', 'Alighieri'),
-('Umberto', 'Eco'),
-('George', 'Orwell'),
-('Antoine', 'Saint-Exupery'),
-('Joanne', 'Rowling'),
-('Miguel', 'Cervantes'),
-('Jane', 'Austen'),
-('Franz', 'Kafka'),
-('Fedor', 'Dostoevskij');
+('Robert', 'Martin'),
+('Andrew', 'Hunt'),
+('Erich', 'Gamma'),
+('Thomas', 'Cormen'),
+('Marijn', 'Haverbeke');
 
 -- PUBLISHER
 INSERT INTO publisher (publisher_name) VALUES
-('Mondadori'),
-('Einaudi'),
-('Bompiani'),
-('Salani'),
-('Feltrinelli'),
-('Rizzoli'),
-('Garzanti'),
-('Adelphi'),
-('Laterza'),
-('Il Saggiatore');
+('Prentice Hall'),
+('Addison-Wesley'),
+('MIT Press'),
+('No Starch Press'),
+('O Reilly Media');
 
--- BOOKS (con duplicati intenzionali su stesso titolo/autore)
-INSERT INTO books (title, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES
-(1, 1, 1, '1840-01-01', 1, 1, 'disponibilita'),   -- Promessi Sposi, Mondadori
-(1, 1, 2, '1840-01-01', 2, 1, 'in prestito'),      -- Promessi Sposi, Einaudi (duplicato)
-(2, 2, 2, '1320-01-01', 3, 2, 'disponibilita'),    -- Divina Commedia, Einaudi
-(2, 2, 6, '1320-01-01', 4, 2, 'in prestito'),      -- Divina Commedia, Rizzoli (duplicato)
-(3, 3, 3, '1980-06-01', 5, 3, 'disponibilita'),    -- Nome della Rosa
-(4, 4, 1, '1949-06-08', 6, 4, 'in prestito'),      -- 1984
-(4, 4, 5, '1949-06-08', 7, 4, 'disponibilita'),    -- 1984, Feltrinelli (duplicato)
-(5, 5, 2, '1943-04-06', 8, 1, 'disponibilita'),    -- Piccolo Principe
-(6, 6, 4, '1997-06-26', 9, 5, 'in prestito'),      -- Harry Potter
-(6, 6, 4, '1997-06-26', 10, 5, 'disponibilita');   -- Harry Potter (duplicato)
+-- BOOKS (3 copie per ogni libro)
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES
+(1, 1, 1, '2008-08-01', 1, 1, 'disponibilita'), 
+(1, 1, 1, '2008-08-01', 2, 1, 'in prestito'),   
+(1, 1, 1, '2008-08-01', 3, 1, 'disponibilita'), 
+(2, 2, 2, '1999-10-20', 4, 1, 'disponibilita'), 
+(2, 2, 2, '1999-10-20', 5, 1, 'in prestito'),   
+(2, 2, 2, '1999-10-20', 6, 1, 'disponibilita'), 
+(3, 3, 2, '1994-10-31', 7, 4, 'in prestito'),   
+(3, 3, 2, '1994-10-31', 8, 4, 'disponibilita'), 
+(3, 3, 2, '1994-10-31', 9, 4, 'disponibilita'), 
+(4, 4, 3, '2009-07-31', 10, 3, 'disponibilita'),
+(4, 4, 3, '2009-07-31', 11, 3, 'in prestito'),  
+(4, 4, 3, '2009-07-31', 12, 3, 'disponibilita'),
+(5, 5, 4, '2018-12-04', 13, 2, 'in prestito'),  
+(5, 5, 4, '2018-12-04', 14, 2, 'disponibilita'),
+(5, 5, 4, '2018-12-04', 15, 2, 'disponibilita');
 
--- USERS
+-- USERS (40 Utenti - Solo il primo è ADMIN)
 INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES
-('Mario', 'Rossi', 'mario.rossi@email.it', 'pass123', 'role_admin'),
-('Luigi', 'Verdi', 'luigi.verdi@email.it', 'pass123', 'role_user'),
-('Anna', 'Bianchi', 'anna.bianchi@email.it', 'pass123', 'role_user'),
-('Marco', 'Neri', 'marco.neri@email.it', 'pass123', 'role_user'),
-('Sara', 'Esposito', 'sara.esposito@email.it', 'pass123', 'role_admin'),
-('Luca', 'Ferrari', 'luca.ferrari@email.it', 'pass123', 'role_user'),
-('Giulia', 'Romano', 'giulia.romano@email.it', 'pass123', 'role_user'),
-('Paolo', 'Colombo', 'paolo.colombo@email.it', 'pass123', 'role_user'),
-('Elena', 'Ricci', 'elena.ricci@email.it', 'pass123', 'role_user'),
-('Franco', 'Marino', 'franco.marino@email.it', 'pass123', 'role_admin');
+('Pippo', 'Java', 'admin@admin.it', 'adminpass', 'role_admin'),
+('Mario', 'Rossi', 'user02@email.it', 'pass123', 'role_user'),
+('Luigi', 'Verdi', 'user03@email.it', 'pass123', 'role_user'),
+('Anna', 'Bianchi', 'user04@email.it', 'pass123', 'role_user'),
+('Marco', 'Neri', 'user05@email.it', 'pass123', 'role_user'),
+('Sara', 'Esposito', 'user06@email.it', 'pass123', 'role_user'),
+('Luca', 'Ferrari', 'user07@email.it', 'pass123', 'role_user'),
+('Giulia', 'Romano', 'user08@email.it', 'pass123', 'role_user'),
+('Paolo', 'Colombo', 'user09@email.it', 'pass123', 'role_user'),
+('Elena', 'Ricci', 'user10@email.it', 'pass123', 'role_user'),
+('Franco', 'Marino', 'user11@email.it', 'pass123', 'role_user'),
+('Chiara', 'Greco', 'user12@email.it', 'pass123', 'role_user'),
+('Alessandro', 'Gallo', 'user13@email.it', 'pass123', 'role_user'),
+('Martina', 'Conti', 'user14@email.it', 'pass123', 'role_user'),
+('Matteo', 'De Luca', 'user15@email.it', 'pass123', 'role_user'),
+('Simona', 'Costa', 'user16@email.it', 'pass123', 'role_user'),
+('Davide', 'Giordano', 'user17@email.it', 'pass123', 'role_user'),
+('Federica', 'Rizzo', 'user18@email.it', 'pass123', 'role_user'),
+('Lorenzo', 'Lombardi', 'user19@email.it', 'pass123', 'role_user'),
+('Valentina', 'Moretti', 'user20@email.it', 'pass123', 'role_user'),
+('Simone', 'Barbieri', 'user21@email.it', 'pass123', 'role_user'),
+('Alessia', 'Fontana', 'user22@email.it', 'pass123', 'role_user'),
+('Giovanni', 'Santoro', 'user23@email.it', 'pass123', 'role_user'),
+('Silvia', 'Mariani', 'user24@email.it', 'pass123', 'role_user'),
+('Riccardo', 'Rinaldi', 'user25@email.it', 'pass123', 'role_user'),
+('Francesca', 'Caruso', 'user26@email.it', 'pass123', 'role_user'),
+('Andrea', 'Ferrara', 'user27@email.it', 'pass123', 'role_user'),
+('Elisa', 'Galli', 'user28@email.it', 'pass123', 'role_user'),
+('Stefano', 'Martini', 'user29@email.it', 'pass123', 'role_user'),
+('Ilaria', 'Leone', 'user30@email.it', 'pass123', 'role_user'),
+('Roberto', 'Longo', 'user31@email.it', 'pass123', 'role_user'),
+('Roberta', 'Gentile', 'user32@email.it', 'pass123', 'role_user'),
+('Giorgio', 'Martinelli', 'user33@email.it', 'pass123', 'role_user'),
+('Alice', 'Vitale', 'user34@email.it', 'pass123', 'role_user'),
+('Michele', 'Lombardo', 'user35@email.it', 'pass123', 'role_user'),
+('Eleonora', 'Coppola', 'user36@email.it', 'pass123', 'role_user'),
+('Nicola', 'De Santis', 'user37@email.it', 'pass123', 'role_user'),
+('Laura', 'D Angelo', 'user38@email.it', 'pass123', 'role_user'),
+('Daniele', 'Marchetti', 'user39@email.it', 'pass123', 'role_user'),
+('Cristina', 'Parisi', 'user40@email.it', 'pass123', 'role_user');
 
--- RENTAL_RECORD
+-- RENTAL_RECORD 
 INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES
-(1, 2, '2026-01-01 10:00:00', '2026-01-15', '2026-01-14 09:00:00'),  -- restituito
-(2, 3, '2026-01-05 11:00:00', '2026-01-20', NULL),                    -- ancora in corso
-(3, 4, '2026-01-10 09:00:00', '2026-01-25', '2026-01-24 10:00:00'),  -- restituito
-(4, 5, '2026-02-01 14:00:00', '2026-02-15', NULL),                    -- ancora in corso
-(6, 6, '2026-02-05 10:00:00', '2026-02-20', '2026-02-18 11:00:00'),  -- restituito
-(7, 7, '2026-02-10 15:00:00', '2026-02-25', NULL),                    -- ancora in corso
-(9, 8, '2026-03-01 09:00:00', '2026-03-15', '2026-03-14 08:00:00'),  -- restituito
-(10, 9, '2026-03-05 10:00:00', '2026-03-20', NULL),                   -- ancora in corso
-(1, 10, '2026-03-10 11:00:00', '2026-03-25', NULL),                   -- ancora in corso
-(3, 2, '2026-03-15 14:00:00', '2026-03-30', '2026-03-29 10:00:00');  -- restituito
+(2, 2, '2026-01-01 10:00:00', '2026-01-15', NULL),
+(5, 5, '2026-01-05 11:00:00', '2026-01-20', NULL),
+(7, 10, '2026-01-10 09:00:00', '2026-01-25', NULL),
+(11, 22, '2026-02-01 14:00:00', '2026-02-15', NULL),
+(13, 30, '2026-02-05 10:00:00', '2026-02-20', NULL),
+(1, 3, '2026-01-15 15:00:00', '2026-01-30', '2026-01-28 10:00:00'),
+(4, 15, '2026-02-10 09:00:00', '2026-02-25', '2026-02-20 11:00:00'),
+(8, 28, '2026-03-01 10:00:00', '2026-03-15', '2026-03-14 08:00:00'),
+(10, 39, '2026-03-05 11:00:00', '2026-03-20', '2026-03-18 10:00:00'),
+(14, 40, '2026-03-10 14:00:00', '2026-03-25', '2026-03-20 16:00:00');

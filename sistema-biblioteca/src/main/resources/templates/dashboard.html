@@ -6,11 +6,103 @@
 <body>
     
 
-    <main class="flex-1 flex flex-column gap-3 p-3 w-100 mw-1200 mx-auto pt-100px pb-40px">
-        <h1 class="text-3xl font-bold mb-4">Dashboard</h1>
-        <p class="text-lg">Benvenuto nella tua dashboard! Qui puoi gestire i tuoi libri, visualizzare le tue prenotazioni e molto altro.</p>
-        <div th:replace="~{fragments/users :: users}"></div>
-    </main>
-    <script th:src="@{/js/dashboard.js}"></script>
+<main class="dashboard-wrapper flex flex-column gap-3 w-100 h-100">
+    <!-- Top Header -->
+    <header class="dashboard-header flex justify-between align-center mb-2 animate-fade-in-up opacity-0">
+        <div class="greeting">
+            <h1 class="fw-700">Ciao, <span th:text="${user.userName}">User</span>!</h1>
+
+            <p th:text="${user.userRole == 'role_admin' ? 'Benvenuto, nella dashboard Admin.' : 'Benvenuto, nella dashboard.'}" class="opacity-70">Benvenuto, nella dashboard.</p>
+        </div>
+        <div class="header-actions flex align-center gap-2">
+
+            <button th:if="${user.userRole == 'role_admin' && section == 'catalog'}" class="btn-create radius-full py-2 px-3 fw-600 glass shadow-soft cursor-pointer">
+                <i class="fa-solid fa-plus mr-1"></i> Aggiungi Libro
+            </button>
+
+            <button th:if="${user.userRole == 'role_admin' && section == 'users'}" class="btn-create radius-full py-2 px-3 fw-600 glass shadow-soft cursor-pointer">
+                <i class="fa-solid fa-plus mr-1"></i> Aggiungi Utente
+            </button>           
+
+            <div th:if="${user.userRole == 'role_admin' && section == 'catalog'}" class="header-icon glass radius-circle center pointer shadow-soft">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+
+            <div th:if="${user.userRole == 'role_admin' && section == 'users'}" class="header-icon glass radius-circle center pointer shadow-soft">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Content Grid -->
+    <div th:if="${section == 'home'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
+        
+        <!-- Card 1: Total Users -->
+        <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+            <div class="flex justify-between align-center mb-2">
+                <span class="opacity-70 font-size-small uppercase fw-700">Utenti Registrati</span>
+                <i class="fa-solid fa-users text-brand"></i>
+            </div>
+            <div class="flex align-end gap-2">
+                <span class="text-3xl fw-700">1,240</span>
+                <span class="text-success font-size-small mb-1"><i class="fa-solid fa-arrow-up"></i> 12%</span>
+            </div>
+            <p class="font-size-xs opacity-50 mt-2">Rispetto al mese scorso</p>
+        </div>
+
+        <!-- Card 2: Total Books -->
+        <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+            <div class="flex justify-between align-center mb-2">
+                <span class="opacity-70 font-size-small uppercase fw-700">Totale Libri</span>
+                <i class="fa-solid fa-book text-brand"></i>
+            </div>
+            <div class="flex align-end gap-2">
+                <span class="text-3xl fw-700">5,820</span>
+                <span class="text-success font-size-small mb-1"><i class="fa-solid fa-plus"></i> 45</span>
+            </div>
+            <p class="font-size-xs opacity-50 mt-2">Nuovi arrivi questa settimana</p>
+        </div>
+
+        <!-- Card 3: Available Books -->
+        <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+            <div class="flex justify-between align-center mb-2">
+                <span class="opacity-70 font-size-small uppercase fw-700">Libri Disponibili</span>
+                <i class="fa-solid fa-check-to-slot text-success"></i>
+            </div>
+            <div class="flex align-end gap-2">
+                <span class="text-3xl fw-700">4,150</span>
+                <span class="opacity-50 font-size-small mb-1">Pronti al prestito</span>
+            </div>
+            <p class="font-size-xs opacity-50 mt-2">71% della collezione</p>
+        </div>
+
+        <!-- Card 4: Borrowed Books -->
+        <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+            <div class="flex justify-between align-center mb-2">
+                <span class="opacity-70 font-size-small uppercase fw-700">Libri Prestati</span>
+                <i class="fa-solid fa-hand-holding-hand text-warning"></i>
+            </div>
+            <div class="flex align-end gap-2">
+                <span class="text-3xl fw-700">1,670</span>
+                <span class="text-warning font-size-small mb-1"><i class="fa-solid fa-clock"></i> 12</span>
+            </div>
+            <p class="font-size-xs opacity-50 mt-2">In scadenza oggi</p>
+        </div>
+
+    </div>
+
+    <div th:if="${section == 'catalog'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
+        <div th:replace="~{fragments/catalog :: catalog}" class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+            
+        </div>
+    </div>
+    <div th:if="${section == 'users'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
+        <div th:replace="~{fragments/users :: users}"
+            class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+        </div>
+    </div>
+</main>
+<script th:src="@{/js/dashboard.js}"></script>
 </body>
 </html>
