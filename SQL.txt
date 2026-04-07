@@ -77,7 +77,7 @@ INSERT INTO category (category_name) VALUES
 ('Linguaggi di Programmazione');
 
 -- ISBN (15 ISBN univoci per 15 copie totali - ORA CON TEXT)
-INSERT INTO isbn (code, link_img) VALUES
+INSERT INTO isbn (code) VALUES
 ('9780132350884'),
 ('9780132350885'),
 ('9780132350886'),
