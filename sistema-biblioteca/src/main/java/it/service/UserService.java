@@ -27,4 +27,17 @@ public class UserService {
             return dto;
         }).toList();
     }
+
+    public UserDto getUserByEmail(String email) {
+        User user = userRepository.findByEmail(email);
+        if (user == null) {
+            return null;
+        }
+        UserDto dto = new UserDto();
+        dto.setUserId(user.getUserId());
+        dto.setUserName(user.getUserName());
+        dto.setUserEmail(user.getUserEmail());
+        dto.setUserRole(user.getUserRole());
+        return dto;
+    }
 }

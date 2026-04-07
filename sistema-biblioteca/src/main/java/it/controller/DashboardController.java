@@ -8,20 +8,21 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
-import it.model.User;
-import it.repository.UserRepository;
-import it.repository.BookRepository;
+
+import it.service.BookService;
+import it.service.UserService;
 import it.dto.BookCatalogDto;
+import it.dto.UserDto;
 
 @Controller
 public class DashboardController {
     
-    private final UserRepository userRepository;
-    private final BookRepository bookRepository;
+    private final UserService userService;
+    private final BookService bookService;
 
-    public DashboardController(UserRepository userRepository, BookRepository bookRepository) {
-        this.userRepository = userRepository;
-        this.bookRepository = bookRepository;
+    public DashboardController(UserService userService, BookService bookService) {
+        this.userService = userService;
+        this.bookService = bookService;
     }
 
 @GetMapping("/dashboard")
@@ -34,7 +35,7 @@ public String dashboard(
         return "redirect:/";
     }
 
-    User user = userRepository.findByEmail(email);
+    UserDto user = userService.getUserByEmail(email);
 
     if (user == null) {
         return "redirect:/";
@@ -44,21 +45,15 @@ public String dashboard(
     model.addAttribute("section", section);
 
     if (section.equals("users") && user.getUserRole().equals("role_admin")) {
-        List<User> users = userRepository.findAll();
+        List<UserDto> users = userService.getAllUsers();
         model.addAttribute("users", users);
     }
 
-    if(section.equals("catalog") && user.getUserRole().equals("role_admin")) {
-        // Qui puoi aggiungere la logica per recuperare i libri disponibili
-        List<BookCatalogDto> books = bookRepository.findAllForCatalog();
+    if(section.equals("catalog")) {
+        List<BookCatalogDto> books = bookService.getAllBooks();
+        System.out.println("Books: " + books);
         model.addAttribute("books", books);
     }
-
-    // if(section.equals("catalog") && user.getUserRole().equals("role_user")) {
-    //     // Qui puoi aggiungere la logica per recuperare i libri disponibili
-    //             List<BookCatalogDto> books = bookRepository.findAllForCatalog();
-    //     model.addAttribute("books", books);
-    // }
 
     if (section.equals("rents") && user.getUserRole().equals("role_user")) {
         // Qui puoi aggiungere la logica per recuperare i noleggi dell'utente

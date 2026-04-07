@@ -36,17 +36,32 @@ public class Book {
     public void setTitleId(int titleId) {
         this.titleId = titleId;
     }
+    public int getAuthorId() {
+        return authorId;
+    }
     public void setAuthorId(int authorId) {
         this.authorId = authorId;
+    }
+    public int getPublisherId() {
+        return publisherId;
     }
     public void setPublisherId(int publisherId) {
         this.publisherId = publisherId;
     }
+    public Date getPublishingDate() {
+        return publishingDate;
+    }
     public void setPublishingDate(Date publishingDate) {
         this.publishingDate = publishingDate;
     }
+    public int getIsbnId() {
+        return isbnId;
+    }
     public void setIsbnId(int isbnId) {
         this.isbnId = isbnId;
+    }
+    public int getCategoryId() {
+        return categoryId;
     }
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;

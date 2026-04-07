@@ -1,8 +1,6 @@
 package it.repository;
 
 import it.dto.BookCatalogDto;
-import it.mapper.BookRowMapper;
-import it.model.Book;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -17,7 +15,7 @@ public class BookRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<BookCatalogDto> findAllForCatalog() {
+    public List<BookCatalogDto> findAllForBooks() {
         String sql = """
             SELECT b.book_id,
                    bn.title,
@@ -28,7 +26,7 @@ public class BookRepository {
                    c.category_name,
                    b.status
             FROM books b
-            JOIN books_names bn ON b.title_id = bn.book_name_id
+            JOIN books_names bn ON b.title = bn.book_name_id
             JOIN author a        ON b.author_id = a.author_id
             JOIN publisher p     ON b.publisher_id = p.publisher_id
             JOIN category c      ON b.category_id = c.category_id

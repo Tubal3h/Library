@@ -17,12 +17,9 @@
         </div>
 
             <!-- Middle: Title & Author -->
-            <div class="card-content mb-3">
-                <h2 class="text-2xl fw-900 mb-2 leading-tight tracking-tight" th:text="${book.title}">Titolo del Libro</h2>
-                <div class="flex align-center gap-2 opacity-70">
-                    <i class="fa-solid fa-feather-pointed text-xs"></i>
-                    <span class="fw-600 text-base" th:text="${book.authorFullName}">Autore</span>
-                </div>
+            <div class="mb-5">
+                <h3 class="text-xl fw-700 text-brand mb-1" th:text="${book.title}"></h3>
+                <p class="font-size-sm opacity-60" th:text="${book.authorFullName}"></p>
             </div>
 
             <!-- Meta: Icons Row -->
@@ -51,3 +48,19 @@
         </div>
     </div>
 </th:block>
+
+<div th:fragment="catalog" >
+    <h2 class="text-2xl font-bold mb-4">Lista Libri</h2>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nome</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="book : ${books}">
+                <td th:text="${book.title}"></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
