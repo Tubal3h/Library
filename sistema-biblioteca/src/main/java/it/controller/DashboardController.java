@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 import it.model.User;
+import it.model.dto.BookCatalogDto;
 import it.repository.UserRepository;
 import it.repository.BookRepository;
-import it.dto.BookCatalogDto;
 
 @Controller
 public class DashboardController {

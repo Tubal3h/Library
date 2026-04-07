@@ -1,8 +1,9 @@
 package it.repository;
 
-import it.dto.BookCatalogDto;
 import it.mapper.BookRowMapper;
 import it.model.Book;
+import it.model.dto.BookCatalogDto;
+
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

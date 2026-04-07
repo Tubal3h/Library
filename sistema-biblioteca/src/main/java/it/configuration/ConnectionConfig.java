@@ -1,35 +1,39 @@
 package it.configuration;
 
 
-import org.springframework.boot.CommandLineRunner;
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
 @Configuration
-public class ConnectionConfig implements CommandLineRunner{
-
+public class ConnectionConfig {
 	
-	private final JdbcTemplate jdbcTemplate;
-	public ConnectionConfig(JdbcTemplate jdbcTemplate) {
-		this.jdbcTemplate = jdbcTemplate;
+	@Value("${spring.datasource.driver-class-name}")
+	private String driverName;
+	@Value("${spring.datasource.url}")
+	private String url;
+	@Value("${spring.datasource.username}")
+	private String username;
+	@Value("${spring.datasource.password}")
+	private String password;
+	
+	@Bean 
+	DataSource postgressqlDataSourceV2() {
+		DriverManagerDataSource dataSource = new DriverManagerDataSource();
+			dataSource.setDriverClassName(driverName);
+			dataSource.setUrl(url);
+			dataSource.setUsername(username);
+			dataSource.setPassword(password);
+		return dataSource;
 	}
 	
-	@Override
-	public void run(String... args) throws Exception {
-		
-		System.out.println("SE ENTRO QUI VA TUTTO BENE");
-		String query = "SELECT * FROM author";
-		try {
-			
-			jdbcTemplate.query(query,(rs, rowNum) -> {
-				System.out.println(rs.getString("author_name"));
-				return null;
-			}
-		);
-			
-		}catch(Exception ex) {
-			ex.printStackTrace();
-		}
-	} 
+	@Bean
+	JdbcTemplate jdbcTemplate(DataSource ds) {
+		return new JdbcTemplate(ds);
+	}
 
 }
