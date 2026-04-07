@@ -2,6 +2,7 @@ package it.controller;
 
 import java.util.List;
 
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import it.service.BookService;
 import it.service.UserService;
-import it.dto.BookCatalogDto;
-import it.dto.UserDto;
+import it.model.dto.BookCatalogDto;
+import it.model.dto.UserDto;
 
 @Controller
 public class DashboardController {

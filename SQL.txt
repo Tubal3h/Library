@@ -55,8 +55,8 @@ CREATE TABLE rental_record(
 	users_id INTEGER NOT NULL,
 	rental_date TIMESTAMP,
 	rental_expired DATE,
-	rental_ended TIMESTAMP NULL
-	FOREIGN KEY(book_id) REFERENCES books_names(book_name_id),
+	rental_ended TIMESTAMP NULL,
+	FOREIGN KEY(book_id) REFERENCES books(book_id),
 	FOREIGN KEY(users_id) REFERENCES users(users_id)
 );
 
@@ -77,7 +77,7 @@ INSERT INTO category (category_name) VALUES
 ('Linguaggi di Programmazione');
 
 -- ISBN (15 ISBN univoci per 15 copie totali - ORA CON TEXT)
-INSERT INTO isbn (code) VALUES
+INSERT INTO isbn (code, link_img) VALUES
 ('9780132350884'),
 ('9780132350885'),
 ('9780132350886'),
