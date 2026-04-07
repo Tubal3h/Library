@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import it.service.BookService;
 import it.service.UserService;
+import it.service.RentService;
 import it.model.dto.BookCatalogDto;
 import it.model.dto.UserDto;
 
@@ -20,10 +21,12 @@ public class DashboardController {
     
     private final UserService userService;
     private final BookService bookService;
+    private final RentService rentService;
 
-    public DashboardController(UserService userService, BookService bookService) {
+    public DashboardController(UserService userService, BookService bookService, RentService rentService) {
         this.userService = userService;
         this.bookService = bookService;
+        this.rentService = rentService;
     }
 
 @GetMapping("/dashboard")
@@ -57,7 +60,8 @@ public String dashboard(
     }
 
     if (section.equals("rents") && user.getUserRole().equals("role_user")) {
-        // Qui puoi aggiungere la logica per recuperare i noleggi dell'utente
+        List<BookCatalogDto> rentedBooks = rentService.getRentedBooksByUserId(user.getUserId());
+        model.addAttribute("rentedBooks", rentedBooks);
     }
 
 
