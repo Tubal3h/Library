@@ -2,9 +2,10 @@ package it.service;
 
 import java.util.List;
 
+
 import org.springframework.stereotype.Service;
 import it.repository.BookRepository;
-import it.dto.BookCatalogDto;
+import it.model.dto.BookCatalogDto;
 
 @Service
 public class BookService {

@@ -1,7 +1,8 @@
 package it.repository;
 
 import java.util.List;
-import it.dto.RentDto;
+
+import it.model.dto.RentDto;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
