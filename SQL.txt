@@ -59,3 +59,169 @@ CREATE TABLE rental_record(
 	FOREIGN KEY(book_id) REFERENCES books(book_id),
 	FOREIGN KEY(users_id) REFERENCES users(users_id)
 );
+
+-- books_names
+INSERT INTO books_names (title) VALUES ('Clean Code');
+INSERT INTO books_names (title) VALUES ('The Pragmatic Programmer');
+INSERT INTO books_names (title) VALUES ('Design Patterns');
+INSERT INTO books_names (title) VALUES ('Introduction to Algorithms');
+INSERT INTO books_names (title) VALUES ('Head First Java');
+INSERT INTO books_names (title) VALUES ('Spring Boot in Action');
+INSERT INTO books_names (title) VALUES ('JavaScript: The Good Parts');
+INSERT INTO books_names (title) VALUES ('The Art of Computer Programming');
+INSERT INTO books_names (title) VALUES ('Refactoring');
+INSERT INTO books_names (title) VALUES ('You Don''t Know JS');
+
+-- category
+INSERT INTO category (category_name) VALUES ('Programmazione');
+INSERT INTO category (category_name) VALUES ('Algoritmi');
+INSERT INTO category (category_name) VALUES ('Design Patterns');
+INSERT INTO category (category_name) VALUES ('Java');
+INSERT INTO category (category_name) VALUES ('JavaScript');
+
+-- isbn
+INSERT INTO isbn (code) VALUES ('9780132350884');
+INSERT INTO isbn (code) VALUES ('9780132350884');
+INSERT INTO isbn (code) VALUES ('9780132350884');
+INSERT INTO isbn (code) VALUES ('9780135957059');
+INSERT INTO isbn (code) VALUES ('9780135957059');
+INSERT INTO isbn (code) VALUES ('9780135957059');
+INSERT INTO isbn (code) VALUES ('9780201633610');
+INSERT INTO isbn (code) VALUES ('9780201633610');
+INSERT INTO isbn (code) VALUES ('9780201633610');
+INSERT INTO isbn (code) VALUES ('9780262033848');
+INSERT INTO isbn (code) VALUES ('9780262033848');
+INSERT INTO isbn (code) VALUES ('9780262033848');
+INSERT INTO isbn (code) VALUES ('9780596009205');
+INSERT INTO isbn (code) VALUES ('9780596009205');
+INSERT INTO isbn (code) VALUES ('9780596009205');
+INSERT INTO isbn (code) VALUES ('9781617292545');
+INSERT INTO isbn (code) VALUES ('9781617292545');
+INSERT INTO isbn (code) VALUES ('9781617292545');
+INSERT INTO isbn (code) VALUES ('9780596517748');
+INSERT INTO isbn (code) VALUES ('9780596517748');
+INSERT INTO isbn (code) VALUES ('9780596517748');
+INSERT INTO isbn (code) VALUES ('9780201038040');
+INSERT INTO isbn (code) VALUES ('9780201038040');
+INSERT INTO isbn (code) VALUES ('9780201038040');
+INSERT INTO isbn (code) VALUES ('9780134757599');
+INSERT INTO isbn (code) VALUES ('9780134757599');
+INSERT INTO isbn (code) VALUES ('9780134757599');
+INSERT INTO isbn (code) VALUES ('9781491924464');
+INSERT INTO isbn (code) VALUES ('9781491924464');
+INSERT INTO isbn (code) VALUES ('9781491924464');
+
+-- author
+INSERT INTO author (author_name, author_last_name) VALUES ('Robert', 'Martin');
+INSERT INTO author (author_name, author_last_name) VALUES ('David', 'Thomas');
+INSERT INTO author (author_name, author_last_name) VALUES ('Erich', 'Gamma');
+INSERT INTO author (author_name, author_last_name) VALUES ('Thomas', 'Cormen');
+INSERT INTO author (author_name, author_last_name) VALUES ('Kathy', 'Sierra');
+INSERT INTO author (author_name, author_last_name) VALUES ('Craig', 'Walls');
+INSERT INTO author (author_name, author_last_name) VALUES ('Douglas', 'Crockford');
+INSERT INTO author (author_name, author_last_name) VALUES ('Donald', 'Knuth');
+INSERT INTO author (author_name, author_last_name) VALUES ('Martin', 'Fowler');
+INSERT INTO author (author_name, author_last_name) VALUES ('Kyle', 'Simpson');
+
+-- publisher
+INSERT INTO publisher (publisher_name) VALUES ('Pearson');
+INSERT INTO publisher (publisher_name) VALUES ('Addison-Wesley');
+INSERT INTO publisher (publisher_name) VALUES ('O''Reilly Media');
+INSERT INTO publisher (publisher_name) VALUES ('Manning Publications');
+INSERT INTO publisher (publisher_name) VALUES ('MIT Press');
+
+-- books (30 copie, 3 per ogni titolo)
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (1, 1, 1, '2008-08-01', 1, 1, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (1, 1, 1, '2008-08-01', 2, 1, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (1, 1, 1, '2008-08-01', 3, 1, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (2, 2, 1, '2019-09-23', 4, 1, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (2, 2, 1, '2019-09-23', 5, 1, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (2, 2, 1, '2019-09-23', 6, 1, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (3, 3, 2, '1994-10-21', 7, 3, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (3, 3, 2, '1994-10-21', 8, 3, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (3, 3, 2, '1994-10-21', 9, 3, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (4, 4, 5, '2009-07-31', 10, 2, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (4, 4, 5, '2009-07-31', 11, 2, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (4, 4, 5, '2009-07-31', 12, 2, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (5, 5, 3, '2005-06-28', 13, 4, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (5, 5, 3, '2005-06-28', 14, 4, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (5, 5, 3, '2005-06-28', 15, 4, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (6, 6, 4, '2016-01-06', 16, 4, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (6, 6, 4, '2016-01-06', 17, 4, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (6, 6, 4, '2016-01-06', 18, 4, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (7, 7, 3, '2008-05-01', 19, 5, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (7, 7, 3, '2008-05-01', 20, 5, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (7, 7, 3, '2008-05-01', 21, 5, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (8, 8, 2, '1968-01-01', 22, 2, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (8, 8, 2, '1968-01-01', 23, 2, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (8, 8, 2, '1968-01-01', 24, 2, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (9, 9, 1, '2018-11-20', 25, 1, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (9, 9, 1, '2018-11-20', 26, 1, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (9, 9, 1, '2018-11-20', 27, 1, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (10, 10, 3, '2015-03-02', 28, 5, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (10, 10, 3, '2015-03-02', 29, 5, 'disponibilita');
+INSERT INTO books (title_id, author_id, publisher_id, publishing_date, isbn_id, category_id, status) VALUES (10, 10, 3, '2015-03-02', 30, 5, 'disponibilita');
+
+-- users (1 admin + 29 user)
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Luca', 'Rossi', 'luca.rossi1@biblioteca.it', 'Password123!', 'role_admin');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Marco', 'Ferrari', 'marco.ferrari2@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Giulia', 'Esposito', 'giulia.esposito3@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Sofia', 'Bianchi', 'sofia.bianchi4@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Alessandro', 'Romano', 'alessandro.romano5@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Francesca', 'Colombo', 'francesca.colombo6@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Andrea', 'Ricci', 'andrea.ricci7@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Valentina', 'Marino', 'valentina.marino8@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Matteo', 'Greco', 'matteo.greco9@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Chiara', 'Bruno', 'chiara.bruno10@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Lorenzo', 'Gallo', 'lorenzo.gallo11@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Elena', 'Conti', 'elena.conti12@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Giovanni', 'DeLuca', 'giovanni.deluca13@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Martina', 'Costa', 'martina.costa14@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Davide', 'Mancini', 'davide.mancini15@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Sara', 'Giordano', 'sara.giordano16@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Federico', 'Rizzo', 'federico.rizzo17@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Alice', 'Lombardi', 'alice.lombardi18@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Riccardo', 'Moretti', 'riccardo.moretti19@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Beatrice', 'Barbieri', 'beatrice.barbieri20@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Antonio', 'Fontana', 'antonio.fontana21@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Laura', 'Santoro', 'laura.santoro22@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Simone', 'Marini', 'simone.marini23@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Federica', 'Rinaldi', 'federica.rinaldi24@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Diego', 'Caruso', 'diego.caruso25@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Ilaria', 'Ferretti', 'ilaria.ferretti26@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Nicola', 'Leone', 'nicola.leone27@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Roberta', 'Montanari', 'roberta.montanari28@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Stefano', 'Serra', 'stefano.serra29@biblioteca.it', 'Password123!', 'role_user');
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Monica', 'Poli', 'monica.poli30@biblioteca.it', 'Password123!', 'role_user');
+
+-- rental_record (30 noleggi)
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (20, 15, '2025-01-10 09:00:00', '2025-02-10', '2025-01-25 09:00:00');
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (15, 24, '2025-01-15 10:00:00', '2025-02-15', NULL);
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (11, 16, '2025-02-01 11:00:00', '2025-03-01', NULL);
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (27, 12, '2025-02-14 08:00:00', '2025-03-14', '2025-02-28 08:00:00');
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (23, 17, '2025-03-05 14:00:00', '2025-04-05', NULL);
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (7, 21, '2025-03-10 09:00:00', '2025-04-10', '2025-03-30 09:00:00');
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (6, 18, '2025-03-20 10:00:00', '2025-04-20', NULL);
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (13, 8, '2025-04-01 11:00:00', '2025-05-01', NULL);
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (12, 27, '2025-04-08 09:00:00', '2025-05-08', '2025-04-22 09:00:00');
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (16, 20, '2025-04-15 10:00:00', '2025-05-15', NULL);
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (10, 10, '2025-01-10 09:00:00', '2025-02-10', '2025-01-25 09:00:00');
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (26, 13, '2025-01-15 10:00:00', '2025-02-15', NULL);
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (30, 28, '2025-02-01 11:00:00', '2025-03-01', NULL);
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (22, 2, '2025-02-14 08:00:00', '2025-03-14', '2025-02-28 08:00:00');
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (17, 30, '2025-03-05 14:00:00', '2025-04-05', NULL);
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (28, 3, '2025-03-10 09:00:00', '2025-04-10', '2025-03-30 09:00:00');
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (2, 4, '2025-03-20 10:00:00', '2025-04-20', NULL);
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (14, 22, '2025-04-01 11:00:00', '2025-05-01', NULL);
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (19, 7, '2025-04-08 09:00:00', '2025-05-08', '2025-04-22 09:00:00');
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (3, 5, '2025-04-15 10:00:00', '2025-05-15', NULL);
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (18, 29, '2025-01-10 09:00:00', '2025-02-10', '2025-01-25 09:00:00');
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (29, 11, '2025-01-15 10:00:00', '2025-02-15', NULL);
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (5, 14, '2025-02-01 11:00:00', '2025-03-01', NULL);
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (25, 23, '2025-02-14 08:00:00', '2025-03-14', '2025-02-28 08:00:00');
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (8, 6, '2025-03-05 14:00:00', '2025-04-05', NULL);
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (9, 25, '2025-03-10 09:00:00', '2025-04-10', '2025-03-30 09:00:00');
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (24, 1, '2025-03-20 10:00:00', '2025-04-20', NULL);
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (1, 26, '2025-04-01 11:00:00', '2025-05-01', NULL);
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (4, 9, '2025-04-08 09:00:00', '2025-05-08', '2025-04-22 09:00:00');
+INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (21, 19, '2025-04-15 10:00:00', '2025-05-15', NULL);
