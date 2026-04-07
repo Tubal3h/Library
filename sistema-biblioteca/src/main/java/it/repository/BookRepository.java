@@ -26,7 +26,7 @@ public class BookRepository {
                    c.category_name,
                    b.status
             FROM books b
-            JOIN books_names bn ON b.title = bn.book_name_id
+            JOIN books_names bn ON b.title_id = bn.book_name_id
             JOIN author a        ON b.author_id = a.author_id
             JOIN publisher p     ON b.publisher_id = p.publisher_id
             JOIN category c      ON b.category_id = c.category_id
