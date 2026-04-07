@@ -56,6 +56,8 @@ CREATE TABLE rental_record(
 	rental_date TIMESTAMP,
 	rental_expired DATE,
 	rental_ended TIMESTAMP NULL
+	FOREIGN KEY(book_id) REFERENCES books_names(book_name_id),
+	FOREIGN KEY(users_id) REFERENCES users(users_id)
 );
 
 -- BOOKS_NAMES (Libri di Programmazione)
