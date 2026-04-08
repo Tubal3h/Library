@@ -10,7 +10,7 @@
             <div class="flex justify-between align-center mb-6 status-context"
                  th:classappend="${rent.rentalEnded != null ? 'status-vibrant-active' : 'status-vibrant-pending'}">
                 <span class="category-label font-mono font-size-xs uppercase fw-500 tracking-widest opacity-40">
-                    <!-- Prestito #<span th:text="${rent.rentalRecordId}"></span> -->
+                   <span class="category-label font-mono font-size-xs uppercase fw-500 tracking-widest opacity-40" th:text="${rent.book.categoryName}">CATEGORIA</span>
                 </span>
                 <div class="glass-indicator radius-full px-3 py-1 font-size-xs fw-800 uppercase tracking-widest flex align-center gap-2 p-2">
                     <span class="dot"></span>
@@ -20,9 +20,8 @@
 
             <!-- Middle: Book ID & User -->
             <div class="mb-5">
-                <h3 class="text-xl fw-700 text-brand mb-1">
-                    <span th:text="${rent.book.title}"></span>
-                </h3>
+                <h3 class="text-xl fw-700 text-brand mb-1" th:text="${rent.book.title}"></h3>
+                <p class="font-size-sm opacity-60" th:text="${rent.book.authorFullName}"></p>
             </div>
 
             <!-- Meta: Dates Row -->
@@ -36,6 +35,10 @@
                     <i class="fa-solid fa-calendar-xmark text-xs text-brand"></i>
                     <span>Scadenza</span>
                     <span th:text="${rent.rentalExpired}">Scadenza</span>
+                </div>
+                <div class="flex align-center gap-2 font-size-small">
+                    <i class="fa-solid fa-barcode text-xs text-brand"></i>
+                    <span th:text="${rent.book.isbnCode}" class="font-mono">ISBN</span>
                 </div>
             </div>
         </div>
