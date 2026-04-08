@@ -15,8 +15,13 @@ public class RentService {
     }
     
     public List<RentDto> getRentedBooksByUserId(int userId) {
-        
-        return rentRepository.findRentsByUserId(userId);
+        List<RentDto> rents = rentRepository.findAllRents();
+        System.out.println("All rents: " + rents);
+        List<RentDto> ActiveRents = rents.stream()
+            .filter(rent -> rent.getRentalEnded() == null && rent.getUserId() == userId)
+            .toList();
+        System.out.println("Active rents for user " + userId + ": " + ActiveRents);
+        return ActiveRents;
     }
 
 }

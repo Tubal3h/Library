@@ -1,0 +1,44 @@
+<th:block th:fragment="rents">
+    <!-- Rental Record Cards -->
+    <div th:each="rent, iter : ${rentedBooks}"
+         class="book-card-horizontal glass radius-24 p-0 shadow-card flex border-none animate-card overflow-hidden"
+         th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
+
+        <!-- Left Column: Information (75%) -->
+        <div class="card-info-main flex-1 p-7 flex flex-column">
+            <!-- Header: Record ID & Status Badge -->
+            <div class="flex justify-between align-center mb-6 status-context"
+                 th:classappend="${rent.rentalEnded != null ? 'status-vibrant-active' : 'status-vibrant-pending'}">
+                <span class="category-label font-mono font-size-xs uppercase fw-500 tracking-widest opacity-40">
+                    <!-- Prestito #<span th:text="${rent.rentalRecordId}"></span> -->
+                </span>
+                <div class="glass-indicator radius-full px-3 py-1 font-size-xs fw-800 uppercase tracking-widest flex align-center gap-2 p-2">
+                    <span class="dot"></span>
+                    <span th:text="${rent.rentalEnded != null ? 'Restituito' : 'Da Restituire'}">STATO</span>
+                </div>
+            </div>
+
+            <!-- Middle: Book ID & User -->
+            <div class="mb-5">
+                <h3 class="text-xl fw-700 text-brand mb-1">
+                    <span th:text="${rent.book.title}"></span>
+                </h3>
+            </div>
+
+            <!-- Meta: Dates Row -->
+            <div class="card-meta mt-auto flex align-center gap-4 opacity-50">
+                <div class="flex align-center gap-2 font-size-small">
+                    <i class="fa-solid fa-calendar-plus text-xs text-brand"></i>
+                    <span>Inizio</span>
+                    <span th:text="${rent.rentalDate}">Inizio</span>
+                </div>
+                <div class="flex align-center gap-2 font-size-small">
+                    <i class="fa-solid fa-calendar-xmark text-xs text-brand"></i>
+                    <span>Scadenza</span>
+                    <span th:text="${rent.rentalExpired}">Scadenza</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</th:block>

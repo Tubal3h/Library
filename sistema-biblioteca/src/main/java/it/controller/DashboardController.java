@@ -14,6 +14,7 @@ import it.service.BookService;
 import it.service.UserService;
 import it.service.RentService;
 import it.model.dto.BookCatalogDto;
+import it.model.dto.RentDto;
 import it.model.dto.UserDto;
 
 @Controller
@@ -60,12 +61,10 @@ public String dashboard(
     }
 
     if (section.equals("rents") && user.getUserRole().equals("role_user")) {
-        List<BookCatalogDto> rentedBooks = rentService.getRentedBooksByUserId(user.getUserId());
+        List<RentDto> rentedBooks = rentService.getRentedBooksByUserId(user.getUserId());
+        System.out.println("Rented Books: " + rentedBooks);
         model.addAttribute("rentedBooks", rentedBooks);
     }
-
-
-
 
     return "dashboard";
 }
