@@ -3,68 +3,36 @@ package it.model;
 import java.util.Date;
 
 public class Book {
-    private int bookId;
-    private int titleId;
-    private int authorId;
-    private int publisherId;
-    private Date publishingDate;
-    private int isbnId;
-    private int categoryId;
+    private int book_id;
+    private int edition_id;
+    private int category_id;
     private String status;
 
     public Book() {
 
     }
-    public Book(int titleId, int authorId, int publisherId, Date publishingDate, int isbnId, int categoryId, String status) {
-        this.titleId = titleId;
-        this.authorId = authorId;
-        this.publisherId = publisherId;
-        this.publishingDate = publishingDate;
-        this.isbnId = isbnId;
-        this.categoryId = categoryId;
+    public Book(int edition_id, int author_id, int publisher_id, Date publishing_date, int isbn_id, int category_id, String status) {
+        this.edition_id = edition_id;
+        this.category_id = category_id;
         this.status = status;
     }
     public int getBookId() {
-        return bookId;
+        return book_id;
     }
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
+    public void setBookId(int book_id) {
+        this.book_id = book_id;
     }
-    public int getTitleId() {
-        return titleId;
+    public int getEditionId() {
+        return edition_id;
     }
-    public void setTitleId(int titleId) {
-        this.titleId = titleId;
-    }
-    public int getAuthorId() {
-        return authorId;
-    }
-    public void setAuthorId(int authorId) {
-        this.authorId = authorId;
-    }
-    public int getPublisherId() {
-        return publisherId;
-    }
-    public void setPublisherId(int publisherId) {
-        this.publisherId = publisherId;
-    }
-    public Date getPublishingDate() {
-        return publishingDate;
-    }
-    public void setPublishingDate(Date publishingDate) {
-        this.publishingDate = publishingDate;
-    }
-    public int getIsbnId() {
-        return isbnId;
-    }
-    public void setIsbnId(int isbnId) {
-        this.isbnId = isbnId;
+    public void setEditionId(int edition_id) {
+        this.edition_id = edition_id;
     }
     public int getCategoryId() {
-        return categoryId;
+        return category_id;
     }
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryId(int category_id) {
+        this.category_id = category_id;
     }
     public String getStatus() {
         return status;
@@ -75,9 +43,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Books [bookId=" + bookId + ", titleId=" + titleId + ", authorId=" + authorId
-                + ", publisherId=" + publisherId + ", publishingDate=" + publishingDate + ", isbnId=" + isbnId
-                + ", categoryId=" + categoryId + ", status=" + status + "]";
+        return "Books [bookId=" + book_id + ", editionId=" + edition_id + ", categoryId=" + category_id + ", status=" + status + "]";
     }
 
 }

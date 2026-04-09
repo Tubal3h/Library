@@ -1,8 +1,10 @@
 <th:block th:fragment="catalog">
     <!-- Icon-based Book Cards (No Image) -->
-    <div th:each="book, iter : ${books}" 
-         class="book-card-horizontal glass radius-24 p-0 shadow-card flex border-none animate-card overflow-hidden"
-         th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
+    <div
+        th:each="book, iter : ${books}"
+        class="book-card-horizontal glass radius-24 p-0 shadow-card flex border-none animate-card overflow-hidden"
+        
+        th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
         
         <!-- Left Column: Information (75%) -->
         <div class="card-info-main flex-1 p-7 flex flex-column">
@@ -12,7 +14,8 @@
             <span class="category-label font-mono font-size-xs uppercase fw-500 tracking-widest opacity-40" th:text="${book.categoryName}">CATEGORIA</span>
             <div class="glass-indicator radius-full px-3 py-1 font-size-xs fw-800 uppercase tracking-widest flex align-center gap-2 p-2">
                 <span class="dot"></span>
-                <span th:text="${book.status}">STATO</span>
+                <span th:if="${book.status == 'disponibilita'}">Disponibile</span>
+                <span th:if="${book.status != 'disponibilita'}">In Prestito</span>
             </div>
         </div>
 

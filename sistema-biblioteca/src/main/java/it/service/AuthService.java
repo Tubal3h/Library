@@ -1,8 +1,8 @@
 package it.service;
 import org.springframework.stereotype.Service;
 
+import it.dto.LoginDto;
 import it.model.User;
-import it.model.dto.LoginDto;
 import it.repository.UserRepository;
 
 @Service

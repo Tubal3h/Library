@@ -2,8 +2,9 @@ package it.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+
+import it.dto.UserDto;
 import it.model.User;
-import it.model.dto.UserDto;
 import it.repository.UserRepository;
 
 @Service

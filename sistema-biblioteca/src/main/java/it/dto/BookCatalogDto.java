@@ -1,8 +1,9 @@
-package it.model.dto;
+package it.dto;
 
 import java.time.LocalDate;
 
 public class BookCatalogDto {
+    private int editionId;
     private int bookId;
     private String title;
     private String authorFullName;
@@ -14,7 +15,8 @@ public class BookCatalogDto {
 
     public BookCatalogDto() {}
     
-    public BookCatalogDto(int bookId, String title, String authorFullName, LocalDate publishingDate, String publisherName, String isbnCode, String categoryName, String status) {
+    public BookCatalogDto(int editionId, int bookId, String title, String authorFullName, LocalDate publishingDate, String publisherName, String isbnCode, String categoryName, String status) {
+        this.editionId = editionId;
         this.bookId = bookId;
         this.title = title;
         this.authorFullName = authorFullName;
@@ -24,6 +26,8 @@ public class BookCatalogDto {
         this.categoryName = categoryName;
         this.status = status;
     }
+    public int getEditionId() { return editionId;}
+    public void setEditionId(int editionId) { this.editionId = editionId;}
 
     public int getBookId() { return bookId;}
     public void setBookId(int bookId) { this.bookId = bookId;}

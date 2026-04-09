@@ -1,8 +1,9 @@
 package it.mapper;
 
-import it.model.dto.BookCatalogDto;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
+
+import it.dto.BookCatalogDto;
 
 @Component
 public class BookCatalogDtoMapper implements RowMapper<BookCatalogDto> {
