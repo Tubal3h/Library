@@ -11,15 +11,25 @@ import org.springframework.stereotype.Repository;
 
 import it.entity.RentalRecord;
 
+/**
+ * Repository per la gestione dei record di noleggio (prestiti) nel database.
+ */
 @Repository
 public class RentRepository {
     private final JdbcTemplate jdbcTemplate;
 
+    /**
+     * Costruttore per RentRepository.
+     * 
+     * @param jdbcTemplate Il template JDBC per le operazioni sul database
+     */
     public RentRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     /**
+     * Recupera la lista di tutti i record di noleggio presenti nel database.
+     * 
      * @return Lista di tutti i record di noleggio
      */
     public List<RentalRecord> getAllRents() {
@@ -44,6 +54,6 @@ public class RentRepository {
             return record;
         });
     }
-
 }
+
 

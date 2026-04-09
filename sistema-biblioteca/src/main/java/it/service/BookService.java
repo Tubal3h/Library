@@ -1,43 +1,32 @@
 package it.service;
 
 /* -------------------------------------------------------------------------- */
-/*                                  JAVA UTIL                                 */
+/*                                   SERVICE                                  */
 /* -------------------------------------------------------------------------- */
+
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-/* -------------------------------------------------------------------------- */
-/*                              SPRING FRAMEWORK                              */
-/* -------------------------------------------------------------------------- */
 import org.springframework.stereotype.Service;
 
-/* -------------------------------------------------------------------------- */
-/*                                     DTO                                    */
-/* -------------------------------------------------------------------------- */
 import it.dto.BookCatalogDto;
-
-/* -------------------------------------------------------------------------- */
-/*                                   ENTITY                                   */
-/* -------------------------------------------------------------------------- */
 import it.entity.Author;
 import it.entity.Book;
 import it.entity.BookName;
+import it.entity.Category;
 import it.entity.Edition;
 import it.entity.Publisher;
-import it.entity.Category;
-
-
-/* -------------------------------------------------------------------------- */
-/*                                REPOSITORIES                                */
-/* -------------------------------------------------------------------------- */
+import it.repository.AuthorRepository;
+import it.repository.BookNameRepository;
 import it.repository.BookRepository;
 import it.repository.CategoryRepository;
 import it.repository.EditionRepository;
 import it.repository.PublisherRepository;
-import it.repository.BookNameRepository;
-import it.repository.AuthorRepository;
 
+/**
+ * Servizio per la gestione del catalogo dei libri.
+ */
 @Service
 public class BookService {
     private final AuthorRepository authorRepository;
@@ -45,19 +34,19 @@ public class BookService {
     private final BookNameRepository bookNameRepository;
     private final CategoryRepository categoryRepository;
     private final EditionRepository editionRepository;
-        private final PublisherRepository publisherRepository;    
+    private final PublisherRepository publisherRepository;
 
-    
-    
-
+    /**
+     * Costruttore con iniezione delle dipendenze per BookService.
+     */
     public BookService(
         BookRepository bookRepository, 
-        EditionRepository editionRepository
-        , AuthorRepository authorRepository,
+        EditionRepository editionRepository,
+        AuthorRepository authorRepository,
         PublisherRepository publisherRepository,
         CategoryRepository categoryRepository,
         BookNameRepository bookNameRepository
-        ) {
+    ) {
         this.bookRepository = bookRepository;
         this.editionRepository = editionRepository;
         this.authorRepository = authorRepository;
@@ -66,6 +55,12 @@ public class BookService {
         this.bookNameRepository = bookNameRepository;
     }
 
+    /**
+     * Recupera tutti i libri disponibili per il ruolo utente specificato.
+     * 
+     * @param userRole Il ruolo dell'utente ("role_admin" o "role_user")
+     * @return Lista di BookCatalogDto contenente le informazioni condensate dei libri
+     */
     public List<BookCatalogDto> getAllBooks(String userRole) {
         List<Book> books = bookRepository.getAllBooks();
         List<Edition> editions = editionRepository.getAllEditions();
@@ -114,6 +109,13 @@ public class BookService {
             .toList();
     }
 
+    /**
+     * Recupera i dettagli di un singolo libro tramite ID.
+     * 
+     * @param bookId ID del libro
+     * @return DTO del libro trovato
+     * @throws RuntimeException se il libro non viene trovato
+     */
     public BookCatalogDto getBookById(int bookId) {
         var book = bookRepository.getAllBooks().stream()
             .filter(b -> b.getBookId() == bookId)
@@ -136,3 +138,4 @@ public class BookService {
         return dto;
     }
 }
+

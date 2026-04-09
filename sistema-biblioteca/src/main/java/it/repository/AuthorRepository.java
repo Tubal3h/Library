@@ -11,15 +11,25 @@ import org.springframework.stereotype.Repository;
 
 import it.entity.Author;
 
+/**
+ * Repository per la gestione dei dati degli autori nel database.
+ */
 @Repository
 public class AuthorRepository {
     private final JdbcTemplate jdbcTemplate;
 
+    /**
+     * Costruttore per AuthorRepository.
+     * 
+     * @param jdbcTemplate Il template JDBC per le operazioni sul database
+     */
     public AuthorRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     /**
+     * Recupera la lista di tutti gli autori.
+     * 
      * @return Lista di tutti gli autori nel database
      */
     public List<Author> getAllAuthors() {
@@ -32,7 +42,6 @@ public class AuthorRepository {
             return author;
         });
     }
-
-
 }
+
 

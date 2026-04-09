@@ -6,6 +6,9 @@ package it.entity;
 
 import java.time.LocalDate;
 
+/**
+ * Entità che rappresenta un record di noleggio nel sistema.
+ */
 public class RentalRecord {
 
     private int rental_id;
@@ -15,9 +18,22 @@ public class RentalRecord {
     private LocalDate rental_expired;
     private LocalDate rental_ended;
 
+    /**
+     * Costruttore di default.
+     */
     public RentalRecord() {
     }
 
+    /**
+     * Costruttore con parametri.
+     * 
+     * @param rental_id ID del noleggio
+     * @param user_id ID dell'utente
+     * @param book_id ID del libro
+     * @param rental_date Data di inizio noleggio
+     * @param rental_expired Data di scadenza noleggio
+     * @param rental_ended Data di fine noleggio
+     */
     public RentalRecord(int rental_id, int user_id, int book_id,
         LocalDate rental_date, LocalDate rental_expired, LocalDate rental_ended) {
         this.rental_id = rental_id;
@@ -35,6 +51,9 @@ public class RentalRecord {
         return rental_id;
     }
 
+    /**
+     * @param rental_id ID del noleggio
+     */
     public void setRentalId(int rental_id) {
         this.rental_id = rental_id;
     }
@@ -46,6 +65,9 @@ public class RentalRecord {
         return user_id;
     }
 
+    /**
+     * @param user_id ID dell'utente
+     */
     public void setUserId(int user_id) {
         this.user_id = user_id;
     }
@@ -57,6 +79,9 @@ public class RentalRecord {
         return book_id;
     }
 
+    /**
+     * @param book_id ID del libro
+     */
     public void setBookId(int book_id) {
         this.book_id = book_id;
     }
@@ -68,6 +93,9 @@ public class RentalRecord {
         return rental_date;
     }
 
+    /**
+     * @param rental_date Data di inizio noleggio
+     */
     public void setRentalDate(LocalDate rental_date) {
         this.rental_date = rental_date;
     }
@@ -79,6 +107,9 @@ public class RentalRecord {
         return rental_expired;
     }
 
+    /**
+     * @param rental_expired Data di scadenza noleggio
+     */
     public void setRentalExpired(LocalDate rental_expired) {
         this.rental_expired = rental_expired;
     }
@@ -90,7 +121,11 @@ public class RentalRecord {
         return rental_ended;
     }
 
+    /**
+     * @param rental_ended Data di fine noleggio
+     */
     public void setRentalEnded(LocalDate rental_ended) {
         this.rental_ended = rental_ended;
     }
-}
+}
+

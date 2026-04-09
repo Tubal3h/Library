@@ -4,6 +4,9 @@ package it.entity;
 /*                                   ENTITY                                   */
 /* -------------------------------------------------------------------------- */
 
+/**
+ * Entità che rappresenta un utente del sistema.
+ */
 public class User {
 
     private int userId;
@@ -13,9 +16,21 @@ public class User {
     private String userPassword;
     private String userRole;
 
+    /**
+     * Costruttore di default.
+     */
     public User() {
     }
 
+    /**
+     * Costruttore con parametri.
+     * 
+     * @param userName Nome dell'utente
+     * @param userSurname Cognome dell'utente
+     * @param userEmail Email dell'utente
+     * @param userPassword Password dell'utente
+     * @param userRole Ruolo dell'utente
+     */
     public User(String userName, String userSurname, String userEmail, String userPassword, String userRole) {
         this.userName = userName;
         this.userSurname = userSurname;
@@ -31,6 +46,9 @@ public class User {
         return userId;
     }
 
+    /**
+     * @param userId ID dell'utente
+     */
     public void setUserId(int userId) {
         this.userId = userId;
     }
@@ -42,6 +60,9 @@ public class User {
         return userName;
     }
 
+    /**
+     * @param userName Nome dell'utente
+     */
     public void setUserName(String userName) {
         this.userName = userName;
     }
@@ -53,6 +74,9 @@ public class User {
         return userSurname;
     }
 
+    /**
+     * @param userSurname Cognome dell'utente
+     */
     public void setUserSurname(String userSurname) {
         this.userSurname = userSurname;
     }
@@ -64,6 +88,9 @@ public class User {
         return userEmail;
     }
 
+    /**
+     * @param userEmail Email dell'utente
+     */
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
     }
@@ -75,6 +102,9 @@ public class User {
         return userPassword;
     }
 
+    /**
+     * @param userPassword Password dell'utente
+     */
     public void setUserPassword(String userPassword) {
         this.userPassword = userPassword;
     }
@@ -86,6 +116,9 @@ public class User {
         return userRole;
     }
 
+    /**
+     * @param userRole Ruolo dell'utente
+     */
     public void setUserRole(String userRole) {
         this.userRole = userRole;
     }
@@ -99,4 +132,5 @@ public class User {
                 ", userPassword=" + userPassword +
                 ", userRole=" + userRole + "]";
     }
-}
+}
+

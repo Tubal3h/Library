@@ -6,22 +6,30 @@ package it.repository;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import it.entity.Publisher;
 
-
-
+/**
+ * Repository per la gestione delle case editrici nel database.
+ */
 @Repository
 public class PublisherRepository {
     private final JdbcTemplate jdbcTemplate;
 
+    /**
+     * Costruttore per PublisherRepository.
+     * 
+     * @param jdbcTemplate Il template JDBC per le operazioni sul database
+     */
     public PublisherRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     /**
+     * Recupera la lista di tutte le case editrici presenti nel database.
+     * 
      * @return Lista di tutte le case editrici presenti nel database
      */
     public List<Publisher> getAllPublishers() {
@@ -34,4 +42,5 @@ public class PublisherRepository {
         });
     }
 }
+
 

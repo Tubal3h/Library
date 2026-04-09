@@ -4,24 +4,33 @@ package it.repository;
 /*                                 REPOSITORY                                 */
 /* -------------------------------------------------------------------------- */
 
+import java.util.List;
+
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import it.entity.BookName;
 
-import java.util.List;
-
-import org.springframework.jdbc.core.JdbcTemplate;
-
+/**
+ * Repository per la gestione dei nomi/titoli dei libri nel database.
+ */
 @Repository
 public class BookNameRepository {
     private final JdbcTemplate jdbcTemplate;
 
+    /**
+     * Costruttore per BookNameRepository.
+     * 
+     * @param jdbcTemplate Il template JDBC per le operazioni sul database
+     */
     public BookNameRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     /**
-     * @return Lista di tutti i titoli dei libri
+     * Recupera la lista di tutti i titoli dei libri.
+     * 
+     * @return Lista di tutti i titoli dei libri presenti nel database
      */
     public List<BookName> getAllBookNames() {
         String sql = "SELECT * FROM books_names";
@@ -33,4 +42,5 @@ public class BookNameRepository {
         });
     }
 }
+
 

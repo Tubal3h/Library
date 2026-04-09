@@ -13,11 +13,19 @@ import it.dto.LoginDto;
 import it.entity.User;
 import it.service.AuthService;
 
+/**
+ * Controller per la gestione dell'autenticazione degli utenti (login e logout).
+ */
 @Controller
 public class AuthController {
 
     private final AuthService authService;
 
+    /**
+     * Costruttore per AuthController.
+     * 
+     * @param authService Servizio per la gestione dell'autenticazione
+     */
     public AuthController(AuthService authService) {
         this.authService = authService;
     }
@@ -52,7 +60,7 @@ public class AuthController {
         
         // Passiamo l'email nell'URL come parametro base GET (es: /dashboard?email=mario@...)
         // Questo elude la necessità della Sessione!
-        return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=home"; // Passiamo anche l'id per sicurezza, ma non è strettamente necessario
+        return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=home"; 
     }
     
     /**
@@ -66,4 +74,5 @@ public class AuthController {
         return "redirect:/";
     }
 }
+
 

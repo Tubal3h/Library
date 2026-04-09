@@ -4,13 +4,24 @@ package it.entity;
 /*                                   ENTITY                                   */
 /* -------------------------------------------------------------------------- */
 
+/**
+ * Entità che rappresenta una categoria di libri nel sistema.
+ */
 public class Category {
     private int categoryId;
     private String categoryName;
 
+    /**
+     * Costruttore di default.
+     */
     public Category() {
     }
 
+    /**
+     * Costruttore con parametri.
+     * 
+     * @param categoryName Nome della categoria
+     */
     public Category(String categoryName) {
         this.categoryName = categoryName;
     }
@@ -22,6 +33,9 @@ public class Category {
         return categoryId;
     }
 
+    /**
+     * @param categoryId ID della categoria
+     */
     public void setCategoryId(int categoryId) {
         this.categoryId = categoryId;
     }
@@ -33,6 +47,9 @@ public class Category {
         return categoryName;
     }
 
+    /**
+     * @param categoryName Nome della categoria
+     */
     public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
@@ -41,6 +58,6 @@ public class Category {
     public String toString() {
         return "Category [categoryId=" + categoryId + ", categoryName=" + categoryName + "]";
     }
-
 }
+
 

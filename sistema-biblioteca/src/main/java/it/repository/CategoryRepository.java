@@ -4,31 +4,33 @@ package it.repository;
 /*                                 REPOSITORY                                 */
 /* -------------------------------------------------------------------------- */
 
-/* -------------------------------------------------------------------------- */
-/*                                  JAVA UTIL                                 */
-/* -------------------------------------------------------------------------- */
 import java.util.List;
 
-/* -------------------------------------------------------------------------- */
-/*                              SPRING FRAMEWORK                              */
-/* -------------------------------------------------------------------------- */
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-/* -------------------------------------------------------------------------- */
-/*                                   ENTITY                                   */
-/* -------------------------------------------------------------------------- */
+
 import it.entity.Category;
 
+/**
+ * Repository per la gestione delle categorie dei libri nel database.
+ */
 @Repository
 public class CategoryRepository {
     private final JdbcTemplate jdbcTemplate;
 
+    /**
+     * Costruttore per CategoryRepository.
+     * 
+     * @param jdbcTemplate Il template JDBC per le operazioni sul database
+     */
     public CategoryRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     /**
-     * @return Lista di tutte le categorie presenti nel database
+     * Recupera la lista di tutte le categorie presenti nel database.
+     * 
+     * @return Lista di tutte le categorie nel database
      */
     public List<Category> getAllCategories() {
         String sql = "SELECT * FROM category";
@@ -40,4 +42,5 @@ public class CategoryRepository {
         });
     }
 }
+
 

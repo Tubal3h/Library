@@ -6,6 +6,9 @@ package it.dto;
 
 import java.time.LocalDate;
 
+/**
+ * Data Transfer Object per la visualizzazione dei libri nel catalogo.
+ */
 public class BookCatalogDto {
     private int editionId;
     private int bookId;
@@ -17,8 +20,15 @@ public class BookCatalogDto {
     private String categoryName;
     private String status;
 
-    public BookCatalogDto() {}
+    /**
+     * Costruttore di default.
+     */
+    public BookCatalogDto() {
+    }
     
+    /**
+     * Costruttore con parametri.
+     */
     public BookCatalogDto(int editionId, int bookId, String title, String authorFullName, LocalDate publishingDate, String publisherName, String isbnCode, String categoryName, String status) {
         this.editionId = editionId;
         this.bookId = bookId;
@@ -30,58 +40,132 @@ public class BookCatalogDto {
         this.categoryName = categoryName;
         this.status = status;
     }
+
     /**
      * @return ID dell'edizione
      */
-    public int getEditionId() { return editionId;}
-    public void setEditionId(int editionId) { this.editionId = editionId;}
+    public int getEditionId() {
+        return editionId;
+    }
+
+    /**
+     * @param editionId ID dell'edizione
+     */
+    public void setEditionId(int editionId) {
+        this.editionId = editionId;
+    }
 
     /**
      * @return ID del libro
      */
-    public int getBookId() { return bookId;}
-    public void setBookId(int bookId) { this.bookId = bookId;}
+    public int getBookId() {
+        return bookId;
+    }
+
+    /**
+     * @param bookId ID del libro
+     */
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
+    }
 
     /**
      * @return Titolo del libro
      */
-    public String getTitle() { return title;}
-    public void setTitle(String title) { this.title = title;}
+    public String getTitle() {
+        return title;
+    }
+
+    /**
+     * @param title Titolo del libro
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
     /**
      * @return Nome completo dell'autore
      */
-    public String getAuthorFullName() { return authorFullName;}
-    public void setAuthorFullName(String authorFullName) { this.authorFullName = authorFullName;}
+    public String getAuthorFullName() {
+        return authorFullName;
+    }
+
+    /**
+     * @param authorFullName Nome completo dell'autore
+     */
+    public void setAuthorFullName(String authorFullName) {
+        this.authorFullName = authorFullName;
+    }
     
     /**
      * @return Nome della casa editrice
      */
-    public String getPublisherName() { return publisherName;}
-    public void setPublisherName(String publisherName) { this.publisherName = publisherName;}
+    public String getPublisherName() {
+        return publisherName;
+    }
+
+    /**
+     * @param publisherName Nome della casa editrice
+     */
+    public void setPublisherName(String publisherName) {
+        this.publisherName = publisherName;
+    }
     
     /**
      * @return Data di pubblicazione
      */
-    public LocalDate getPublishingDate() { return publishingDate;}
-    public void setPublishingDate(LocalDate publishingDate) { this.publishingDate = publishingDate;}
+    public LocalDate getPublishingDate() {
+        return publishingDate;
+    }
+
+    /**
+     * @param publishingDate Data di pubblicazione
+     */
+    public void setPublishingDate(LocalDate publishingDate) {
+        this.publishingDate = publishingDate;
+    }
     
     /**
      * @return Codice ISBN
      */
-    public String getIsbnCode() { return isbnCode;}
-    public void setIsbnCode(String isbnCode) { this.isbnCode = isbnCode;}
+    public String getIsbnCode() {
+        return isbnCode;
+    }
+
+    /**
+     * @param isbnCode Codice ISBN
+     */
+    public void setIsbnCode(String isbnCode) {
+        this.isbnCode = isbnCode;
+    }
 
     /**
      * @return Nome della categoria
      */
-    public String getCategoryName() { return categoryName;}
-    public void setCategoryName(String categoryName) { this.categoryName = categoryName;}
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    /**
+     * @param categoryName Nome della categoria
+     */
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
     
     /**
      * @return Stato del libro
      */
-    public String getStatus() { return status;}
-    public void setStatus(String status) { this.status = status;}
+    public String getStatus() {
+        return status;
+    }
+
+    /**
+     * @param status Stato del libro
+     */
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
+
 

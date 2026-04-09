@@ -4,50 +4,49 @@ package it.repository;
 /*                                 REPOSITORY                                 */
 /* -------------------------------------------------------------------------- */
 
-/* -------------------------------------------------------------------------- */
-/*                                  JAVA UTIL                                 */
-/* -------------------------------------------------------------------------- */
 import java.util.List;
 
-
-/* -------------------------------------------------------------------------- */
-/*                              SPRING FRAMEWORK                              */
-/* -------------------------------------------------------------------------- */
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-/* -------------------------------------------------------------------------- */
-/*                                   ENTITY                                   */
-/* -------------------------------------------------------------------------- */
 import it.entity.Book;
 
-
-
+/**
+ * Repository per la gestione dei dati dei libri nel database.
+ */
 @Repository
 public class BookRepository {
     private final JdbcTemplate jdbcTemplate;
 
-
+    /**
+     * Costruttore per BookRepository.
+     * 
+     * @param jdbcTemplate Il template JDBC per le operazioni sul database
+     */
     public BookRepository(JdbcTemplate jdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
     }
 
     /**
+     * Recupera la lista di tutti i libri.
+     * 
      * @return Lista di tutti i libri nel database
      */
     public List<Book> getAllBooks() {
-    String sql = "SELECT * FROM books";
-    return jdbcTemplate.query(sql, (rs, rowNum) -> {
-        Book book = new Book();
-        book.setBookId(rs.getInt("book_id"));
-        book.setEditionId(rs.getInt("edition_id"));
-        book.setCategoryId(rs.getInt("category_id"));
-        book.setStatus(rs.getString("status"));
-        return book;
-    });
-}
+        String sql = "SELECT * FROM books";
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            Book book = new Book();
+            book.setBookId(rs.getInt("book_id"));
+            book.setEditionId(rs.getInt("edition_id"));
+            book.setCategoryId(rs.getInt("category_id"));
+            book.setStatus(rs.getString("status"));
+            return book;
+        });
+    }
 
     /**
+     * Recupera il titolo di un libro tramite ID del nome.
+     * 
      * @param titleId ID del titolo
      * @return Titolo del libro corrispondente all'ID
      */
@@ -57,6 +56,8 @@ public class BookRepository {
     }
 
     /**
+     * Recupera il nome completo dell'autore tramite ID.
+     * 
      * @param authorId ID dell'autore
      * @return Nome completo dell'autore
      */
@@ -66,6 +67,8 @@ public class BookRepository {
     }
 
     /**
+     * Recupera il nome della casa editrice tramite ID.
+     * 
      * @param publisherId ID della casa editrice
      * @return Nome della casa editrice
      */
@@ -75,6 +78,8 @@ public class BookRepository {
     }
 
     /**
+     * Recupera il codice ISBN tramite ID (Nota: il metodo originale faceva riferimento a una tabella isbn non mostrata).
+     * 
      * @param isbnId ID dell'ISBN
      * @return Codice ISBN
      */
@@ -84,6 +89,8 @@ public class BookRepository {
     }
 
     /**
+     * Recupera il nome della categoria tramite ID.
+     * 
      * @param categoryId ID della categoria
      * @return Nome della categoria
      */
@@ -92,4 +99,5 @@ public class BookRepository {
         return jdbcTemplate.queryForObject(sql, String.class, categoryId);
     }
 }
+
 

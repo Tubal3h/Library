@@ -4,21 +4,31 @@ package it.mapper;
 /*                                   MAPPER                                   */
 /* -------------------------------------------------------------------------- */
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import it.entity.Edition;
+
+/**
+ * Mapper per convertire i record del database della tabella edition in oggetti Entity Edition.
+ */
 @Component
-public class EditionRowMapper implements RowMapper<it.entity.Edition> {
+public class EditionRowMapper implements RowMapper<Edition> {
     
     /**
+     * Mappa una riga del ResultSet in un oggetto Edition.
+     * 
      * @param rs il ResultSet da cui estrarre i dati
      * @param rowNum il numero della riga corrente
      * @return L'oggetto Edition mappato dalla riga del database
-     * @throws java.sql.SQLException in caso di errori con il database
+     * @throws SQLException in caso di errori con il database
      */
     @Override
-    public it.entity.Edition mapRow(java.sql.ResultSet rs, int rowNum) throws java.sql.SQLException {
-        it.entity.Edition edition = new it.entity.Edition();
+    public Edition mapRow(ResultSet rs, int rowNum) throws SQLException {
+        Edition edition = new Edition();
         edition.setEditionId(rs.getInt("edition_id"));
         edition.setBookNameId(rs.getInt("book_name_id"));
         edition.setAuthorId(rs.getInt("author_id"));
@@ -27,4 +37,5 @@ public class EditionRowMapper implements RowMapper<it.entity.Edition> {
         edition.setIsbn(rs.getString("isbn"));
         return edition;
     }
-}
+}
+
