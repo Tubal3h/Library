@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html th:replace="~{fragments/layout :: master(titolo='Library | Dashboard', contenuto=~{::main})}" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- Questo head viene scartato dal th:replace, tranne se usi layout-dialect specifici. I frammenti head dipendono dal setup puro vs dialect -->
+
 </head>
 <body>
     
@@ -36,7 +36,7 @@
     </header>
 
     <!-- Content Grid -->
-    <div th:if="${section == 'home'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
+    <div th:if="${section == 'home' && user.userRole == 'role_admin'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
         
         <!-- Card 1: Total Users -->
         <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
@@ -45,10 +45,9 @@
                 <i class="fa-solid fa-users text-brand"></i>
             </div>
             <div class="flex align-end gap-2">
-                <span class="text-3xl fw-700">1,240</span>
-                <span class="text-success font-size-small mb-1"><i class="fa-solid fa-arrow-up"></i> 12%</span>
+                <span class="text-3xl fw-700" th:text="${totalUsers}">totalUsers</span>
+                <span class="opacity-50 font-size-small mb-1">Totale utenti nel sistema</span>
             </div>
-            <p class="font-size-xs opacity-50 mt-2">Rispetto al mese scorso</p>
         </div>
 
         <!-- Card 2: Total Books -->
@@ -58,10 +57,9 @@
                 <i class="fa-solid fa-book text-brand"></i>
             </div>
             <div class="flex align-end gap-2">
-                <span class="text-3xl fw-700">5,820</span>
-                <span class="text-success font-size-small mb-1"><i class="fa-solid fa-plus"></i> 45</span>
+                <span class="text-3xl fw-700" th:text="${totalBooks}">totalBooks</span>
+                <span class="opacity-50 font-size-small mb-1">Totale libri nel sistema</span>
             </div>
-            <p class="font-size-xs opacity-50 mt-2">Nuovi arrivi questa settimana</p>
         </div>
 
         <!-- Card 3: Available Books -->
@@ -71,10 +69,9 @@
                 <i class="fa-solid fa-check-to-slot text-success"></i>
             </div>
             <div class="flex align-end gap-2">
-                <span class="text-3xl fw-700">4,150</span>
+                <span class="text-3xl fw-700" th:text="${totalBooks - totalRents}">availableBooks</span>
                 <span class="opacity-50 font-size-small mb-1">Pronti al prestito</span>
             </div>
-            <p class="font-size-xs opacity-50 mt-2">71% della collezione</p>
         </div>
 
         <!-- Card 4: Borrowed Books -->
@@ -84,10 +81,25 @@
                 <i class="fa-solid fa-hand-holding-hand text-warning"></i>
             </div>
             <div class="flex align-end gap-2">
-                <span class="text-3xl fw-700">1,670</span>
-                <span class="text-warning font-size-small mb-1"><i class="fa-solid fa-clock"></i> 12</span>
+                <span class="text-3xl fw-700" th:text="${totalRents}">borrowedBooks</span>
+                <span class="opacity-50 font-size-small mb-1">In prestito</span>
             </div>
-            <p class="font-size-xs opacity-50 mt-2">In scadenza oggi</p>
+        </div>
+
+    </div>
+
+    <div th:if="${section == 'home' && user.userRole == 'role_user'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
+        
+        <!-- Card 1: Borrowed Books -->
+        <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+            <div class="flex justify-between align-center mb-2">
+                <span class="opacity-70 font-size-small uppercase fw-700">Libri Prestati</span>
+                <i class="fa-solid fa-hand-holding-hand text-warning"></i>
+            </div>
+            <div class="flex align-end gap-2">
+                <span class="text-3xl fw-700" th:text="${totalRents}"></span>
+                <span class="opacity-50 font-size-small mb-1">In prestito</span>
+            </div>
         </div>
 
     </div>

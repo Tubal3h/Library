@@ -44,9 +44,13 @@
 
         <!-- Right Column: Action Section (110px) -->
         <div class="card-action-column p-5 flex flex-column justify-end align-end border-l">
-            <button class="btn-modern-action pointer transition shadow-soft">
-                <span>Scopri</span>
-                <i class="fa-solid fa-arrow-right-long"></i>
+            <button th:if="role_user == 'role_admin'" class="btn-modern-action pointer transition shadow-soft">
+                <span>Restituisci</span>
+                <i class="fa-solid fa-pen-to-square"></i>
+            </button>
+            <button th:if="role_user != 'role_admin'" class="btn-modern-action pointer transition shadow-soft">
+                <span>Prenota</span>
+                <i class="fa-solid fa-pen-to-square"></i>
             </button>
         </div>
     </div>

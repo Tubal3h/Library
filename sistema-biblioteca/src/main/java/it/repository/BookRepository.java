@@ -98,6 +98,18 @@ public class BookRepository {
         String sql = "SELECT category_name FROM category WHERE category_id = ?";
         return jdbcTemplate.queryForObject(sql, String.class, categoryId);
     }
+
+    /**
+     * Conta il numero totale di libri nel sistema.
+     * 
+     * @return Il numero totale di libri nel sistema
+     */
+
+    public int countBooks() {
+        String sql = "SELECT COUNT(*) FROM books";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
 }
 
 

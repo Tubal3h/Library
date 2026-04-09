@@ -54,6 +54,27 @@ public class RentRepository {
             return record;
         });
     }
+
+    /**
+     * Conta il numero totale di record di noleggio nel sistema.
+     * 
+     * @return Il numero totale di record di noleggio nel sistema
+     */
+
+    public int countRents() {
+        String sql = "SELECT COUNT(*) FROM rental_record where rental_ended is null";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    /**
+     * Conta il numero totale di record di noleggio nel sistema per un utente specifico.
+     * 
+     * @param userId ID dell'utente
+     * @return Il numero totale di record di noleggio nel sistema per un utente specifico
+     */
+
+    public int countRentsByUserId(int userId) {
+        String sql = "SELECT COUNT(*) FROM rental_record where users_id = ? and rental_ended is null";
+        return jdbcTemplate.queryForObject(sql, Integer.class, userId);
+    }
 }
-
-

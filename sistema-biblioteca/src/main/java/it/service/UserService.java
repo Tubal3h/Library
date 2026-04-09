@@ -64,5 +64,16 @@ public class UserService {
         dto.setUserRole(user.getUserRole());
         return dto;
     }
+
+    /**
+     * Recupera il numero totale di utenti registrati nel sistema.
+     * 
+     * @return Il numero totale di utenti registrati con ruolo 'role_user'
+     */
+
+    public int getTotalUsers() {
+        int users = userRepository.countUsers();
+        return users;
+    }
 }
 

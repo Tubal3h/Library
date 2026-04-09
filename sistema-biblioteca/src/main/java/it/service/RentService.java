@@ -61,5 +61,28 @@ public class RentService {
         dto.setRentalEnded(rent.getRentalEnded());
         return dto;
     }
+
+    /**
+     * Recupera il numero totale di record di noleggio nel sistema.
+     * 
+     * @return Il numero totale di record di noleggio nel sistema
+     */
+
+    public int getTotalRents() {
+        int rents = rentRepository.countRents();
+        return rents;
+    }   
+
+    /**
+     * Recupera il numero totale di record di noleggio nel sistema per un utente specifico.
+     * 
+     * @param userId ID dell'utente
+     * @return Il numero totale di record di noleggio nel sistema per un utente specifico
+     */
+
+    public int getTotalRentsByUserId(int userId) {
+        int rents = rentRepository.countRentsByUserId(userId);
+        return rents;
+    }
 }
 

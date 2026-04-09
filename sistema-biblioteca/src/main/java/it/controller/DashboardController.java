@@ -68,6 +68,22 @@ public class DashboardController {
 
         model.addAttribute("user", user);
         model.addAttribute("section", section);
+        
+        if ("home".equals(section) && "role_user".equals(user.getUserRole())) {
+            int totalRents = rentService.getTotalRentsByUserId(user.getUserId());
+
+            model.addAttribute("totalRents", totalRents);
+        }
+
+        if("home".equals(section) && "role_admin".equals(user.getUserRole())) {
+            int totalUsers = userService.getTotalUsers();
+            int totalBooks = bookService.getTotalBooks();
+            int totalRents = rentService.getTotalRents();
+
+            model.addAttribute("totalUsers", totalUsers);
+            model.addAttribute("totalBooks", totalBooks);
+            model.addAttribute("totalRents", totalRents);
+        }
 
         if ("users".equals(section) && "role_admin".equals(user.getUserRole())) {
             List<UserDto> users = userService.getAllUsers();

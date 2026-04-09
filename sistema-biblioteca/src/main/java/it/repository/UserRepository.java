@@ -52,6 +52,17 @@ public class UserRepository {
         String sql = "SELECT * FROM users";
         return jdbcTemplate.query(sql, userRowMapper);
     }
+
+    /**
+    * Conta il numero totale di utenti registrati nel sistema non admin.
+    * 
+    * @return Il numero totale di utenti registrati con ruolo 'role_user'
+    */
+
+    public int countUsers() {
+        String sql = "SELECT COUNT(*) FROM users where roles = 'role_user'";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
 }
 
 

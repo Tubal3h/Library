@@ -137,5 +137,16 @@ public class BookService {
 
         return dto;
     }
+
+    /**
+     * Recupera il numero totale di libri nel sistema.
+     * 
+     * @return Il numero totale di libri nel sistema
+     */
+
+    public int getTotalBooks() {
+        int books = bookRepository.countBooks();
+        return books;
+    }
 }
 
