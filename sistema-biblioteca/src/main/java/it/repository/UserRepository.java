@@ -4,13 +4,13 @@ package it.repository;
 /*                                 REPOSITORY                                 */
 /* -------------------------------------------------------------------------- */
 
-import java.util.List;
-
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Repository;
-
+import it.entity.RentalRecord;
 import it.entity.User;
 import it.mapper.UserRowMapper;
+import java.time.LocalDate;
+import java.util.List;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 /**
  * Repository per la gestione dei dati degli utenti nel database.
@@ -63,6 +63,8 @@ public class UserRepository {
         String sql = "SELECT COUNT(*) FROM users where roles = 'role_user'";
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
+
+
 }
 
 

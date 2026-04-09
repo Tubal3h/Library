@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import it.dto.BookCatalogDto;
 import it.dto.RentDto;
 import it.dto.UserDto;
+
+import it.entity.RentalRecord;
+
 import it.service.BookService;
 import it.service.RentService;
 import it.service.UserService;
@@ -109,9 +112,34 @@ public class DashboardController {
      * @param email Parametro opzionale per l'email
      * @return Una stringa vuota
      */
-    @GetMapping("/api/details")
-    public String getMethodName(@RequestParam(value = "email", required = false) String email) {
-        return "";
+    @GetMapping("/api/borrow")
+    public String borrowBook(@RequestParam(value = "email", required = false) String email,
+    @RequestParam(value = "bookId", required = false) String bookId,
+    Model model) {
+        if (email == null || email.isEmpty()) {
+            return "redirect:/";
+        }
+
+        UserDto user = userService.getUserByEmail(email);
+
+        if (user == null) {
+            return "redirect:/";
+        }
+        if (bookId == null || bookId.isEmpty()) {
+            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog";
+        }
+        model.addAttribute("bookId", bookId);
+        model.addAttribute("user", user);
+
+        RentalRecord rental = new RentalRecord();
+        rental.setUserId(user.getUserId());
+        rental.setBookId(Integer.parseInt(bookId));
+        rentService.createRental(rental);
+
+        
+        
+
+        return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=rents";
     }
 }
 

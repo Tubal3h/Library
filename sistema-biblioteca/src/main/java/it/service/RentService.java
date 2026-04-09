@@ -5,6 +5,7 @@ package it.service;
 /* -------------------------------------------------------------------------- */
 
 import java.util.List;
+import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 
@@ -83,6 +84,16 @@ public class RentService {
     public int getTotalRentsByUserId(int userId) {
         int rents = rentRepository.countRentsByUserId(userId);
         return rents;
+    }
+
+    public void createRental(RentDto rentDto) {
+        RentalRecord rental = new RentalRecord();
+        rental.setUserId(rentDto.getUserId());
+        rental.setBookId(rentDto.getBookId());
+        rental.setRentalDate(LocalDate.now());
+        rental.setRentalExpired(LocalDate.now().plusDays(14));
+        rental.setRentalEnded(null);
+        rentRepository.createRental(rental);
     }
 }
 

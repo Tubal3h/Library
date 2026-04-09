@@ -48,7 +48,7 @@
                 <span>Restituisci</span>
                 <i class="fa-solid fa-pen-to-square"></i>
             </button>
-            <button th:if="role_user != 'role_admin'" class="btn-modern-action pointer transition shadow-soft">
+            <button th:if="role_user != 'role_admin'" th:href="@{/api/borrow(email=${user.userEmail}, bookId=${book.bookId})}" class="btn-modern-action pointer transition shadow-soft">
                 <span>Prenota</span>
                 <i class="fa-solid fa-pen-to-square"></i>
             </button>

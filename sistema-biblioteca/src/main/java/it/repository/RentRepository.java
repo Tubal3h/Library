@@ -77,4 +77,17 @@ public class RentRepository {
         String sql = "SELECT COUNT(*) FROM rental_record where users_id = ? and rental_ended is null";
         return jdbcTemplate.queryForObject(sql, Integer.class, userId);
     }
+
+    /**
+     * Crea un nuovo record di noleggio nel database.
+     * 
+     * @param rental Record di noleggio da creare
+     * @return Il record di noleggio creato
+     */
+
+    public RentalRecord createRental(RentalRecord rental) {
+        String sql = "INSERT INTO rental_records (user_id, book_id, rent_date, due_date, return_date) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.update(sql, rental.getUserId(), rental.getBookId(), rental.getRentalDate(), rental.getRentalExpired(), rental.getRentalEnded());
+        return rental;
+    }   
 }
