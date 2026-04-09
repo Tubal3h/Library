@@ -144,4 +144,5 @@ INSERT INTO books (edition_id, category_id, status) VALUES (10, 5, 'disponibilit
 INSERT INTO books (edition_id, category_id, status) VALUES (10, 5, 'in prestito');
 INSERT INTO books (edition_id, category_id, status) VALUES (10, 5, 'in prestito');
 
+
 -- users e rental_record rimangono identici a prima
