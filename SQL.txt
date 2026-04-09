@@ -225,3 +225,5 @@ INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, renta
 INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (1, 26, '2025-04-01 11:00:00', '2025-05-01', NULL);
 INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (4, 9, '2025-04-08 09:00:00', '2025-05-08', '2025-04-22 09:00:00');
 INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (21, 19, '2025-04-15 10:00:00', '2025-05-15', NULL);
+
+
