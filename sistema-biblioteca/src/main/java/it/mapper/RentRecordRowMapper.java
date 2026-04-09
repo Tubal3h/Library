@@ -1,16 +1,26 @@
 package it.mapper;
 
+/* -------------------------------------------------------------------------- */
+/*                                   MAPPER                                   */
+/* -------------------------------------------------------------------------- */
+
 import java.sql.Date;
 import java.time.LocalDate;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import it.model.RentalRecord;
+import it.entity.RentalRecord;
 
 @Component
 public class RentRecordRowMapper implements RowMapper<RentalRecord> {
 
+    /**
+     * @param rs il ResultSet da cui estrarre i dati
+     * @param rowNum il numero della riga corrente
+     * @return L'oggetto RentalRecord mappato dalla riga del database
+     * @throws java.sql.SQLException in caso di errori con il database
+     */
     @Override
     public RentalRecord mapRow(java.sql.ResultSet rs, int rowNum) throws java.sql.SQLException {
         Date rentalDateSql = rs.getDate("rent_date");
@@ -30,4 +40,4 @@ public class RentRecordRowMapper implements RowMapper<RentalRecord> {
             rentalEnded
         );
     }
-}
+}

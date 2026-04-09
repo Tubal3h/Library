@@ -1,13 +1,15 @@
 package it.repository;
 
+/* -------------------------------------------------------------------------- */
+/*                                 REPOSITORY                                 */
+/* -------------------------------------------------------------------------- */
+
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import it.dto.BookCatalogDto;
-import it.dto.RentDto;
-import it.model.RentalRecord;
+import it.entity.RentalRecord;
 
 @Repository
 public class RentRepository {
@@ -17,7 +19,10 @@ public class RentRepository {
         this.jdbcTemplate = jdbcTemplate;
     }
 
-    public List<RentalRecord> findAllRents() {
+    /**
+     * @return Lista di tutti i record di noleggio
+     */
+    public List<RentalRecord> getAllRents() {
         String sql = """
             SELECT r.rental_id,
                    r.book_id,
@@ -41,3 +46,4 @@ public class RentRepository {
     }
 
 }
+

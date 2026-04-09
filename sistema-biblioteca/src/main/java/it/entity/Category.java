@@ -1,4 +1,8 @@
-package it.model;
+package it.entity;
+
+/* -------------------------------------------------------------------------- */
+/*                                   ENTITY                                   */
+/* -------------------------------------------------------------------------- */
 
 public class Category {
     private int categoryId;
@@ -11,6 +15,9 @@ public class Category {
         this.categoryName = categoryName;
     }
 
+    /**
+     * @return ID della categoria
+     */
     public int getCategoryId() {
         return categoryId;
     }
@@ -19,6 +26,9 @@ public class Category {
         this.categoryId = categoryId;
     }
 
+    /**
+     * @return Nome della categoria
+     */
     public String getCategoryName() {
         return categoryName;
     }
@@ -33,3 +43,4 @@ public class Category {
     }
 
 }
+

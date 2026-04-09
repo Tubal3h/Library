@@ -1,5 +1,9 @@
 package it.dto;
 
+/* -------------------------------------------------------------------------- */
+/*                                     DTO                                    */
+/* -------------------------------------------------------------------------- */
+
 public class LoginDto {
 
     private String email;
@@ -8,6 +12,9 @@ public class LoginDto {
     public LoginDto() {
     }
 
+    /**
+     * @return Email inserita per il login
+     */
     public String getEmail() {
         return email;
     }
@@ -16,6 +23,9 @@ public class LoginDto {
         this.email = email;
     }
 
+    /**
+     * @return Password inserita per il login
+     */
     public String getPassword() {
         return password;
     }
@@ -23,4 +33,4 @@ public class LoginDto {
     public void setPassword(String password) {
         this.password = password;
     }
-}
+}

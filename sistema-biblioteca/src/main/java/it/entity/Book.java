@@ -1,6 +1,8 @@
-package it.model;
+package it.entity;
 
-import java.util.Date;
+/* -------------------------------------------------------------------------- */
+/*                                   ENTITY                                   */
+/* -------------------------------------------------------------------------- */
 
 public class Book {
     private int book_id;
@@ -11,29 +13,41 @@ public class Book {
     public Book() {
 
     }
-    public Book(int edition_id, int author_id, int publisher_id, Date publishing_date, int isbn_id, int category_id, String status) {
+    public Book(int edition_id, int category_id, String status) {
         this.edition_id = edition_id;
         this.category_id = category_id;
         this.status = status;
     }
+    /**
+     * @return ID del libro
+     */
     public int getBookId() {
         return book_id;
     }
     public void setBookId(int book_id) {
         this.book_id = book_id;
     }
+    /**
+     * @return ID dell'edizione
+     */
     public int getEditionId() {
         return edition_id;
     }
     public void setEditionId(int edition_id) {
         this.edition_id = edition_id;
     }
+    /**
+     * @return ID della categoria
+     */
     public int getCategoryId() {
         return category_id;
     }
     public void setCategoryId(int category_id) {
         this.category_id = category_id;
     }
+    /**
+     * @return Stato del libro (es. Disponibile, Noleggiato)
+     */
     public String getStatus() {
         return status;
     }
@@ -47,3 +61,5 @@ public class Book {
     }
 
 }
+
+

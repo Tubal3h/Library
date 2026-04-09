@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import it.dto.UserDto;
-import it.model.User;
+import it.entity.User;
 import it.repository.UserRepository;
 
 @Service
@@ -16,7 +16,7 @@ public class UserService {
     }
 
     public List<UserDto> getAllUsers() {
-    List<User> entities = userRepository.findAll(); // entity piena
+    List<User> entities = userRepository.getAllUsers(); // entity piena
         return entities.stream().map(u -> {
             UserDto dto = new UserDto();
             dto.setUserId(u.getUserId());

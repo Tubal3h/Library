@@ -1,13 +1,15 @@
 package it.repository;
 
+/* -------------------------------------------------------------------------- */
+/*                                 REPOSITORY                                 */
+/* -------------------------------------------------------------------------- */
 
+
+import it.entity.Edition;
 import it.mapper.EditionRowMapper;
-import java.time.LocalDate;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
-import it.model.Book;
-import it.model.Edition;
 
 @Repository
 public class EditionRepository {
@@ -19,7 +21,10 @@ public class EditionRepository {
         this.editionRowMapper = editionRowMapper;
     }
 
-    public List<Edition> GetAllEditions() {
+    /**
+     * @return Lista di tutte le edizioni disponibili
+     */
+    public List<Edition> getAllEditions() {
         String sql = "SELECT  * FROM edition";
         return jdbcTemplate.query(sql,  (rs, rowNum) -> {
             Edition edition = new Edition();
@@ -33,6 +38,10 @@ public class EditionRepository {
         });
     }
 
+    /**
+     * @param editionId l'ID dell'edizione
+     * @return L'oggetto Edition corrispondente all'ID fornito
+     */
 public Edition getEditionById(int editionId) {
     String sql = "SELECT * FROM edition WHERE edition_id = ?";
     return jdbcTemplate.queryForObject(sql, editionRowMapper, editionId);
@@ -40,3 +49,4 @@ public Edition getEditionById(int editionId) {
 
 
 }
+

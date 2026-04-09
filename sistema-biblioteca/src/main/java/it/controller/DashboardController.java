@@ -1,5 +1,9 @@
 package it.controller;
 
+/* -------------------------------------------------------------------------- */
+/*                                 CONTROLLER                                 */
+/* -------------------------------------------------------------------------- */
+
 import java.util.List;
 
 
@@ -28,6 +32,14 @@ public class DashboardController {
         this.rentService = rentService;
     }
 
+    /**
+     * Gestisce la visualizzazione della dashboard e delle sue sezioni.
+     * 
+     * @param email Email dell'utente loggato
+     * @param section Sezione della dashboard da visualizzare
+     * @param model il modello per la vista
+     * @return Nome della vista della dashboard o redirect alla home se l'email manca o l'utente non esiste
+     */
     @GetMapping("/dashboard")
     public String dashboard(
         @RequestParam(value = "email", required = false) String email,
@@ -73,6 +85,10 @@ public class DashboardController {
         return "dashboard";
         }   
         
+    /**
+     * @param email Parametro opzionale per l'email
+     * @return Una nuova stringa vuota (Metodo placeholder)
+     */
     @GetMapping("/api/details")
     public String getMethodName(@RequestParam(value = "email", required = false) String email) {
 
@@ -80,3 +96,4 @@ public class DashboardController {
     }
     
 }
+

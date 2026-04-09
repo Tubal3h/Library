@@ -1,7 +1,12 @@
 package it.repository;
 
+/* -------------------------------------------------------------------------- */
+/*                                 REPOSITORY                                 */
+/* -------------------------------------------------------------------------- */
+
+import it.entity.User;
 import it.mapper.UserRowMapper;
-import it.model.User;
+
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -16,6 +21,10 @@ public class UserRepository {
         this.userRowMapper = userRowMapper;
     }
 
+    /**
+     * @param email Email dell'utente da cercare
+     * @return L'utente corrispondente all'email, o null se non trovato
+     */
     public User findByEmail(String email) {
         String sql = "SELECT * FROM users WHERE email = ?";
         System.out.println("Executing SQL email: " + sql + " with email: " + email);
@@ -23,10 +32,14 @@ public class UserRepository {
         return users.isEmpty() ? null : users.get(0);
     }
 
-    public List<User> findAll() {
+    /**
+     * @return Lista di tutti gli utenti registrati
+     */
+    public List<User> getAllUsers() {
         String sql = "SELECT * FROM users";
         return jdbcTemplate.query(sql, userRowMapper);
     }
 
 
 }
+
