@@ -26,7 +26,7 @@ public class AuthController {
     }
 
     @PostMapping("/api/login")
-    public String login(@ModelAttribute("loginDto") LoginDto loginDto, Model model) {
+    public String login(LoginDto loginDto, Model model) {
         User user = authService.login(loginDto);
 
         if (user == null) {

@@ -48,19 +48,3 @@
         </div>
     </div>
 </th:block>
-
-<div th:fragment="catalog" >
-    <h2 class="text-2xl font-bold mb-4">Lista Libri</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Nome</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="book : ${books}">
-                <td th:text="${book.title}"></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
