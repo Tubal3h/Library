@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import it.dto.BookDto;
 
 import it.entity.BookJoin;
-
+import it.exception.BookNotFoundException;
 import it.repository.BookRepository;
 
 /**
@@ -68,7 +68,7 @@ public class BookService {
         var book = bookRepository.getAllBooks().stream()
             .filter(b -> b.getBookId() == bookId)
             .findFirst()
-            .orElseThrow(() -> new RuntimeException("Book not found with ID: " + bookId));
+            .orElseThrow(() -> new BookNotFoundException("Libro non trovato con l'ID: " + bookId));
 
         BookDto dto = new BookDto();
         dto.setEditionId(book.getEditionId());

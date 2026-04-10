@@ -51,15 +51,20 @@ public class AuthController {
      */
     @PostMapping("/api/login")
     public String login(LoginDto loginDto, Model model) {
-        User user = authService.login(loginDto);
-        System.out.println(user);
-        if (user == null) {
-            model.addAttribute("error", "Email o password errati");
-            return "index";
+        User user;
+        try {
+            user = authService.login(loginDto);
+            System.out.println(user);
+            if (user == null) {
+                model.addAttribute("error", "Email o password errati");
+                return "redirect:/?error=invalid_credentials";
+            }
+        } catch (Exception e) {
+            System.out.println("Errore di caricamento db: " + e.getMessage());
+            model.addAttribute("errorMessage", "Servizio momentaneamente non disponibile.");
+            return "redirect:/?error=service_unavailable";
         }
-        
-        // Passiamo l'email nell'URL come parametro base GET (es: /dashboard?email=mario@...)
-        // Questo elude la necessità della Sessione!
+
         return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=home"; 
     }
     

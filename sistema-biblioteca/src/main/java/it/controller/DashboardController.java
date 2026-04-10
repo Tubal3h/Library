@@ -15,8 +15,6 @@ import it.dto.BookDto;
 import it.dto.RentDto;
 import it.dto.UserDto;
 
-import it.entity.RentalRecord;
-
 import it.service.BookService;
 import it.service.RentService;
 import it.service.UserService;
@@ -71,38 +69,44 @@ public class DashboardController {
 
         model.addAttribute("user", user);
         model.addAttribute("section", section);
-        
-        if ("home".equals(section) && "role_user".equals(user.getUserRole())) {
-            int totalRents = rentService.getTotalRentsByUserId(user.getUserId());
+        try {
+            if ("home".equals(section) && "role_user".equals(user.getUserRole())) {
+                int totalRents = rentService.getTotalRentsByUserId(user.getUserId());
 
-            model.addAttribute("totalRents", totalRents);
+                model.addAttribute("totalRents", totalRents);
+            }
+
+            if("home".equals(section) && "role_admin".equals(user.getUserRole())) {
+                int totalUsers = userService.getTotalUsers();
+                int totalBooks = bookService.getTotalCountBooks();
+                int totalRents = rentService.getTotalRents();
+
+                model.addAttribute("totalUsers", totalUsers);
+                model.addAttribute("totalBooks", totalBooks);
+                model.addAttribute("totalRents", totalRents);
+            }
+
+            if ("users".equals(section) && "role_admin".equals(user.getUserRole())) {
+                List<UserDto> users = userService.getAllUsers();
+                model.addAttribute("users", users);
+            }
+
+            if ("catalog".equals(section)) {
+                List<BookDto> books = bookService.getAllBooks(user.getUserRole());
+                model.addAttribute("books", books);
+            }
+
+            if (("rents".equals(section) || "popup".equals(section)) && "role_user".equals(user.getUserRole())) {
+                List<RentDto> rentedBooks = rentService.getRentedBooksByUserId(user.getUserId());
+                System.out.println("rentedBooks: " + rentedBooks);
+                model.addAttribute("rentedBooks", rentedBooks);
+            }
+        } catch (Exception e) {
+            System.out.println("Errore di caricamento db: " + e.getMessage());
+            model.addAttribute("errorMessage", "Servizio momentaneamente non disponibile.");
+            return "redirect:/?error=service_unavailable"; 
         }
 
-        if("home".equals(section) && "role_admin".equals(user.getUserRole())) {
-            int totalUsers = userService.getTotalUsers();
-            int totalBooks = bookService.getTotalCountBooks();
-            int totalRents = rentService.getTotalRents();
-
-            model.addAttribute("totalUsers", totalUsers);
-            model.addAttribute("totalBooks", totalBooks);
-            model.addAttribute("totalRents", totalRents);
-        }
-
-        if ("users".equals(section) && "role_admin".equals(user.getUserRole())) {
-            List<UserDto> users = userService.getAllUsers();
-            model.addAttribute("users", users);
-        }
-
-        if ("catalog".equals(section)) {
-            List<BookDto> books = bookService.getAllBooks(user.getUserRole());
-            model.addAttribute("books", books);
-        }
-
-        if (("rents".equals(section) || "popup".equals(section)) && "role_user".equals(user.getUserRole())) {
-            List<RentDto> rentedBooks = rentService.getRentedBooksByUserId(user.getUserId());
-            System.out.println("rentedBooks: " + rentedBooks);
-            model.addAttribute("rentedBooks", rentedBooks);
-        }
 
         return "dashboard";
     }   
@@ -138,9 +142,19 @@ public class DashboardController {
 
         RentDto rental = new RentDto();
         rental.setUserId(user.getUserId());
-        rental.setBookId(Integer.parseInt(bookId));
-        System.out.println("rental: " + rental);    
-        rentService.createRental(rental);
+        try {
+            rental.setBookId(Integer.parseInt(bookId)); 
+            rentService.createRental(rental);
+        } catch (NumberFormatException e) {
+            System.out.println("Errore: bookId non valido - " + bookId);
+            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog&error=invalid_id";
+        } catch (Exception e) {
+            System.out.println("Errore: impossibile noleggiare il libro - " + bookId);
+            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog&error=rental_failed";
+        }
+
+        
+        
 
 
         return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=rents";

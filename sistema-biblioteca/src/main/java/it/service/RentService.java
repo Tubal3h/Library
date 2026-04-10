@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import it.dto.RentDto;
 import it.entity.RentalRecord;
+import it.exception.BookNotFoundException;
 import it.repository.RentRecordRepository;
 
 /**
@@ -57,7 +58,11 @@ public class RentService {
         dto.setRentId(rent.getRentalId());
         dto.setUserId(rent.getUserId());
         dto.setBookId(rent.getBookId());
-        dto.setBook(bookService.getBookById(rent.getBookId()));
+        try {
+            dto.setBook(bookService.getBookById(rent.getBookId()));
+        } catch (BookNotFoundException e) {
+            throw new BookNotFoundException("Libro non trovato con l'ID: " + rent.getBookId());
+        }
         dto.setRentalDate(rent.getRentalDate());
         dto.setRentalExpired(rent.getRentalExpired());
         dto.setRentalEnded(rent.getRentalEnded());
@@ -89,13 +94,18 @@ public class RentService {
     }
 
     public void createRental(RentDto rentDto) {
-        RentalRecord rental = new RentalRecord();
-        rental.setUserId(rentDto.getUserId());
-        rental.setBookId(rentDto.getBookId());
-        rental.setRentalDate(LocalDate.now());
-        rental.setRentalExpired(LocalDate.now().plusDays(14));
-        rental.setRentalEnded(null);
-        rentRepository.createRental(rental);
+        try {
+            RentalRecord rental = new RentalRecord();
+            rental.setUserId(rentDto.getUserId());
+            rental.setBookId(rentDto.getBookId());
+            rental.setRentalDate(LocalDate.now());
+            rental.setRentalExpired(LocalDate.now().plusDays(14));
+            rental.setRentalEnded(null);
+            rentRepository.createRental(rental);    
+        } catch (Exception e) {
+            System.out.println("Eccezione nella repository: " + e.getMessage());
+            throw new RuntimeException("Impossibile creare il noleggio in questo momento.");
+        }
     }
 }
 
