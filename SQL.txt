@@ -1,7 +1,3 @@
--- =========================
--- TABELLE DI RIFERIMENTO
--- =========================
-
 CREATE TABLE books_names(
     book_name_id SERIAL PRIMARY KEY,
     title TEXT UNIQUE
@@ -23,30 +19,27 @@ CREATE TABLE publisher(
     publisher_name VARCHAR(32)
 );
 
--- Edizione: titolo + autore + publisher + data + ISBN
 CREATE TABLE edition(
     edition_id SERIAL PRIMARY KEY,
     book_name_id INTEGER NOT NULL,
     author_id INTEGER NOT NULL,
     publisher_id INTEGER NOT NULL,
     publishing_date DATE,
+    category_id INTEGER NOT NULL,
     isbn VARCHAR(13) UNIQUE,
     FOREIGN KEY(book_name_id) REFERENCES books_names(book_name_id) ON DELETE CASCADE,
     FOREIGN KEY(author_id) REFERENCES author(author_id) ON DELETE CASCADE,
-    FOREIGN KEY(publisher_id) REFERENCES publisher(publisher_id) ON DELETE CASCADE
-);
-
--- Copia fisica del libro
-CREATE TABLE books(
-    book_id SERIAL PRIMARY KEY,
-    edition_id INTEGER NOT NULL,
-    category_id INTEGER NOT NULL,
-    status TEXT NOT NULL CHECK(status IN ('disponibilita', 'in prestito')),
-    FOREIGN KEY(edition_id) REFERENCES edition(edition_id) ON DELETE CASCADE,
+    FOREIGN KEY(publisher_id) REFERENCES publisher(publisher_id) ON DELETE CASCADE,
     FOREIGN KEY(category_id) REFERENCES category(category_id) ON DELETE CASCADE
 );
 
--- Utenti
+CREATE TABLE books(
+    book_id SERIAL PRIMARY KEY,
+    edition_id INTEGER NOT NULL,
+    status TEXT NOT NULL CHECK(status IN ('disponibilita', 'in prestito', 'eliminato')),
+    FOREIGN KEY(edition_id) REFERENCES edition(edition_id) ON DELETE CASCADE
+);
+
 CREATE TABLE users(
     users_id SERIAL PRIMARY KEY,
     user_name VARCHAR(32),
@@ -56,7 +49,6 @@ CREATE TABLE users(
     roles TEXT NOT NULL CHECK(roles IN ('role_user', 'role_admin'))
 );
 
--- Noleggi
 CREATE TABLE rental_record(
     rental_id SERIAL PRIMARY KEY,
     book_id INTEGER NOT NULL,
@@ -64,165 +56,260 @@ CREATE TABLE rental_record(
     rental_date TIMESTAMP,
     rental_expired DATE,
     rental_ended TIMESTAMP NULL,
-    FOREIGN KEY(book_id) REFERENCES books(book_id) ON DELETE CASCADE,
+    FOREIGN KEY(book_id) REFERENCES books(book_id),
     FOREIGN KEY(users_id) REFERENCES users(users_id) ON DELETE CASCADE
 );
 
-INSERT INTO books_names (title) VALUES ('Clean Code');                       -- 1
-INSERT INTO books_names (title) VALUES ('The Pragmatic Programmer');         -- 2
-INSERT INTO books_names (title) VALUES ('Design Patterns');                  -- 3
-INSERT INTO books_names (title) VALUES ('Introduction to Algorithms');       -- 4
-INSERT INTO books_names (title) VALUES ('Head First Java');                  -- 5
-INSERT INTO books_names (title) VALUES ('Spring Boot in Action');            -- 6
-INSERT INTO books_names (title) VALUES ('JavaScript: The Good Parts');       -- 7
-INSERT INTO books_names (title) VALUES ('The Art of Computer Programming');  -- 8
-INSERT INTO books_names (title) VALUES ('Refactoring');                      -- 9
-INSERT INTO books_names (title) VALUES ('You Don''t Know JS');               -- 10
+INSERT INTO category (category_name) VALUES
+('Programmazione'),
+('Algoritmi'),
+('Design Patterns'),
+('Java'),
+('JavaScript'),
+('HTML/CSS'),
+('C#'),
+('PHP'),
+('Python'),
+('SQL e Database'),
+('Sviluppo Web');
 
-INSERT INTO category (category_name) VALUES ('Programmazione');  -- 1
-INSERT INTO category (category_name) VALUES ('Algoritmi');       -- 2
-INSERT INTO category (category_name) VALUES ('Design Patterns'); -- 3
-INSERT INTO category (category_name) VALUES ('Java');            -- 4
-INSERT INTO category (category_name) VALUES ('JavaScript');      -- 5
+INSERT INTO publisher (publisher_name) VALUES
+('Pearson'),
+('Addison-Wesley'),
+('O''Reilly Media'),
+('Manning Publications'),
+('MIT Press'),
+('Hoepli'),
+('Apogeo'),
+('LSWR'),
+('EGEA');
 
-INSERT INTO author (author_name, author_last_name) VALUES ('Robert', 'Martin');     -- 1
-INSERT INTO author (author_name, author_last_name) VALUES ('David', 'Thomas');      -- 2
-INSERT INTO author (author_name, author_last_name) VALUES ('Erich', 'Gamma');       -- 3
-INSERT INTO author (author_name, author_last_name) VALUES ('Thomas', 'Cormen');     -- 4
-INSERT INTO author (author_name, author_last_name) VALUES ('Kathy', 'Sierra');      -- 5
-INSERT INTO author (author_name, author_last_name) VALUES ('Craig', 'Walls');       -- 6
-INSERT INTO author (author_name, author_last_name) VALUES ('Douglas', 'Crockford'); -- 7
-INSERT INTO author (author_name, author_last_name) VALUES ('Donald', 'Knuth');      -- 8
-INSERT INTO author (author_name, author_last_name) VALUES ('Martin', 'Fowler');     -- 9
-INSERT INTO author (author_name, author_last_name) VALUES ('Kyle', 'Simpson');      -- 10
+INSERT INTO author (author_name, author_last_name) VALUES
+('Robert', 'Martin'),
+('David', 'Thomas'),
+('Erich', 'Gamma'),
+('Thomas', 'Cormen'),
+('Kathy', 'Sierra'),
+('Craig', 'Walls'),
+('Douglas', 'Crockford'),
+('Donald', 'Knuth'),
+('Martin', 'Fowler'),
+('Kyle', 'Simpson'),
+('Claudio', 'De Sio Cesari'),
+('Giuseppe', 'Maggi'),
+('Paolo', 'Camagni'),
+('Riccardo', 'Nikolassy'),
+('David', 'Flanagan'),
+('Maurizio', 'Boscaini'),
+('Gabriele', 'Gigliotti'),
+('Gianluca', 'Troiani'),
+('Antonio', 'Pelleriti'),
+('Daniele', 'Bochicchio'),
+('Naomi', 'Ceder'),
+('Tom', 'Butler'),
+('Francois', 'Chollet'),
+('Dmitry', 'Zinoviev'),
+('Marco', 'Beri'),
+('Michael', 'Kofler'),
+('Massimiliano', 'Tarquini'),
+('Darren', 'Jones'),
+('Allen', 'Downey'),
+('Kenneth', 'Lambert');
 
-INSERT INTO publisher (publisher_name) VALUES ('Pearson');              -- 1
-INSERT INTO publisher (publisher_name) VALUES ('Addison-Wesley');       -- 2
-INSERT INTO publisher (publisher_name) VALUES ('O''Reilly Media');      -- 3
-INSERT INTO publisher (publisher_name) VALUES ('Manning Publications'); -- 4
-INSERT INTO publisher (publisher_name) VALUES ('MIT Press');            -- 5
+INSERT INTO books_names (title) VALUES
+('Clean Code'),
+('The Pragmatic Programmer'),
+('Design Patterns'),
+('Introduction to Algorithms'),
+('Head First Java'),
+('Spring Boot in Action'),
+('JavaScript: The Good Parts'),
+('The Art of Computer Programming'),
+('Refactoring'),
+('You Don''t Know JS'),
+('Programmare con Java. Guida completa'),
+('Il nuovo Java'),
+('Manuale di Java 9'),
+('Manuale di Java 8'),
+('Manuale di Java 7'),
+('Manuale di Java 6'),
+('Java mattone dopo mattone'),
+('Corso di informatica Java. Volume A'),
+('Corso di informatica Java. Volume B'),
+('JavaScript. La guida definitiva'),
+('Imparare a programmare con JavaScript'),
+('Programmare con JavaScript'),
+('JavaScript. Guida pocket'),
+('Imparare a programmare con HTML e CSS'),
+('HTML5'),
+('CSS'),
+('Programmare con C# 10. Guida completa'),
+('Programmare con C# 8. Guida completa'),
+('C# 5. Guida completa per lo sviluppatore'),
+('C# 4. Guida completa per lo sviluppatore'),
+('Imparare a programmare con PHP'),
+('Programmare con PHP 7'),
+('Sviluppare applicazioni con PHP e MySQL'),
+('Sviluppare applicazioni con PHP e MySQL. Nuova edizione aggiornata'),
+('Python'),
+('Programmazione in Python'),
+('Pensare in Python'),
+('Deep Learning con Python'),
+('Data Science con Python'),
+('Sviluppare applicazioni con Django');
 
-INSERT INTO edition (book_name_id, author_id, publisher_id, publishing_date, isbn)
-VALUES
-(1,  1, 1, '2008-08-01', '9780132350884'),  -- 1 Clean Code
-(2,  2, 1, '2019-09-23', '9780135957059'),  -- 2 The Pragmatic Programmer
-(3,  3, 2, '1994-10-21', '9780201633610'),  -- 3 Design Patterns
-(4,  4, 5, '2009-07-31', '9780262033848'),  -- 4 Introduction to Algorithms
-(5,  5, 3, '2005-06-28', '9780596009205'),  -- 5 Head First Java
-(6,  6, 4, '2016-01-06', '9781617292545'),  -- 6 Spring Boot in Action
-(7,  7, 3, '2008-05-01', '9780596517748'),  -- 7 JavaScript: The Good Parts
-(8,  8, 2, '1968-01-01', '9780201038040'),  -- 8 The Art of Computer Programming
-(9,  9, 1, '2018-11-20', '9780134757599'),  -- 9 Refactoring
-(10, 10, 3, '2015-03-02', '9781491924464'); -- 10 You Don't Know JS
+INSERT INTO edition (book_name_id, author_id, publisher_id, publishing_date, isbn) VALUES
+(1, 1, 1, '2008-08-01', '9780132350884'),
+(2, 2, 1, '2019-09-23', '9780135957059'),
+(3, 3, 2, '1994-10-21', '9780201633610'),
+(4, 4, 5, '2009-07-31', '9780262033848'),
+(5, 5, 3, '2005-06-28', '9780596009205'),
+(6, 6, 4, '2016-01-06', '9781617292545'),
+(7, 7, 3, '2008-05-01', '9780596517748'),
+(8, 8, 2, '1968-01-01', '9780201038040'),
+(9, 9, 1, '2018-11-20', '9780134757599'),
+(10, 10, 3, '2015-03-02', '9781491924464'),
+(11, 12, 8, '2024-01-01', '9791254911181'),
+(12, 11, 6, '2020-09-01', '9788820399306'),
+(13, 11, 6, '2018-03-01', '9788820383022'),
+(14, 11, 6, '2014-01-01', '9788820362911'),
+(15, 11, 6, '2011-01-01', '9788820344771'),
+(16, 11, 6, '2006-01-01', '9788820336585'),
+(17, 27, 6, '2002-10-01', '9788820331245'),
+(18, 13, 6, '2002-01-01', '9788836003303'),
+(19, 13, 6, '2002-01-01', '9788836003310'),
+(20, 15, 7, '2021-04-01', '9788850335657'),
+(21, 16, 7, '2017-11-01', '9788850334285'),
+(22, 28, 6, '2022-01-01', '9788836006953'),
+(23, 15, 6, '2012-01-01', '9788848128346'),
+(24, 17, 7, '2019-04-01', '9788850334735'),
+(25, 17, 7, '2015-06-01', '9788850333394'),
+(26, 18, 7, '2011-06-01', '9788850330256'),
+(27, 19, 8, '2022-01-01', '9788868959326'),
+(28, 19, 8, '2019-10-01', '9788868957698'),
+(29, 20, 6, '2013-03-01', '9788820352530'),
+(30, 20, 6, '2010-01-01', '9788820344689'),
+(31, 16, 7, '2018-10-01', '9788850334636'),
+(32, 22, 7, '2016-07-01', '9788850333776'),
+(33, 22, 7, '2018-02-01', '9788850334155'),
+(34, 22, 7, '2023-05-01', '9788850336685'),
+(35, 21, 7, '2019-03-01', '9788850334810'),
+(36, 30, 7, '2018-06-01', '9788891628893'),
+(37, 29, 9, '2018-05-01', '9788823822641'),
+(38, 23, 7, '2020-03-01', '9788850335107'),
+(39, 24, 7, '2017-06-01', '9788850334148'),
+(40, 25, 7, '2024-02-01', '9788850336968');
 
--- edition 1: Clean Code, 3 copie
-INSERT INTO books (edition_id, category_id, status) VALUES (1, 1, 'in prestito');     -- book_id 1
-INSERT INTO books (edition_id, category_id, status) VALUES (1, 1, 'in prestito');     -- book_id 2
-INSERT INTO books (edition_id, category_id, status) VALUES (1, 1, 'in prestito');     -- book_id 3
+INSERT INTO books (edition_id, category_id, status) VALUES
+(1, 1, 'in prestito'),
+(1, 1, 'in prestito'),
+(1, 1, 'disponibilita'),
+(2, 1, 'disponibilita'),
+(2, 1, 'in prestito'),
+(3, 3, 'disponibilita'),
+(3, 3, 'in prestito'),
+(3, 3, 'disponibilita'),
+(4, 2, 'disponibilita'),
+(4, 2, 'in prestito'),
+(4, 2, 'disponibilita'),
+(4, 2, 'disponibilita'),
+(5, 4, 'in prestito'),
+(5, 4, 'in prestito'),
+(6, 4, 'in prestito'),
+(6, 4, 'disponibilita'),
+(7, 5, 'disponibilita'),
+(7, 5, 'disponibilita'),
+(7, 5, 'in prestito'),
+(8, 2, 'disponibilita'),
+(8, 2, 'in prestito'),
+(8, 2, 'in prestito'),
+(9, 1, 'disponibilita'),
+(9, 1, 'in prestito'),
+(10, 5, 'disponibilita'),
+(10, 5, 'in prestito'),
+(10, 5, 'in prestito'),
+(11, 4, 'in prestito'),
+(11, 4, 'disponibilita'),
+(12, 4, 'disponibilita'),
+(13, 4, 'disponibilita'),
+(13, 4, 'in prestito'),
+(14, 4, 'disponibilita'),
+(14, 4, 'disponibilita'),
+(15, 4, 'in prestito'),
+(16, 4, 'disponibilita'),
+(16, 4, 'disponibilita'),
+(16, 4, 'disponibilita'),
+(17, 4, 'disponibilita'),
+(17, 4, 'disponibilita'),
+(17, 4, 'in prestito'),
+(18, 4, 'disponibilita'),
+(19, 4, 'in prestito'),
+(19, 4, 'disponibilita'),
+(20, 5, 'disponibilita'),
+(20, 5, 'in prestito'),
+(21, 5, 'disponibilita'),
+(22, 5, 'in prestito'),
+(23, 5, 'disponibilita'),
+(23, 5, 'disponibilita'),
+(23, 5, 'in prestito'),
+(24, 6, 'in prestito'),
+(24, 6, 'disponibilita'),
+(25, 6, 'disponibilita'),
+(26, 6, 'in prestito'),
+(26, 6, 'in prestito'),
+(27, 7, 'disponibilita'),
+(27, 7, 'disponibilita'),
+(27, 7, 'in prestito'),
+(28, 7, 'disponibilita'),
+(29, 7, 'in prestito'),
+(30, 7, 'disponibilita'),
+(30, 7, 'disponibilita'),
+(31, 8, 'in prestito'),
+(31, 8, 'disponibilita'),
+(32, 8, 'disponibilita'),
+(33, 8, 'in prestito'),
+(34, 8, 'disponibilita'),
+(34, 8, 'in prestito'),
+(35, 9, 'in prestito'),
+(35, 9, 'disponibilita'),
+(36, 9, 'disponibilita'),
+(36, 9, 'disponibilita'),
+(37, 9, 'in prestito'),
+(38, 9, 'disponibilita'),
+(38, 9, 'disponibilita'),
+(39, 9, 'in prestito'),
+(40, 9, 'disponibilita'),
+(40, 9, 'disponibilita'),
+(40, 9, 'in prestito');
 
--- edition 2: The Pragmatic Programmer, 3 copie
-INSERT INTO books (edition_id, category_id, status) VALUES (2, 1, 'disponibilita');   -- 4
-INSERT INTO books (edition_id, category_id, status) VALUES (2, 1, 'in prestito');     -- 5
-INSERT INTO books (edition_id, category_id, status) VALUES (2, 1, 'in prestito');     -- 6
-
--- edition 3: Design Patterns, 3 copie
-INSERT INTO books (edition_id, category_id, status) VALUES (3, 3, 'disponibilita');   -- 7
-INSERT INTO books (edition_id, category_id, status) VALUES (3, 3, 'in prestito');     -- 8
-INSERT INTO books (edition_id, category_id, status) VALUES (3, 3, 'disponibilita');   -- 9
-
--- edition 4: Introduction to Algorithms, 3 copie
-INSERT INTO books (edition_id, category_id, status) VALUES (4, 2, 'disponibilita');   -- 10
-INSERT INTO books (edition_id, category_id, status) VALUES (4, 2, 'in prestito');     -- 11
-INSERT INTO books (edition_id, category_id, status) VALUES (4, 2, 'disponibilita');   -- 12
-
--- edition 5: Head First Java, 3 copie
-INSERT INTO books (edition_id, category_id, status) VALUES (5, 4, 'in prestito');     -- 13
-INSERT INTO books (edition_id, category_id, status) VALUES (5, 4, 'in prestito');     -- 14
-INSERT INTO books (edition_id, category_id, status) VALUES (5, 4, 'in prestito');     -- 15
-
--- edition 6: Spring Boot in Action, 3 copie
-INSERT INTO books (edition_id, category_id, status) VALUES (6, 4, 'in prestito');     -- 16
-INSERT INTO books (edition_id, category_id, status) VALUES (6, 4, 'in prestito');     -- 17
-INSERT INTO books (edition_id, category_id, status) VALUES (6, 4, 'disponibilita');   -- 18
-
--- edition 7: JavaScript: The Good Parts, 3 copie
-INSERT INTO books (edition_id, category_id, status) VALUES (7, 5, 'disponibilita');   -- 19
-INSERT INTO books (edition_id, category_id, status) VALUES (7, 5, 'disponibilita');   -- 20
-INSERT INTO books (edition_id, category_id, status) VALUES (7, 5, 'in prestito');     -- 21
-
--- edition 8: The Art of Computer Programming, 3 copie
-INSERT INTO books (edition_id, category_id, status) VALUES (8, 2, 'disponibilita');   -- 22
-INSERT INTO books (edition_id, category_id, status) VALUES (8, 2, 'in prestito');     -- 23
-INSERT INTO books (edition_id, category_id, status) VALUES (8, 2, 'in prestito');     -- 24
-
--- edition 9: Refactoring, 3 copie
-INSERT INTO books (edition_id, category_id, status) VALUES (9, 1, 'disponibilita');   -- 25
-INSERT INTO books (edition_id, category_id, status) VALUES (9, 1, 'in prestito');     -- 26
-INSERT INTO books (edition_id, category_id, status) VALUES (9, 1, 'disponibilita');   -- 27
-
--- edition 10: You Don't Know JS, 3 copie
-INSERT INTO books (edition_id, category_id, status) VALUES (10, 5, 'disponibilita');  -- 28
-INSERT INTO books (edition_id, category_id, status) VALUES (10, 5, 'in prestito');    -- 29
-INSERT INTO books (edition_id, category_id, status) VALUES (10, 5, 'in prestito');    -- 30
-
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Luca', 'Rossi', 'luca.rossi1@biblioteca.it', 'Password123!', 'role_admin');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Marco', 'Ferrari', 'marco.ferrari2@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Giulia', 'Esposito', 'giulia.esposito3@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Sofia', 'Bianchi', 'sofia.bianchi4@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Alessandro', 'Romano', 'alessandro.romano5@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Francesca', 'Colombo', 'francesca.colombo6@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Andrea', 'Ricci', 'andrea.ricci7@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Valentina', 'Marino', 'valentina.marino8@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Matteo', 'Greco', 'matteo.greco9@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Chiara', 'Bruno', 'chiara.bruno10@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Lorenzo', 'Gallo', 'lorenzo.gallo11@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Elena', 'Conti', 'elena.conti12@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Giovanni', 'DeLuca', 'giovanni.deluca13@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Martina', 'Costa', 'martina.costa14@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Davide', 'Mancini', 'davide.mancini15@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Sara', 'Giordano', 'sara.giordano16@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Federico', 'Rizzo', 'federico.rizzo17@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Alice', 'Lombardi', 'alice.lombardi18@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Riccardo', 'Moretti', 'riccardo.moretti19@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Beatrice', 'Barbieri', 'beatrice.barbieri20@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Antonio', 'Fontana', 'antonio.fontana21@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Laura', 'Santoro', 'laura.santoro22@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Simone', 'Marini', 'simone.marini23@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Federica', 'Rinaldi', 'federica.rinaldi24@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Diego', 'Caruso', 'diego.caruso25@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Ilaria', 'Ferretti', 'ilaria.ferretti26@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Nicola', 'Leone', 'nicola.leone27@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Roberta', 'Montanari', 'roberta.montanari28@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Stefano', 'Serra', 'stefano.serra29@biblioteca.it', 'Password123!', 'role_user');
-INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES ('Monica', 'Poli', 'monica.poli30@biblioteca.it', 'Password123!', 'role_user');
-
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (20, 15, '2025-01-10 09:00:00', '2025-02-10', '2025-01-25 09:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (15, 24, '2025-01-15 10:00:00', '2025-02-15', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (11, 16, '2025-02-01 11:00:00', '2025-03-01', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (27, 12, '2025-02-14 08:00:00', '2025-03-14', '2025-02-28 08:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (23, 17, '2025-03-05 14:00:00', '2025-04-05', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (7, 21, '2025-03-10 09:00:00', '2025-04-10', '2025-03-30 09:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (6, 18, '2025-03-20 10:00:00', '2025-04-20', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (13, 8, '2025-04-01 11:00:00', '2025-05-01', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (12, 27, '2025-04-08 09:00:00', '2025-05-08', '2025-04-22 09:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (16, 20, '2025-04-15 10:00:00', '2025-05-15', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (10, 10, '2025-01-10 09:00:00', '2025-02-10', '2025-01-25 09:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (26, 13, '2025-01-15 10:00:00', '2025-02-15', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (30, 28, '2025-02-01 11:00:00', '2025-03-01', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (22, 2, '2025-02-14 08:00:00', '2025-03-14', '2025-02-28 08:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (17, 30, '2025-03-05 14:00:00', '2025-04-05', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (28, 3, '2025-03-10 09:00:00', '2025-04-10', '2025-03-30 09:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (2, 4, '2025-03-20 10:00:00', '2025-04-20', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (14, 22, '2025-04-01 11:00:00', '2025-05-01', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (19, 7, '2025-04-08 09:00:00', '2025-05-08', '2025-04-22 09:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (3, 5, '2025-04-15 10:00:00', '2025-05-15', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (18, 29, '2025-01-10 09:00:00', '2025-02-10', '2025-01-25 09:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (29, 11, '2025-01-15 10:00:00', '2025-02-15', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (5, 14, '2025-02-01 11:00:00', '2025-03-01', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (25, 23, '2025-02-14 08:00:00', '2025-03-14', '2025-02-28 08:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (8, 6, '2025-03-05 14:00:00', '2025-04-05', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (9, 25, '2025-03-10 09:00:00', '2025-04-10', '2025-03-30 09:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (24, 1, '2025-03-20 10:00:00', '2025-04-20', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (1, 26, '2025-04-01 11:00:00', '2025-05-01', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (4, 9, '2025-04-08 09:00:00', '2025-05-08', '2025-04-22 09:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (21, 19, '2025-04-15 10:00:00', '2025-05-15', NULL);
+INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES 
+('Luca', 'Rossi', 'luca.rossi1@biblioteca.it', 'Password123!', 'role_admin'),
+('Marco', 'Ferrari', 'marco.ferrari2@biblioteca.it', 'Password123!', 'role_user'),
+('Giulia', 'Esposito', 'giulia.esposito3@biblioteca.it', 'Password123!', 'role_user'),
+('Sofia', 'Bianchi', 'sofia.bianchi4@biblioteca.it', 'Password123!', 'role_user'),
+('Alessandro', 'Romano', 'alessandro.romano5@biblioteca.it', 'Password123!', 'role_user'),
+('Francesca', 'Colombo', 'francesca.colombo6@biblioteca.it', 'Password123!', 'role_user'),
+('Andrea', 'Ricci', 'andrea.ricci7@biblioteca.it', 'Password123!', 'role_user'),
+('Valentina', 'Marino', 'valentina.marino8@biblioteca.it', 'Password123!', 'role_user'),
+('Matteo', 'Greco', 'matteo.greco9@biblioteca.it', 'Password123!', 'role_user'),
+('Chiara', 'Bruno', 'chiara.bruno10@biblioteca.it', 'Password123!', 'role_user'),
+('Lorenzo', 'Gallo', 'lorenzo.gallo11@biblioteca.it', 'Password123!', 'role_user'),
+('Elena', 'Conti', 'elena.conti12@biblioteca.it', 'Password123!', 'role_user'),
+('Giovanni', 'DeLuca', 'giovanni.deluca13@biblioteca.it', 'Password123!', 'role_user'),
+('Martina', 'Costa', 'martina.costa14@biblioteca.it', 'Password123!', 'role_user'),
+('Davide', 'Mancini', 'davide.mancini15@biblioteca.it', 'Password123!', 'role_user'),
+('Sara', 'Giordano', 'sara.giordano16@biblioteca.it', 'Password123!', 'role_user'),
+('Federico', 'Rizzo', 'federico.rizzo17@biblioteca.it', 'Password123!', 'role_user'),
+('Alice', 'Lombardi', 'alice.lombardi18@biblioteca.it', 'Password123!', 'role_user'),
+('Riccardo', 'Moretti', 'riccardo.moretti19@biblioteca.it', 'Password123!', 'role_user'),
+('Beatrice', 'Barbieri', 'beatrice.barbieri20@biblioteca.it', 'Password123!', 'role_user'),
+('Antonio', 'Fontana', 'antonio.fontana21@biblioteca.it', 'Password123!', 'role_user'),
+('Laura', 'Santoro', 'laura.santoro22@biblioteca.it', 'Password123!', 'role_user'),
+('Simone', 'Marini', 'simone.marini23@biblioteca.it', 'Password123!', 'role_user'),
+('Federica', 'Rinaldi', 'federica.rinaldi24@biblioteca.it', 'Password123!', 'role_user'),
+('Diego', 'Caruso', 'diego.caruso25@biblioteca.it', 'Password123!', 'role_user'),
+('Ilaria', 'Ferretti', 'ilaria.ferretti26@biblioteca.it', 'Password123!', 'role_user'),
+('Nicola', 'Leone', 'nicola.leone27@biblioteca.it', 'Password123!', 'role_user'),
+('Roberta', 'Montanari', 'roberta.montanari28@biblioteca.it', 'Password123!', 'role_user'),
+('Stefano', 'Serra', 'stefano.serra29@biblioteca.it', 'Password123!', 'role_user'),
+('Monica', 'Poli', 'monica.poli30@biblioteca.it', 'Password123!', 'role_user');
