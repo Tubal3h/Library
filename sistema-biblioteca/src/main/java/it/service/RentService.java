@@ -46,12 +46,13 @@ public class RentService {
     }
 
     /**
-     * Converte un'entità RentalRecord in un DTO RentDto.
+     * Converte un'entità RentalRecordView in un DTO RentDto.
      * 
-     * @param rent Record di noleggio da convertire
+     * @param rent Record di noleggio da convertire.
      * @return DTO convertito
      */
     private RentDto toRentDto(RentalRecord rent) {
+        System.out.println("rent: " + rent);
         RentDto dto = new RentDto();
         dto.setRentId(rent.getRentalId());
         dto.setUserId(rent.getUserId());
@@ -60,6 +61,7 @@ public class RentService {
         dto.setRentalDate(rent.getRentalDate());
         dto.setRentalExpired(rent.getRentalExpired());
         dto.setRentalEnded(rent.getRentalEnded());
+        System.out.println("rentservicedto: " + dto);
         return dto;
     }
 

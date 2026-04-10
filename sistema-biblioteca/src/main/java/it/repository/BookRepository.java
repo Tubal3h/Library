@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import it.entity.Book;
+import it.entity.BookView;
 
 /**
  * Repository per la gestione dei dati dei libri nel database.
@@ -31,18 +32,20 @@ public class BookRepository {
      * Recupera la lista di tutti i libri.
      * 
      * @return Lista di tutti i libri nel database
+     * @deprecated 
      */
+    /** 
     public List<Book> getAllBooks() {
         String sql = "SELECT * FROM books";
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             Book book = new Book();
             book.setBookId(rs.getInt("book_id"));
             book.setEditionId(rs.getInt("edition_id"));
-            book.setCategoryId(rs.getInt("category_id"));
             book.setStatus(rs.getString("status"));
             return book;
         });
     }
+    */
 
     /**
      * Recupera il titolo di un libro tramite ID del nome.
@@ -108,6 +111,48 @@ public class BookRepository {
     public int countBooks() {
         String sql = "SELECT COUNT(*) FROM books";
         return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    /**
+     * Recupera la lista di tutti i libri con le informazioni complete.
+     * 
+     * @return Lista di tutti i libri nel sistema
+     * @see BookView
+     * JOIN version
+     */
+
+    public List<BookView> getAllBooks() {
+        String sql = """
+                SELECT 
+                    e.edition_id,
+                    b.book_id,
+                    bn.title,
+                    CONCAT(a.author_name, ' ', a.author_last_name) AS author_full_name,
+                    p.publisher_name,
+                    e.publishing_date,
+                    c.category_name,
+                    e.isbn,
+                    b.status
+                FROM books b
+                JOIN edition e ON b.edition_id = e.edition_id
+                JOIN books_names bn ON e.book_name_id = bn.book_name_id
+                JOIN author a ON e.author_id = a.author_id
+                JOIN publisher p ON e.publisher_id = p.publisher_id
+                JOIN category c ON e.category_id = c.category_id
+                """;
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            BookView bookView = new BookView();
+            bookView.setEditionId(rs.getInt("edition_id"));
+            bookView.setBookId(rs.getInt("book_id"));
+            bookView.setBookName(rs.getString("title"));
+            bookView.setAuthorFullName(rs.getString("author_full_name"));
+            bookView.setPublisherName(rs.getString("publisher_name"));
+            bookView.setPublicationDate(rs.getDate("publishing_date").toLocalDate());
+            bookView.setCategoryName(rs.getString("category_name"));
+            bookView.setIsbnCode(rs.getString("isbn"));
+            bookView.setStatus(rs.getString("status"));
+            return bookView;
+        });
     }
 
 }

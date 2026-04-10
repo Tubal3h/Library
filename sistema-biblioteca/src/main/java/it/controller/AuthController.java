@@ -52,7 +52,7 @@ public class AuthController {
     @PostMapping("/api/login")
     public String login(LoginDto loginDto, Model model) {
         User user = authService.login(loginDto);
-
+        System.out.println(user);
         if (user == null) {
             model.addAttribute("error", "Email o password errati");
             return "index";

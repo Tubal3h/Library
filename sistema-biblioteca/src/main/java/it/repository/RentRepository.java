@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import it.entity.RentalRecord;
+import it.entity.RentalRecordView;
 
 /**
  * Repository per la gestione dei record di noleggio (prestiti) nel database.
@@ -54,6 +55,7 @@ public class RentRepository {
             return record;
         });
     }
+
 
     /**
      * Conta il numero totale di record di noleggio nel sistema.

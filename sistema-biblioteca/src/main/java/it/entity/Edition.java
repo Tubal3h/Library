@@ -14,6 +14,7 @@ public class Edition {
     private int book_name_id;
     private int author_id;
     private int publisher_id;
+    private int category_id;
     private LocalDate publishing_date;
     private String isbn;
 
@@ -29,12 +30,14 @@ public class Edition {
      * @param book_name_id ID del nome del libro
      * @param author_id ID dell'autore
      * @param publisher_id ID dell'editore
+     * @param category_id ID della categoria
      * @param publishing_date Data di pubblicazione
      */
-    public Edition(int book_name_id, int author_id, int publisher_id, LocalDate publishing_date) {
+    public Edition(int book_name_id, int author_id, int publisher_id, int category_id, LocalDate publishing_date) {
         this.book_name_id = book_name_id;
         this.author_id = author_id;
         this.publisher_id = publisher_id;
+        this.category_id = category_id;
         this.publishing_date = publishing_date;
     }
 
@@ -92,6 +95,20 @@ public class Edition {
      */
     public void setPublisherId(int publisher_id) {
         this.publisher_id = publisher_id;
+    }
+
+    /**
+     * @return ID della categoria
+     */
+    public int getCategoryId() {
+        return category_id;
+    }
+
+    /**
+     * @param category_id ID della categoria
+     */
+    public void setCategoryId(int category_id) {
+        this.category_id = category_id;
     }
 
     /**

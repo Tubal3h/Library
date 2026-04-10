@@ -11,12 +11,16 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import it.dto.BookCatalogDto;
+
+import it.entity.BookView;
 import it.entity.Author;
 import it.entity.Book;
 import it.entity.BookName;
 import it.entity.Category;
 import it.entity.Edition;
 import it.entity.Publisher;
+
+
 import it.repository.AuthorRepository;
 import it.repository.BookNameRepository;
 import it.repository.BookRepository;
@@ -60,7 +64,9 @@ public class BookService {
      * 
      * @param userRole Il ruolo dell'utente ("role_admin" o "role_user")
      * @return Lista di BookCatalogDto contenente le informazioni condensate dei libri
+     * @deprecated 
      */
+    /** 
     public List<BookCatalogDto> getAllBooks(String userRole) {
         List<Book> books = bookRepository.getAllBooks();
         List<Edition> editions = editionRepository.getAllEditions();
@@ -91,7 +97,7 @@ public class BookService {
                 Edition edition = editionsById.get(book.getEditionId());
                 Author author = authorsById.get(edition.getAuthorId());
                 Publisher publisher = publishersById.get(edition.getPublisherId());
-                Category category = categoriesById.get(book.getCategoryId());
+                Category category = categoriesById.get(edition.getCategoryId());
                 BookName bookName = bookNamesById.get(edition.getBookNameId());
 
                 BookCatalogDto dto = new BookCatalogDto();
@@ -108,7 +114,28 @@ public class BookService {
             })
             .toList();
     }
+    */
 
+    public List<BookCatalogDto> getAllBooks(String userRole) {
+        List<BookView> repoBook = bookRepository.getAllBooks();
+        return repoBook.stream()
+            .filter(book -> !userRole.equals("role_user") ||
+                    "disponibilita".equalsIgnoreCase(book.getStatus()))
+            .map(book -> {
+                BookCatalogDto dto = new BookCatalogDto();
+                dto.setEditionId(book.getEditionId());
+                dto.setBookId(book.getBookId());
+                dto.setTitle(book.getBookName());
+                dto.setAuthorFullName(book.getAuthorFullName());
+                dto.setPublisherName(book.getPublisherName());
+                dto.setPublishingDate(book.getPublicationDate());
+                dto.setIsbnCode(book.getIsbnCode());
+                dto.setCategoryName(book.getCategoryName());
+                dto.setStatus(book.getStatus());
+                return dto;
+            })
+            .toList();
+    }
     /**
      * Recupera i dettagli di un singolo libro tramite ID.
      * 
@@ -122,19 +149,17 @@ public class BookService {
             .findFirst()
             .orElseThrow(() -> new RuntimeException("Book not found with ID: " + bookId));
 
-        var edition = editionRepository.getEditionById(book.getEditionId());
-
         BookCatalogDto dto = new BookCatalogDto();
         dto.setEditionId(book.getEditionId());
         dto.setBookId(book.getBookId());
-        dto.setTitle(bookRepository.getTitleByID(edition.getBookNameId()));
-        dto.setAuthorFullName(bookRepository.getAuthorFullNameByID(edition.getAuthorId()));
-        dto.setPublisherName(bookRepository.getPublisherNameByID(edition.getPublisherId()));
-        dto.setPublishingDate(edition.getPublishingDate());
-        dto.setIsbnCode(edition.getIsbn());
-        dto.setCategoryName(bookRepository.getCategoryNameByID(book.getCategoryId()));
+        dto.setTitle(book.getBookName());
+        dto.setAuthorFullName(book.getAuthorFullName());
+        dto.setPublisherName(book.getPublisherName());
+        dto.setPublishingDate(book.getPublicationDate());
+        dto.setIsbnCode(book.getIsbnCode());
+        dto.setCategoryName(book.getCategoryName());
         dto.setStatus(book.getStatus());
-
+        System.out.println("bookservice dto: " + dto);
         return dto;
     }
 
@@ -148,5 +173,7 @@ public class BookService {
         int books = bookRepository.countBooks();
         return books;
     }
+
+    
 }
 

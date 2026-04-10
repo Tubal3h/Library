@@ -10,7 +10,6 @@ package it.entity;
 public class Book {
     private int book_id;
     private int edition_id;
-    private int category_id;
     private String status;
 
     /**
@@ -28,7 +27,6 @@ public class Book {
      */
     public Book(int edition_id, int category_id, String status) {
         this.edition_id = edition_id;
-        this.category_id = category_id;
         this.status = status;
     }
 
@@ -61,20 +59,6 @@ public class Book {
     }
 
     /**
-     * @return ID della categoria
-     */
-    public int getCategoryId() {
-        return category_id;
-    }
-
-    /**
-     * @param category_id ID della categoria
-     */
-    public void setCategoryId(int category_id) {
-        this.category_id = category_id;
-    }
-
-    /**
      * @return Stato del libro (es. Disponibile, Noleggiato)
      */
     public String getStatus() {
@@ -90,7 +74,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Books [bookId=" + book_id + ", editionId=" + edition_id + ", categoryId=" + category_id + ", status=" + status + "]";
+        return "Books [bookId=" + book_id + ", editionId=" + edition_id + ", status=" + status + "]";
     }
 }
 

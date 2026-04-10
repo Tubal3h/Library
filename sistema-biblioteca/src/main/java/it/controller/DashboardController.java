@@ -100,6 +100,7 @@ public class DashboardController {
 
         if (("rents".equals(section) || "popup".equals(section)) && "role_user".equals(user.getUserRole())) {
             List<RentDto> rentedBooks = rentService.getRentedBooksByUserId(user.getUserId());
+            System.out.println("rentedBooks: " + rentedBooks);
             model.addAttribute("rentedBooks", rentedBooks);
         }
 
@@ -131,7 +132,7 @@ public class DashboardController {
         model.addAttribute("bookId", bookId);
         model.addAttribute("user", user);
 
-        RentalRecord rental = new RentalRecord();
+        RentDto rental = new RentDto();
         rental.setUserId(user.getUserId());
         rental.setBookId(Integer.parseInt(bookId));
         rentService.createRental(rental);
