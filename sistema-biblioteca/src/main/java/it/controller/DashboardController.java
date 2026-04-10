@@ -117,6 +117,8 @@ public class DashboardController {
     public String borrowBook(@RequestParam(value = "email", required = false) String email,
     @RequestParam(value = "bookId", required = false) String bookId,
     Model model) {
+        System.out.println("email: " + email);
+        System.out.println("bookId: " + bookId);
         if (email == null || email.isEmpty()) {
             return "redirect:/";
         }
@@ -129,16 +131,17 @@ public class DashboardController {
         if (bookId == null || bookId.isEmpty()) {
             return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog";
         }
+        System.out.println("bookId: " + bookId);
+        System.out.println("user: " + user);
         model.addAttribute("bookId", bookId);
         model.addAttribute("user", user);
 
         RentDto rental = new RentDto();
         rental.setUserId(user.getUserId());
         rental.setBookId(Integer.parseInt(bookId));
+        System.out.println("rental: " + rental);    
         rentService.createRental(rental);
 
-        
-        
 
         return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=rents";
     }

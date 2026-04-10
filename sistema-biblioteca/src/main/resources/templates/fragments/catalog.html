@@ -44,14 +44,14 @@
 
         <!-- Right Column: Action Section (110px) -->
         <div class="card-action-column p-5 flex flex-column justify-end align-end border-l">
-            <button th:if="role_user == 'role_admin'" class="btn-modern-action pointer transition shadow-soft">
+            <button th:if="${user.userRole == 'role_admin'}" class="btn-modern-action pointer transition shadow-soft">
                 <span>Restituisci</span>
                 <i class="fa-solid fa-pen-to-square"></i>
             </button>
-            <button th:if="role_user != 'role_admin'" th:href="@{/api/borrow(email=${user.userEmail}, bookId=${book.bookId})}" class="btn-modern-action pointer transition shadow-soft">
+            <a th:if="${user.userRole != 'role_admin'}" th:href="@{/api/borrow(email=${user.userEmail}, bookId=${book.bookId})}" class="btn-modern-action pointer transition shadow-soft" style="text-decoration: none;">
                 <span>Prenota</span>
                 <i class="fa-solid fa-pen-to-square"></i>
-            </button>
+            </a>
         </div>
     </div>
 </th:block>

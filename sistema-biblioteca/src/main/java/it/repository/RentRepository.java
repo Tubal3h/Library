@@ -35,14 +35,14 @@ public class RentRepository {
      */
     public List<RentalRecord> getAllRents() {
         String sql = """
-            SELECT r.rental_id,
-                   r.book_id,
-                   r.users_id,
-                   r.rental_date,
-                   r.rental_ended,
-                   r.rental_expired
-            FROM rental_record r
-            """;
+                SELECT r.rental_id,
+                       r.book_id,
+                       r.users_id,
+                       r.rental_date,
+                       r.rental_ended,
+                       r.rental_expired
+                FROM rental_record r
+                """;
 
         return jdbcTemplate.query(sql, (rs, rowNum) -> {
             RentalRecord record = new RentalRecord();
@@ -56,7 +56,6 @@ public class RentRepository {
         });
     }
 
-
     /**
      * Conta il numero totale di record di noleggio nel sistema.
      * 
@@ -69,10 +68,12 @@ public class RentRepository {
     }
 
     /**
-     * Conta il numero totale di record di noleggio nel sistema per un utente specifico.
+     * Conta il numero totale di record di noleggio nel sistema per un utente
+     * specifico.
      * 
      * @param userId ID dell'utente
-     * @return Il numero totale di record di noleggio nel sistema per un utente specifico
+     * @return Il numero totale di record di noleggio nel sistema per un utente
+     *         specifico
      */
 
     public int countRentsByUserId(int userId) {
@@ -88,8 +89,15 @@ public class RentRepository {
      */
 
     public RentalRecord createRental(RentalRecord rental) {
-        String sql = "INSERT INTO rental_records (user_id, book_id, rent_date, due_date, return_date) VALUES (?, ?, ?, ?, ?)";
-        jdbcTemplate.update(sql, rental.getUserId(), rental.getBookId(), rental.getRentalDate(), rental.getRentalExpired(), rental.getRentalEnded());
+        String sql = """
+            INSERT INTO 
+                rental_record 
+                (users_id, book_id, rental_date, rental_expired, rental_ended) 
+            VALUES 
+                (?, ?, ?, ?, ?)
+        """;
+        jdbcTemplate.update(sql, rental.getUserId(), rental.getBookId(), rental.getRentalDate(),
+                rental.getRentalExpired(), rental.getRentalEnded());
         return rental;
-    }   
+    }
 }
