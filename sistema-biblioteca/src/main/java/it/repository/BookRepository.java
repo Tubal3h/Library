@@ -9,8 +9,8 @@ import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import it.entity.Book;
-import it.entity.BookView;
+import it.entity.BookJoin;
+import it.mapper.BookJoinRowMapper;
 
 /**
  * Repository per la gestione dei dati dei libri nel database.
@@ -18,45 +18,19 @@ import it.entity.BookView;
 @Repository
 public class BookRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final BookJoinRowMapper bookJoinMapper;
 
     /**
      * Costruttore per BookRepository.
      * 
      * @param jdbcTemplate Il template JDBC per le operazioni sul database
      */
-    public BookRepository(JdbcTemplate jdbcTemplate) {
+    public BookRepository(JdbcTemplate jdbcTemplate, BookJoinRowMapper bookJoinMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.bookJoinMapper = bookJoinMapper;
     }
 
-    /**
-     * Recupera la lista di tutti i libri.
-     * 
-     * @return Lista di tutti i libri nel database
-     * @deprecated 
-     */
-    /** 
-    public List<Book> getAllBooks() {
-        String sql = "SELECT * FROM books";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Book book = new Book();
-            book.setBookId(rs.getInt("book_id"));
-            book.setEditionId(rs.getInt("edition_id"));
-            book.setStatus(rs.getString("status"));
-            return book;
-        });
-    }
-    */
 
-    /**
-     * Recupera il titolo di un libro tramite ID del nome.
-     * 
-     * @param titleId ID del titolo
-     * @return Titolo del libro corrispondente all'ID
-     */
-    public String getTitleByID(int titleId) {
-        String sql = "SELECT title FROM books_names WHERE book_name_id = ?";
-        return jdbcTemplate.queryForObject(sql, String.class, titleId);
-    }
 
     /**
      * Recupera il nome completo dell'autore tramite ID.
@@ -117,11 +91,11 @@ public class BookRepository {
      * Recupera la lista di tutti i libri con le informazioni complete.
      * 
      * @return Lista di tutti i libri nel sistema
-     * @see BookView
+     * @see BookJoin
      * JOIN version
      */
 
-    public List<BookView> getAllBooks() {
+    public List<BookJoin> getAllBooks() {
         String sql = """
                 SELECT 
                     e.edition_id,
@@ -140,19 +114,7 @@ public class BookRepository {
                 JOIN publisher p ON e.publisher_id = p.publisher_id
                 JOIN category c ON e.category_id = c.category_id
                 """;
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            BookView bookView = new BookView();
-            bookView.setEditionId(rs.getInt("edition_id"));
-            bookView.setBookId(rs.getInt("book_id"));
-            bookView.setBookName(rs.getString("title"));
-            bookView.setAuthorFullName(rs.getString("author_full_name"));
-            bookView.setPublisherName(rs.getString("publisher_name"));
-            bookView.setPublicationDate(rs.getDate("publishing_date").toLocalDate());
-            bookView.setCategoryName(rs.getString("category_name"));
-            bookView.setIsbnCode(rs.getString("isbn"));
-            bookView.setStatus(rs.getString("status"));
-            return bookView;
-        });
+        return jdbcTemplate.query(sql, bookJoinMapper);
     }
 
 }

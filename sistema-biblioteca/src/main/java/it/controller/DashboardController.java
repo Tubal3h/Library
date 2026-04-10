@@ -11,7 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import it.dto.BookCatalogDto;
+import it.dto.BookDto;
 import it.dto.RentDto;
 import it.dto.UserDto;
 
@@ -80,7 +80,7 @@ public class DashboardController {
 
         if("home".equals(section) && "role_admin".equals(user.getUserRole())) {
             int totalUsers = userService.getTotalUsers();
-            int totalBooks = bookService.getTotalBooks();
+            int totalBooks = bookService.getTotalCountBooks();
             int totalRents = rentService.getTotalRents();
 
             model.addAttribute("totalUsers", totalUsers);
@@ -94,7 +94,7 @@ public class DashboardController {
         }
 
         if ("catalog".equals(section)) {
-            List<BookCatalogDto> books = bookService.getAllBooks(user.getUserRole());
+            List<BookDto> books = bookService.getAllBooks(user.getUserRole());
             model.addAttribute("books", books);
         }
 

@@ -38,17 +38,7 @@ public class EditionRepository {
      */
     public List<Edition> getAllEditions() {
         String sql = "SELECT * FROM edition";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Edition edition = new Edition();
-            edition.setEditionId(rs.getInt("edition_id"));
-            edition.setBookNameId(rs.getInt("book_name_id"));
-            edition.setAuthorId(rs.getInt("author_id"));
-            edition.setPublisherId(rs.getInt("publisher_id"));
-            edition.setCategoryId(rs.getInt("category_id"));
-            edition.setPublishingDate(rs.getDate("publishing_date").toLocalDate());
-            edition.setIsbn(rs.getString("isbn"));
-            return edition;
-        });
+        return jdbcTemplate.query(sql, editionRowMapper);
     }
 
     /**

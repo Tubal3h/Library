@@ -10,13 +10,13 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import it.dto.BookCatalogDto;
+import it.entity.BookJoin;
 
 /**
  * Mapper per convertire i record del database in oggetti DTO BookCatalogDto.
  */
 @Component
-public class BookCatalogDtoMapper implements RowMapper<BookCatalogDto> {
+public class BookJoinRowMapper implements RowMapper<BookJoin> {
     
     /**
      * Mappa una riga del ResultSet in un oggetto BookCatalogDto.
@@ -27,17 +27,18 @@ public class BookCatalogDtoMapper implements RowMapper<BookCatalogDto> {
      * @throws SQLException in caso di errori con il database
      */
     @Override
-    public BookCatalogDto mapRow(ResultSet rs, int rowNum) throws SQLException {
-        BookCatalogDto dto = new BookCatalogDto();
-        dto.setBookId(rs.getInt("book_id"));
-        dto.setTitle(rs.getString("title"));
-        dto.setAuthorFullName(rs.getString("author_full_name"));
-        dto.setPublishingDate(rs.getDate("publishing_date").toLocalDate());
-        dto.setPublisherName(rs.getString("publisher_name"));
-        dto.setIsbnCode(rs.getString("isbn_code"));
-        dto.setCategoryName(rs.getString("category_name"));
-        dto.setStatus(rs.getString("status"));
-        return dto;
+    public BookJoin mapRow(ResultSet rs, int rowNum) throws SQLException {
+        BookJoin bookJoin = new BookJoin();
+        bookJoin.setEditionId(rs.getInt("edition_id"));
+        bookJoin.setBookId(rs.getInt("book_id"));
+        bookJoin.setBookName(rs.getString("title"));
+        bookJoin.setAuthorFullName(rs.getString("author_full_name"));
+        bookJoin.setPublisherName(rs.getString("publisher_name"));
+        bookJoin.setPublicationDate(rs.getDate("publishing_date").toLocalDate());
+        bookJoin.setCategoryName(rs.getString("category_name"));
+        bookJoin.setIsbnCode(rs.getString("isbn"));
+        bookJoin.setStatus(rs.getString("status"));
+        return bookJoin;
     }
 }
 

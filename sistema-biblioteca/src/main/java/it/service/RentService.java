@@ -11,14 +11,14 @@ import org.springframework.stereotype.Service;
 
 import it.dto.RentDto;
 import it.entity.RentalRecord;
-import it.repository.RentRepository;
+import it.repository.RentRecordRepository;
 
 /**
  * Servizio per la gestione dei prestiti dei libri.
  */
 @Service
 public class RentService {
-    private final RentRepository rentRepository;
+    private final RentRecordRepository rentRepository;
     private final BookService bookService;
 
     /**
@@ -27,7 +27,7 @@ public class RentService {
      * @param rentRepository Repository per i record di noleggio
      * @param bookService Servizio per la gestione dei libri
      */
-    public RentService(RentRepository rentRepository, BookService bookService) {
+    public RentService(RentRecordRepository rentRepository, BookService bookService) {
         this.rentRepository = rentRepository;
         this.bookService = bookService;
     }

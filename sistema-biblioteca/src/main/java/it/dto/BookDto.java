@@ -9,7 +9,7 @@ import java.time.LocalDate;
 /**
  * Data Transfer Object per la visualizzazione dei libri nel catalogo.
  */
-public class BookCatalogDto {
+public class BookDto {
     private int editionId;
     private int bookId;
     private String title;
@@ -23,13 +23,13 @@ public class BookCatalogDto {
     /**
      * Costruttore di default.
      */
-    public BookCatalogDto() {
+    public BookDto() {
     }
     
     /**
      * Costruttore con parametri.
      */
-    public BookCatalogDto(int editionId, int bookId, String title, String authorFullName, LocalDate publishingDate, String publisherName, String isbnCode, String categoryName, String status) {
+    public BookDto(int editionId, int bookId, String title, String authorFullName, LocalDate publishingDate, String publisherName, String isbnCode, String categoryName, String status) {
         this.editionId = editionId;
         this.bookId = bookId;
         this.title = title;

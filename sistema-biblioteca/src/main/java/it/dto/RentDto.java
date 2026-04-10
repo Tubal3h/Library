@@ -13,7 +13,7 @@ public class RentDto {
     private int rentId;
     private int userId;
     private int bookId;
-    private BookCatalogDto book;
+    private BookDto book;
     private LocalDate rentalDate;
     private LocalDate rentalExpired;
     private LocalDate rentalEnded;
@@ -63,14 +63,14 @@ public class RentDto {
     /**
      * @return DTO del libro associato al noleggio
      */
-    public BookCatalogDto getBook() {
+    public BookDto getBook() {
         return book;
     }
 
     /**
      * @param book DTO del libro associato al noleggio
      */
-    public void setBook(BookCatalogDto book) {
+    public void setBook(BookDto book) {
         this.book = book;
     }
     

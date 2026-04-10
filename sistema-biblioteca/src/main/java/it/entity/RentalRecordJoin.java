@@ -9,7 +9,7 @@ import java.time.LocalDate;
 /**
  * Entità che rappresenta un record di noleggio nel sistema.
  */
-public class RentalRecordView {
+public class RentalRecordJoin {
 
     private int rental_id;
     private int book_id;
@@ -27,7 +27,7 @@ public class RentalRecordView {
     /**
      * Costruttore di default.
      */
-    public RentalRecordView() {
+    public RentalRecordJoin() {
     }
 
     /**
@@ -40,7 +40,7 @@ public class RentalRecordView {
      * @param rental_expired Data di scadenza noleggio
      * @param rental_ended Data di fine noleggio
      */
-    public RentalRecordView(int rental_id, int user_id, int book_id, String book_name, String author_full_name, String publisher_name, LocalDate publication_date, String category_name, String isbn_code, LocalDate rental_date, LocalDate rental_expired, LocalDate rental_ended) {
+    public RentalRecordJoin(int rental_id, int user_id, int book_id, String book_name, String author_full_name, String publisher_name, LocalDate publication_date, String category_name, String isbn_code, LocalDate rental_date, LocalDate rental_expired, LocalDate rental_ended) {
         this.rental_id = rental_id;
         this.user_id = user_id;
         this.book_id = book_id;

@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import it.entity.Publisher;
+import it.mapper.PublisherRowMapper;
 
 /**
  * Repository per la gestione delle case editrici nel database.
@@ -17,14 +18,16 @@ import it.entity.Publisher;
 @Repository
 public class PublisherRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final PublisherRowMapper publisherRowMapper;
 
     /**
      * Costruttore per PublisherRepository.
      * 
      * @param jdbcTemplate Il template JDBC per le operazioni sul database
      */
-    public PublisherRepository(JdbcTemplate jdbcTemplate) {
+    public PublisherRepository(JdbcTemplate jdbcTemplate, PublisherRowMapper publisherRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.publisherRowMapper = publisherRowMapper;
     }
 
     /**
@@ -34,12 +37,7 @@ public class PublisherRepository {
      */
     public List<Publisher> getAllPublishers() {
         String sql = "SELECT * FROM publisher";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Publisher publisher = new Publisher();
-            publisher.setPublisherId(rs.getInt("publisher_id"));
-            publisher.setPublisherName(rs.getString("publisher_name"));
-            return publisher;
-        });
+        return jdbcTemplate.query(sql, publisherRowMapper);
     }
 }
 

@@ -4,10 +4,8 @@ package it.repository;
 /*                                 REPOSITORY                                 */
 /* -------------------------------------------------------------------------- */
 
-import it.entity.RentalRecord;
 import it.entity.User;
 import it.mapper.UserRowMapper;
-import java.time.LocalDate;
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

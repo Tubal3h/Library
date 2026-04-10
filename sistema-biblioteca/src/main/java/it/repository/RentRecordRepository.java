@@ -10,22 +10,24 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import it.entity.RentalRecord;
-import it.entity.RentalRecordView;
+import it.mapper.RentRecordRowMapper;
 
 /**
  * Repository per la gestione dei record di noleggio (prestiti) nel database.
  */
 @Repository
-public class RentRepository {
+public class RentRecordRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final RentRecordRowMapper rentRecordRowMapper;
 
     /**
      * Costruttore per RentRepository.
      * 
      * @param jdbcTemplate Il template JDBC per le operazioni sul database
      */
-    public RentRepository(JdbcTemplate jdbcTemplate) {
+    public RentRecordRepository(JdbcTemplate jdbcTemplate, RentRecordRowMapper rentRecordRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.rentRecordRowMapper = rentRecordRowMapper;
     }
 
     /**
@@ -44,16 +46,7 @@ public class RentRepository {
                 FROM rental_record r
                 """;
 
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            RentalRecord record = new RentalRecord();
-            record.setRentalId(rs.getInt("rental_id"));
-            record.setBookId(rs.getInt("book_id"));
-            record.setUserId(rs.getInt("users_id"));
-            record.setRentalDate(rs.getDate("rental_date").toLocalDate());
-            record.setRentalExpired(rs.getDate("rental_expired").toLocalDate());
-            record.setRentalEnded(rs.getDate("rental_ended") != null ? rs.getDate("rental_ended").toLocalDate() : null);
-            return record;
-        });
+        return jdbcTemplate.query(sql, rentRecordRowMapper);
     }
 
     /**

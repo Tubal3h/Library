@@ -2,7 +2,7 @@ package it.entity;
 
 import java.time.LocalDate;
 
-public class BookView {
+public class BookJoin {
     private int edition_id;
     private int book_id;
     private String book_name;
@@ -13,10 +13,10 @@ public class BookView {
     private String isbn_code;
     private String status;
 
-    public BookView() {
+    public BookJoin() {
     }
 
-    public BookView(int edition_id, int book_id, String book_name, String author_full_name, String publisher_name, LocalDate publication_date, String category_name, String isbn_code, String status) {
+    public BookJoin(int edition_id, int book_id, String book_name, String author_full_name, String publisher_name, LocalDate publication_date, String category_name, String isbn_code, String status) {
         this.edition_id = edition_id;
         this.book_id = book_id;
         this.book_name = book_name;

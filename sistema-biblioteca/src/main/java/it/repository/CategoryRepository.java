@@ -10,6 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import it.entity.Category;
+import it.mapper.CategoryRowMapper;
 
 /**
  * Repository per la gestione delle categorie dei libri nel database.
@@ -17,14 +18,16 @@ import it.entity.Category;
 @Repository
 public class CategoryRepository {
     private final JdbcTemplate jdbcTemplate;
+    private final CategoryRowMapper categoryRowMapper;
 
     /**
      * Costruttore per CategoryRepository.
      * 
      * @param jdbcTemplate Il template JDBC per le operazioni sul database
      */
-    public CategoryRepository(JdbcTemplate jdbcTemplate) {
+    public CategoryRepository(JdbcTemplate jdbcTemplate, CategoryRowMapper categoryRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
+        this.categoryRowMapper = categoryRowMapper;
     }
 
     /**
@@ -34,12 +37,7 @@ public class CategoryRepository {
      */
     public List<Category> getAllCategories() {
         String sql = "SELECT * FROM category";
-        return jdbcTemplate.query(sql, (rs, rowNum) -> {
-            Category category = new Category();
-            category.setCategoryId(rs.getInt("category_id"));
-            category.setCategoryName(rs.getString("category_name"));
-            return category;
-        });
+        return jdbcTemplate.query(sql, categoryRowMapper);
     }
 }
 

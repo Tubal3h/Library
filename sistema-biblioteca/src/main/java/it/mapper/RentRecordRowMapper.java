@@ -30,22 +30,14 @@ public class RentRecordRowMapper implements RowMapper<RentalRecord> {
      */
     @Override
     public RentalRecord mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Date rentalDateSql = rs.getDate("rent_date");
-        Date rentalExpiredSql = rs.getDate("expire_date");
-        Date rentalEndedSql = rs.getDate("return_date");
-
-        LocalDate rentalDate = rentalDateSql != null ? rentalDateSql.toLocalDate() : null;
-        LocalDate rentalExpired = rentalExpiredSql != null ? rentalExpiredSql.toLocalDate() : null;
-        LocalDate rentalEnded = rentalEndedSql != null ? rentalEndedSql.toLocalDate() : null;
-
-        return new RentalRecord(
-            rs.getInt("rent_id"),
-            rs.getInt("user_id"),
-            rs.getInt("book_id"),
-            rentalDate,
-            rentalExpired,
-            rentalEnded
-        );
+        RentalRecord rentalRecord = new RentalRecord();
+        rentalRecord.setRentalId(rs.getInt("rental_id"));
+        rentalRecord.setBookId(rs.getInt("book_id"));
+        rentalRecord.setUserId(rs.getInt("users_id"));
+        rentalRecord.setRentalDate(rs.getDate("rental_date").toLocalDate());
+        rentalRecord.setRentalExpired(rs.getDate("rental_expired").toLocalDate());
+        rentalRecord.setRentalEnded(rs.getDate("rental_ended") != null ? rs.getDate("rental_ended").toLocalDate() : null);
+        return rentalRecord;
     }
 }
-
+
