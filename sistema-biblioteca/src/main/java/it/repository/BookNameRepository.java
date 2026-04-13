@@ -17,13 +17,15 @@ import it.mapper.BookNameRowMapper;
  */
 @Repository
 public class BookNameRepository {
+
     private final JdbcTemplate jdbcTemplate;
     private final BookNameRowMapper bookNameRowMapper;
 
     /**
      * Costruttore per BookNameRepository.
-     * 
-     * @param jdbcTemplate Il template JDBC per le operazioni sul database
+     *
+     * @param jdbcTemplate      Il template JDBC per le operazioni sul database
+     * @param bookNameRowMapper Mapper per convertire i record del database in oggetti BookName
      */
     public BookNameRepository(JdbcTemplate jdbcTemplate, BookNameRowMapper bookNameRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
@@ -32,7 +34,7 @@ public class BookNameRepository {
 
     /**
      * Recupera la lista di tutti i titoli dei libri.
-     * 
+     *
      * @return Lista di tutti i titoli dei libri presenti nel database
      */
     public List<BookName> getAllBookNames() {
@@ -40,9 +42,9 @@ public class BookNameRepository {
         return jdbcTemplate.query(sql, bookNameRowMapper);
     }
 
-        /**
-     * Recupera il titolo di un libro tramite ID del nome.
-     * 
+    /**
+     * Recupera il titolo di un libro tramite il suo ID.
+     *
      * @param titleId ID del titolo
      * @return Titolo del libro corrispondente all'ID
      */
@@ -51,5 +53,3 @@ public class BookNameRepository {
         return jdbcTemplate.queryForObject(sql, String.class, titleId);
     }
 }
-
-

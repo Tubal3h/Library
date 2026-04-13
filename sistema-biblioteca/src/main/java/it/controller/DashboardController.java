@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import it.dto.BookDto;
 import it.dto.RentDto;
 import it.dto.UserDto;
-
 import it.service.BookService;
 import it.service.RentService;
 import it.service.UserService;
@@ -25,14 +24,14 @@ import it.service.UserService;
  */
 @Controller
 public class DashboardController {
-    
+
     private final UserService userService;
     private final BookService bookService;
     private final RentService rentService;
 
     /**
      * Costruttore per DashboardController.
-     * 
+     *
      * @param userService Servizio per la gestione degli utenti
      * @param bookService Servizio per la gestione dei libri
      * @param rentService Servizio per la gestione dei noleggi
@@ -45,11 +44,12 @@ public class DashboardController {
 
     /**
      * Gestisce la visualizzazione della dashboard e delle sue sezioni.
-     * 
-     * @param email Email dell'utente loggato
-     * @param section Sezione della dashboard da visualizzare
-     * @param model il modello per la vista
-     * @return Nome della vista della dashboard o redirect alla home se l'email manca o l'utente non esiste
+     * In base al ruolo dell'utente e alla sezione richiesta, carica i dati appropriati nel modello.
+     *
+     * @param email   Email dell'utente loggato
+     * @param section Sezione della dashboard da visualizzare (home, users, catalog, rents)
+     * @param model   il modello per la vista
+     * @return Nome della vista della dashboard, o redirect alla home se l'email manca o l'utente non esiste
      */
     @GetMapping("/dashboard")
     public String dashboard(
@@ -69,142 +69,39 @@ public class DashboardController {
 
         model.addAttribute("user", user);
         model.addAttribute("section", section);
+
         try {
-            if ("home".equals(section) && "role_user".equals(user.getUserRole())) {
-                int totalRents = rentService.getTotalRentsByUserId(user.getUserId());
-
-                model.addAttribute("totalRents", totalRents);
-            }
-
-            if("home".equals(section) && "role_admin".equals(user.getUserRole())) {
-                int totalUsers = userService.getTotalUsers();
-                int totalBooks = bookService.getTotalCountBooks();
-                int totalRents = rentService.getTotalRents();
-
-                model.addAttribute("totalUsers", totalUsers);
-                model.addAttribute("totalBooks", totalBooks);
-                model.addAttribute("totalRents", totalRents);
+            if ("home".equals(section)) {
+                if ("role_user".equals(user.getUserRole())) {
+                    model.addAttribute("totalRents", rentService.getTotalRentsByUserId(user.getUserId()));
+                } else if ("role_admin".equals(user.getUserRole())) {
+                    model.addAttribute("totalUsers", userService.getTotalUsers());
+                    model.addAttribute("totalBooks", bookService.getTotalCountBooks());
+                    model.addAttribute("totalRents", rentService.getTotalRents());
+                }
             }
 
             if ("users".equals(section) && "role_admin".equals(user.getUserRole())) {
-                List<UserDto> users = userService.getAllUsers();
-                model.addAttribute("users", users);
+                model.addAttribute("users", userService.getAllUsers());
             }
 
             if ("catalog".equals(section)) {
-                List<BookDto> books = bookService.getAllBooks(user.getUserRole());
-                model.addAttribute("books", books);
+                model.addAttribute("books", bookService.getAllBooks(user.getUserRole()));
             }
 
-            if (("rents".equals(section) || "popup".equals(section)) && "role_user".equals(user.getUserRole())) {
-                List<RentDto> rentedBooks = rentService.getRentedBooksByUserId(user.getUserId());
-                System.out.println("rentedBooks: " + rentedBooks);
+            if ("rents".equals(section)) {
+                List<RentDto> rentedBooks = "role_admin".equals(user.getUserRole())
+                        ? rentService.getRentedAllRents()
+                        : rentService.getRentedBooksByUserId(user.getUserId());
                 model.addAttribute("rentedBooks", rentedBooks);
             }
 
-            if (("rents".equals(section) || "popup".equals(section)) && "role_admin".equals(user.getUserRole())) {
-                List<RentDto> rentedBooks = rentService.getRentedAllRents();
-                System.out.println("rentedBooks: " + rentedBooks);
-                model.addAttribute("rentedBooks", rentedBooks);
-            }
-
-            
         } catch (Exception e) {
             System.out.println("Errore di caricamento db: " + e.getMessage());
             model.addAttribute("errorMessage", "Servizio momentaneamente non disponibile.");
-            return "redirect:/?error=service_unavailable"; 
+            return "redirect:/?error=service_unavailable";
         }
-
 
         return "dashboard";
-    }   
-        
-    /**
-     * Endpoint API placeholder per il recupero di dettagli (non ancora implementato).
-     * 
-     * @param email Parametro opzionale per l'email
-     * @return Una stringa vuota
-     */
-    @GetMapping("/api/borrow")
-    public String borrowBook(@RequestParam(value = "email", required = false) String email,
-    @RequestParam(value = "bookId", required = false) String bookId,
-    Model model) {
-        System.out.println("email: " + email);
-        System.out.println("bookId: " + bookId);
-        if (email == null || email.isEmpty()) {
-            return "redirect:/";
-        }
-
-        UserDto user = userService.getUserByEmail(email);
-
-        if (user == null) {
-            return "redirect:/";
-        }
-        if (bookId == null || bookId.isEmpty()) {
-            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog";
-        }
-        System.out.println("bookId: " + bookId);
-        System.out.println("user: " + user);
-        model.addAttribute("bookId", bookId);
-        model.addAttribute("user", user);
-
-        RentDto rental = new RentDto();
-        try {
-            rentService.createRental(rental);
-        } catch (NumberFormatException e) {
-            System.out.println("Errore: bookId non valido - " + bookId);
-            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog&error=invalid_id";
-        } catch (Exception e) {
-            System.out.println("Errore: impossibile noleggiare il libro - " + bookId);
-            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog&error=rental_failed";
-        }
-
-        return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=rents";
     }
-
-    /**
-     * 
-     * 
-     * 
-     * 
-     */
-
-    @GetMapping("/api/delivered")
-    public String deliveredBook(@RequestParam(value = "email", required = false) String email,
-    @RequestParam(value = "bookID", required = false) String bookID,
-    @RequestParam(value = "rentID", required = false) String rentID,
-    Model model) {
-        System.out.println("bookId: " + bookID);
-        if (email == null || email.isEmpty()) {
-            return "redirect:/";
-        }
-
-        UserDto user = userService.getUserByEmail(email);
-
-        if (user == null) {
-            return "redirect:/";
-        }
-        if (bookID == null || bookID.isEmpty()) {
-            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog";
-        }
-        System.out.println(bookID +" " + rentID);
-        try {
-
-            
-            rentService.updateStatus(Integer.parseInt(bookID),Integer.parseInt(rentID));
-
-        } catch (NumberFormatException e) {
-            System.out.println("Errore: bookId non valido - " + bookID);
-            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=404";
-        } catch (Exception e) {
-            System.out.println("Errore: impossibile noleggiare il libro - " + bookID);
-            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=404";
-        }
-
-        return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=rents";
-    }
-
-
 }
-
-

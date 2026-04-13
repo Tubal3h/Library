@@ -1,12 +1,10 @@
 package it.repository;
 
-import java.time.LocalDate;
-import java.util.Date;
-
 /* -------------------------------------------------------------------------- */
 /*                                 REPOSITORY                                 */
 /* -------------------------------------------------------------------------- */
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -20,13 +18,15 @@ import it.mapper.RentRecordRowMapper;
  */
 @Repository
 public class RentRecordRepository {
+
     private final JdbcTemplate jdbcTemplate;
     private final RentRecordRowMapper rentRecordRowMapper;
 
     /**
-     * Costruttore per RentRepository.
-     * 
-     * @param jdbcTemplate Il template JDBC per le operazioni sul database
+     * Costruttore per RentRecordRepository.
+     *
+     * @param jdbcTemplate        Il template JDBC per le operazioni sul database
+     * @param rentRecordRowMapper Mapper per convertire i record del database in oggetti RentalRecord
      */
     public RentRecordRepository(JdbcTemplate jdbcTemplate, RentRecordRowMapper rentRecordRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
@@ -35,7 +35,7 @@ public class RentRecordRepository {
 
     /**
      * Recupera la lista di tutti i record di noleggio presenti nel database.
-     * 
+     *
      * @return Lista di tutti i record di noleggio
      */
     public List<RentalRecord> getAllRents() {
@@ -48,48 +48,41 @@ public class RentRecordRepository {
                        r.rental_expired
                 FROM rental_record r
                 """;
-
         return jdbcTemplate.query(sql, rentRecordRowMapper);
     }
 
     /**
-     * Conta il numero totale di record di noleggio nel sistema.
-     * 
-     * @return Il numero totale di record di noleggio nel sistema
+     * Conta il numero totale di noleggi attivi (non ancora conclusi) nel sistema.
+     *
+     * @return Numero di noleggi con {@code rental_ended} nullo
      */
-
     public int countRents() {
         String sql = "SELECT COUNT(*) FROM rental_record where rental_ended is null";
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
     /**
-     * Conta il numero totale di record di noleggio nel sistema per un utente
-     * specifico.
-     * 
+     * Conta il numero di noleggi attivi per un utente specifico.
+     *
      * @param userId ID dell'utente
-     * @return Il numero totale di record di noleggio nel sistema per un utente
-     *         specifico
+     * @return Numero di noleggi attivi dell'utente specificato
      */
-
     public int countRentsByUserId(int userId) {
         String sql = "SELECT COUNT(*) FROM rental_record where users_id = ? and rental_ended is null";
         return jdbcTemplate.queryForObject(sql, Integer.class, userId);
     }
 
     /**
-     * Crea un nuovo record di noleggio nel database.
-     * 
-     * @param rental Record di noleggio da creare
-     * @return Il record di noleggio creato
+     * Crea un nuovo record di noleggio nel database e aggiorna lo stato del libro.
+     *
+     * @param rental Entità {@link RentalRecord} contenente i dati del noleggio da inserire
      */
-
     public void createRental(RentalRecord rental) {
         String sql = """
-            INSERT INTO 
-                rental_record 
-                (users_id, book_id, rental_date, rental_expired, rental_ended) 
-            VALUES 
+            INSERT INTO
+                rental_record
+                (users_id, book_id, rental_date, rental_expired, rental_ended)
+            VALUES
                 (?, ?, ?, ?, ?)
         """;
         updateRentalStatus(rental.getBookId());
@@ -97,25 +90,22 @@ public class RentRecordRepository {
                 rental.getRentalExpired(), rental.getRentalEnded());
     }
 
-        /**
-     * 
-     * 
-     * 
-     * 
+    /**
+     * Chiude un noleggio attivo registrando la data di restituzione e aggiornando lo stato del libro.
+     *
+     * @param bookId ID del libro restituito
+     * @param rentId ID del record di noleggio da chiudere
      */
-
-    public void endRental(int bookId,int rentId) {
+    public void endRental(int bookId, int rentId) {
         updateRentalEnded(rentId);
         updateRentalStatus(bookId);
     }
 
-        /**
-     * 
-     * 
-     * 
-     * 
+    /**
+     * Aggiorna lo stato del libro alternandolo tra "disponibilita" e "in prestito".
+     *
+     * @param bookId ID del libro di cui aggiornare lo stato
      */
-
     private void updateRentalStatus(int bookId) {
         String sql = """
                 UPDATE books
@@ -128,13 +118,11 @@ public class RentRecordRepository {
         jdbcTemplate.update(sql, bookId);
     }
 
-        /**
-     * 
-     * 
-     * 
-     * 
+    /**
+     * Registra la data di restituzione effettiva per il noleggio specificato.
+     *
+     * @param rentId ID del record di noleggio da aggiornare
      */
-
     private void updateRentalEnded(int rentId) {
         LocalDate date = LocalDate.now();
         String sql = """
