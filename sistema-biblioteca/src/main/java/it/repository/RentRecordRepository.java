@@ -1,5 +1,8 @@
 package it.repository;
 
+import java.time.LocalDate;
+import java.util.Date;
+
 /* -------------------------------------------------------------------------- */
 /*                                 REPOSITORY                                 */
 /* -------------------------------------------------------------------------- */
@@ -81,7 +84,7 @@ public class RentRecordRepository {
      * @return Il record di noleggio creato
      */
 
-    public RentalRecord createRental(RentalRecord rental) {
+    public void createRental(RentalRecord rental) {
         String sql = """
             INSERT INTO 
                 rental_record 
@@ -89,8 +92,56 @@ public class RentRecordRepository {
             VALUES 
                 (?, ?, ?, ?, ?)
         """;
+        updateRentalStatus(rental.getBookId());
         jdbcTemplate.update(sql, rental.getUserId(), rental.getBookId(), rental.getRentalDate(),
                 rental.getRentalExpired(), rental.getRentalEnded());
-        return rental;
+    }
+
+        /**
+     * 
+     * 
+     * 
+     * 
+     */
+
+    public void endRental(int bookId,int rentId) {
+        updateRentalEnded(rentId);
+        updateRentalStatus(bookId);
+    }
+
+        /**
+     * 
+     * 
+     * 
+     * 
+     */
+
+    private void updateRentalStatus(int bookId) {
+        String sql = """
+                UPDATE books
+                SET status = CASE
+                    WHEN status = 'disponibilita' THEN 'in prestito'
+                    WHEN status = 'in prestito' THEN 'disponibilita'
+                END
+                WHERE book_id = ?
+                """;
+        jdbcTemplate.update(sql, bookId);
+    }
+
+        /**
+     * 
+     * 
+     * 
+     * 
+     */
+
+    private void updateRentalEnded(int rentId) {
+        LocalDate date = LocalDate.now();
+        String sql = """
+                UPDATE rental_record
+                SET rental_ended = ?
+                WHERE rental_id = ?
+                """;
+        jdbcTemplate.update(sql, date, rentId);
     }
 }

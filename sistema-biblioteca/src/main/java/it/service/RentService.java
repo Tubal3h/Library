@@ -46,6 +46,19 @@ public class RentService {
             .toList();
     }
 
+        /**
+     * Recupera i prestiti attivi di un utente specifico.
+     * 
+     * @param userId ID dell'utente
+     * @return Lista di DTO rappresentanti i prestiti attivi
+     */
+    public List<RentDto> getRentedAllRents() {
+        return rentRepository.getAllRents().stream()
+            .filter(rent -> rent.getRentalEnded() == null)
+            .map(this::toRentDto)
+            .toList();
+    }
+
     /**
      * Converte un'entità RentalRecordView in un DTO RentDto.
      * 
@@ -93,6 +106,13 @@ public class RentService {
         return rents;
     }
 
+        /**
+     * 
+     * 
+     * 
+     * 
+     */
+
     public void createRental(RentDto rentDto) {
         try {
             RentalRecord rental = new RentalRecord();
@@ -106,6 +126,17 @@ public class RentService {
             System.out.println("Eccezione nella repository: " + e.getMessage());
             throw new RuntimeException("Impossibile creare il noleggio in questo momento.");
         }
+    }
+
+        /**
+     * 
+     * 
+     * 
+     * 
+     */
+
+    public void updateStatus(int bookId, int rentId) {
+        rentRepository.endRental(bookId,rentId);
     }
 }
 

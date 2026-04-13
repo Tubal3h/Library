@@ -101,6 +101,14 @@ public class DashboardController {
                 System.out.println("rentedBooks: " + rentedBooks);
                 model.addAttribute("rentedBooks", rentedBooks);
             }
+
+            if (("rents".equals(section) || "popup".equals(section)) && "role_admin".equals(user.getUserRole())) {
+                List<RentDto> rentedBooks = rentService.getRentedAllRents();
+                System.out.println("rentedBooks: " + rentedBooks);
+                model.addAttribute("rentedBooks", rentedBooks);
+            }
+
+            
         } catch (Exception e) {
             System.out.println("Errore di caricamento db: " + e.getMessage());
             model.addAttribute("errorMessage", "Servizio momentaneamente non disponibile.");
@@ -141,9 +149,7 @@ public class DashboardController {
         model.addAttribute("user", user);
 
         RentDto rental = new RentDto();
-        rental.setUserId(user.getUserId());
         try {
-            rental.setBookId(Integer.parseInt(bookId)); 
             rentService.createRental(rental);
         } catch (NumberFormatException e) {
             System.out.println("Errore: bookId non valido - " + bookId);
@@ -153,12 +159,52 @@ public class DashboardController {
             return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog&error=rental_failed";
         }
 
-        
-        
+        return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=rents";
+    }
 
+    /**
+     * 
+     * 
+     * 
+     * 
+     */
+
+    @GetMapping("/api/delivered")
+    public String deliveredBook(@RequestParam(value = "email", required = false) String email,
+    @RequestParam(value = "bookID", required = false) String bookID,
+    @RequestParam(value = "rentID", required = false) String rentID,
+    Model model) {
+        System.out.println("bookId: " + bookID);
+        if (email == null || email.isEmpty()) {
+            return "redirect:/";
+        }
+
+        UserDto user = userService.getUserByEmail(email);
+
+        if (user == null) {
+            return "redirect:/";
+        }
+        if (bookID == null || bookID.isEmpty()) {
+            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog";
+        }
+        System.out.println(bookID +" " + rentID);
+        try {
+
+            
+            rentService.updateStatus(Integer.parseInt(bookID),Integer.parseInt(rentID));
+
+        } catch (NumberFormatException e) {
+            System.out.println("Errore: bookId non valido - " + bookID);
+            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=404";
+        } catch (Exception e) {
+            System.out.println("Errore: impossibile noleggiare il libro - " + bookID);
+            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=404";
+        }
 
         return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=rents";
     }
+
+
 }
 
 

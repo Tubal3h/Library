@@ -42,6 +42,14 @@
                 <i class="fa-solid fa-users"></i>
                 <span class="fw-600">Utenti</span>
             </a>
+
+            <a th:if="${user.userRole == 'role_admin'}" 
+               th:href="@{/dashboard(email=${user.userEmail}, section='rents')}" 
+               class="sidebar-link flex align-center gap-2 p-2 radius-12"
+               th:classappend="${section == 'rents' ? 'active' : ''}">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span class="fw-600">Prestiti</span>
+            </a>
         </div>
     </div>
 
