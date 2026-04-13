@@ -7,7 +7,7 @@
     
 
 <main class="dashboard-wrapper flex flex-column gap-3 w-100 h-100">
-    <!-- Top Header -->
+    <!-- Header -->
     <header class="dashboard-header flex justify-between align-center mb-2 animate-fade-in-up opacity-0">
         <div class="greeting">
             <h1 class="fw-700">Ciao, <span th:text="${user.userName}">User</span>!</h1>
@@ -35,10 +35,10 @@
         </div>
     </header>
 
-    <!-- Content Grid -->
+    <!-- Sezione Home per admin-->
     <div th:if="${section == 'home' && user.userRole == 'role_admin'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
         
-        <!-- Card 1: Total Users -->
+        <!-- Card 1: Users totali -->
         <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
             <div class="flex justify-between align-center mb-2">
                 <span class="opacity-70 font-size-small uppercase fw-700">Utenti Registrati</span>
@@ -50,7 +50,7 @@
             </div>
         </div>
 
-        <!-- Card 2: Total Books -->
+        <!-- Card 2: Books totali -->
         <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
             <div class="flex justify-between align-center mb-2">
                 <span class="opacity-70 font-size-small uppercase fw-700">Totale Libri</span>
@@ -62,7 +62,7 @@
             </div>
         </div>
 
-        <!-- Card 3: Available Books -->
+        <!-- Card 3: Books disponibili -->
         <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
             <div class="flex justify-between align-center mb-2">
                 <span class="opacity-70 font-size-small uppercase fw-700">Libri Disponibili</span>
@@ -74,7 +74,7 @@
             </div>
         </div>
 
-        <!-- Card 4: Borrowed Books -->
+        <!-- Card 4: Books prenotati/prestati -->
         <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
             <div class="flex justify-between align-center mb-2">
                 <span class="opacity-70 font-size-small uppercase fw-700">Libri Prestati</span>
@@ -88,6 +88,7 @@
 
     </div>
 
+    <!-- Sezione Home per user-->
     <div th:if="${section == 'home' && user.userRole == 'role_user'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
         
         <!-- Card 1: Borrowed Books -->
@@ -104,16 +105,19 @@
 
     </div>
 
+    <!-- Sezione catalogo libri -->
     <div th:if="${section == 'catalog'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
         <div th:replace="~{fragments/catalog :: catalog}" class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
             
         </div>
     </div>
+    <!-- Sezione lista utenti per admin-->
     <div th:if="${section == 'users'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
         <div th:replace="~{fragments/users :: users}"
             class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
         </div>
     </div>
+    <!-- Sezione lista prestiti -->
     <div th:if="${section == 'rents'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
         <div th:replace="~{fragments/rents :: rents}"
             class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
