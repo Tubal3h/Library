@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import it.dto.BookDto;
 import it.dto.RentDto;
 import it.dto.UserDto;
 import it.service.BookService;

@@ -9,9 +9,10 @@ import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
 
+import it.dto.BookDto;
 import it.dto.RentDto;
 import it.entity.RentalRecord;
-import it.exception.BookNotFoundException;
+import it.entity.RentalRecordJoin;
 import it.repository.RentRecordRepository;
 
 /**
@@ -22,62 +23,63 @@ import it.repository.RentRecordRepository;
 public class RentService {
 
     private final RentRecordRepository rentRepository;
-    private final BookService bookService;
 
     /**
      * Costruttore per RentService.
      *
      * @param rentRepository Repository per i record di noleggio
-     * @param bookService    Servizio per la gestione dei libri
      */
-    public RentService(RentRecordRepository rentRepository, BookService bookService) {
+    public RentService(RentRecordRepository rentRepository) {
         this.rentRepository = rentRepository;
-        this.bookService = bookService;
     }
 
     /**
      * Recupera i prestiti attivi di un utente specifico.
+     * Esegue una singola query con JOIN per evitare il problema N+1.
      *
      * @param userId ID dell'utente
      * @return Lista di {@link RentDto} rappresentanti i prestiti attivi dell'utente
      */
     public List<RentDto> getRentedBooksByUserId(int userId) {
-        return rentRepository.getAllRents().stream()
-            .filter(rent -> rent.getUserId() == userId && rent.getRentalEnded() == null)
+        return rentRepository.getActiveRentsByUserId(userId).stream()
             .map(this::toRentDto)
             .toList();
     }
 
     /**
      * Recupera tutti i prestiti attivi nel sistema (per uso amministrativo).
+     * Esegue una singola query con JOIN per evitare il problema N+1.
      *
      * @return Lista di {@link RentDto} rappresentanti tutti i noleggi non ancora conclusi
      */
     public List<RentDto> getRentedAllRents() {
-        return rentRepository.getAllRents().stream()
-            .filter(rent -> rent.getRentalEnded() == null)
+        return rentRepository.getActiveRents().stream()
             .map(this::toRentDto)
             .toList();
     }
 
     /**
-     * Converte un'entità {@link RentalRecord} in un DTO {@link RentDto},
-     * arricchendola con le informazioni del libro associato.
+     * Converte un'entità {@link RentalRecordJoin} in un DTO {@link RentDto}.
+     * Tutti i dati del libro sono già inclusi nell'entità senza ulteriori query.
      *
-     * @param rent Record di noleggio da convertire
+     * @param rent Record di noleggio aggregato da convertire
      * @return DTO convertito con i dati del libro inclusi
-     * @throws BookNotFoundException se il libro associato al noleggio non viene trovato
      */
-    private RentDto toRentDto(RentalRecord rent) {
+    private RentDto toRentDto(RentalRecordJoin rent) {
+        BookDto book = new BookDto();
+        book.setBookId(rent.getBookId());
+        book.setTitle(rent.getBookName());
+        book.setAuthorFullName(rent.getAuthorFullName());
+        book.setPublisherName(rent.getPublisherName());
+        book.setPublishingDate(rent.getPublicationDate());
+        book.setCategoryName(rent.getCategoryName());
+        book.setIsbnCode(rent.getIsbnCode());
+
         RentDto dto = new RentDto();
         dto.setRentId(rent.getRentalId());
         dto.setUserId(rent.getUserId());
         dto.setBookId(rent.getBookId());
-        try {
-            dto.setBook(bookService.getBookById(rent.getBookId()));
-        } catch (BookNotFoundException e) {
-            throw new BookNotFoundException("Libro non trovato con l'ID: " + rent.getBookId());
-        }
+        dto.setBook(book);
         dto.setRentalDate(rent.getRentalDate());
         dto.setRentalExpired(rent.getRentalExpired());
         dto.setRentalEnded(rent.getRentalEnded());

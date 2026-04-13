@@ -11,7 +11,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import it.entity.RentalRecord;
+import it.entity.RentalRecordJoin;
 import it.mapper.RentRecordRowMapper;
+import it.mapper.RentalRecordJoinRowMapper;
 
 /**
  * Repository per la gestione dei record di noleggio (prestiti) nel database.
@@ -21,16 +23,20 @@ public class RentRecordRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final RentRecordRowMapper rentRecordRowMapper;
+    private final RentalRecordJoinRowMapper rentalRecordJoinRowMapper;
 
     /**
      * Costruttore per RentRecordRepository.
      *
-     * @param jdbcTemplate        Il template JDBC per le operazioni sul database
-     * @param rentRecordRowMapper Mapper per convertire i record del database in oggetti RentalRecord
+     * @param jdbcTemplate             Il template JDBC per le operazioni sul database
+     * @param rentRecordRowMapper      Mapper per convertire i record del database in oggetti RentalRecord
+     * @param rentalRecordJoinRowMapper Mapper per le query aggregate con JOIN su libri ed edizioni
      */
-    public RentRecordRepository(JdbcTemplate jdbcTemplate, RentRecordRowMapper rentRecordRowMapper) {
+    public RentRecordRepository(JdbcTemplate jdbcTemplate, RentRecordRowMapper rentRecordRowMapper,
+            RentalRecordJoinRowMapper rentalRecordJoinRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.rentRecordRowMapper = rentRecordRowMapper;
+        this.rentalRecordJoinRowMapper = rentalRecordJoinRowMapper;
     }
 
     /**
@@ -70,6 +76,66 @@ public class RentRecordRepository {
     public int countRentsByUserId(int userId) {
         String sql = "SELECT COUNT(*) FROM rental_record where users_id = ? and rental_ended is null";
         return jdbcTemplate.queryForObject(sql, Integer.class, userId);
+    }
+
+    /**
+     * Recupera tutti i noleggi attivi con i dati completi del libro in una singola query.
+     * Risolve il problema N+1 eseguendo un JOIN direttamente nel database.
+     *
+     * @return Lista di {@link RentalRecordJoin} con i dati del noleggio e del libro associato
+     */
+    public List<RentalRecordJoin> getActiveRents() {
+        String sql = """
+                SELECT
+                    r.rental_id, r.users_id, r.book_id,
+                    r.rental_date, r.rental_expired, r.rental_ended,
+                    bn.title,
+                    CONCAT(a.author_name, ' ', a.author_last_name) AS author_full_name,
+                    p.publisher_name,
+                    e.publishing_date,
+                    c.category_name,
+                    e.isbn
+                FROM rental_record r
+                JOIN books b        ON r.book_id       = b.book_id
+                JOIN edition e      ON b.edition_id    = e.edition_id
+                JOIN books_names bn ON e.book_name_id  = bn.book_name_id
+                JOIN author a       ON e.author_id     = a.author_id
+                JOIN publisher p    ON e.publisher_id  = p.publisher_id
+                JOIN category c     ON e.category_id   = c.category_id
+                WHERE r.rental_ended IS NULL
+                """;
+        return jdbcTemplate.query(sql, rentalRecordJoinRowMapper);
+    }
+
+    /**
+     * Recupera i noleggi attivi di un utente specifico con i dati completi del libro in una singola query.
+     * Risolve il problema N+1 eseguendo un JOIN direttamente nel database.
+     *
+     * @param userId ID dell'utente
+     * @return Lista di {@link RentalRecordJoin} con i dati del noleggio e del libro associato
+     */
+    public List<RentalRecordJoin> getActiveRentsByUserId(int userId) {
+        String sql = """
+                SELECT
+                    r.rental_id, r.users_id, r.book_id,
+                    r.rental_date, r.rental_expired, r.rental_ended,
+                    bn.title,
+                    CONCAT(a.author_name, ' ', a.author_last_name) AS author_full_name,
+                    p.publisher_name,
+                    e.publishing_date,
+                    c.category_name,
+                    e.isbn
+                FROM rental_record r
+                JOIN books b        ON r.book_id       = b.book_id
+                JOIN edition e      ON b.edition_id    = e.edition_id
+                JOIN books_names bn ON e.book_name_id  = bn.book_name_id
+                JOIN author a       ON e.author_id     = a.author_id
+                JOIN publisher p    ON e.publisher_id  = p.publisher_id
+                JOIN category c     ON e.category_id   = c.category_id
+                WHERE r.rental_ended IS NULL
+                  AND r.users_id = ?
+                """;
+        return jdbcTemplate.query(sql, rentalRecordJoinRowMapper, userId);
     }
 
     /**

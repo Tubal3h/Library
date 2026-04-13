@@ -4,10 +4,8 @@ package it.mapper;
 /*                                   MAPPER                                   */
 /* -------------------------------------------------------------------------- */
 
-import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
