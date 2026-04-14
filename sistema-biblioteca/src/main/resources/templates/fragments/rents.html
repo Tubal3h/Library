@@ -5,11 +5,10 @@
          th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
 
         <!-- Left Column: Information (75%) -->
-        <div class="card-info-main p-2 flex flex-row">
-            <!-- Header: Category & Status Badge -->
+        <div class="card-info-main p-1 flex justify-between">
 
             <div>
-                <!-- Middle: Book Title & Author -->
+                <!-- Book Title & Author -->
                 <div class="mb-5">
                     <h3 class="text-xl text-brand" th:text="${rent.book != null ? rent.book.title : 'N/A'}"></h3>
                     <p class="text-xl opacity-60" th:text="${rent.book != null ? rent.book.authorFullName : 'N/A'}"></p>
@@ -18,7 +17,7 @@
                     </div>
                 </div>
 
-                <!-- Meta: Dates Row -->
+                <!-- Dates Row -->
                 <div class="card-meta mt-auto flex align-center gap-4 opacity-50">
                     <div class="flex align-center gap-1 font-size-small">
                         <span>Preso</span>
@@ -40,17 +39,19 @@
             </div>
         </div>
 
-        <div th:if="${user.userRole == 'role_admin'}"  class="card-action-column p-2 flex justify-center align-center border-l text-center">
-            <div class="glass-indicator radius-10 font-size-xs fw-800 tracking-widest flex align-center  mt-3 mb-3 gap-1 p-1">
-                <span th:if="${rent.rentalDate.isBefore(rent.rentalExpired) || rent.rentalDate.isEqual(rent.rentalExpired)}"
-                    th:text="${rent.rentalEnded != null ? 'Restituito' : 'Da Restituire'}">STATO</span>
+        <div class="card-action-column p-2 flex flex-column justify-center border-l">
+            <div th:if="${user.userRole == 'role_admin'}">
+                <div class="glass-indicator radius-10 font-size-xs fw-800 tracking-widest flex align-center  mt-3 mb-3 gap-1 p-1">
+                    <span th:if="${rent.rentalDate.isBefore(rent.rentalExpired) || rent.rentalDate.isEqual(rent.rentalExpired)}"
+                        th:text="${rent.rentalEnded != null ? 'Restituito' : 'Da Restituire'}">STATO</span>
 
-                <span th:if="${rent.rentalDate.isAfter(rent.rentalExpired)}"
-                    th:text="${rent.rentalEnded != null ? 'Restituito' : 'Scaduto'}">STATO</span>
+                    <span th:if="${rent.rentalDate.isAfter(rent.rentalExpired)}"
+                        th:text="${rent.rentalEnded != null ? 'Restituito' : 'Scaduto'}">STATO</span>
+                </div>
+                <a th:href="@{/api/delivered(email=${user.userEmail}, bookID=${rent.bookId}, rentID=${rent.rentId})}" class="btn-modern-action pointer transition shadow-soft" style="text-decoration: none;">
+                    <span>Consegnato</span>
+                </a>
             </div>
-            <a th:href="@{/api/delivered(email=${user.userEmail}, bookID=${rent.bookId}, rentID=${rent.rentId})}" class="btn-modern-action pointer transition shadow-soft" style="text-decoration: none;">
-                <span>Consegnato</span>
-            </a>
         </div>
     </div>
 </th:block>
