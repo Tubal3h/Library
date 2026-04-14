@@ -1,0 +1,15 @@
+package it.repository;
+
+import java.util.List;
+
+import it.entity.BookJoin;
+
+public interface BookRepositoryInterface {
+	public String getAuthorFullNameByID(int authorId);
+	public String getPublisherNameByID(int publisherId);
+	public String getIsbnCodeByID(int isbnId);
+	public String getCategoryNameByID(int categoryId);
+	public int countBooks();
+	public List<BookJoin> getAllBooks();
+	public int insertBookByIsbn(String isbn);
+}

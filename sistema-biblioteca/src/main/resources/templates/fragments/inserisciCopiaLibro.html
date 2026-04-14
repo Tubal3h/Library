@@ -1,0 +1,30 @@
+<div th:fragment = "ciaoListaLibri(username, role)">
+	<form th:action = "@{/admin/gestione}" method = "post">
+		<input type = hidden name = "azione" value="showBooksV2">
+		<input type = hidden name = "username" th:value = "${username}">
+		<input type = hidden name = "role" th:value = "${role}">
+		<button type = "submit"> premi per visualizzare tutti i libri</button>
+	</form>
+		
+	<table th:if = "${listBooks != null}">
+		<tr th:each=" books : ${listBooks}">
+			<td th:text = "${books.booksId}"></td>
+			<td th:text = "${books.title}"></td>
+			<td th:text = "${books.authorName}"></td>
+			<td th:text = "${books.authorLastName}"></td>
+			<td th:text = "${books.codiceISBN}"></td>
+			<td th:text = "${books.categoria}"></td>
+			<td th:text = "${books.stato}"></td>
+			<td>
+				<form th:action = @{/admin/gestione/aggiungi} method = "post">
+					<input type = "hidden" name = "username" th:value = "${username}">
+					<input type = "hidden" name = "role" th:value = "${role}"> 
+					<input type = "hidden" name = "isbn" th:value = "${books.codiceISBN}">
+				 	<input type = "hidden" name = "azione" value = "aggiungi">
+					<button type = "submit"> aggiungi copia </button>
+				</form>	
+			</td>
+		</tr>
+	</table>
+	<p th:if = "${addBook}" th:text = "${addBook}"> </p>
+</div>
