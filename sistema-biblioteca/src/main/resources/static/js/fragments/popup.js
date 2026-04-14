@@ -4,8 +4,10 @@
  * @param {string} bookId - The ID of the book
  * @param {string} titleTxt - The title of the book
  * @param {string} authorTxt - The author of the book
+ * @param {string} categoryTxt - The category of the book
+ * @param {string} publisherTxt - The publisher of the book
  */
-function openPopup(action, bookId, titleTxt, authorTxt) {
+function openPopup(action, bookId, titleTxt, authorTxt, categoryTxt, publisherTxt) {
     const popup = document.getElementById('genericPopup');
     const title = document.getElementById('popupTitle');
     const icon = document.getElementById('popupIcon');
@@ -15,16 +17,15 @@ function openPopup(action, bookId, titleTxt, authorTxt) {
 
     if (!popup || !title || !icon || !confirmBtn || !editContent || !addCopyContent) return;
 
-    // Reset visibility
     editContent.classList.add('none');
     addCopyContent.classList.add('none');
 
     if (action === 'edit') {
         title.innerText = 'Modifica Libro';
         icon.className = 'fa-solid fa-pen-to-square text-white';
-        icon.parentElement.style.background = 'var(--color-accent)'; // Accent icon box
+        icon.parentElement.style.background = 'var(--color-accent)'; 
         editContent.classList.remove('none');
-        document.querySelector('.btn-link-action').classList.remove('none'); // Ensure cancel is visible
+        document.querySelector('.btn-link-action').classList.remove('none'); 
         
         const bookNameElem = document.getElementById('editBookName');
         if (bookNameElem) bookNameElem.innerText = titleTxt;
@@ -32,30 +33,55 @@ function openPopup(action, bookId, titleTxt, authorTxt) {
         const titleInput = document.getElementById('editTitleInput');
         if (titleInput) titleInput.value = titleTxt;
         
-        const authorInput = document.getElementById('editAuthorInput');
-        if (authorInput) authorInput.value = authorTxt;
+        const authorSelect = document.getElementById('editAuthorInput');
+        if (authorSelect && authorTxt) {
+            for (let i = 0; i < authorSelect.options.length; i++) {
+                if (authorSelect.options[i].text === authorTxt) {
+                    authorSelect.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+        
+        const categorySelect = document.getElementById('editCategoryInput');
+        if (categorySelect && categoryTxt) {
+            for (let i = 0; i < categorySelect.options.length; i++) {
+                if (categorySelect.options[i].text === categoryTxt) {
+                    categorySelect.selectedIndex = i;
+                    break;
+                }
+            }
+        }
+        
+        const publisherSelect = document.getElementById('editPublisherInput');
+        if (publisherSelect && publisherTxt) {
+            for (let i = 0; i < publisherSelect.options.length; i++) {
+                if (publisherSelect.options[i].text === publisherTxt) {
+                    publisherSelect.selectedIndex = i;
+                    break;
+                }
+            }
+        }
         
         confirmBtn.innerText = 'Salva';
     } 
     else if (action === 'addCopy') {
         title.innerText = 'Successo';
         icon.className = 'fa-solid fa-circle-check text-white';
-        icon.parentElement.style.background = 'var(--color-success)'; // Green icon box
+        icon.parentElement.style.background = 'var(--color-success)'; 
         addCopyContent.classList.remove('none');
         
         const addCopyNameElem = document.getElementById('addCopyBookName');
         if (addCopyNameElem) addCopyNameElem.innerText = titleTxt;
         
         confirmBtn.innerText = 'Chiudi';
-        // Hide cancel button for success state
         document.querySelector('.btn-link-action').classList.add('none');
     }
 
-    // Show popup with animation
     popup.classList.remove('none');
-    document.body.style.overflow = 'hidden'; // Prevent scrolling
+    document.body.style.overflow = 'hidden'; 
 
-    // Frontend-only action for now
+
     confirmBtn.onclick = () => {
         console.log(`Azione '${action}' eseguita per il libro ID: ${bookId}`);
         alert(`Simulazione: Operazione '${action}' solo frontend manca il backend.`);
@@ -64,18 +90,18 @@ function openPopup(action, bookId, titleTxt, authorTxt) {
 }
 
 /**
- * Close the popup modal
+ * Close pop up
  */
 function closePopup() {
     const popup = document.getElementById('genericPopup');
     if (popup) {
         popup.classList.add('none');
-        document.body.style.overflow = ''; // Restore scrolling
+        document.body.style.overflow = ''; 
     }
 }
 
 /**
- * Close popup when clicking the backdrop
+ * Close pop up
  */
 function closePopupOnBackdrop(event) {
     if (event.target === event.currentTarget) {

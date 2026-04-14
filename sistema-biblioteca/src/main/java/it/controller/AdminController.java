@@ -38,7 +38,7 @@ public class AdminController {
 				return "layout";
 			}catch(NoIsbnFoundException ex) {
 				model.addAttribute("insertFallitaException", ex.ToString());
-				return "layour";
+				return "layout";
 			}
 		}	
 		return "layout";

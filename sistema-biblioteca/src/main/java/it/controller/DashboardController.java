@@ -16,6 +16,9 @@ import it.dto.UserDto;
 import it.service.BookService;
 import it.service.RentService;
 import it.service.UserService;
+import it.service.AuthorService;
+import it.service.CategoryService;
+import it.service.PublisherService;
 
 /**
  * Controller per la gestione della dashboard principale dell'applicazione.
@@ -27,6 +30,9 @@ public class DashboardController {
     private final UserService userService;
     private final BookService bookService;
     private final RentService rentService;
+    private final AuthorService authorService;
+    private final CategoryService categoryService;
+    private final PublisherService publisherService;
 
     /**
      * Costruttore per DashboardController.
@@ -34,11 +40,17 @@ public class DashboardController {
      * @param userService Servizio per la gestione degli utenti
      * @param bookService Servizio per la gestione dei libri
      * @param rentService Servizio per la gestione dei noleggi
+     * @param authorService Servizio per la gestione degli autori
+     * @param categoryService Servizio per la gestione delle categorie
+     * @param publisherService Servizio per la gestione degli editori
      */
-    public DashboardController(UserService userService, BookService bookService, RentService rentService) {
+    public DashboardController(UserService userService, BookService bookService, RentService rentService, AuthorService authorService, CategoryService categoryService, PublisherService publisherService) {
         this.userService = userService;
         this.bookService = bookService;
         this.rentService = rentService;
+        this.authorService = authorService;
+        this.categoryService = categoryService;
+        this.publisherService = publisherService;
     }
 
     /**
@@ -66,6 +78,8 @@ public class DashboardController {
             return "redirect:/";
         }
 
+        boolean popup = false;
+
         model.addAttribute("user", user);
         model.addAttribute("section", section);
 
@@ -86,6 +100,9 @@ public class DashboardController {
 
             if ("catalog".equals(section)) {
                 model.addAttribute("books", bookService.getAllBooks(user.getUserRole()));
+                model.addAttribute("authors", authorService.getAllAuthors());
+                model.addAttribute("categories", categoryService.getAllCategories());
+                model.addAttribute("publishers", publisherService.getAllPublishers());
             }
 
             if ("rents".equals(section)) {
@@ -94,6 +111,8 @@ public class DashboardController {
                         : rentService.getRentedBooksByUserId(user.getUserId());
                 model.addAttribute("rentedBooks", rentedBooks);
             }
+
+            model.addAttribute("popup", popup);
 
         } catch (Exception e) {
             System.out.println("Errore di caricamento db: " + e.getMessage());
