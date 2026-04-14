@@ -41,13 +41,22 @@
         </div>
 
         <div class="card-action-column p-2 flex flex-column justify-end align-end border-l text-center">
-            <button th:if="${user.userRole == 'role_admin'}" class="m-2 btn-modern-action pointer transition shadow-soft">
-                <span>Restituisci</span>
-                <i class="fa-solid fa-pen-to-square"></i>
+            <!-- Button: Aggiungi copia -->
+            <button th:if="${user.userRole == 'role_admin'}" 
+                    type="button"
+                    th:onclick="openPopup('addCopy', [[${book.bookId}]], [[${book.title}]], [[${book.authorFullName}]])"
+                    class="btn-modern-action pointer transition shadow-soft border-none w-100 mb-2" 
+                    style="background: var(--color-surface-2); color: var(--color-text);">
+                <span>Aggiungi copia</span>
             </button>
-            <button th:if="${user.userRole == 'role_admin'}" class="m-2 btn-modern-action pointer transition shadow-soft">
-                <span class="text-center">Restituisci</span>
-                <!-- <i class="fa-solid fa-pen-to-square"></i> -->
+
+            <!-- Button: Modifica -->
+            <button th:if="${user.userRole == 'role_admin'}" 
+                    type="button"
+                    th:onclick="openPopup('edit', [[${book.bookId}]], [[${book.title}]], [[${book.authorFullName}]])"
+                    class="btn-modern-action pointer transition shadow-soft border-none w-100"
+                    style="background: var(--color-accent); color: white;">
+                <span>Modifica</span>
             </button>
             <a th:if="${user.userRole != 'role_admin'}" th:href="@{/api/borrow(email=${user.userEmail}, bookId=${book.bookId})}" class="btn-modern-action pointer transition shadow-soft" style="text-decoration: none;">
                 <span>Prenota</span>

@@ -1,0 +1,169 @@
+/* ============================================================
+   POPUP MODAL COMPONENT (PREMIUM REFINED)
+   Using style.css variables and design language.
+   ============================================================ */
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(14px) saturate(200%);
+    -webkit-backdrop-filter: blur(14px) saturate(200%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    opacity: 1;
+}
+
+.popup-overlay.none {
+    display: none;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.popup-content {
+    width: 92%;
+    max-width: 600px;
+    padding: 3.5rem; /* Increased padding */
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transform: scale(1) translateY(0);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
+    box-shadow: 0 32px 64px -16px rgba(0, 0, 0, 0.2), 
+                0 0 0 1px rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="light"] .popup-content {
+    background: rgba(255, 255, 255, 0.85); /* Slightly more opaque glass */
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 0 32px 64px -16px rgba(0, 0, 0, 0.1), 
+                0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+.popup-overlay.none .popup-content {
+    transform: scale(0.96) translateY(30px);
+}
+
+/* Text-only action button */
+.btn-link-action {
+    background: transparent;
+    border: none;
+    color: var(--color-text);
+    opacity: 0.6;
+    font-size: 1.125rem; 
+    min-width: 120px; /* Standard minimum width */
+    text-align: center;
+}
+
+.btn-link-action:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+/* Primary Button in Popup */
+#popupConfirmBtn {
+    min-width: 180px; /* Stronger primary action */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Close Button Refinement */
+.btn-icon-close {
+    background: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-text);
+    font-size: 1.1rem;
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+}
+
+.btn-icon-close:hover {
+    background: var(--color-error);
+    color: white;
+    border-color: var(--color-error);
+    transform: rotate(90deg) scale(1.1);
+}
+
+/* Typography & Layout Spacing */
+.popup-body {
+    margin-top: 1rem;
+}
+
+.input-group label {
+    margin-bottom: 0.75rem;
+    display: block;
+    font-weight: 700;
+    color: var(--color-text);
+    opacity: 0.8;
+}
+
+/* Premium Inputs */
+.input-group input, 
+.input-group textarea {
+    background: var(--color-surface-2) !important;
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    font-family: var(--font-main);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.input-group input:focus, 
+.input-group textarea:focus {
+    outline: none;
+    background: var(--color-surface) !important;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 5px rgba(245, 166, 35, 0.15);
+    transform: translateY(-1px);
+}
+
+/* Icon Box Enhancement */
+.icon-box-accent {
+    background: var(--color-accent);
+    width: 56px;
+    height: 56px;
+    box-shadow: 0 8px 16px rgba(245, 166, 35, 0.35);
+}
+
+/* Animations Helper */
+.animate-fade-in-up {
+    animation: fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Form block spacing */
+.flex.flex-column.gap-5 {
+    gap: 1.75rem !important; /* Specific margin for input fields */
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .popup-content {
+        padding: 2rem;
+    }
+    .btn-icon-close {
+        top: 1rem;
+        right: 1rem;
+    }
+}
