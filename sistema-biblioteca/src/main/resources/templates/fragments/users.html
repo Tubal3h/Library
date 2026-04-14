@@ -1,19 +1,46 @@
-<div th:fragment="users" id="users" class="users">
-    <h2 class="text-2xl font-bold mb-4">Lista Utenti</h2>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nome</th>
-                <th>Email</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr th:each="user : ${users}">
-                <td th:text="${user.userId}"></td>
-                <td th:text="${user.userName}"></td>
-                <td th:text="${user.userEmail}"></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+<th:block th:fragment="users">
+    <!-- User Record Cards -->
+    <div th:each="user, iter : ${users}"
+         class="book-card-horizontal glass radius-24 p-0 shadow-card flex border-none animate-card overflow-hidden"
+         th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
+
+        <!-- Left Column: Information (75%) -->
+        <div class="card-info-main flex-1 p-7 flex flex-column">
+            <!-- Header: Role -->
+            <div class="flex justify-between align-center mb-6 status-context status-vibrant-active">
+                <span th:text="${user.userRole != 'role_admin' ? 'Utente' : 'Amministratore'}" class="category-label font-mono font-size-xs uppercase fw-500 tracking-widest opacity-40">UTENTE</span>
+                
+                <div class="glass-indicator radius-full px-3 py-1 font-size-xs fw-800 uppercase tracking-widest flex align-center gap-2 p-2">
+                    <span class="dot"></span>
+                    <span th:text="${user.userRole != 'role_admin' ? 'Utente' : 'Amministratore'}">RUOLO</span>
+                </div>
+            </div>
+
+            <!-- Middle: Name and Surname -->
+            <div class="mb-5">
+                <h3 class="text-xl fw-700 text-brand mb-1" th:text="${user.userName} + ' ' + ${user.userLastName}"></h3>
+                <p class="font-size-sm opacity-60" th:text="${user.userEmail}"></p>
+            </div>
+
+            <!-- Meta: Info Row -->
+            <div class="card-meta mt-auto flex align-center gap-4 opacity-50">
+                <div class="flex align-center gap-2 font-size-small">
+                    <i class="fa-solid fa-envelope text-xs text-brand"></i>
+                    <span th:text="${user.userEmail}">Email</span>
+                </div>
+                <div class="flex align-center gap-2 font-size-small">
+                    <i class="fa-solid fa-id-badge text-xs text-brand"></i>
+                    <span th:text="'User ID: ' + ${user.userId}" class="font-mono">ID</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Action Section -->
+        <div class="card-action-column p-5 flex flex-column justify-end align-end border-l">
+            <button class="btn-modern-action pointer transition shadow-soft flex align-center gap-2">
+                <span>Gestisci</span>
+                <i class="fa-solid fa-arrow-right-long"></i>
+            </button>
+        </div>
+    </div>
+</th:block>

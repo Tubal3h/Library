@@ -13,15 +13,14 @@
 
     <div id="login-wrapper" class="flex w-100 overflow-hidden">
 
-        <!--  LEFT PANEL  -->
         <div id="left-panel" class="flex flex-column justify-between p-relative radius-20 overflow-hidden">
             <div id="left-overlay" class="p-absolute z-1"></div>
         </div>
 
-        <!--  RIGHT PANEL  -->
+
         <div id="right-panel" class="flex flex-column align-center overflow-y-auto">
 
-            <!-- logo in alto a sinistra -->
+            <!-- Logo -->
             <div id="right-logo" class="self-start">
                 <img th:src="@{/img/logo_mba.svg}" alt="MBA Logo" class="w-100">
             </div>
@@ -39,12 +38,12 @@
                     <span th:text="${error}"></span>
                 </div>
 
-                <!-- messaggio errore client-side vecchio per js (in caso serva rimetterlo visibile) -->
+                <!-- msg errore -->
                 <div id="error-msg" class="none flex align-center radius-10">
                     <i class="fa-solid fa-circle-exclamation"></i>
                     <span id="error-text">Credenziali non valide.</span>
                 </div>
-
+                <!-- email -->
                 <form id="login-form"
                       class="flex flex-column"
                       th:action="@{/api/login}"
@@ -61,7 +60,7 @@
                                    required>
                         </div>
                     </div>
-
+                     <!-- Password -->
                     <div class="input-group flex flex-column">
                         <label for="password" class="fw-600 uppercase">Password</label>
                         <div class="input-wrapper flex align-center radius-12">
@@ -72,6 +71,7 @@
                                    placeholder="La tua password"
                                    autocomplete="current-password"
                                    required>
+                                   <!-- BTN Mostra Password -->
                             <button type="button"
                                     id="toggle-password"
                                     class="toggle-pw-btn cursor-pointer">
@@ -79,16 +79,7 @@
                             </button>
                         </div>
                     </div>
-
-                    <!--
-                    <div id="form-options" class="flex align-center justify-between">
-                        <label id="remember-label" class="flex align-center cursor-pointer no-select">
-                            <input type="checkbox" id="remember-me" name="remember-me">
-                            <span>Ricordami</span>
-                        </label>
-                    </div>
-                    -->
-
+                    <!-- BTN Accedi -->
                     <button type="submit"
                             id="login-btn"
                             class="flex align-center justify-center fw-700 radius-12 cursor-pointer w-100">
