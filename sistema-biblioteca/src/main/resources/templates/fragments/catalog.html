@@ -57,7 +57,7 @@
             <!-- Button: Modifica -->
             <button th:if="${user.userRole == 'role_admin'}" 
                     type="button"
-                    th:onclick="openPopup('edit', [[${book.bookId}]], [[${book.title}]], [[${book.authorFullName}]])"
+                    th:onclick="openPopup('edit', [[${book.bookId}]], [[${book.title}]], [[${book.authorFullName}]], [[${book.categoryName}]], [[${book.publisherName}]])"
                     class="btn-modern-action pointer transition shadow-soft border-none w-100"
                     style="background: var(--color-accent); color: white;">
                 <span>Modifica</span>

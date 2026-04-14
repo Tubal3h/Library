@@ -109,3 +109,62 @@ Questi oggetti garantiscono un flusso dati pulito:
 
 ### Estrazione del Catalogo
 Il `BookRepository` esegue una query SQL con più join per unire dati frammentati provenienti da sei tabelle diverse in una singola lista ottimizzata di oggetti `BookCatalogDto`. Questo evita il problema delle **N+1 query**, recuperando tutti i dati in un’unica chiamata efficiente al database.
+
+***
+
+## 6. Frontend - Architettura UI
+
+Il frontend è costruito con **HTML (Thymeleaf)**, **CSS vanilla** e **JavaScript vanilla**, organizzato secondo un sistema di frammenti riutilizzabili.
+
+### 6.1. Layout (`fragments/layout.html`)
+Il file master che compone l'intera applicazione. Include:
+- La **Navbar** laterale (`fragments/navbar`).
+- Il blocco `${contenuto}` dinamico, sostituito dal controller tramite Thymeleaf.
+- Tutti i file CSS e JS globali e dei frammenti.
+- Il **popup globale** (`fragments/popup`), incluso una sola volta fuori dai contenitori scroll per garantire il corretto overlay su tutta la pagina.
+
+### 6.2. Design System (`/css/style.css`)
+Il file CSS globale funge da **design system centralizzato** basato su variabili CSS (`--color-brand`, `--color-accent`, ecc.) che supporta temi Light e Dark. Fornisce classi di utilità per:
+- **Spacing**: `m-*`, `p-*`, `px-*`, `py-*`, `gap-*`
+- **Tipografia**: `text-xs`, `text-sm`, `text-lg`, `fw-*`
+- **Layout**: `flex`, `flex-column`, `justify-*`, `align-*`, `w-100`, `radius-*`
+- **Animazioni**: `animate-fade-in-up`, `animate-scale-in`
+- **Componenti**: `btn-primary`, `glass`, `shadow-soft`, `shadow-card`
+
+### 6.3. Componente Popup (`fragments/popup`)
+Popup modale globale riutilizzabile, gestito in tre file:
+
+| File | Responsabilità |
+|------|---------------|
+| `templates/fragments/popup.html` | Struttura HTML del modale con header, body e footer |
+| `static/css/fragments/popup.css` | Stile: backdrop blur, animazioni, input, pulsanti |
+| `static/js/fragments/popup.js` | Logica JS: apertura, chiusura, cambio di stato |
+
+#### Modalità operative del popup
+
+Il popup supporta due modalità distinte, attivabili tramite la funzione `openPopup(action, bookId, title, author)`:
+
+- **`'edit'`** (Modifica Libro):
+  - Mostra un form con i campi **Titolo** e **Autore** precompilati.
+  - Icona arancione (accent), pulsante "**Salva**" e tasto "Annulla" visibile.
+
+- **`'addCopy'`** (Aggiungi Copia - Solo Front-end):
+  - Non mostra alcun form.
+  - Mostra una schermata di successo con icona **check verde** e il testo "Copia aggiunta".
+  - Il tasto "Annulla" viene nascosto automaticamente; rimane solo "**Chiudi**".
+
+> **Nota**: La logica di conferma (`confirmBtn.onclick`) è attualmente simulata (`solo frontend`). L'integrazione con gli endpoint REST del backend è rimandata a una futura iterazione.
+
+#### Apertura del Popup nel Catalogo (`catalog.html`)
+I pulsanti admin nella card del libro usano l'inlining di Thymeleaf per passare i dati al JavaScript in modo sicuro (con escaping automatico):
+```html
+<button th:onclick="openPopup('edit', [[${book.bookId}]], [[${book.title}]], [[${book.authorFullName}]])">
+    Modifica
+</button>
+```
+
+### 6.4. Componente Catalogo (`fragments/catalog`)
+Itera la lista di `BookCatalogDto` ricevuta dal controller, mostrando per ogni libro:
+- **Stato** (Disponibile / In Prestito) con badge colorato e animazione pulsante.
+- **Metadati**: Titolo, Autore, Editore, Data, ISBN.
+- **Colonna azioni**: Pulsanti "Modifica" e "Aggiungi copia" visibili solo agli admin; "Prenota" visibile agli utenti standard.
