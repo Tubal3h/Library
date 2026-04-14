@@ -5,53 +5,46 @@
         
         th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
         
-        <div class="card-info-main flex-1 p-7 flex flex-column">
-            <!-- Header -->
-        <div class="flex justify-between align-center mb-6 status-context" 
-             th:classappend="${book.status == 'disponibilita' ? 'status-vibrant-active' : 'status-vibrant-pending'}">
-            <span class="category-label font-mono font-size-xs uppercase fw-500 tracking-widest opacity-40" th:text="${book.categoryName}">CATEGORIA</span>
-            <div class="glass-indicator radius-full px-3 py-1 font-size-xs fw-800 uppercase tracking-widest flex align-center gap-2 p-2">
-                <span class="dot"></span>
-                <span th:if="${book.status == 'disponibilita'}">Disponibile</span>
-                <span th:if="${book.status != 'disponibilita'}">In Prestito</span>
-            </div>
-        </div>
+        <div class="card-info-main flex-1 p-1 flex flex-column">
 
-            <!--  Titolo & Autore -->
-            <div class="mb-5">
-                <h3 class="text-xl fw-700 text-brand mb-1" th:text="${book.title}"></h3>
-                <p class="font-size-sm opacity-60" th:text="${book.authorFullName}"></p>
+            <!--  Title & Author -->
+            <div class="mb-3">
+                <h3 class="text-xl text-brand" th:text="${book.title}"></h3>
+                <p class="text-xl opacity-50" th:text="${book.authorFullName}"></p>
+                <div class="category-label font-mono text-lg tracking-widest opacity-40" th:text="${book.categoryName}">CATEGORIA</div>
             </div>
 
-            <!-- Icons -->
-            <div class="card-meta mt-auto flex align-center gap-4 opacity-50">
-                <div class="flex align-center gap-2 font-size-small" th:title="${book.publisherName}">
+            <!-- Info book -->
+            <div class="card-meta mt-auto flex align-center gap-1 opacity-50">
+                <div class="flex align-center gap-1 font-size-small" th:title="${book.publisherName}">
                     <i class="fa-solid fa-building-columns text-xs text-brand"></i>
                     <span th:text="${book.publisherName}" class="text-truncate" style="max-width: 80px;">Editore</span>
                 </div>
-                <div class="flex align-center gap-2 font-size-small">
+                <div class="flex align-center gap-1 font-size-small">
                     <i class="fa-solid fa-calendar-check text-xs text-brand"></i>
                     <span th:text="${book.publishingDate}">Data</span>
                 </div>
-                <div class="flex align-center gap-2 font-size-small">
+                <div class="flex align-center gap-1 font-size-small">
                     <i class="fa-solid fa-barcode text-xs text-brand"></i>
                     <span th:text="${book.isbnCode}" class="font-mono">ISBN</span>
                 </div>
             </div>
         </div>
 
-        <div class="card-action-column p-2 flex flex-column justify-end align-end border-l text-center">
-            <button th:if="${user.userRole == 'role_admin'}" class="m-2 btn-modern-action pointer transition shadow-soft">
-                <span>Restituisci</span>
-                <i class="fa-solid fa-pen-to-square"></i>
-            </button>
-            <button th:if="${user.userRole == 'role_admin'}" class="m-2 btn-modern-action pointer transition shadow-soft">
-                <span class="text-center">Restituisci</span>
-                <!-- <i class="fa-solid fa-pen-to-square"></i> -->
+        <!-- Status - Returned/Del/Booking-->
+        <div class="card-action-column p-2 flex flex-column justify-center border-l">
+            <div class="flex align-center mb-1 status-context" 
+                th:classappend="${book.status == 'disponibilita' ? 'status-vibrant-active' : 'status-vibrant-pending'}">
+                <div class="glass-indicator radius-10 font-size-xs tracking-widest flex align-center gap-1 p-1">
+                    <span th:if="${book.status == 'disponibilita'}">Disponibile</span>
+                    <span th:if="${book.status != 'disponibilita'}">In Prestito</span>
+                </div>
+            </div>
+            <button th:if="${user.userRole == 'role_admin'}" class="m-1 btn-modern-action pointer transition shadow-soft">
+                <span class="text-center">Elimina</span>
             </button>
             <a th:if="${user.userRole != 'role_admin'}" th:href="@{/api/borrow(email=${user.userEmail}, bookId=${book.bookId})}" class="btn-modern-action pointer transition shadow-soft" style="text-decoration: none;">
                 <span>Prenota</span>
-                <!-- <i class="fa-solid fa-pen-to-square"></i> -->
             </a>
         </div>
     </div>
