@@ -1,0 +1,76 @@
+<div th:fragment="popup" id="genericPopup" class="popup-overlay none">
+    <div class="popup-content glass radius-24 shadow-soft animate-scale-in" onclick="event.stopPropagation()">
+
+        <!-- Header Section -->
+        <div class="popup-header flex justify-between align-center mb-8">
+            <div class="flex align-center gap-4">
+                <div class="icon-box-accent radius-16 p-3 flex center">
+                    <i id="popupIcon" class="fa-solid fa-pen-to-square text-white font-size-medium"></i>
+                </div>
+                <div>
+                    <h3 id="popupTitle" class="text-2xl fw-700 text-brand leading-tight">Modifica Libro</h3>
+                    <p class="text-xs uppercase tracking-wider opacity-50 fw-600 mt-1">Gestione Catalogo</p>
+                </div>
+            </div>
+            <button type="button" class="btn-icon-close cursor-pointer transition shadow-card" onclick="closePopup()"
+                title="Chiudi">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <!-- Body Section -->
+        <div id="popupBody" class="popup-body">
+            <!-- Edit Content -->
+            <div id="editBookContent" class="none animate-fade-in-up">
+                <p class="mb-6 opacity-70 text-sm leading-relaxed">
+                    Stai aggiornando i metadati per: <br>
+                    <strong id="editBookName" class="text-brand text-lg"></strong>
+                </p>
+
+                <div class="flex flex-column gap-5">
+                    <div class="input-group">
+                        <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Titolo
+                            Opera</label>
+                        <input type="text" id="editTitleInput"
+                            class="w-100 p-4 radius-12 border-none font-size-small w-100"
+                            placeholder="Esempio: Il Nome della Rosa">
+                    </div>
+                    <div class="input-group">
+                        <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Autore
+                            Principale</label>
+                        <input type="text" id="editAuthorInput"
+                            class="w-100 p-4 radius-12 border-none font-size-small w-100"
+                            placeholder="Esempio: Umberto Eco">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Copy Content (Confirmation Style) -->
+            <div id="addCopyContent" class="none animate-fade-in-up text-center py-6">
+                <div class="flex justify-center mb-6">
+                    <div class="radius-circle p-8 flex center shadow-soft"
+                        style="background: rgba(46, 125, 50, 0.1); color: var(--color-success); border-radius: 50%;">
+                        <i class="fa-solid fa-circle-check" style="font-size: 3rem;"></i>
+                    </div>
+                </div>
+                <h3 class="text-2xl fw-700 text-brand mb-2">Copia aggiunta</h3>
+                <p class="opacity-70 text-sm leading-relaxed">
+                    Una nuova copia fisica per <br>
+                    <strong id="addCopyBookName" class="text-brand"></strong> <br>
+                    è stata inserita correttamente a sistema.
+                </p>
+            </div>
+        </div>
+
+        <!-- Footer Section -->
+        <div class="popup-footer mt-12 pt-8 flex justify-end gap-6" style="border-top: 1px solid var(--color-border);">
+            <button type="button"
+                class="btn-link-action radius-12 px-8 py-4 cursor-pointer transition fw-600 text-lg m-1"
+                onclick="closePopup()">Annulla</button>
+            <button type="button" id="popupConfirmBtn"
+                class="btn-primary radius-12 px-12 py-4 cursor-pointer transition fw-700 text-lg shadow-soft m-1">
+                Conferma Azione
+            </button>
+        </div>
+    </div>
+</div>

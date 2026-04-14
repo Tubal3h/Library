@@ -14,6 +14,7 @@
     <!-- Stili Frammenti (Layout, Navbar, Footer) -->
     <link rel="stylesheet" th:href="@{/css/fragments/navbar.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/catalog.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments/popup.css}">
 </head>
 <body data-theme="light">
     <!-- Background Glow Effect (similar to image) -->
@@ -31,9 +32,13 @@
         </main>
     </div>
 
+    <!-- Global Popup (outside scroll containers and stacking contexts) -->
+    <div th:replace="~{fragments/popup :: popup}"></div>
+
     <!-- Script Globali e Frammenti -->
     <script th:src="@{/js/fragments/layout.js}"></script>
     <script th:src="@{/js/fragments/navbar.js}"></script>
     <script th:src="@{/js/fragments/catalog.js}"></script>
+    <script th:src="@{/js/fragments/popup.js}"></script>
 </body>
 </html>

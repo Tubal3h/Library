@@ -309,6 +309,12 @@ a {font-size: clamp(.8rem, 1vw, 1.2rem);}
 .pr-6 { padding-right: 1.5rem; }
 .pr-8 { padding-right: 2rem; }
 
+/* --- Added Axis Padding --- */
+.px-8  { padding-left: 2rem; padding-right: 2rem; }
+.px-10 { padding-left: 2.5rem; padding-right: 2.5rem; }
+.px-12 { padding-left: 3rem; padding-right: 3rem; }
+.py-4  { padding-top: 1rem; padding-bottom: 1rem; }
+
 /* ---------------------------------- Width --------------------------------- */
 .w-100{width: 100%;}
 .w-80{width: 80%;}

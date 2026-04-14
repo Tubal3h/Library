@@ -6,12 +6,14 @@ package it.service;
 
 import java.util.List;
 
+
 import org.springframework.stereotype.Service;
 
 import it.dto.BookDto;
 import it.entity.BookJoin;
 import it.exception.BookNotFoundException;
 import it.repository.BookRepository;
+import it.exception.NoIsbnFoundException;
 
 /**
  * Servizio per la gestione del catalogo dei libri.
@@ -94,4 +96,15 @@ public class BookService {
     public int getTotalCountBooks() {
         return bookRepository.countBooks();
     }
+    
+	@SuppressWarnings("null")
+	public int addBook(String isbn) throws NoIsbnFoundException {
+		int res = 0;
+		if(isbn != null || !isbn.isEmpty()) {
+			res = bookRepository.insertBookByIsbn(isbn);
+		}else {
+			throw new NoIsbnFoundException("attenzione isbn non trovato");
+		}
+		return res;
+	}
 }

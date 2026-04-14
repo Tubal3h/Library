@@ -29,7 +29,7 @@
 
 /* Right Section: Action Column */
 .card-action-column {
-    width: 130px;
+    width: 160px;
     background: rgba(var(--color-text-rgb), 0.01);
     border-left: 1px solid rgba(var(--color-text-rgb), 0.05);
     transition: all 0.4s ease;
@@ -43,11 +43,16 @@
 .btn-modern-action {
     background: rgba(var(--color-text-rgb), 0.04);
     color: var(--color-text);
+<<<<<<< HEAD
     padding: 8px 18px;
     border-radius: 50px;
+=======
+    padding: 10px 20px;
+    border-radius: 100px;
+>>>>>>> cfb1bbd38309fce5bcb665e9f65cd48cf5b73e8a
     border: 1px solid rgba(var(--color-text-rgb), 0.1);
-    font-size: 0.55rem;
-    letter-spacing: 0.12em;
+    font-size: 0.65rem;
+    letter-spacing: 0.08em;
     font-weight: 800;
     text-transform: uppercase;
     display: flex;

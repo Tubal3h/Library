@@ -7,6 +7,9 @@ package it.repository;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import it.entity.BookJoin;
@@ -17,10 +20,12 @@ import it.mapper.BookJoinRowMapper;
  * Esegue query aggregate con JOIN per recuperare le informazioni complete dei libri.
  */
 @Repository
-public class BookRepository {
+public class BookRepository implements BookRepositoryInterface{
 
     private final JdbcTemplate jdbcTemplate;
     private final BookJoinRowMapper bookJoinMapper;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    
 
     /**
      * Costruttore per BookRepository.
@@ -28,9 +33,11 @@ public class BookRepository {
      * @param jdbcTemplate  Il template JDBC per le operazioni sul database
      * @param bookJoinMapper Mapper per convertire i record del database in oggetti BookJoin
      */
-    public BookRepository(JdbcTemplate jdbcTemplate, BookJoinRowMapper bookJoinMapper) {
+    public BookRepository(JdbcTemplate jdbcTemplate, BookJoinRowMapper bookJoinMapper, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.bookJoinMapper = bookJoinMapper;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+        
     }
 
     /**
@@ -114,4 +121,14 @@ public class BookRepository {
                 """;
         return jdbcTemplate.query(sql, bookJoinMapper);
     }
+    
+	public int insertBookByIsbn(String isbn) {
+		String query = "INSERT INTO books(edition_id, status)\r\n"
+					 + "VALUES((SELECT edition_id FROM edition WHERE isbn = :isbn), \r\n"
+				     + "('disponibilita'))";
+		
+		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("isbn", isbn);
+		int res = namedParameterJdbcTemplate.update(query, sqlParameters);
+		return res;
+	}
 }

@@ -40,6 +40,10 @@ public class BookDto {
         this.categoryName = categoryName;
         this.status = status;
     }
+    
+    public BookDto(String isbnCode) {
+    	this.isbnCode = isbnCode;
+    }
 
     /**
      * @return ID dell'edizione

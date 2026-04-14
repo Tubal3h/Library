@@ -31,6 +31,7 @@
             </div>
         </div>
 
+<<<<<<< HEAD
         <!-- Status - Returned/Del/Booking-->
         <div class="card-action-column p-2 flex flex-column justify-center border-l">
             <div th:if="${user.userRole == 'role_admin'}" class="flex align-center mb-1 status-context" 
@@ -42,6 +43,25 @@
             </div>
             <button th:if="${user.userRole == 'role_admin'}" class="m-1 btn-modern-action pointer transition shadow-soft">
                 <span class="text-center">Elimina</span>
+=======
+        <div class="card-action-column p-2 flex flex-column justify-end align-end border-l text-center">
+            <!-- Button: Aggiungi copia -->
+            <button th:if="${user.userRole == 'role_admin'}" 
+                    type="button"
+                    th:onclick="openPopup('addCopy', [[${book.bookId}]], [[${book.title}]], [[${book.authorFullName}]])"
+                    class="btn-modern-action pointer transition shadow-soft border-none w-100 mb-2" 
+                    style="background: var(--color-surface-2); color: var(--color-text);">
+                <span>Aggiungi copia</span>
+            </button>
+
+            <!-- Button: Modifica -->
+            <button th:if="${user.userRole == 'role_admin'}" 
+                    type="button"
+                    th:onclick="openPopup('edit', [[${book.bookId}]], [[${book.title}]], [[${book.authorFullName}]])"
+                    class="btn-modern-action pointer transition shadow-soft border-none w-100"
+                    style="background: var(--color-accent); color: white;">
+                <span>Modifica</span>
+>>>>>>> cfb1bbd38309fce5bcb665e9f65cd48cf5b73e8a
             </button>
             <a th:if="${user.userRole != 'role_admin'}" th:href="@{/api/borrow(email=${user.userEmail}, bookId=${book.bookId})}" class="btn-modern-action pointer transition shadow-soft" style="text-decoration: none;">
                 <span>Prenota</span>
