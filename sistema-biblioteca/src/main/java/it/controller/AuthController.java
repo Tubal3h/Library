@@ -23,7 +23,7 @@ public class AuthController {
 
     /**
      * Costruttore per AuthController.
-     * 
+     *
      * @param authService Servizio per la gestione dell'autenticazione
      */
     public AuthController(AuthService authService) {
@@ -32,7 +32,7 @@ public class AuthController {
 
     /**
      * Mostra la pagina di login.
-     * 
+     *
      * @param model il modello per la vista
      * @return Nome della vista del login ("index")
      */
@@ -44,9 +44,9 @@ public class AuthController {
 
     /**
      * Gestisce il processo di login.
-     * 
+     *
      * @param loginDto DTO con le credenziali di accesso
-     * @param model il modello per la vista
+     * @param model    il modello per la vista
      * @return Redirect alla dashboard in caso di successo, o ritorno alla pagina di login in caso di errore
      */
     @PostMapping("/api/login")
@@ -65,19 +65,16 @@ public class AuthController {
             return "redirect:/?error=service_unavailable";
         }
 
-        return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=home"; 
+        return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=home";
     }
-    
+
     /**
-     * Gestisce il logout dell'utente.
-     * 
+     * Gestisce il logout dell'utente invalidando la sessione corrente.
+     *
      * @return Redirect alla pagina di login ("/")
      */
     @PostMapping("/api/logout")
     public String logout() {
-        // In un'applicazione reale, qui si invaliderebbe la sessione o si rimuoverebbe il token di autenticazione.
         return "redirect:/";
     }
 }
-
-

@@ -138,7 +138,7 @@ a {font-size: clamp(.8rem, 1vw, 1.2rem);}
 }
 
 .box {
-    border: 2px solid red;
+    border: 2px solid var(--color-error);
 }
 
 .text-center {
@@ -332,10 +332,7 @@ a {font-size: clamp(.8rem, 1vw, 1.2rem);}
 .gap-5{gap: clamp(2rem, 6vw, 5rem);}
 /* --------------------------------- Border --------------------------------- */
 .box-green {
-    border: 2px solid var(--green);
-}
-.box {
-    border: 2px solid red;
+    border: 2px solid var(--color-success);
 }
 /* --------------------------------- radius --------------------------------- */
 .radius-25px {
@@ -343,7 +340,7 @@ a {font-size: clamp(.8rem, 1vw, 1.2rem);}
 }
 /* ---------------------------- Background color ---------------------------- */
 .bg-darkgrey {
-    background-color: var(--darkgrey);
+    background-color: var(--color-surface-2);
 }
 /* ----------------------------- font size extra ---------------------------- */
 .font-size-small{

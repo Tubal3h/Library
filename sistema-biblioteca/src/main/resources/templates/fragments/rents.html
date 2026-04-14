@@ -13,7 +13,12 @@
                 
                 <div class="glass-indicator radius-full px-3 py-1 font-size-xs fw-800 uppercase tracking-widest flex align-center gap-2 p-2">
                     <span class="dot"></span>
-                    <span th:text="${rent.rentalEnded != null ? 'Restituito' : 'Da Restituire'}">STATO</span>
+
+                    <span th:if="${rent.rentalDate.isBefore(rent.rentalExpired) || rent.rentalDate.isEqual(rent.rentalExpired)}"
+                        th:text="${rent.rentalEnded != null ? 'Restituito' : 'Da Restituire'}">STATO</span>
+
+                    <span th:if="${rent.rentalDate.isAfter(rent.rentalExpired)}"
+                        th:text="${rent.rentalEnded != null ? 'Restituito' : 'Scaduto'}">STATO</span>
                 </div>
             </div>
 
@@ -42,6 +47,13 @@
                     <span th:text="'User ID: ' + ${rent.userId}" class="font-mono">USER</span>
                 </div>
             </div>
+        </div>
+
+        <div th:if="${user.userRole == 'role_admin'}"  class="card-action-column p-2 flex flex-column justify-end align-end border-l text-center">
+            <a th:href="@{/api/delivered(email=${user.userEmail}, bookID=${rent.bookId}, rentID=${rent.rentId})}" class="btn-modern-action pointer transition shadow-soft" style="text-decoration: none;">
+                <span>Consegna</span>
+                <i class="fa-solid fa-pen-to-square"></i>
+            </a>
         </div>
     </div>
 </th:block>

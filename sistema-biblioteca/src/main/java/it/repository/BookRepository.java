@@ -14,29 +14,30 @@ import it.mapper.BookJoinRowMapper;
 
 /**
  * Repository per la gestione dei dati dei libri nel database.
+ * Esegue query aggregate con JOIN per recuperare le informazioni complete dei libri.
  */
 @Repository
 public class BookRepository {
+
     private final JdbcTemplate jdbcTemplate;
     private final BookJoinRowMapper bookJoinMapper;
 
     /**
      * Costruttore per BookRepository.
-     * 
-     * @param jdbcTemplate Il template JDBC per le operazioni sul database
+     *
+     * @param jdbcTemplate  Il template JDBC per le operazioni sul database
+     * @param bookJoinMapper Mapper per convertire i record del database in oggetti BookJoin
      */
     public BookRepository(JdbcTemplate jdbcTemplate, BookJoinRowMapper bookJoinMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.bookJoinMapper = bookJoinMapper;
     }
 
-
-
     /**
-     * Recupera il nome completo dell'autore tramite ID.
-     * 
+     * Recupera il nome completo dell'autore tramite il suo ID.
+     *
      * @param authorId ID dell'autore
-     * @return Nome completo dell'autore
+     * @return Nome completo dell'autore (nome + cognome concatenati)
      */
     public String getAuthorFullNameByID(int authorId) {
         String sql = "SELECT CONCAT(author_name, ' ', author_last_name) AS author_full_name FROM author WHERE author_id = ?";
@@ -44,8 +45,8 @@ public class BookRepository {
     }
 
     /**
-     * Recupera il nome della casa editrice tramite ID.
-     * 
+     * Recupera il nome della casa editrice tramite il suo ID.
+     *
      * @param publisherId ID della casa editrice
      * @return Nome della casa editrice
      */
@@ -55,10 +56,10 @@ public class BookRepository {
     }
 
     /**
-     * Recupera il codice ISBN tramite ID (Nota: il metodo originale faceva riferimento a una tabella isbn non mostrata).
-     * 
+     * Recupera il codice ISBN tramite il suo ID.
+     *
      * @param isbnId ID dell'ISBN
-     * @return Codice ISBN
+     * @return Codice ISBN corrispondente
      */
     public String getIsbnCodeByID(int isbnId) {
         String sql = "SELECT code FROM isbn WHERE isbn_id = ?";
@@ -66,8 +67,8 @@ public class BookRepository {
     }
 
     /**
-     * Recupera il nome della categoria tramite ID.
-     * 
+     * Recupera il nome della categoria tramite il suo ID.
+     *
      * @param categoryId ID della categoria
      * @return Nome della categoria
      */
@@ -77,27 +78,24 @@ public class BookRepository {
     }
 
     /**
-     * Conta il numero totale di libri nel sistema.
-     * 
-     * @return Il numero totale di libri nel sistema
+     * Conta il numero totale di libri fisici nel sistema.
+     *
+     * @return Numero totale di libri presenti nella tabella books
      */
-
     public int countBooks() {
         String sql = "SELECT COUNT(*) FROM books";
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
     /**
-     * Recupera la lista di tutti i libri con le informazioni complete.
-     * 
-     * @return Lista di tutti i libri nel sistema
-     * @see BookJoin
-     * JOIN version
+     * Recupera la lista completa dei libri con tutte le informazioni aggregate.
+     * Utilizza una JOIN tra books, edition, books_names, author, publisher e category.
+     *
+     * @return Lista di oggetti {@link BookJoin} con i dati completi di ogni libro
      */
-
     public List<BookJoin> getAllBooks() {
         String sql = """
-                SELECT 
+                SELECT
                     e.edition_id,
                     b.book_id,
                     bn.title,
@@ -116,7 +114,4 @@ public class BookRepository {
                 """;
         return jdbcTemplate.query(sql, bookJoinMapper);
     }
-
 }
-
-
