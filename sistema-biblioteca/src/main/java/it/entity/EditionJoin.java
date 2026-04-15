@@ -15,6 +15,7 @@ public class EditionJoin {
     private LocalDate publishing_date;
     private String isbn;
     private int quantity;
+    private String status;
     
     /**
      * Costruttore vuoto per EditionJoin.
@@ -35,7 +36,7 @@ public class EditionJoin {
      * @param isbn Codice ISBN
      * @param quantity Quantità di copie disponibili
      */
-    public EditionJoin(int edition_id, int book_id, String book_name, String author_name, String publisher_name, String category_name, LocalDate publishing_date, String isbn, int quantity) {
+    public EditionJoin(int edition_id, int book_id, String book_name, String author_name, String publisher_name, String category_name, LocalDate publishing_date, String isbn, int quantity, String status) {
         this.edition_id = edition_id;
         this.book_id = book_id;
         this.book_name = book_name;
@@ -45,6 +46,7 @@ public class EditionJoin {
         this.publishing_date = publishing_date;
         this.isbn = isbn;
         this.quantity = quantity;
+        this.status = status;
     }
     
     /**
@@ -83,7 +85,15 @@ public class EditionJoin {
         this.book_id = book_id;
     }
     
-    /**
+    public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	/**
      * Ottiene il nome del libro.
      * 
      * @return Nome del libro

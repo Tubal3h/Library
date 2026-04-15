@@ -16,7 +16,7 @@ public class EditionDto {
     private LocalDate publicationDate;
     private String isbnCode;
     private int quantity;
-
+    private String status;
         /**
      * Costruttore vuoto per EditionDto.
      */
@@ -37,18 +37,7 @@ public class EditionDto {
      * @param isbnCode Codice ISBN
      * @param quantity Quantità di copie disponibili
      */
-    public EditionDto(int editionId, int bookId, String bookName, int authorId, String authorName, String publisherName, String categoryName, LocalDate publicationDate, String isbnCode, int quantity) {
-        this.editionId = editionId;
-        this.bookId = bookId;
-        this.bookName = bookName;
-        this.authorId = authorId;
-        this.authorName = authorName;
-        this.publisherName = publisherName;
-        this.categoryName = categoryName;
-        this.publicationDate = publicationDate;
-        this.isbnCode = isbnCode;
-        this.quantity = quantity;
-    }
+
 
     /**
      * Ottiene l'ID dell'edizione.
@@ -59,7 +48,32 @@ public class EditionDto {
         return editionId;
     }
 
-    /**
+    
+    public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
+
+	public EditionDto(int editionId, int bookId, String bookName, int authorId, String authorName, String publisherName,
+			String categoryName, LocalDate publicationDate, String isbnCode, int quantity, String status) {
+		super();
+		this.editionId = editionId;
+		this.bookId = bookId;
+		this.bookName = bookName;
+		this.authorId = authorId;
+		this.authorName = authorName;
+		this.publisherName = publisherName;
+		this.categoryName = categoryName;
+		this.publicationDate = publicationDate;
+		this.isbnCode = isbnCode;
+		this.quantity = quantity;
+		this.status = status;
+	}
+
+	/**
      * Imposta l'ID dell'edizione.
      * 
      * @param editionId ID dell'edizione

@@ -34,6 +34,7 @@ public class EditionJoinRowMapper implements RowMapper<EditionJoin> {
         editionJoin.setPublishingDate(rs.getDate("publishing_date").toLocalDate());
         editionJoin.setIsbn(rs.getString("isbn"));
         editionJoin.setQuantity(rs.getInt("quantity"));
+        editionJoin.setStatus(rs.getString("status"));
         return editionJoin;
     }
 }

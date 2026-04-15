@@ -46,9 +46,6 @@
                 <span class="text-center">Elimina Copia</span>
             </a>
 			
-			<a th:href = "@{/api/addBook(email=${user.userEmail}, isbn=${book.isbnCode})}" th:if="${user.userRole == 'role_admin' and book.status == 'disponibilita'}" class="m-1 btn-modern-action pointer transition shadow-soft">
-			    <span class="text-center">Aggiungi Copia</span>
-			</a>
             <a th:if="${user.userRole != 'role_admin'}" th:href="@{/api/borrow(email=${user.userEmail}, bookId=${book.bookId})}" class="btn-modern-action pointer transition shadow-soft" style="text-decoration: none;">
 
                 <span>Prenota</span>
