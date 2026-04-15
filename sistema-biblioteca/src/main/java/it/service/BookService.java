@@ -7,7 +7,10 @@ package it.service;
 import java.util.List;
 
 
+
 import org.springframework.stereotype.Service;
+
+import it.exception.NoBookIdFoundException;
 
 import it.dto.BookDto;
 import it.entity.BookJoin;
@@ -104,6 +107,17 @@ public class BookService {
 			res = bookRepository.insertBookByIsbn(isbn);
 		}else {
 			throw new NoIsbnFoundException("attenzione isbn non trovato");
+		}
+		return res;
+	}
+	
+	@SuppressWarnings("null")
+	public int deleteBook(Integer id) throws NoBookIdFoundException {
+		int res = 0;
+		if(id != null || id != 0) {
+			res = bookRepository.deleteBookById(id);
+		}else {
+			throw new NoBookIdFoundException(id);
 		}
 		return res;
 	}

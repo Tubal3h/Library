@@ -131,4 +131,14 @@ public class BookRepository implements BookRepositoryInterface{
 		int res = namedParameterJdbcTemplate.update(query, sqlParameters);
 		return res;
 	}
+
+	@Override
+	public int deleteBookById(int id) {
+		String query = "UPDATE books\r\n"
+				 	 + "SET status = 'eliminato'\r\n"
+				 	 + "WHERE book_id = :id";
+		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("id", id);
+		int res = namedParameterJdbcTemplate.update(query, sqlParameters);
+		return res;
+	}
 }

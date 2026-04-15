@@ -44,6 +44,10 @@ public class BookDto {
     public BookDto(String isbnCode) {
     	this.isbnCode = isbnCode;
     }
+    
+    public BookDto(int bookId) {
+    	this.bookId = bookId;
+    }
 
     /**
      * @return ID dell'edizione

@@ -12,4 +12,5 @@ public interface BookRepositoryInterface {
 	public int countBooks();
 	public List<BookJoin> getAllBooks();
 	public int insertBookByIsbn(String isbn);
+	public int deleteBookById(int id);
 }

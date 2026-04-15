@@ -36,17 +36,17 @@
             <div th:if="${user.userRole == 'role_admin'}" class="flex align-center mb-1 status-context" 
                 th:classappend="${book.status == 'disponibilita' ? 'status-vibrant-active' : 'status-vibrant-pending'}">
                 <div class="glass-indicator radius-10 font-size-xs tracking-widest flex align-center gap-1 p-1">
-                    <span th:if="${book.status == 'disponibilita'}">Disponibile</span>
-                    <span th:if="${book.status != 'disponibilita'}">In Prestito</span>
+                    <span th:if="${book.status.equals('disponibilita')}">Disponibile</span>
+                    <span th:if="${book.status.equals('in prestito')}">In Prestito</span>
+					<span th:if="${book.status.equals('eliminato')}">Eliminato</span>
                 </div>
             </div>
-            <a th:if="${user.userRole == 'role_admin'}" class="m-1 btn-modern-action pointer transition shadow-soft">
-                <span class="text-center">Elimina Libro</span>
+            <a th:href = "@{/api/deleteBook(email=${user.userEmail}, bookId=${book.bookId})}" th:if="${user.userRole == 'role_admin' and book.status == 'disponibilita'}" class="m-1 btn-modern-action pointer transition shadow-soft">
+                <span class="text-center">Elimina Copia</span>
             </a>
 			
-			<a th:href = "@{/api/addBook(email=${user.userEmail}, isbn=${book.isbnCode})}"  class="m-1 btn-modern-action pointer transition shadow-soft">
+			<a th:href = "@{/api/addBook(email=${user.userEmail}, isbn=${book.isbnCode})}" th:if="${user.userRole == 'role_admin' and book.status == 'disponibilita'}" class="m-1 btn-modern-action pointer transition shadow-soft">
 			    <span class="text-center">Aggiungi Copia</span>
-				<span class="text-center" th:text="${book.isbnCode}"></span>
 			</a>
             <a th:if="${user.userRole != 'role_admin'}" th:href="@{/api/borrow(email=${user.userEmail}, bookId=${book.bookId})}" class="btn-modern-action pointer transition shadow-soft" style="text-decoration: none;">
                 <span>Prenota</span>
