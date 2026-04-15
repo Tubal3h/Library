@@ -46,7 +46,7 @@ public class EditionRepository {
     	        SELECT
     	        COUNT(b.book_id) AS quantity,
     	        e.edition_id,
-    	        e.book_name_id,
+    	        e.book_id,
     	        bn.title,
     	        CONCAT(a.author_name, ' ', a.author_last_name) AS author_name,
     	        p.publisher_name,
