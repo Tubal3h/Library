@@ -104,14 +104,14 @@ public class BookRepository implements BookRepositoryInterface{
         String sql = """
                 SELECT
                     e.edition_id,
-                    b.book_id AS book_id,
-                    bn.title AS book_name,
+                    b.book_id,
+                    bn.title,
                     CONCAT(a.author_name, ' ', a.author_last_name) AS author_full_name,
                     p.publisher_name,
                     e.publishing_date,
                     c.category_name,
                     e.isbn,
-                    b.status AS status
+                    b.status
                 FROM books b
                 JOIN edition e ON b.edition_id = e.edition_id
                 JOIN books_names bn ON e.book_name_id = bn.book_name_id
