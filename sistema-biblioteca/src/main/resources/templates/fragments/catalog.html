@@ -43,14 +43,53 @@
             <a th:if="${user.userRole == 'role_admin'}" class="m-1 btn-modern-action pointer transition shadow-soft">
                 <span class="text-center">Elimina Libro</span>
             </a>
-			
-			<a th:href = "@{/api/addBook(email=${user.userEmail}, isbn=${book.isbnCode})}"  class="m-1 btn-modern-action pointer transition shadow-soft">
-			    <span class="text-center">Aggiungi Copia</span>
-				<span class="text-center" th:text="${book.isbnCode}"></span>
-			</a>
             <a th:if="${user.userRole != 'role_admin'}" th:href="@{/api/borrow(email=${user.userEmail}, bookId=${book.bookId})}" class="btn-modern-action pointer transition shadow-soft" style="text-decoration: none;">
                 <span>Prenota</span>
             </a>
+        </div>
+    </div>
+</th:block>
+
+<th:block th:fragment="edition">
+    <div
+        th:each="edition, iter : ${editions}"
+        class="book-card-horizontal glass radius-24 p-0 shadow-card flex border-none animate-card overflow-hidden"
+        
+        th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
+        
+        <div class="card-info-main flex-1 p-1 flex flex-column">
+
+            <!--  Title & Author -->
+            <div class="mb-3">
+                <h3 class="text-xl text-brand" th:text="${edition.bookName}"></h3>
+                <p class="text-xl opacity-50" th:text="${edition.authorName}"></p>
+                <div class="category-label font-mono text-lg tracking-widest opacity-40" th:text="${edition.categoryName}">CATEGORIA</div>
+            </div>
+
+            <!-- Info book -->
+            <div class="card-meta mt-auto flex align-center gap-1 opacity-50">
+                <div class="flex align-center gap-1 font-size-small" th:title="${edition.publisherName}">
+                    <i class="fa-solid fa-building-columns text-xs text-brand"></i>
+                    <span th:text="${edition.publisherName}" class="text-truncate" style="max-width: 80px;">Editore</span>
+                </div>
+                <div class="flex align-center gap-1 font-size-small">
+                    <i class="fa-solid fa-calendar-check text-xs text-brand"></i>
+                    <span th:text="${edition.publicationDate}">Data</span>
+                </div>
+                <div class="flex align-center gap-1 font-size-small">
+                    <i class="fa-solid fa-barcode text-xs text-brand"></i>
+                    <span th:text="${edition.isbnCode}" class="font-mono">ISBN</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-action-column p-2 flex flex-column justify-center border-l">
+            <div class="glass-indicator radius-10 font-size-xs tracking-widest flex align-center gap-1 p-1">
+                <span th:text="'Quantità: ' + ${edition.quantity}"></span>
+            </div>
+			<a th:href = "@{/api/addBook(email=${user.userEmail}, isbn=${edition.isbnCode})}"  class="m-1 btn-modern-action pointer transition shadow-soft">
+			    <span class="text-center">Aggiungi Copia</span>
+			</a>
         </div>
     </div>
 </th:block>

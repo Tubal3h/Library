@@ -7,8 +7,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import it.dto.BookDto;
 import it.dto.UserDto;
-import it.entity.Book;
-import it.entity.User;
 import it.exception.NoIsbnFoundException;
 import it.service.BookService;
 import it.service.UserService;
@@ -44,7 +42,7 @@ public class AdminController {
 				model.addAttribute("insertFallitaException", ex.ToString());
 				
 			}		
-		return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog";
+		return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=edition";
 	}
 	
 }
