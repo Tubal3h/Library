@@ -54,7 +54,6 @@ public class AuthController {
         User user;
         try {
             user = authService.login(loginDto);
-            System.out.println(user);
             if (user == null) {
                 model.addAttribute("error", "Email o password errati");
                 return "redirect:/?error=invalid_credentials";

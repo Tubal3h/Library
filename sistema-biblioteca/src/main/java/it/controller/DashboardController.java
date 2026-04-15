@@ -19,6 +19,7 @@ import it.service.UserService;
 import it.service.AuthorService;
 import it.service.CategoryService;
 import it.service.PublisherService;
+import it.service.EditionService;
 
 /**
  * Controller per la gestione della dashboard principale dell'applicazione.
@@ -33,6 +34,7 @@ public class DashboardController {
     private final AuthorService authorService;
     private final CategoryService categoryService;
     private final PublisherService publisherService;
+    private final EditionService editionService;
 
     /**
      * Costruttore per DashboardController.
@@ -43,14 +45,16 @@ public class DashboardController {
      * @param authorService Servizio per la gestione degli autori
      * @param categoryService Servizio per la gestione delle categorie
      * @param publisherService Servizio per la gestione degli editori
+     * @param editionService Servizio per la gestione delle edizioni
      */
-    public DashboardController(UserService userService, BookService bookService, RentService rentService, AuthorService authorService, CategoryService categoryService, PublisherService publisherService) {
+    public DashboardController(UserService userService, BookService bookService, RentService rentService, AuthorService authorService, CategoryService categoryService, PublisherService publisherService, EditionService editionService) {
         this.userService = userService;
         this.bookService = bookService;
         this.rentService = rentService;
         this.authorService = authorService;
         this.categoryService = categoryService;
         this.publisherService = publisherService;
+        this.editionService = editionService;
     }
 
     /**
@@ -78,7 +82,6 @@ public class DashboardController {
             return "redirect:/";
         }
 
-        boolean popup = false;
 
         model.addAttribute("user", user);
         model.addAttribute("section", section);
@@ -112,7 +115,9 @@ public class DashboardController {
                 model.addAttribute("rentedBooks", rentedBooks);
             }
 
-            model.addAttribute("popup", popup);
+            if ("edition".equals(section) && "role_admin".equals(user.getUserRole())) {
+                model.addAttribute("editions", editionService.getAllEditions());
+            }
 
         } catch (Exception e) {
             System.out.println("Errore di caricamento db: " + e.getMessage());
