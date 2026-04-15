@@ -1,4 +1,4 @@
-<div th:fragment = "ciaoListaLibri(username, role)">
+<div th:fragment = "ciaoListaLibri(username, role, email)">
 	<form th:action = "@{/admin/gestione}" method = "post">
 		<input type = hidden name = "azione" value="showBooksV2">
 		<input type = hidden name = "username" th:value = "${username}">

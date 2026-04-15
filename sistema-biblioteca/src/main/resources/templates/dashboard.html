@@ -18,6 +18,7 @@
 
             <button th:if="${user.userRole == 'role_admin' && section == 'catalog'}" class="btn-create radius-full py-2 px-3 fw-600 glass shadow-soft cursor-pointer">
                 <i class="fa-solid fa-plus mr-1"></i> Aggiungi Libro
+				
             </button>
 
             <button th:if="${user.userRole == 'role_admin' && section == 'users'}" class="btn-create radius-full py-2 px-3 fw-600 glass shadow-soft cursor-pointer">
