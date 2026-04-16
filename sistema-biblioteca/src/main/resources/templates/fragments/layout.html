@@ -48,6 +48,50 @@
     <script th:src="@{/js/fragments/catalog.js}"></script>
     <script th:src="@{/js/fragments/popup.js}"></script>
     <script th:src="@{/js/fragments/searchbar.js}"></script>
+
+    <!--/* Script auto-popup da Flash Attributes (RedirectAttributes) */-->
+    <th:block th:if="${popupType != null}">
+        <script th:inline="javascript">
+            document.addEventListener("DOMContentLoaded", function () {
+                const popupType   = /*[[${popupType}]]*/ null;
+                const bookIsbn    = /*[[${popupBookIsbn}]]*/ null;
+                const bookId      = /*[[${popupBookId}]]*/ null;
+                const errorMsg    = /*[[${popupErrorMessage}]]*/ null;
+
+                // Nascondi tutti i pannelli del body
+                document.getElementById('editBookContent').classList.add('none');
+                document.getElementById('addCopyContent').classList.add('none');
+                document.getElementById('deleteBookContent').classList.add('none');
+                document.getElementById('errorContent').classList.add('none');
+
+                // Nascondi il footer con "Annulla / Conferma" (non serve per i popup di feedback)
+                const footer = document.querySelector('.popup-footer');
+                if (footer) footer.classList.add('none');
+
+                if (popupType === 'addCopy') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-circle-check text-white font-size-medium';
+                    document.getElementById('popupTitle').textContent = 'Copia aggiunta';
+                    document.getElementById('addCopyBookName').textContent = bookIsbn || '';
+                    document.getElementById('addCopyContent').classList.remove('none');
+
+                } else if (popupType === 'deleteBook') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-trash-can text-white font-size-medium';
+                    document.getElementById('popupTitle').textContent = 'Copia eliminata';
+                    document.getElementById('deleteBookId').textContent = bookId || '';
+                    document.getElementById('deleteBookContent').classList.remove('none');
+
+                } else if (popupType === 'error') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-circle-exclamation text-white font-size-medium';
+                    document.getElementById('popupTitle').textContent = 'Errore';
+                    document.getElementById('errorMessage').textContent = errorMsg || 'Operazione non riuscita.';
+                    document.getElementById('errorContent').classList.remove('none');
+                }
+
+                // Mostra l'overlay del popup
+                document.getElementById('genericPopup').classList.remove('none');
+            });
+        </script>
+    </th:block>
 </body>
 
 </html>
