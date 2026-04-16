@@ -47,7 +47,7 @@ public class BookService {
      * @param userRole Ruolo dell'utente (es. role_user, role_admin)
      * @return Lista di {@link BookDto} dei libri accessibili all'utente
      */
-    public List<BookDto> getAllBooks(String userRole) {
+    private List<BookDto> getAllBooks(String userRole) {
         List<BookJoin> repoBook = bookRepository.getAllBooks();
         return repoBook.stream()
             .filter(book -> !userRole.equals("role_user") ||
@@ -124,8 +124,15 @@ public class BookService {
 		}
 		return res;
 	}
-	
-	public List<BookDto> getBookListByNameOrAuthor(String search, String userRole) {
+
+    /**
+     * Recupera una lista di libri filtrata per nome del libro.
+     * 
+     * @param search Il termine di ricerca per il nome del libro
+     * @param userRole Il ruolo dell'utente che effettua la ricerca
+     * @return Lista di BookDto contenente le informazioni condensate dei libri filtrati per nome del libro
+     */
+	public List<BookDto> getBookListByName(String search, String userRole) {
 		List<BookDto> myList = getAllBooks(userRole);
 		List<BookDto> filteredList = new ArrayList<>();
 		if(search != null && !search.isBlank()) {

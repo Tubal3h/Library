@@ -20,16 +20,15 @@
             </div>
             <div class="header-actions flex align-center gap-2">
 
-                <button th:if="${user.userRole == 'role_admin' && section == 'catalog'}"
-                    class="btn-create radius-full py-2 px-3 fw-600 glass shadow-soft cursor-pointer">
-                    <i class="fa-solid fa-plus mr-1"></i> Aggiungi Libro
-
+                <button th:if="${user.userRole == 'role_admin' && section == 'edition'}"
+                    class="btn-create btn-sm shadow-soft">
+                    <i class="fa-solid fa-plus"></i> Aggiungi Edizione
                 </button>
-
+<!-- 
                 <button th:if="${user.userRole == 'role_admin' && section == 'users'}"
                     class="btn-create radius-full py-2 px-3 fw-600 glass shadow-soft cursor-pointer">
                     <i class="fa-solid fa-plus mr-1"></i> Aggiungi Utente
-                </button>
+                </button> -->
 
                 <div th:if="${(section == 'catalog' || section == 'users' || section == 'edition' || section == 'rents')}"
                     class="header-icon glass radius-circle center pointer shadow-soft" th:data-section="${section}"
@@ -113,27 +112,27 @@
         </div>
 
         <!-- Sezione catalogo libri -->
-        <div th:if="${section == 'catalog'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
+        <div th:if="${section == 'catalog'}" class="grid gap-3 animate-fade-in-up opacity-0 delay-1">
             <div th:replace="~{fragments/catalog :: catalog}"
                 class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
 
             </div>
         </div>
 
-        <div th:if="${section == 'edition'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
+        <div th:if="${section == 'edition'}" class="grid gap-3 animate-fade-in-up opacity-0 delay-1">
             <div th:replace="~{fragments/catalog :: edition}"
                 class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
 
             </div>
         </div>
         <!-- Sezione lista utenti per admin-->
-        <div th:if="${section == 'users'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
+        <div th:if="${section == 'users'}" class="grid gap-3 animate-fade-in-up opacity-0 delay-1">
             <div th:replace="~{fragments/users :: users}"
                 class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
             </div>
         </div>
         <!-- Sezione lista prestiti -->
-        <div th:if="${section == 'rents'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
+        <div th:if="${section == 'rents'}" class="grid gap-3 animate-fade-in-up opacity-0 delay-1">
             <div th:replace="~{fragments/rents :: rents}"
                 class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
             </div>

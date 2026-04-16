@@ -1,5 +1,6 @@
 package it.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class EditionService {
      * 
      * @return Lista di EditionDto contenente i metadati completi dell'edizione
      */
-    public List<EditionDto> getAllEditions() {
+    private List<EditionDto> getAllEditions() {
         List<EditionJoin> editions = editionRepository.getAllEditions();
         return editions.stream().map(edition -> {
             EditionDto dto = new EditionDto();
@@ -45,4 +46,27 @@ public class EditionService {
             return dto;
         }).toList();
     }
+
+    /**
+     * Recupera una lista di edizioni filtrata per nome del libro.
+     * 
+     * @param search Il termine di ricerca per il nome del libro
+     * @return Lista di EditionDto contenente le informazioni condensate delle edizioni filtrati per nome del libro
+     */
+	public List<EditionDto> getEditionListByName(String search) {
+		List<EditionDto> myList = getAllEditions();
+		List<EditionDto> filteredList = new ArrayList<>();
+		if(search != null && !search.isBlank()) {
+			for(EditionDto edition : myList) {
+				if(edition.getBookName().replaceAll("\\s+","").toLowerCase().equals(search.replaceAll("\\s+","").toLowerCase())) {
+					filteredList.add(edition);
+				}
+			}	
+		}
+		if(filteredList.isEmpty() || filteredList == null) {
+			return myList;
+		}else {
+			return filteredList;
+		}
+	}
 }
