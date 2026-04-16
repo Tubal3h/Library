@@ -59,10 +59,12 @@ public class BookNameRepository {
     }
     
     public int insertBookByTitle(String title) {
-		String insertBook = "INSERT INTO books_names(title)\r\n"
+		
+    	String insertBook = "INSERT INTO books_names(title)\r\n"
 				  		  + "VALUES(:title)";
 		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue(title, "title");
 		int res = namedParameterJdbcTemplate.update(insertBook, sqlParameters);
 		return res;
+    
     }
 }

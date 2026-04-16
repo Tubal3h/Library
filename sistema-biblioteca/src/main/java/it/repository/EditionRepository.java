@@ -103,12 +103,16 @@ public class EditionRepository implements EditionRepositoryInterface {
 							 + "(SELECT category_id FROM category WHERE category_id = :categoryId),\r\n"
 							 + "(:isbn))";
 		
-		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("title", title);
+		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("title", title)
+																	 .addValue("authorId", authorId) 
+																	 .addValue("publisherId", publisherId) 
+																	 .addValue("categoryId", categoryId) 
+																	 .addValue("isbn", isbn);
 		
-		return 0;
-	}
-    
-    
+		int res = namedParameterJdbcTemplate.update(insertEdition, sqlParameter);
+															 
+		return res;
+	} 
 }
 
 

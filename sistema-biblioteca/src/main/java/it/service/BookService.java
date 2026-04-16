@@ -1,5 +1,6 @@
 package it.service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 
@@ -18,7 +19,9 @@ import it.exception.NoBookIdFoundException;
 import it.dto.BookDto;
 import it.entity.BookJoin;
 import it.exception.BookNotFoundException;
+import it.repository.BookNameRepository;
 import it.repository.BookRepository;
+import it.repository.EditionRepository;
 import it.exception.NoIsbnFoundException;
 
 /**
@@ -29,14 +32,18 @@ import it.exception.NoIsbnFoundException;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final EditionRepository editionRepository;
+    private final BookNameRepository bookNameRepository;
 
     /**
      * Costruttore per BookService.
      *
      * @param bookRepository Repository per l'accesso ai dati dei libri
      */
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, EditionRepository editionRepository, BookNameRepository bookNameRepository) {
         this.bookRepository = bookRepository;
+		this.editionRepository = editionRepository;
+		this.bookNameRepository = bookNameRepository;
     }
 
     /**
@@ -147,5 +154,12 @@ public class BookService {
 		}else {
 			return filteredList;
 		}
+	}
+	public int insertBook(String title, Integer authorId, Integer publisherId, LocalDate date, Integer categoryId, String isbn) {
+		
+		int firstRes = bookNameRepository.insertBookByTitle(title);
+		int secondRes = editionRepository.insertEdition(title, authorId, publisherId, date, categoryId, isbn);
+		int thirdRes = bookRepository.insertBookByTitle(title);
+		return firstRes + secondRes + thirdRes;
 	}
 }

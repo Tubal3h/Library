@@ -141,5 +141,15 @@ public class BookRepository implements BookRepositoryInterface{
 		int res = namedParameterJdbcTemplate.update(query, sqlParameters);
 		return res;
 	}
+	
+	public int insertBookByTitle(String title) {
+		String insertBook = "INSERT INTO books (edition_id, status)\r\n"
+						  + "VALUES((SELECT edition_id FROM edition INNER JOIN books_names ON edition.book_name_id = books_names.book_name_id WHERE title = 'La storia di Ajeje Brazorf'),\r\n"
+						  + "('disponibilita'));";
+		
+		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("title", title);
+		int res = namedParameterJdbcTemplate.update(insertBook, sqlParameter);
+		return res;
+	}
 
 }
