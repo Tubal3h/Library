@@ -1,7 +1,11 @@
-/* ============================================================
-   POPUP MODAL COMPONENT (PREMIUM REFINED)
-   Using style.css variables and design language.
-   ============================================================ */
+/* 
+   --------------------------------------------------------------------------
+   POPUP MODAL STYLES (POPUP.CSS)
+   --------------------------------------------------------------------------
+   Definisce l'estetica e le animazioni delle finestre modali.
+   Utilizza backdrop-filter per l'effetto vetro (glassmorphism) e 
+   gestisce le transizioni di scala per un'esperienza utente premium.
+*/
 
 .popup-overlay {
     position: fixed;

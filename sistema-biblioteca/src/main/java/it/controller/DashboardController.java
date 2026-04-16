@@ -70,6 +70,7 @@ public class DashboardController {
     public String dashboard(
         @RequestParam(value = "email", required = false) String email,
         @RequestParam(value = "section", defaultValue = "home") String section,
+        @RequestParam(value = "search", required = false) String search,
         Model model
     ) {
         if (email == null || email.isEmpty()) {
@@ -85,6 +86,7 @@ public class DashboardController {
 
         model.addAttribute("user", user);
         model.addAttribute("section", section);
+        model.addAttribute("search", search);
 
         try {
             if ("home".equals(section)) {
@@ -102,7 +104,9 @@ public class DashboardController {
             }
 
             if ("catalog".equals(section)) {
-                model.addAttribute("books", bookService.getAllBooks(user.getUserRole()));
+                
+                model.addAttribute("books", bookService.getBookListByNameOrAuthor(search,user.getUserRole()));
+                // model.addAttribute("books", bookService.getAllBooks(user.getUserRole()));
                 model.addAttribute("authors", authorService.getAllAuthors());
                 model.addAttribute("categories", categoryService.getAllCategories());
                 model.addAttribute("publishers", publisherService.getAllPublishers());
@@ -126,5 +130,36 @@ public class DashboardController {
         }
 
         return "dashboard";
+    }
+
+    /**
+     * Gestisce la richiesta di ricerca.
+     * Reindirizza l'utente alla dashboard con il parametro di ricerca incluso nell'URL.
+     *
+     * @param email   Email dell'utente loggato
+     * @param section Sezione in cui si sta effettuando la ricerca
+     * @param search  Stringa di ricerca immessa dall'utente
+     * @param model   il modello per la vista
+     * @return Redirect alla dashboard con i parametri aggiornati
+     */
+    @GetMapping("/api/search")
+    public String search(
+        @RequestParam(value = "email", required = false) String email,
+        @RequestParam(value = "section", required = false) String section,
+        @RequestParam(value = "search", required = false) String search, Model model) {
+        if (email == null || email.isEmpty()) {
+            return "redirect:/";
+        }
+
+        UserDto user = userService.getUserByEmail(email);
+
+        if (user == null) {
+            return "redirect:/";
+        }
+
+        model.addAttribute("user", user);
+        model.addAttribute("section", section);
+        model.addAttribute("search", search);
+        return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=" + section + "&search=" + search;
     }
 }

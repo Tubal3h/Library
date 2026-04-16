@@ -36,32 +36,33 @@
                             placeholder="Esempio: Il Nome della Rosa">
                     </div>
                     <div class="input-group">
-                        <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Autore Principale</label>
-                        <select id="editAuthorInput" class="w-100 p-4 radius-12 border-none font-size-small w-100 cursor-pointer">
+                        <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Autore
+                            Principale</label>
+                        <select id="editAuthorInput"
+                            class="w-100 p-4 radius-12 border-none font-size-small w-100 cursor-pointer">
                             <option value="">Seleziona un autore...</option>
-                            <option th:each="author : ${authors}" 
-                                    th:value="${author.authorId}" 
-                                    th:text="${author.authorName} + ' ' + ${author.authorLastName}">
+                            <option th:each="author : ${authors}" th:value="${author.authorId}"
+                                th:text="${author.authorName} + ' ' + ${author.authorLastName}">
                             </option>
                         </select>
                     </div>
                     <div class="input-group">
                         <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Categoria</label>
-                        <select id="editCategoryInput" class="w-100 p-4 radius-12 border-none font-size-small w-100 cursor-pointer">
+                        <select id="editCategoryInput"
+                            class="w-100 p-4 radius-12 border-none font-size-small w-100 cursor-pointer">
                             <option value="">Seleziona una categoria...</option>
-                            <option th:each="category : ${categories}" 
-                                    th:value="${category.categoryId}" 
-                                    th:text="${category.categoryName}">
+                            <option th:each="category : ${categories}" th:value="${category.categoryId}"
+                                th:text="${category.categoryName}">
                             </option>
                         </select>
                     </div>
                     <div class="input-group">
                         <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Editore</label>
-                        <select id="editPublisherInput" class="w-100 p-4 radius-12 border-none font-size-small w-100 cursor-pointer">
+                        <select id="editPublisherInput"
+                            class="w-100 p-4 radius-12 border-none font-size-small w-100 cursor-pointer">
                             <option value="">Seleziona un editore...</option>
-                            <option th:each="publisher : ${publishers}" 
-                                    th:value="${publisher.publisherId}" 
-                                    th:text="${publisher.publisherName}">
+                            <option th:each="publisher : ${publishers}" th:value="${publisher.publisherId}"
+                                th:text="${publisher.publisherName}">
                             </option>
                         </select>
                     </div>

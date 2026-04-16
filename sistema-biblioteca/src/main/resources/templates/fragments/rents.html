@@ -1,35 +1,55 @@
+<!-- 
+    -------------------------------------------------------------------------
+    RENTS FRAGMENT (RENTS.HTML)
+    -------------------------------------------------------------------------
+    Visualizza l'elenco dei prestiti (record di noleggio) attivi o storici.
+    Le card mostrano le date di inizio/scadenza, l'ISBN del libro e l'ID utente.
+    Gli amministratori dispongono di azioni per segnare il libro come restituito.
+-->
 <th:block th:fragment="rents">
-    <!-- Rental Record Cards -->
+    <!-- Contenitore delle Card dei Prestiti -->
     <div th:each="rent, iter : ${rentedBooks}"
-         class="book-card-horizontal glass radius-24 shadow-card flex animate-card p-relative"
-         th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
+        class="book-card-horizontal glass radius-24 shadow-card flex animate-card p-relative"
+        th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
 
-        <!-- Left Column: Information -->
+        <!-- Colonna Sinistra: Informazioni sul Libro e sul Prestito -->
         <div class="card-info-main flex-1 p-5 flex flex-column justify-center">
 
-            <!-- Book Title & Author -->
+            <!-- Titolo e Autore del Libro -->
             <div class="mb-4">
-                <h3 class="text-3xl fw-700 text-brand mb-1" th:text="${rent.book != null ? rent.book.title : 'N/A'}"></h3>
-                <p class="text-xl fw-400 opacity-60 mb-3" th:text="${rent.book != null ? rent.book.authorFullName : 'N/A'}"></p>
-                <div class="category-label font-mono text-sm tracking-widest opacity-80 uppercase" th:text="${rent.book != null ? rent.book.categoryName : 'ALTRO'}">CATEGORIA</div>
+                <h3 class="text-3xl fw-700 text-brand mb-1" th:text="${rent.book != null ? rent.book.title : 'N/A'}">
+                </h3>
+                <p class="text-xl fw-400 opacity-60 mb-3"
+                    th:text="${rent.book != null ? rent.book.authorFullName : 'N/A'}"></p>
+                
+                <!-- Label Categoria -->
+                <div class="category-label font-mono text-sm tracking-widest opacity-80 uppercase"
+                    th:text="${rent.book != null ? rent.book.categoryName : 'ALTRO'}">CATEGORIA</div>
             </div>
 
-            <!-- Dates Row -->
+            <!-- Righe Metadati: Date, ISBN e User ID -->
             <div class="card-meta mt-auto flex align-center gap-4 opacity-70">
+                <!-- Data di Inizio Noleggio -->
                 <div class="flex align-center gap-2 font-size-small">
                     <i class="fa-solid fa-calendar-arrow-up text-sm text-brand"></i>
                     <span>Preso:</span>
                     <span th:text="${rent.rentalDate}" class="fw-600">Inizio</span>
                 </div>
+                
+                <!-- Data di Scadenza -->
                 <div class="flex align-center gap-2 font-size-small">
                     <i class="fa-solid fa-calendar-arrow-down text-sm text-brand"></i>
                     <span>Scadenza:</span>
                     <span th:text="${rent.rentalExpired}" class="fw-600">Scadenza</span>
                 </div>
+                
+                <!-- Codice ISBN -->
                 <div class="flex align-center gap-2 font-size-small" th:if="${rent.book != null}">
                     <i class="fa-solid fa-barcode text-sm text-brand"></i>
                     <span th:text="${rent.book.isbnCode}" class="font-mono fw-600">ISBN</span>
                 </div>
+                
+                <!-- ID Utente (Utile per gli Admin) -->
                 <div class="flex align-center gap-2 font-size-small">
                     <i class="fa-solid fa-user text-sm text-brand"></i>
                     <span th:text="'User ID: ' + ${rent.userId}" class="font-mono fw-600">USER</span>
@@ -37,27 +57,35 @@
             </div>
         </div>
 
+        <!-- Colonna Destra: Stato e Azioni Gestionali -->
         <div class="card-action-column p-4 flex flex-column justify-center align-center border-l">
-            <!-- Container Admin -->
+            
+            <!-- Sezione visibile solo agli Amministratori -->
             <div th:if="${user.userRole == 'role_admin'}" class="w-100 flex flex-column align-center">
+                
+                <!-- Indicatore di Stato Dinamico (Restituito, Da Restituire, Scaduto) -->
                 <div class="mb-3 status-context"
-                     th:classappend="${rent.rentalEnded != null ? 'status-vibrant-active' : (rent.rentalDate.isAfter(rent.rentalExpired) ? 'status-vibrant-error' : 'status-vibrant-pending')}">
-                    
-                    <div class="glass-indicator radius-10 font-size-xs tracking-widest flex align-center gap-2 p-2 px-8">
+                    th:classappend="${rent.rentalEnded != null ? 'status-vibrant-active' : (rent.rentalDate.isAfter(rent.rentalExpired) ? 'status-vibrant-error' : 'status-vibrant-pending')}">
+
+                    <div
+                        class="glass-indicator radius-10 font-size-xs tracking-widest flex align-center gap-2 p-2 px-8">
                         <div class="dot"></div>
-                        <span th:if="${rent.rentalDate.isBefore(rent.rentalExpired) || rent.rentalDate.isEqual(rent.rentalExpired)}"
+                        <span
+                            th:if="${rent.rentalDate.isBefore(rent.rentalExpired) || rent.rentalDate.isEqual(rent.rentalExpired)}"
                             th:text="${rent.rentalEnded != null ? 'Restituito' : 'Da Restituire'}">STATO</span>
 
                         <span th:if="${rent.rentalDate.isAfter(rent.rentalExpired)}"
                             th:text="${rent.rentalEnded != null ? 'Restituito' : 'Scaduto'}">STATO</span>
                     </div>
                 </div>
-                
-                <a th:href="@{/api/delivered(email=${user.userEmail}, bookID=${rent.bookId}, rentID=${rent.rentId})}" class="w-100 btn-modern-action pointer transition shadow-soft" style="text-decoration: none;">
+
+                <!-- Pulsante per confermare la restituzione (Consegnato) -->
+                <a th:href="@{/api/delivered(email=${user.userEmail}, bookID=${rent.bookId}, rentID=${rent.rentId})}"
+                    class="w-100 btn-modern-action pointer transition shadow-soft no-underline">
                     <span>Consegnato</span>
                     <i class="fa-solid fa-check"></i>
                 </a>
             </div>
         </div>
     </div>
-</th:block>
+</th:block>

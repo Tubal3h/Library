@@ -1,6 +1,11 @@
-/* ============================================================
-   SIDEBAR.CSS (Vertical Navbar)
-   ============================================================ */
+/* 
+   --------------------------------------------------------------------------
+   SIDEBAR STYLES (NAVBAR.CSS)
+   --------------------------------------------------------------------------
+   Gestisce l'aspetto e il comportamento della barra di navigazione laterale.
+   Include la gestione degli stati (hover, active), lo scrolling personalizzato
+   e l'adattamento per il toggle del tema (Light/Dark).
+*/
 #sidebar {
     width: 260px;
     height: calc(100vh - 3rem);

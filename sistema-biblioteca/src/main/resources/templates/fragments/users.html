@@ -1,24 +1,33 @@
+<!-- 
+    -------------------------------------------------------------------------
+    USERS FRAGMENT (USERS.HTML)
+    -------------------------------------------------------------------------
+    Visualizza l'elenco degli utenti registrati nel sistema.
+    Mostra il ruolo (User/Admin), il nome completo, l'email e l'ID univoco.
+    Solo gli amministratori possono visualizzare ed eseguire azioni su questa lista.
+-->
 <th:block th:fragment="users">
-    <!-- User Record Cards -->
+    <!-- Contenitore delle Card Utente -->
     <div th:each="user, iter : ${users}"
-         class="book-card-horizontal glass radius-24 p-0 shadow-card flex border-none animate-card overflow-hidden"
-         th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
+        class="book-card-horizontal glass radius-24 p-0 shadow-card flex border-none animate-card overflow-hidden"
+        th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
 
-        <!-- Left Column: Information (75%) -->
+        <!-- Colonna Sinistra: Informazioni Utente (Profilo e Ruolo) -->
         <div class="card-info-main flex-1 p-7 flex flex-column">
-            <!-- Header: Role -->
+            <!-- Badge Ruolo -->
             <div class="flex align-end mb-1 status-context status-vibrant-active">
                 <div class="glass-indicator radius-10 tracking-widest flex align-center gap-1 p-1">
-                    <p class="text-sm" th:text="${user.userRole != 'role_admin' ? 'Utente' : 'Amministratore'}">RUOLO</p>
+                    <p class="text-sm" th:text="${user.userRole != 'role_admin' ? 'Utente' : 'Amministratore'}">RUOLO
+                    </p>
                 </div>
             </div>
 
-            <!-- Middle: Name and Surname -->
+            <!-- Nome e Cognome -->
             <div class="mb-5">
                 <h3 class="text-xl fw-700 text-brand mb-1" th:text="${user.userName} + ' ' + ${user.userLastName}"></h3>
             </div>
 
-            <!-- Meta: Info Row -->
+            <!-- Metadati: Email e User ID -->
             <div class="card-meta mt-auto flex align-center gap-4 opacity-50">
                 <div class="flex align-center gap-2 font-size-small">
                     <i class="fa-solid fa-envelope text-xs text-brand"></i>
@@ -31,11 +40,11 @@
             </div>
         </div>
 
-        <!-- Right Column: Action Section -->
+        <!-- Colonna Destra: Azioni Administrative (Eliminazione) -->
         <div class="card-action-column p-2 flex flex-column justify-center border-l">
             <button class="btn-modern-action pointer transition shadow-soft flex align-center gap-2">
-                <span>Elimina</span>
+                <span>Elimina Account</span>
             </button>
-        </div> 
+        </div>
     </div>
-</th:block>
+</th:block>

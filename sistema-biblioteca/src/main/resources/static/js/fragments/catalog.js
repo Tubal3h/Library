@@ -1,16 +1,21 @@
-/* ============================================================
-   CATALOG.JS
-   Interactions and staggered animations for the book catalog.
-   ============================================================ */
+/**
+ * catalog.js
+ * Gestisce le interazioni e le animazioni specifiche della sezione catalogo (catalog.html).
+ * Nota: La maggior parte delle animazioni a cascata (stagger) è gestita tramite
+ * variabili CSS (--delay) calcolate direttamente in Thymeleaf.
+ */
 
 document.addEventListener('DOMContentLoaded', () => {
-    // We can add additional logic here if we want to handle 
-    // dynamic filtering or more complex animations.
+    /**
+     * Inizializzazione della logica del catalogo.
+     * È possibile estendere questo script per gestire filtri dinamici client-side
+     * o caricamenti asincroni (AJAX) delle schede libro.
+     */
     
-    // Smooth entrance is already handled by CSS --delay variables,
-    // but we can ensure they are visible if needed.
-    const catalogCards = document.querySelectorAll('.book-card');
+    // Selettore per tutte le schede libro presenti nel catalogo
+    const catalogCards = document.querySelectorAll('.animate-card');
     
-    // Optional: Refresh animations when section changes (if using AJAX)
-    // For now, standard page load is enough.
+    if (catalogCards.length > 0) {
+        console.log(`[Catalog] Inizializzate ${catalogCards.length} schede libro.`);
+    }
 });

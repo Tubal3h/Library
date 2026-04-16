@@ -1,13 +1,22 @@
-/* ============================================================
-   SIDEBAR.JS — Sidebar Logics
-   ============================================================ */
+/**
+ * navbar.js
+ * Logica per la barra di navigazione laterale (navbar.html).
+ * Gestisce l'animazione di ingresso e le interazioni specifiche della Sidebar.
+ */
+
 document.addEventListener('DOMContentLoaded', () => {
     const sidebar = document.getElementById('sidebar');
     
-    // Initial entrance animation trigger (handled by CSS, but good to have a backup)
+    /**
+     * Trigger per l'animazione di ingresso iniziale.
+     * Anche se l'animazione base è gestita via CSS, questo timeout
+     * assicura che l'elemento diventi visibile correttamente.
+     */
     setTimeout(() => {
-        if (sidebar) sidebar.style.opacity = '1';
+        if (sidebar) {
+            sidebar.style.opacity = '1';
+        }
     }, 100);
 
-    // Sidebar Tooltip or Collapse logic can go here
+    // Nota: Eventuali logiche per tooltip o collassamento sidebar possono essere aggiunte qui.
 });

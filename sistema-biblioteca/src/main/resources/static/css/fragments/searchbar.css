@@ -1,8 +1,10 @@
-/* ============================================================
-   SEARCHBAR MODAL COMPONENT (PREMIUM REFINED)
-   Relies heavily on popup.css and style.css for foundational
-   styles. Only includes tweaks specific to the searchbar input.
-   ============================================================ */
+/* 
+   --------------------------------------------------------------------------
+   SEARCHBAR MODAL STYLES (SEARCHBAR.CSS)
+   --------------------------------------------------------------------------
+   Estende gli stili base dei popup per personalizzare l'interfaccia di ricerca.
+   Ispirato al design minimalista e moderno, ottimizzato per input rapidi.
+*/
 
 /* Extra enhancement for search input */
 #searchInputField {

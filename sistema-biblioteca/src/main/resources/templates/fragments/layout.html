@@ -1,22 +1,24 @@
 <!DOCTYPE html>
 <html th:fragment="master(titolo, contenuto)" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title th:text="${titolo} ?: 'Library | Sistema Biblioteca'"></title>
-    
+
     <!-- Librerie esterne -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- Stili Base -->
     <link rel="stylesheet" th:href="@{/css/style.css}">
-    
+
     <!-- Stili Frammenti (Layout, Navbar, Footer) -->
     <link rel="stylesheet" th:href="@{/css/fragments/navbar.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/catalog.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/popup.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/searchbar.css}">
 </head>
+
 <body data-theme="light">
     <!-- Background Glow Effect (similar to image) -->
     <div class="bg-glow"></div>
@@ -44,4 +46,5 @@
     <script th:src="@{/js/fragments/popup.js}"></script>
     <script th:src="@{/js/fragments/searchbar.js}"></script>
 </body>
+
 </html>

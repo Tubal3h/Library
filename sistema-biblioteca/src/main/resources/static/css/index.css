@@ -1,26 +1,45 @@
-
-
 /* ============================================================
    ANIMAZIONI DI APERTURA
    ============================================================ */
 @keyframes fadeSlideUp {
-    from { opacity: 0; transform: translateY(28px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(28px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
 }
 
 @keyframes scaleIn {
-    from { opacity: 0; transform: scale(1.04); }
-    to   { opacity: 1; transform: scale(1); }
+    from {
+        opacity: 0;
+        transform: scale(1.04);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 /* Stato iniziale — tutto invisibile fino al trigger JS */
 body.page-loading #left-panel,
-body.page-loading #right-panel { opacity: 0; }
+body.page-loading #right-panel {
+    opacity: 0;
+}
 
 /* Pannello sinistro: zoom-in lento */
 body.page-ready #left-panel {
@@ -41,6 +60,7 @@ body.page-ready #right-logo {
 body.page-ready #form-title {
     animation: fadeSlideUp 0.55s ease 0.4s both;
 }
+
 body.page-ready #form-subtitle {
     animation: fadeSlideUp 0.55s ease 0.48s both;
 }
@@ -49,6 +69,7 @@ body.page-ready #form-subtitle {
 body.page-ready #login-form .input-group:nth-child(1) {
     animation: fadeSlideUp 0.5s ease 0.55s both;
 }
+
 body.page-ready #login-form .input-group:nth-child(2) {
     animation: fadeSlideUp 0.5s ease 0.63s both;
 }
@@ -57,6 +78,7 @@ body.page-ready #login-form .input-group:nth-child(2) {
 body.page-ready #form-options {
     animation: fadeSlideUp 0.45s ease 0.7s both;
 }
+
 body.page-ready #login-btn {
     animation: fadeSlideUp 0.45s ease 0.77s both;
 }
@@ -88,12 +110,10 @@ body.page-ready #right-footer {
 
 #left-overlay {
     inset: 0;
-    background: linear-gradient(
-        to bottom,
-        rgba(10, 8, 5, 0.45) 0%,
-        rgba(10, 8, 5, 0.15) 40%,
-        rgba(10, 8, 5, 0.65) 100%
-    );
+    background: linear-gradient(to bottom,
+            rgba(10, 8, 5, 0.45) 0%,
+            rgba(10, 8, 5, 0.15) 40%,
+            rgba(10, 8, 5, 0.65) 100%);
 }
 
 /* ============================================================
@@ -106,9 +126,13 @@ body.page-ready #right-footer {
     padding: 32px 48px;
 }
 
-#right-logo { width: 130px; }
+#right-logo {
+    width: 130px;
+}
 
-#right-form-wrapper { gap: 0; }
+#right-form-wrapper {
+    gap: 0;
+}
 
 #form-title {
     font-size: clamp(2rem, 4vw, 2.8rem);
@@ -135,9 +159,13 @@ body.page-ready #right-footer {
 }
 
 /* --- Form --- */
-#login-form { gap: 18px; }
+#login-form {
+    gap: 18px;
+}
 
-.input-group { gap: 6px; }
+.input-group {
+    gap: 6px;
+}
 
 .input-group label {
     font-size: 0.82rem;
@@ -145,7 +173,9 @@ body.page-ready #right-footer {
     letter-spacing: 0.03em;
 }
 
-.input-wrapper { position: relative; }
+.input-wrapper {
+    position: relative;
+}
 
 .input-icon {
     position: absolute;
@@ -155,7 +185,9 @@ body.page-ready #right-footer {
     transition: color 0.2s;
 }
 
-.input-wrapper:focus-within .input-icon { color: var(--color-accent); }
+.input-wrapper:focus-within .input-icon {
+    color: var(--color-accent);
+}
 
 .input-wrapper input {
     width: 100%;
@@ -169,7 +201,9 @@ body.page-ready #right-footer {
     transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.input-wrapper input::placeholder { color: var(--color-border); }
+.input-wrapper input::placeholder {
+    color: var(--color-border);
+}
 
 .input-wrapper input:focus {
     border-color: var(--color-accent);
@@ -189,10 +223,15 @@ body.page-ready #right-footer {
     align-items: center;
     transition: color 0.2s;
 }
-.toggle-pw-btn:hover { color: var(--color-accent); }
+
+.toggle-pw-btn:hover {
+    color: var(--color-accent);
+}
 
 /* --- Opzioni --- */
-#form-options { margin-top: -4px; }
+#form-options {
+    margin-top: -4px;
+}
 
 #remember-label {
     gap: 8px;
@@ -227,10 +266,17 @@ body.page-ready #right-footer {
     box-shadow: 0 6px 28px rgba(245, 166, 35, 0.45);
 }
 
-#login-btn:active { transform: translateY(0); }
+#login-btn:active {
+    transform: translateY(0);
+}
 
-#btn-icon { transition: transform 0.2s ease; }
-#login-btn:hover #btn-icon { transform: translateX(4px); }
+#btn-icon {
+    transition: transform 0.2s ease;
+}
+
+#login-btn:hover #btn-icon {
+    transform: translateX(4px);
+}
 
 /* --- Footer --- */
 #right-footer p {
@@ -242,11 +288,22 @@ body.page-ready #right-footer {
    RESPONSIVE
    ============================================================ */
 @media (max-width: 900px) {
-    #left-panel  { display: none; }
-    #right-panel { flex: 1; padding: 32px 28px; }
+    #left-panel {
+        display: none;
+    }
+
+    #right-panel {
+        flex: 1;
+        padding: 32px 28px;
+    }
 }
 
 @media (max-width: 480px) {
-    #right-panel { padding: 24px 20px; }
-    #form-title  { font-size: 1.8rem; }
+    #right-panel {
+        padding: 24px 20px;
+    }
+
+    #form-title {
+        font-size: 1.8rem;
+    }
 }

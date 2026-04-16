@@ -1,24 +1,40 @@
-<div th:fragment="searchbar" id="searchPopupOverlay" class="popup-overlay none">
+<!-- 
+    -------------------------------------------------------------------------
+    SEARCHBAR FRAGMENT (SEARCHBAR.HTML)
+    -------------------------------------------------------------------------
+    Gestisce l'overlay di ricerca contestuale.
+    Il popup viene configurato dinamicamente tramite JS (searchbar.js) 
+    per supportare la ricerca in diverse sezioni (Libri, Utenti, Prestiti).
+-->
+<div th:fragment="searchbar" id="searchPopupOverlay" class="popup-overlay none"
+    th:data-email="${user != null ? user.userEmail : ''}">
+    
+    <!-- Contenuto Centrale del Popup -->
     <div class="popup-content glass radius-24 shadow-soft animate-scale-in" onclick="event.stopPropagation()">
 
-        <!-- Header Section -->
+        <!-- Header: Icona, Titolo e Pulsante Chiudi -->
         <div class="popup-header flex justify-between align-center mb-8">
             <div class="flex align-center gap-4">
+                <!-- Icona Accento (Ricerca) -->
                 <div class="icon-box-accent radius-16 p-3 flex center">
                     <i class="fa-solid fa-magnifying-glass text-white font-size-medium"></i>
                 </div>
                 <div>
                     <h3 id="searchPopupTitle" class="text-2xl fw-700 text-brand leading-tight">Ricerca</h3>
-                    <p id="searchPopupSubtitle" class="text-xs uppercase tracking-wider opacity-50 fw-600 mt-1">Cerca nel sistema</p>
+                    <p id="searchPopupSubtitle" class="text-xs uppercase tracking-wider opacity-50 fw-600 mt-1">
+                        Cerca nel sistema
+                    </p>
                 </div>
             </div>
-            <button type="button" class="btn-icon-close cursor-pointer transition shadow-card" onclick="closeSearchPopup()"
-                title="Chiudi">
+            
+            <!-- Pulsante di chiusura (X) -->
+            <button type="button" class="btn-icon-close cursor-pointer transition shadow-card"
+                onclick="closeSearchPopup()" title="Chiudi">
                 <i class="fa-solid fa-xmark"></i>
             </button>
         </div>
 
-        <!-- Body Section -->
+        <!-- Body: Campo di Input -->
         <div class="popup-body">
             <div class="flex flex-column gap-5">
                 <div class="input-group">
@@ -26,23 +42,24 @@
                         Query di ricerca
                     </label>
                     <input type="text" id="searchInputField"
-                        class="w-100 p-4 radius-12 border-none font-size-small w-100"
+                        class="w-100 p-4 radius-12 border-none font-size-small"
                         placeholder="Inserisci il testo qui..." autocomplete="off">
                 </div>
             </div>
         </div>
 
-        <!-- Footer Section -->
-        <div class="popup-footer mt-12 pt-8 flex justify-end gap-6" style="border-top: 1px solid var(--color-border);">
+        <!-- Footer: Azioni (Annulla / Cerca) -->
+        <div class="popup-footer mt-12 pt-8 flex justify-end gap-6 border-t">
             <button type="button"
                 class="btn-link-action radius-12 px-8 py-4 cursor-pointer transition fw-600 text-lg m-1"
-                onclick="closeSearchPopup()">Annulla</button>
+                onclick="closeSearchPopup()"> Annulla </button>
+            
             <button type="button" id="searchConfirmBtn"
-                class="btn-primary radius-12 px-12 py-4 cursor-pointer transition fw-700 text-lg shadow-soft m-1" 
+                class="btn-primary radius-12 px-12 py-4 cursor-pointer transition fw-700 text-lg shadow-soft m-1"
                 onclick="executeSearch()">
                 Cerca
             </button>
         </div>
-        
+
     </div>
 </div>

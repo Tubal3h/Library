@@ -1,6 +1,14 @@
 /**
- * Open the search popup modal
- * @param {string} section - 'catalog' or 'users'
+ * searchbar.js
+ * Logica per il popup di ricerca (searchbar.html).
+ * Permette di configurare dinamicamente i testi del popup in base alla sezione
+ * corrente (catalogo, utenti, prestiti) e di eseguire la ricerca tramite URL params.
+ */
+
+/**
+ * Apre il popup di ricerca configurandolo per una specifica sezione.
+ * 
+ * @param {string} section - La sezione in cui effettuare la ricerca ('catalog', 'users', 'edition', 'rents').
  */
 function openSearchPopup(section) {
     const overlay = document.getElementById('searchPopupOverlay');
@@ -11,6 +19,7 @@ function openSearchPopup(section) {
 
     if (!overlay || !title || !subtitle || !inputLabel || !inputField) return;
 
+    // Configurazione dinamica dei testi in base alla sezione
     if (section === 'catalog') {
         title.innerText = 'Ricerca Catalogo';
         subtitle.innerText = 'Cerca tra i libri e le edizioni';
@@ -38,19 +47,19 @@ function openSearchPopup(section) {
         inputField.placeholder = 'Scrivi qui...';
     }
 
-    inputField.value = ''; // Reset input
+    inputField.value = ''; // Reset del campo input
     
-    // Configura la sezione attuale per la ricerca
+    // Memorizza la sezione attuale nell'attributo data-section dell'overlay
     overlay.dataset.section = section;
 
-    // Mostra il popup
+    // Visualizza il popup e imposta il focus sull'input
     overlay.classList.remove('none');
     document.body.style.overflow = 'hidden'; 
     inputField.focus();
 }
 
 /**
- * Close the search pop up
+ * Chiude il popup di ricerca e ripristina lo scroll.
  */
 function closeSearchPopup() {
     const overlay = document.getElementById('searchPopupOverlay');
@@ -61,31 +70,41 @@ function closeSearchPopup() {
 }
 
 /**
- * Execute the search (Frontend only)
+ * Esegue la ricerca aggiornando i parametri URL della pagina.
+ * Questo approccio permette al backend di filtrare i risultati durante il ricaricamento.
  */
 function executeSearch() {
-    const query = document.getElementById('searchInputField').value;
+    const inputField = document.getElementById('searchInputField');
+    const query = inputField.value;
     const overlay = document.getElementById('searchPopupOverlay');
-    const section = overlay ? overlay.dataset.section : 'general';
 
+    // Validazione: Impedisci ricerche vuote
     if (query.trim() === '') {
-        // Mostra un avviso visuale usando animazione/effetto (o semplice alert in frontend only)
-        document.getElementById('searchInputField').style.borderColor = 'var(--color-error)';
+        // Feedback visivo con classe CSS per l'errore
+        inputField.classList.add('border-error');
         setTimeout(() => {
-            document.getElementById('searchInputField').style.borderColor = 'var(--color-border)';
+            inputField.classList.remove('border-error');
         }, 2000);
         return;
     }
 
-    console.log(`Esecuzione ricerca in sezione '${section}' per query: '${query}'`);
-    alert(`Simulazione ricerca in '${section}' per: '${query}'.\nManca il backend.`);
-    closeSearchPopup();
+    // Costruzione dell'URL con il nuovo parametro di ricerca
+    const currentUrl = new URL(window.location.href);
+    
+    // Aggiungi o aggiorna il parametro "search" mantenendo gli altri (email, section, etc.)
+    currentUrl.searchParams.set('search', query);
+
+    // Reindirizzamento alla stessa pagina filtrata
+    window.location.href = currentUrl.toString();
 }
 
-// Supporto tasto Invio nel campo di ricerca
+/**
+ * Inizializzazione dei listener per il campo di ricerca e l'overlay.
+ */
 document.addEventListener('DOMContentLoaded', () => {
     const inputField = document.getElementById('searchInputField');
     if (inputField) {
+        // Avvia la ricerca premendo il tasto 'Invio'
         inputField.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 e.preventDefault();
@@ -94,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Chiudi cliccando fuori dal popup
+    // Chiude il popup cliccando sullo sfondo (overlay)
     const overlay = document.getElementById('searchPopupOverlay');
     if (overlay) {
         overlay.addEventListener('click', (event) => {

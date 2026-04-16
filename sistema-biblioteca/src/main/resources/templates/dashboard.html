@@ -1,135 +1,148 @@
 <!DOCTYPE html>
-<html th:replace="~{fragments/layout :: master(titolo='Library | Dashboard', contenuto=~{::main})}" xmlns:th="http://www.thymeleaf.org">
+<html th:replace="~{fragments/layout :: master(titolo='Library | Dashboard', contenuto=~{::main})}"
+    xmlns:th="http://www.thymeleaf.org">
+
 <head>
 
 </head>
+
 <body>
-    
 
-<main class="dashboard-wrapper flex flex-column gap-3 w-100 h-100">
-    <!-- Header -->
-    <header class="dashboard-header flex justify-between align-center mb-2 animate-fade-in-up opacity-0">
-        <div class="greeting">
-            <h1 class="fw-700">Ciao, <span th:text="${user.userName}">User</span>!</h1>
 
-            <p th:text="${user.userRole == 'role_admin' ? 'Benvenuto, nella dashboard Admin.' : 'Benvenuto, nella dashboard.'}" class="opacity-70">Benvenuto, nella dashboard.</p>
-        </div>
-        <div class="header-actions flex align-center gap-2">
+    <main class="dashboard-wrapper flex flex-column gap-3 w-100 h-100">
+        <!-- Header -->
+        <header class="dashboard-header flex justify-between align-center mb-2 animate-fade-in-up opacity-0">
+            <div class="greeting">
+                <h1 class="fw-700">Ciao, <span th:text="${user.userName}">User</span>!</h1>
 
-            <button th:if="${user.userRole == 'role_admin' && section == 'catalog'}" class="btn-create radius-full py-2 px-3 fw-600 glass shadow-soft cursor-pointer">
-                <i class="fa-solid fa-plus mr-1"></i> Aggiungi Libro
-				
-            </button>
+                <p th:text="${user.userRole == 'role_admin' ? 'Benvenuto, nella dashboard Admin.' : 'Benvenuto, nella dashboard.'}"
+                    class="opacity-70">Benvenuto, nella dashboard.</p>
+            </div>
+            <div class="header-actions flex align-center gap-2">
 
-            <button th:if="${user.userRole == 'role_admin' && section == 'users'}" class="btn-create radius-full py-2 px-3 fw-600 glass shadow-soft cursor-pointer">
-                <i class="fa-solid fa-plus mr-1"></i> Aggiungi Utente
-            </button>           
+                <button th:if="${user.userRole == 'role_admin' && section == 'catalog'}"
+                    class="btn-create radius-full py-2 px-3 fw-600 glass shadow-soft cursor-pointer">
+                    <i class="fa-solid fa-plus mr-1"></i> Aggiungi Libro
 
-            <div th:if="${user.userRole == 'role_admin' && (section == 'catalog' || section == 'users' || section == 'edition' || section == 'rents')}" class="header-icon glass radius-circle center pointer shadow-soft" th:data-section="${section}" onclick="openSearchPopup(this.getAttribute('data-section'))">
-                <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+
+                <button th:if="${user.userRole == 'role_admin' && section == 'users'}"
+                    class="btn-create radius-full py-2 px-3 fw-600 glass shadow-soft cursor-pointer">
+                    <i class="fa-solid fa-plus mr-1"></i> Aggiungi Utente
+                </button>
+
+                <div th:if="${(section == 'catalog' || section == 'users' || section == 'edition' || section == 'rents')}"
+                    class="header-icon glass radius-circle center pointer shadow-soft" th:data-section="${section}"
+                    onclick="openSearchPopup(this.getAttribute('data-section'))">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </div>
+
+            </div>
+        </header>
+
+        <!-- Sezione Home per admin-->
+        <div th:if="${section == 'home' && user.userRole == 'role_admin'}"
+            class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
+
+            <!-- Card 1: Users totali -->
+            <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+                <div class="flex justify-between align-center mb-2">
+                    <span class="opacity-70 font-size-small uppercase fw-700">Utenti Registrati</span>
+                    <i class="fa-solid fa-users text-brand"></i>
+                </div>
+                <div class="flex align-end gap-2">
+                    <span class="text-3xl fw-700" th:text="${totalUsers}">totalUsers</span>
+                    <span class="opacity-50 font-size-small mb-1">Totale utenti nel sistema</span>
+                </div>
+            </div>
+
+            <!-- Card 2: Books totali -->
+            <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+                <div class="flex justify-between align-center mb-2">
+                    <span class="opacity-70 font-size-small uppercase fw-700">Totale Libri</span>
+                    <i class="fa-solid fa-book text-brand"></i>
+                </div>
+                <div class="flex align-end gap-2">
+                    <span class="text-3xl fw-700" th:text="${totalBooks}">totalBooks</span>
+                    <span class="opacity-50 font-size-small mb-1">Totale libri nel sistema</span>
+                </div>
+            </div>
+
+            <!-- Card 3: Books disponibili -->
+            <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+                <div class="flex justify-between align-center mb-2">
+                    <span class="opacity-70 font-size-small uppercase fw-700">Libri Disponibili</span>
+                    <i class="fa-solid fa-check-to-slot text-success"></i>
+                </div>
+                <div class="flex align-end gap-2">
+                    <span class="text-3xl fw-700" th:text="${totalBooks - totalRents}">availableBooks</span>
+                    <span class="opacity-50 font-size-small mb-1">Pronti al prestito</span>
+                </div>
+            </div>
+
+            <!-- Card 4: Books prenotati/prestati -->
+            <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+                <div class="flex justify-between align-center mb-2">
+                    <span class="opacity-70 font-size-small uppercase fw-700">Libri Prestati</span>
+                    <i class="fa-solid fa-hand-holding-hand text-warning"></i>
+                </div>
+                <div class="flex align-end gap-2">
+                    <span class="text-3xl fw-700" th:text="${totalRents}">borrowedBooks</span>
+                    <span class="opacity-50 font-size-small mb-1">In prestito</span>
+                </div>
             </div>
 
         </div>
-    </header>
 
-    <!-- Sezione Home per admin-->
-    <div th:if="${section == 'home' && user.userRole == 'role_admin'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
-        
-        <!-- Card 1: Users totali -->
-        <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
-            <div class="flex justify-between align-center mb-2">
-                <span class="opacity-70 font-size-small uppercase fw-700">Utenti Registrati</span>
-                <i class="fa-solid fa-users text-brand"></i>
+        <!-- Sezione Home per user-->
+        <div th:if="${section == 'home' && user.userRole == 'role_user'}"
+            class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
+
+            <!-- Card 1: Borrowed Books -->
+            <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+                <div class="flex justify-between align-center mb-2">
+                    <span class="opacity-70 font-size-small uppercase fw-700">Libri Prestati</span>
+                    <i class="fa-solid fa-hand-holding-hand text-warning"></i>
+                </div>
+                <div class="flex align-end gap-2">
+                    <span class="text-3xl fw-700" th:text="${totalRents}"></span>
+                    <span class="opacity-50 font-size-small mb-1">In prestito</span>
+                </div>
             </div>
-            <div class="flex align-end gap-2">
-                <span class="text-3xl fw-700" th:text="${totalUsers}">totalUsers</span>
-                <span class="opacity-50 font-size-small mb-1">Totale utenti nel sistema</span>
+
+        </div>
+
+        <!-- Sezione catalogo libri -->
+        <div th:if="${section == 'catalog'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
+            <div th:replace="~{fragments/catalog :: catalog}"
+                class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+
             </div>
         </div>
 
-        <!-- Card 2: Books totali -->
-        <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
-            <div class="flex justify-between align-center mb-2">
-                <span class="opacity-70 font-size-small uppercase fw-700">Totale Libri</span>
-                <i class="fa-solid fa-book text-brand"></i>
-            </div>
-            <div class="flex align-end gap-2">
-                <span class="text-3xl fw-700" th:text="${totalBooks}">totalBooks</span>
-                <span class="opacity-50 font-size-small mb-1">Totale libri nel sistema</span>
+        <div th:if="${section == 'edition'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
+            <div th:replace="~{fragments/catalog :: edition}"
+                class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+
             </div>
         </div>
-
-        <!-- Card 3: Books disponibili -->
-        <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
-            <div class="flex justify-between align-center mb-2">
-                <span class="opacity-70 font-size-small uppercase fw-700">Libri Disponibili</span>
-                <i class="fa-solid fa-check-to-slot text-success"></i>
+        <!-- Sezione lista utenti per admin-->
+        <div th:if="${section == 'users'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
+            <div th:replace="~{fragments/users :: users}"
+                class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
             </div>
-            <div class="flex align-end gap-2">
-                <span class="text-3xl fw-700" th:text="${totalBooks - totalRents}">availableBooks</span>
-                <span class="opacity-50 font-size-small mb-1">Pronti al prestito</span>
+        </div>
+        <!-- Sezione lista prestiti -->
+        <div th:if="${section == 'rents'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
+            <div th:replace="~{fragments/rents :: rents}"
+                class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
             </div>
         </div>
 
-        <!-- Card 4: Books prenotati/prestati -->
-        <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
-            <div class="flex justify-between align-center mb-2">
-                <span class="opacity-70 font-size-small uppercase fw-700">Libri Prestati</span>
-                <i class="fa-solid fa-hand-holding-hand text-warning"></i>
-            </div>
-            <div class="flex align-end gap-2">
-                <span class="text-3xl fw-700" th:text="${totalRents}">borrowedBooks</span>
-                <span class="opacity-50 font-size-small mb-1">In prestito</span>
-            </div>
-        </div>
 
-    </div>
 
-    <!-- Sezione Home per user-->
-    <div th:if="${section == 'home' && user.userRole == 'role_user'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
-        
-        <!-- Card 1: Borrowed Books -->
-        <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
-            <div class="flex justify-between align-center mb-2">
-                <span class="opacity-70 font-size-small uppercase fw-700">Libri Prestati</span>
-                <i class="fa-solid fa-hand-holding-hand text-warning"></i>
-            </div>
-            <div class="flex align-end gap-2">
-                <span class="text-3xl fw-700" th:text="${totalRents}"></span>
-                <span class="opacity-50 font-size-small mb-1">In prestito</span>
-            </div>
-        </div>
-
-    </div>
-
-    <!-- Sezione catalogo libri -->
-    <div th:if="${section == 'catalog'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
-        <div th:replace="~{fragments/catalog :: catalog}" class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
-            
-        </div>
-    </div>
-
-    <div th:if="${section == 'edition'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
-        <div th:replace="~{fragments/catalog :: edition}" class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
-            
-        </div>
-    </div>
-    <!-- Sezione lista utenti per admin-->
-    <div th:if="${section == 'users'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
-        <div th:replace="~{fragments/users :: users}"
-            class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
-        </div>
-    </div>
-    <!-- Sezione lista prestiti -->
-    <div th:if="${section == 'rents'}" class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
-        <div th:replace="~{fragments/rents :: rents}"
-            class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
-        </div>
-    </div>
-
-    
-    
-</main>
-<script th:src="@{/js/dashboard.js}"></script>
+    </main>
+    <script th:src="@{/js/dashboard.js}"></script>
 </body>
+
 </html>
