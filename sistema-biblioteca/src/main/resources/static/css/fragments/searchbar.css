@@ -1,0 +1,14 @@
+/* ============================================================
+   SEARCHBAR MODAL COMPONENT (PREMIUM REFINED)
+   Relies heavily on popup.css and style.css for foundational
+   styles. Only includes tweaks specific to the searchbar input.
+   ============================================================ */
+
+/* Extra enhancement for search input */
+#searchInputField {
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#searchConfirmBtn {
+    /* If you want to differentiate the search button from other primary buttons */
+}

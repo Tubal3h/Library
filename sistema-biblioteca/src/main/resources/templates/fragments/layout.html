@@ -15,6 +15,7 @@
     <link rel="stylesheet" th:href="@{/css/fragments/navbar.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/catalog.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/popup.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments/searchbar.css}">
 </head>
 <body data-theme="light">
     <!-- Background Glow Effect (similar to image) -->
@@ -34,11 +35,13 @@
 
     <!-- Global Popup (outside scroll containers and stacking contexts) -->
     <div th:replace="~{fragments/popup :: popup}"></div>
+    <div th:replace="~{fragments/searchbar :: searchbar}"></div>
 
     <!-- Script Globali e Frammenti -->
     <script th:src="@{/js/fragments/layout.js}"></script>
     <script th:src="@{/js/fragments/navbar.js}"></script>
     <script th:src="@{/js/fragments/catalog.js}"></script>
     <script th:src="@{/js/fragments/popup.js}"></script>
+    <script th:src="@{/js/fragments/searchbar.js}"></script>
 </body>
 </html>

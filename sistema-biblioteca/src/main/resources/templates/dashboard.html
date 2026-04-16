@@ -25,11 +25,7 @@
                 <i class="fa-solid fa-plus mr-1"></i> Aggiungi Utente
             </button>           
 
-            <div th:if="${user.userRole == 'role_admin' && section == 'catalog'}" class="header-icon glass radius-circle center pointer shadow-soft">
-                <i class="fa-solid fa-magnifying-glass"></i>
-            </div>
-
-            <div th:if="${user.userRole == 'role_admin' && section == 'users'}" class="header-icon glass radius-circle center pointer shadow-soft">
+            <div th:if="${user.userRole == 'role_admin' && (section == 'catalog' || section == 'users' || section == 'edition' || section == 'rents')}" class="header-icon glass radius-circle center pointer shadow-soft" th:data-section="${section}" onclick="openSearchPopup(this.getAttribute('data-section'))">
                 <i class="fa-solid fa-magnifying-glass"></i>
             </div>
 
