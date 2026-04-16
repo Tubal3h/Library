@@ -42,7 +42,7 @@
                     <span th:if="${book.status.equals('eliminato')}">Eliminato</span>
                 </div>
             </div>
-            <a th:href="@{/api/deleteBook(email=${user.userEmail}, bookId=${book.bookId})}"
+            <a th:href="@{/api/deleteBook(email=${user.userEmail}, bookId=${book.bookId}, bookName=${book.title})}"
                 th:if="${user.userRole == 'role_admin' and book.status == 'disponibilita'}"
                 class="m-1 btn-modern-action pointer transition shadow-soft">
                 <span class="text-center">Elimina Copia</span>
@@ -98,7 +98,7 @@
                     <span class="fw-700" th:text="'Quantità: ' + ${edition.quantity}"></span>
                 </div>
             </div>
-            <a th:href="@{/api/addBook(email=${user.userEmail}, isbn=${edition.isbnCode})}"
+            <a th:href="@{/api/addBook(email=${user.userEmail}, isbn=${edition.isbnCode}, bookName=${edition.bookName})}"
                 class="w-100 btn-modern-action pointer transition shadow-soft">
                 <span>Aggiungi</span>
                 <i class="fa-solid fa-plus"></i>

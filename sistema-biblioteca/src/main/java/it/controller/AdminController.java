@@ -34,14 +34,6 @@ public class AdminController {
 	}
 	
 	/**
-	 * Gestisce l'aggiunta di un nuovo libro tramite il suo codice ISBN.
-	 * 
-	 * @param email Email dell'amministratore che esegue l'operazione
-	 * @param isbn Codice ISBN della nuova edizione da inserire
-	 * @param model Il modello per la vista
-	 * @return Redirect alla sezione delle edizioni o alla home
-	 */
-	/**
 	 * Gestisce l'aggiunta di una nuova copia fisica tramite il suo codice ISBN.
 	 *
 	 * @param email Email dell'amministratore che esegue l'operazione
@@ -53,6 +45,7 @@ public class AdminController {
 	public String addBook(
 			@RequestParam(value = "email", required = false) String email,
 			@RequestParam(value = "isbn", required = false) String isbn,
+			@RequestParam(value = "bookName", required = false) String bookName,
 			RedirectAttributes redirectAttributes) {
 		UserDto user = userService.getUserByEmail(email);
 		if (user == null) {
@@ -61,9 +54,9 @@ public class AdminController {
 		try {
 			BookDto bookDto = new BookDto(isbn);
 			bookService.addBook(bookDto.getIsbnCode());
-			// Flash attribute: sopravvive a un singolo redirect
 			redirectAttributes.addFlashAttribute("popupType", "addCopy");
 			redirectAttributes.addFlashAttribute("popupBookIsbn", isbn);
+			redirectAttributes.addFlashAttribute("popupBookTitle", bookName);
 		} catch (NoIsbnFoundException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.getMessage());
@@ -71,14 +64,6 @@ public class AdminController {
 		return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=edition";
 	}
 	
-	/**
-	 * Gestisce l'eliminazione (logica) di un libro tramite il suo ID.
-	 * 
-	 * @param email Email dell'amministratore che esegue l'operazione
-	 * @param bookId ID del libro da eliminare
-	 * @param model Il modello per la vista
-	 * @return Redirect alla sezione catalogo o alla home
-	 */
 	/**
 	 * Gestisce l'eliminazione (logica) di una copia fisica tramite il suo ID.
 	 *
@@ -91,6 +76,7 @@ public class AdminController {
 	public String deleteBook(
 			@RequestParam(value = "email", required = false) String email,
 			@RequestParam(value = "bookId", required = false) Integer bookId,
+			@RequestParam(value = "bookName", required = false) String bookName,
 			RedirectAttributes redirectAttributes) {
 		UserDto user = userService.getUserByEmail(email);
 		if (user == null) {
@@ -99,9 +85,9 @@ public class AdminController {
 		try {
 			BookDto bookDto = new BookDto(bookId);
 			bookService.deleteBook(bookDto.getBookId());
-			// Flash attribute: sopravvive a un singolo redirect
 			redirectAttributes.addFlashAttribute("popupType", "deleteBook");
 			redirectAttributes.addFlashAttribute("popupBookId", bookId);
+			redirectAttributes.addFlashAttribute("popupBookTitle", bookName);
 		} catch (NoBookIdFoundException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.getMessage());

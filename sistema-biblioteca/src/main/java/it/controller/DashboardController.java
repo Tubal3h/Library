@@ -108,9 +108,7 @@ public class DashboardController {
                 
                 model.addAttribute("books", bookService.getBookListByName(search,user.getUserRole()));
                 // model.addAttribute("books", bookService.getAllBooks(user.getUserRole()));
-                model.addAttribute("authors", authorService.getAllAuthors());
-                model.addAttribute("categories", categoryService.getAllCategories());
-                model.addAttribute("publishers", publisherService.getAllPublishers());
+
             }
 
             if ("rents".equals(section)) {
@@ -120,6 +118,9 @@ public class DashboardController {
 
             if ("edition".equals(section) && "role_admin".equals(user.getUserRole())) {
                 model.addAttribute("editions", editionService.getEditionListByName(search));
+                model.addAttribute("authors", authorService.getAllAuthors());
+                model.addAttribute("categories", categoryService.getAllCategories());
+                model.addAttribute("publishers", publisherService.getAllPublishers());
             }
 
         } catch (Exception e) {

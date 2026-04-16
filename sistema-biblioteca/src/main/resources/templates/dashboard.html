@@ -21,7 +21,8 @@
             <div class="header-actions flex align-center gap-2">
 
                 <button th:if="${user.userRole == 'role_admin' && section == 'edition'}"
-                    class="btn-create btn-sm shadow-soft">
+                    class="btn-create btn-sm shadow-soft"
+                    onclick="openAddEditionPopup()">
                     <i class="fa-solid fa-plus"></i> Aggiungi Edizione
                 </button>
 <!-- 

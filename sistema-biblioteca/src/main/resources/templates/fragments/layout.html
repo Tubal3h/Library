@@ -56,6 +56,7 @@
                 const popupType   = /*[[${popupType}]]*/ null;
                 const bookIsbn    = /*[[${popupBookIsbn}]]*/ null;
                 const bookId      = /*[[${popupBookId}]]*/ null;
+                const bookTitle   = /*[[${popupBookTitle}]]*/ null;
                 const errorMsg    = /*[[${popupErrorMessage}]]*/ null;
 
                 // Nascondi tutti i pannelli del body
@@ -71,12 +72,14 @@
                 if (popupType === 'addCopy') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-circle-check text-white font-size-medium';
                     document.getElementById('popupTitle').textContent = 'Copia aggiunta';
+                    document.getElementById('addCopyBookTitle').textContent = bookTitle || '';
                     document.getElementById('addCopyBookName').textContent = bookIsbn || '';
                     document.getElementById('addCopyContent').classList.remove('none');
 
                 } else if (popupType === 'deleteBook') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-trash-can text-white font-size-medium';
                     document.getElementById('popupTitle').textContent = 'Copia eliminata';
+                    document.getElementById('deleteBookTitle').textContent = bookTitle || '';
                     document.getElementById('deleteBookId').textContent = bookId || '';
                     document.getElementById('deleteBookContent').classList.remove('none');
 

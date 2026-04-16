@@ -103,6 +103,9 @@
 /* Typography & Layout Spacing */
 .popup-body {
     margin-top: 1rem;
+    overflow-y: auto;
+    max-height: 55vh;
+    padding-right: 4px; /* evita che la scrollbar tocchi i bordi degli input */
 }
 
 .input-group label {
@@ -165,13 +168,110 @@
     gap: 1.75rem !important; /* Specific margin for input fields */
 }
 
-/* Responsive */
-@media (max-width: 640px) {
+/* ============================================================
+   RESPONSIVE — Popup Modal
+   ============================================================ */
+
+/* ---- Tablet (≤768px) ---- */
+@media (max-width: 768px) {
     .popup-content {
-        padding: 2rem;
+        width: 95%;
+        max-width: 100%;
+        padding: 2.5rem 2rem;
     }
+
+    .popup-body {
+        max-height: 50vh;
+    }
+
+    .icon-box-accent {
+        width: 48px;
+        height: 48px;
+    }
+}
+
+/* ---- Mobile (≤640px) ---- */
+@media (max-width: 640px) {
+    .popup-overlay {
+        align-items: flex-end;          /* Slide-up dal basso su mobile */
+    }
+
+    .popup-content {
+        width: 100%;
+        max-width: 100%;
+        padding: 1.75rem 1.25rem 1.5rem;
+        border-radius: 24px 24px 0 0;  /* Solo angoli superiori arrotondati */
+        max-height: 92dvh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .popup-body {
+        flex: 1;
+        max-height: none;               /* Controlla il parent, non il body */
+        overflow-y: auto;
+    }
+
+    .popup-header {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+
     .btn-icon-close {
-        top: 1rem;
-        right: 1rem;
+        top: 1.25rem;
+        right: 1.25rem;
+        width: 38px;
+        height: 38px;
+        font-size: 0.95rem;
+    }
+
+    .popup-footer {
+        flex-direction: column-reverse; /* Conferma sopra, Annulla sotto */
+        gap: 0.5rem !important;
+        margin-top: 1rem !important;
+        padding-top: 0.75rem !important;
+    }
+
+    .popup-footer .btn-primary,
+    .popup-footer .btn-link-action {
+        width: 100%;
+        text-align: center;
+        justify-content: center;
+    }
+
+    #popupConfirmBtn {
+        min-width: unset;
+        width: 100%;
+    }
+
+    .btn-link-action {
+        min-width: unset;
+        width: 100%;
+    }
+}
+
+/* ---- Small mobile (≤480px) ---- */
+@media (max-width: 480px) {
+    .popup-content {
+        padding: 1.25rem 1rem 1rem;
+    }
+
+    .icon-box-accent {
+        width: 40px;
+        height: 40px;
+    }
+
+    #popupTitle {
+        font-size: 1.15rem;
+    }
+
+    .input-group input,
+    .input-group select {
+        font-size: 0.9rem;
+        padding: 0.75rem;
+    }
+
+    .flex.flex-column.gap-5 {
+        gap: 1.1rem !important;
     }
 }
