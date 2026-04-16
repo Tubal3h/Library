@@ -1,5 +1,7 @@
 package it.service;
 
+import java.util.ArrayList;
+
 /* -------------------------------------------------------------------------- */
 /*                                   SERVICE                                  */
 /* -------------------------------------------------------------------------- */
@@ -40,7 +42,7 @@ public class RentService {
      * @param userId ID dell'utente
      * @return Lista di {@link RentDto} rappresentanti i prestiti attivi dell'utente
      */
-    public List<RentDto> getRentedBooksByUserId(int userId) {
+    private List<RentDto> getRentedBooksByUserId(int userId) {
         return rentRepository.getActiveRentsByUserId(userId).stream()
             .map(this::toRentDto)
             .toList();
@@ -52,7 +54,7 @@ public class RentService {
      *
      * @return Lista di {@link RentDto} rappresentanti tutti i noleggi non ancora conclusi
      */
-    public List<RentDto> getRentedAllRents() {
+    private List<RentDto> getRentedAllRents() {
         return rentRepository.getActiveRents().stream()
             .map(this::toRentDto)
             .toList();
@@ -136,4 +138,34 @@ public class RentService {
     public void updateStatus(int bookId, int rentId) {
         rentRepository.endRental(bookId, rentId);
     }
+
+    /**
+     * Recupera una lista di prestiti filtrata per nome del libro.
+     * 
+     * @param search Il termine di ricerca per il nome del libro
+     * @param userRole Il ruolo dell'utente che effettua la ricerca
+     * @param userId L'ID dell'utente che effettua la ricerca
+     * @return Lista di RentDto contenente le informazioni condensate dei prestiti filtrati per nome del libro
+     */
+    public List<RentDto> getBookListByName(String search, String userRole, int userId) {
+		List<RentDto> myList = new ArrayList<>();
+        if(userRole.equals("role_user")) {
+			myList = getRentedBooksByUserId(userId);
+		}else {
+            myList = getRentedAllRents();
+        }
+		List<RentDto> filteredList = new ArrayList<>();
+		if(search != null && !search.isBlank()) {
+			for(RentDto rent : myList) {
+				if(rent.getBook().getTitle().replaceAll("\\s+","").toLowerCase().equals(search.replaceAll("\\s+","").toLowerCase())) {
+					filteredList.add(rent);
+				}
+			}	
+		}
+		if(filteredList.isEmpty() || filteredList == null) {
+			return myList;
+		}else {
+			return filteredList;
+		}
+	}
 }

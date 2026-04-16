@@ -1,5 +1,7 @@
 package it.service;
 
+import java.util.ArrayList;
+
 /* -------------------------------------------------------------------------- */
 /*                                   SERVICE                                  */
 /* -------------------------------------------------------------------------- */
@@ -45,6 +47,29 @@ public class UserService {
             return dto;
         }).toList();
     }
+
+    /**
+     * Recupera una lista di utenti filtrata per nome.
+     * 
+     * @param search Il termine di ricerca per il nome dell'utente
+     * @return Lista di UserDto contenente le informazioni condensate degli utenti filtrati per nome
+     */
+    public List<UserDto> getUserListByName(String search) {
+		List<UserDto> myList = getAllUsers();
+		List<UserDto> filteredList = new ArrayList<>();
+		if(search != null && !search.isBlank()) {
+			for(UserDto user : myList) {
+				if(user.getUserName().replaceAll("\\s+","").toLowerCase().equals(search.replaceAll("\\s+","").toLowerCase())) {
+					filteredList.add(user);
+				}
+			}	
+		}
+		if(filteredList.isEmpty() || filteredList == null) {
+			return myList;
+		}else {
+			return filteredList;
+		}
+	}
 
     /**
      * Recupera un utente tramite la sua email.

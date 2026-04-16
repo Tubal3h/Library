@@ -143,3 +143,86 @@ function closePopupOnBackdrop(event) {
     }
 }
 
+/**
+ * Apre il popup in modalità "Aggiungi Edizione".
+ * Mostra il form con i campi Titolo, ISBN (13 cifre numeriche), Data, Autore, Categoria, Editore.
+ */
+function openAddEditionPopup() {
+    const popup = document.getElementById('genericPopup');
+    const title = document.getElementById('popupTitle');
+    const icon = document.getElementById('popupIcon');
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    const addEditionContent = document.getElementById('addEditionContent');
+
+    if (!popup || !title || !icon || !confirmBtn || !addEditionContent) return;
+
+    // Nasconde tutti gli altri pannelli
+    ['editBookContent', 'addCopyContent', 'deleteBookContent', 'errorContent'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('none');
+    });
+
+    // Intestazione popup
+    title.innerText = 'Aggiungi Edizione';
+    icon.className = 'fa-solid fa-plus text-white font-size-medium';
+    icon.parentElement.classList.remove('icon-bg-success');
+    icon.parentElement.classList.add('icon-box-accent');
+
+    // Reset form
+    const titleInput = document.getElementById('addEditionTitleInput');
+    const isbnInput  = document.getElementById('addEditionIsbnInput');
+    const dateInput  = document.getElementById('addEditionDateInput');
+    const authorSel  = document.getElementById('addEditionAuthorInput');
+    const catSel     = document.getElementById('addEditionCategoryInput');
+    const pubSel     = document.getElementById('addEditionPublisherInput');
+    const isbnErr    = document.getElementById('addEditionIsbnError');
+
+    if (titleInput) titleInput.value = '';
+    if (isbnInput)  isbnInput.value  = '';
+    if (dateInput)  dateInput.value  = '';
+    if (authorSel)  authorSel.selectedIndex = 0;
+    if (catSel)     catSel.selectedIndex    = 0;
+    if (pubSel)     pubSel.selectedIndex    = 0;
+    if (isbnErr)    isbnErr.style.display   = 'none';
+
+    addEditionContent.classList.remove('none');
+
+    // Mostra il pulsante Annulla
+    const cancelBtn = document.querySelector('.btn-link-action');
+    if (cancelBtn) cancelBtn.classList.remove('none');
+
+    confirmBtn.innerText = 'Aggiungi Edizione';
+
+    // Conferma con validazione ISBN
+    confirmBtn.onclick = () => {
+        const isbn = isbnInput ? isbnInput.value.trim() : '';
+
+        if (isbn.length !== 13 || !/^[0-9]{13}$/.test(isbn)) {
+            if (isbnErr) {
+                isbnErr.textContent = 'L\'ISBN deve essere esattamente 13 cifre numeriche.';
+                isbnErr.style.display = 'block';
+            }
+            isbnInput.focus();
+            return;
+        }
+
+        if (isbnErr) isbnErr.style.display = 'none';
+
+        console.log('[Popup] Aggiungi Edizione:', {
+            titolo:    titleInput?.value,
+            isbn,
+            data:      dateInput?.value,
+            autoreId:  authorSel?.value,
+            catId:     catSel?.value,
+            edId:      pubSel?.value
+        });
+
+        // TODO: collegare al backend (es. fetch POST /api/addEdition)
+        alert('Simulazione: Edizione aggiunta correttamente.');
+        closePopup();
+    };
+
+    // Mostra il popup
+    popup.classList.remove('none');
+    document.body.style.overflow = 'hidden';
+}

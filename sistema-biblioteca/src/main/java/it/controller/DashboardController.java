@@ -65,6 +65,7 @@ public class DashboardController {
      * @param section Sezione della dashboard da visualizzare (home, users, catalog, rents)
      * @param model   il modello per la vista
      * @return Nome della vista della dashboard, o redirect alla home se l'email manca o l'utente non esiste
+     * @throws Exception se si verifica un errore durante il caricamento dei dati
      */
     @GetMapping("/dashboard")
     public String dashboard(
@@ -100,27 +101,26 @@ public class DashboardController {
             }
 
             if ("users".equals(section) && "role_admin".equals(user.getUserRole())) {
-                model.addAttribute("users", userService.getAllUsers());
+                model.addAttribute("users", userService.getUserListByName(search));
             }
 
             if ("catalog".equals(section)) {
                 
-                model.addAttribute("books", bookService.getBookListByNameOrAuthor(search,user.getUserRole()));
+                model.addAttribute("books", bookService.getBookListByName(search,user.getUserRole()));
                 // model.addAttribute("books", bookService.getAllBooks(user.getUserRole()));
-                model.addAttribute("authors", authorService.getAllAuthors());
-                model.addAttribute("categories", categoryService.getAllCategories());
-                model.addAttribute("publishers", publisherService.getAllPublishers());
+
             }
 
             if ("rents".equals(section)) {
-                List<RentDto> rentedBooks = "role_admin".equals(user.getUserRole())
-                        ? rentService.getRentedAllRents()
-                        : rentService.getRentedBooksByUserId(user.getUserId());
+                List<RentDto> rentedBooks = rentService.getBookListByName(search, user.getUserRole(), user.getUserId());
                 model.addAttribute("rentedBooks", rentedBooks);
             }
 
             if ("edition".equals(section) && "role_admin".equals(user.getUserRole())) {
-                model.addAttribute("editions", editionService.getAllEditions());
+                model.addAttribute("editions", editionService.getEditionListByName(search));
+                model.addAttribute("authors", authorService.getAllAuthors());
+                model.addAttribute("categories", categoryService.getAllCategories());
+                model.addAttribute("publishers", publisherService.getAllPublishers());
             }
 
         } catch (Exception e) {
