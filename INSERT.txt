@@ -16,3 +16,25 @@ VALUES (
     (SELECT category_id FROM category WHERE category_name = 'Machine Learning'),
     'disponibilita'
 );
+
+
+
+SELECT 
+	COUNT(book_id),
+    edition_id,
+    book_name_id,
+    title,
+    CONCAT(author_name, ' ', author_last_name),
+    publisher_name,
+    category_name,
+    publishing_date,
+    isbn,
+    status
+FROM edition
+JOIN books_names USING (book_name_id)
+JOIN author USING (author_id)
+JOIN publisher USING (publisher_id)
+JOIN category USING (category_id)
+LEFT JOIN books USING (edition_id)
+WHERE status != 'eliminato'
+GROUP BY edition_id, book_name_id, title, author_name, author_last_name, publisher_name, category_name, publishing_date, isbn, status;

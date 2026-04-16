@@ -1,5 +1,8 @@
 package it.service;
 
+import java.util.ArrayList;
+
+
 /* -------------------------------------------------------------------------- */
 /*                                   SERVICE                                  */
 /* -------------------------------------------------------------------------- */
@@ -121,4 +124,22 @@ public class BookService {
 		}
 		return res;
 	}
+	
+	public List<BookDto> getBookListByNameOrAuthor(String search, String userRole) {
+		List<BookDto> myList = getAllBooks(userRole);
+		List<BookDto> filteredList = new ArrayList<>();
+		if(search != null && !search.isBlank()) {
+			for(BookDto book : myList) {
+				if(book.getTitle().replaceAll("\\s+","").toLowerCase().equals(search.replaceAll("\\s+","").toLowerCase())) {
+					filteredList.add(book);
+				}
+			}	
+		}
+		if(filteredList.isEmpty() || filteredList == null) {
+			return myList;
+		}else {
+			return filteredList;
+		}
+	}
+	
 }
