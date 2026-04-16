@@ -92,6 +92,18 @@ public class EditionRepository implements EditionRepositoryInterface {
         return jdbcTemplate.queryForObject(sql, editionRowMapper, editionId);
     }
 
+    /**
+     * Inserisce una nuova edizione nella tabella edition.
+     * Recupera gli ID necessari (titolo, autore, editore, categoria) tramite sottoquery.
+     *
+     * @param title Titolo del libro
+     * @param authorId ID dell'autore
+     * @param publisherId ID della casa editrice
+     * @param publishingDate Data di pubblicazione
+     * @param categoryId ID della categoria
+     * @param isbn Codice ISBN dell'edizione
+     * @return Numero di righe inserite
+     */
 	@Override
 	public int insertEdition(String title, int authorId, int publisherId, LocalDate publishingDate, int categoryId,
 			String isbn) {

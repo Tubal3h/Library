@@ -110,6 +110,14 @@ public class BookService {
         return bookRepository.countBooks();
     }
     
+    /**
+     * Aggiunge una nuova copia fisica di un libro al sistema tramite il suo ISBN.
+     * Recupera l'edizione corrispondente e inserisce un nuovo record nella tabella books.
+     *
+     * @param isbn Il codice ISBN dell'edizione a cui aggiungere una copia
+     * @return Il numero di righe inserite (1 se successo)
+     * @throws NoIsbnFoundException se l'ISBN non viene fornito o non è valido
+     */
 	@SuppressWarnings("null")
 	public int addBook(String isbn) throws NoIsbnFoundException {
 		int res = 0;
@@ -121,6 +129,14 @@ public class BookService {
 		return res;
 	}
 	
+    /**
+     * Esegue l'eliminazione logica di una copia fisica tramite il suo ID.
+     * Imposta lo stato del libro a 'eliminato'.
+     *
+     * @param id ID della copia fisica da eliminare
+     * @return Il numero di righe aggiornate (1 se successo)
+     * @throws NoBookIdFoundException se l'ID non è fornito o non è trovato
+     */
 	@SuppressWarnings("null")
 	public int deleteBook(Integer id) throws NoBookIdFoundException {
 		int res = 0;
@@ -155,6 +171,21 @@ public class BookService {
 			return filteredList;
 		}
 	}
+    /**
+     * Inserisce un nuovo libro e la sua relativa edizione nel sistema.
+     * Esegue tre operazioni atomiche:
+     * 1. Inserisce il titolo nella tabella dei nomi.
+     * 2. Crea l'edizione legata al titolo, autore, editore e categoria.
+     * 3. Crea la prima copia fisica disponibile per questa edizione.
+     *
+     * @param title Titolo del libro
+     * @param authorId ID dell'autore
+     * @param publisherId ID della casa editrice
+     * @param date Data di pubblicazione
+     * @param categoryId ID della categoria
+     * @param isbn Codice ISBN dell'edizione
+     * @return Somma dei risultati delle operazioni di inserimento
+     */
 	public int insertBook(String title, Integer authorId, Integer publisherId, LocalDate date, Integer categoryId, String isbn) {
 		System.out.println("title: " + title);
 		System.out.println("authorId: " + authorId);

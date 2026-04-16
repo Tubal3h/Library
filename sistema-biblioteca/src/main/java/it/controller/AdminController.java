@@ -100,17 +100,20 @@ public class AdminController {
 	}
 
 	/**
-	 * Gestisce l'aggiunta di un nuovo libro tramite il suo titolo.
+	 * Gestisce l'aggiunta di una nuova edizione di un libro.
+	 * Riceve i dettagli dell'edizione (titolo, ISBN, data, autore, categoria, editore)
+	 * e coordina l'inserimento nel sistema tramite il BookService.
 	 *
-	 * @param email Email dell'amministratore che esegue l'operazione
-	 * @param title Titolo del libro da aggiungere
-	 * @param authorId ID dell'autore
-	 * @param categoryId ID della categoria
+	 * @param title Titolo del libro
+	 * @param isbn Codice ISBN dell'edizione
+	 * @param date Data di pubblicazione dell'edizione
+	 * @param authorId ID dell'autore dell'edizione
+	 * @param categoryId ID della categoria del libro
 	 * @param publisherId ID della casa editrice
-	 * @param redirectAttributes Attributi di redirect per passare messaggi alla vista
-	 * @return Redirect alla sezione delle edizioni
+	 * @param email Email dell'amministratore che esegue l'operazione
+	 * @param redirectAttributes Attributi di redirect per passare messaggi alla vista (successo/errore)
+	 * @return Redirect alla sezione delle edizioni con i parametri necessari
 	 */
-
 	@PostMapping("/api/addEdition")
 	public String addEdition(
 		@RequestParam("title") String title,
