@@ -22,7 +22,7 @@ import it.service.UserService;
  */
 @Controller
 public class AdminController {
-	
+
 	private final BookService bookService;
 	private final UserService userService;
 
@@ -36,13 +36,14 @@ public class AdminController {
 		this.bookService = bookService;
 		this.userService = userService;
 	}
-	
+
 	/**
 	 * Gestisce l'aggiunta di una nuova copia fisica tramite il suo codice ISBN.
 	 *
-	 * @param email Email dell'amministratore che esegue l'operazione
-	 * @param isbn Codice ISBN dell'edizione da inserire
-	 * @param redirectAttributes Attributi di redirect per passare messaggi alla vista
+	 * @param email              Email dell'amministratore che esegue l'operazione
+	 * @param isbn               Codice ISBN dell'edizione da inserire
+	 * @param redirectAttributes Attributi di redirect per passare messaggi alla
+	 *                           vista
 	 * @return Redirect alla sezione delle edizioni
 	 */
 	@GetMapping("/api/addBook")
@@ -63,17 +64,18 @@ public class AdminController {
 			redirectAttributes.addFlashAttribute("popupBookTitle", bookName);
 		} catch (NoIsbnFoundException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
-			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.getMessage());
+			redirectAttributes.addFlashAttribute("errorMessage ", ex.getMessage());
 		}
 		return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=edition";
 	}
-	
+
 	/**
 	 * Gestisce l'eliminazione (logica) di una copia fisica tramite il suo ID.
 	 *
-	 * @param email Email dell'amministratore che esegue l'operazione
-	 * @param bookId ID della copia da eliminare
-	 * @param redirectAttributes Attributi di redirect per passare messaggi alla vista
+	 * @param email              Email dell'amministratore che esegue l'operazione
+	 * @param bookId             ID della copia da eliminare
+	 * @param redirectAttributes Attributi di redirect per passare messaggi alla
+	 *                           vista
 	 * @return Redirect alla sezione catalogo
 	 */
 	@GetMapping("api/deleteBook")
@@ -101,39 +103,40 @@ public class AdminController {
 
 	/**
 	 * Gestisce l'aggiunta di una nuova edizione di un libro.
-	 * Riceve i dettagli dell'edizione (titolo, ISBN, data, autore, categoria, editore)
+	 * Riceve i dettagli dell'edizione (titolo, ISBN, data, autore, categoria,
+	 * editore)
 	 * e coordina l'inserimento nel sistema tramite il BookService.
 	 *
-	 * @param title Titolo del libro
-	 * @param isbn Codice ISBN dell'edizione
-	 * @param date Data di pubblicazione dell'edizione
-	 * @param authorId ID dell'autore dell'edizione
-	 * @param categoryId ID della categoria del libro
-	 * @param publisherId ID della casa editrice
-	 * @param email Email dell'amministratore che esegue l'operazione
-	 * @param redirectAttributes Attributi di redirect per passare messaggi alla vista (successo/errore)
+	 * @param title              Titolo del libro
+	 * @param isbn               Codice ISBN dell'edizione
+	 * @param date               Data di pubblicazione dell'edizione
+	 * @param authorId           ID dell'autore dell'edizione
+	 * @param categoryId         ID della categoria del libro
+	 * @param publisherId        ID della casa editrice
+	 * @param email              Email dell'amministratore che esegue l'operazione
+	 * @param redirectAttributes Attributi di redirect per passare messaggi alla
+	 *                           vista (successo/errore)
 	 * @return Redirect alla sezione delle edizioni con i parametri necessari
 	 */
 	@PostMapping("/api/addEdition")
 	public String addEdition(
-		@RequestParam("title") String title,
-		@RequestParam("isbn") String isbn,
-		@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-		@RequestParam("authorId") Integer authorId,
-		@RequestParam("categoryId") Integer categoryId,
-		@RequestParam("publisherId") Integer publisherId,
-		@RequestParam("email") String email,
-		RedirectAttributes redirectAttributes
-	) {
+			@RequestParam("title") String title,
+			@RequestParam("isbn") String isbn,
+			@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+			@RequestParam("authorId") Integer authorId,
+			@RequestParam("categoryId") Integer categoryId,
+			@RequestParam("publisherId") Integer publisherId,
+			@RequestParam("email") String email,
+			RedirectAttributes redirectAttributes) {
 		// Ora 'date' è un oggetto LocalDate pronto all'uso
-		System.out.println("Data ricevuta: " + date); 
+		System.out.println("Data ricevuta: " + date);
 		System.out.println("Titolo: " + title);
 		System.out.println("ISBN: " + isbn);
 		System.out.println("Autore ID: " + authorId);
 		System.out.println("Categoria ID: " + categoryId);
 		System.out.println("Editore ID: " + publisherId);
 		System.out.println("Email: " + email);
-		
+
 		try {
 			bookService.insertBook(title, authorId, publisherId, date, categoryId, isbn);
 			redirectAttributes.addFlashAttribute("popupType", "addEdition");
@@ -141,9 +144,9 @@ public class AdminController {
 			redirectAttributes.addFlashAttribute("popupBookIsbn", isbn);
 		} catch (Exception ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
-			redirectAttributes.addFlashAttribute("popupErrorMessage", "Impossibile aggiungere l'edizione: " + ex.getMessage());
+			redirectAttributes.addFlashAttribute("popupErrorMessage", "Impossibile aggiungere l'edizione.");
 		}
-		
+
 		return "redirect:/dashboard?email=" + email + "&section=edition";
 	}
 

@@ -81,7 +81,8 @@
                 <p class="opacity-70 text-sm leading-relaxed">
                     Una nuova copia fisica di <br>
                     <strong id="addCopyBookTitle" class="text-brand text-lg"></strong> <br>
-                    <span class="opacity-60 font-size-small">ISBN: <span id="addCopyBookName" class="font-mono"></span></span><br>
+                    <span class="opacity-60 font-size-small">ISBN: <span id="addCopyBookName"
+                            class="font-mono"></span></span><br>
                     è stata inserita correttamente a sistema.
                 </p>
             </div>
@@ -98,7 +99,8 @@
                 <p class="opacity-70 text-sm leading-relaxed">
                     L'edizione di <br>
                     <strong id="addEditionSuccessBookTitle" class="text-brand text-lg"></strong> <br>
-                    <span class="opacity-60 font-size-small">ISBN: <span id="addEditionSuccessBookIsbn" class="font-mono"></span></span><br>
+                    <span class="opacity-60 font-size-small">ISBN: <span id="addEditionSuccessBookIsbn"
+                            class="font-mono"></span></span><br>
                     è stata creata correttamente a sistema.
                 </p>
             </div>
@@ -115,7 +117,8 @@
                 <p class="opacity-70 text-sm leading-relaxed">
                     La copia di <br>
                     <strong id="deleteBookTitle" class="text-brand text-lg"></strong> <br>
-                    <span class="opacity-60 font-size-small">ID copia: <span id="deleteBookId" class="font-mono"></span></span><br>
+                    <span class="opacity-60 font-size-small">ID copia: <span id="deleteBookId"
+                            class="font-mono"></span></span><br>
                     è stata rimossa correttamente dal catalogo.
                 </p>
             </div>
@@ -147,32 +150,34 @@
                     <div class="flex flex-column gap-5">
                         <!-- Titolo -->
                         <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Titolo Opera</label>
+                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Titolo
+                                Opera</label>
                             <input type="text" id="addEditionTitleInput" name="title"
                                 class="w-100 p-4 radius-12 border-none font-size-small"
                                 placeholder="Esempio: Il Nome della Rosa" required>
                         </div>
                         <!-- ISBN (13 cifre numeriche) -->
                         <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">ISBN (13 cifre)</label>
+                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">ISBN (13
+                                cifre)</label>
                             <input type="text" id="addEditionIsbnInput" name="isbn"
                                 class="w-100 p-4 radius-12 border-none font-size-small font-mono"
-                                placeholder="Es: 9788845292613"
-                                maxlength="13"
-                                pattern="[0-9]{13}"
-                                inputmode="numeric"
+                                placeholder="Es: 9788845292613" maxlength="13" pattern="[0-9]{13}" inputmode="numeric"
                                 oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,13)" required>
-                            <span id="addEditionIsbnError" class="text-xs fw-600 mt-1 block" style="color: var(--color-error); display: none !important;"></span>
+                            <span id="addEditionIsbnError" class="text-xs fw-600 mt-1 block"
+                                style="color: var(--color-error); display: none !important;"></span>
                         </div>
                         <!-- Data di pubblicazione -->
                         <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Data di Pubblicazione</label>
+                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Data di
+                                Pubblicazione</label>
                             <input type="date" id="addEditionDateInput" name="date"
                                 class="w-100 p-4 radius-12 border-none font-size-small cursor-pointer" required>
                         </div>
                         <!-- Autore -->
                         <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Autore Principale</label>
+                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Autore
+                                Principale</label>
                             <select id="addEditionAuthorInput" name="authorId"
                                 class="w-100 p-4 radius-12 border-none font-size-small cursor-pointer" required>
                                 <option value="">Seleziona un autore...</option>
@@ -183,7 +188,8 @@
                         </div>
                         <!-- Categoria -->
                         <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Categoria</label>
+                            <label
+                                class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Categoria</label>
                             <select id="addEditionCategoryInput" name="categoryId"
                                 class="w-100 p-4 radius-12 border-none font-size-small cursor-pointer" required>
                                 <option value="">Seleziona una categoria...</option>
@@ -194,7 +200,8 @@
                         </div>
                         <!-- Editore -->
                         <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Editore</label>
+                            <label
+                                class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Editore</label>
                             <select id="addEditionPublisherInput" name="publisherId"
                                 class="w-100 p-4 radius-12 border-none font-size-small cursor-pointer" required>
                                 <option value="">Seleziona un editore...</option>
