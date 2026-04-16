@@ -62,7 +62,7 @@ public class BookNameRepository {
 		
     	String insertBook = "INSERT INTO books_names(title)\r\n"
 				  		  + "VALUES(:title)";
-		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue(title, "title");
+		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("title", title);
 		int res = namedParameterJdbcTemplate.update(insertBook, sqlParameters);
 		return res;
     

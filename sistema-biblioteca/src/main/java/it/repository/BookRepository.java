@@ -144,7 +144,7 @@ public class BookRepository implements BookRepositoryInterface{
 	
 	public int insertBookByTitle(String title) {
 		String insertBook = "INSERT INTO books (edition_id, status)\r\n"
-						  + "VALUES((SELECT edition_id FROM edition INNER JOIN books_names ON edition.book_name_id = books_names.book_name_id WHERE title = 'La storia di Ajeje Brazorf'),\r\n"
+						  + "VALUES((SELECT edition_id FROM edition INNER JOIN books_names ON edition.book_name_id = books_names.book_name_id WHERE title = :title),\r\n"
 						  + "('disponibilita'));";
 		
 		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("title", title);

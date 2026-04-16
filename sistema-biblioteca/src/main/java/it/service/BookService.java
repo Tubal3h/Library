@@ -156,7 +156,12 @@ public class BookService {
 		}
 	}
 	public int insertBook(String title, Integer authorId, Integer publisherId, LocalDate date, Integer categoryId, String isbn) {
-		
+		System.out.println("title: " + title);
+		System.out.println("authorId: " + authorId);
+		System.out.println("publisherId: " + publisherId);
+		System.out.println("date: " + date);
+		System.out.println("categoryId: " + categoryId);
+		System.out.println("isbn: " + isbn);
 		int firstRes = bookNameRepository.insertBookByTitle(title);
 		int secondRes = editionRepository.insertEdition(title, authorId, publisherId, date, categoryId, isbn);
 		int thirdRes = bookRepository.insertBookByTitle(title);

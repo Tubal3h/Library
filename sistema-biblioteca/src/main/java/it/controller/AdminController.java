@@ -1,7 +1,11 @@
 package it.controller;
 
+import java.time.LocalDate;
+
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -94,4 +98,50 @@ public class AdminController {
 		}
 		return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog";
 	}
+
+	/**
+	 * Gestisce l'aggiunta di un nuovo libro tramite il suo titolo.
+	 *
+	 * @param email Email dell'amministratore che esegue l'operazione
+	 * @param title Titolo del libro da aggiungere
+	 * @param authorId ID dell'autore
+	 * @param categoryId ID della categoria
+	 * @param publisherId ID della casa editrice
+	 * @param redirectAttributes Attributi di redirect per passare messaggi alla vista
+	 * @return Redirect alla sezione delle edizioni
+	 */
+
+	@PostMapping("/api/addEdition")
+	public String addEdition(
+		@RequestParam("title") String title,
+		@RequestParam("isbn") String isbn,
+		@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+		@RequestParam("authorId") Integer authorId,
+		@RequestParam("categoryId") Integer categoryId,
+		@RequestParam("publisherId") Integer publisherId,
+		@RequestParam("email") String email,
+		RedirectAttributes redirectAttributes
+	) {
+		// Ora 'date' è un oggetto LocalDate pronto all'uso
+		System.out.println("Data ricevuta: " + date); 
+		System.out.println("Titolo: " + title);
+		System.out.println("ISBN: " + isbn);
+		System.out.println("Autore ID: " + authorId);
+		System.out.println("Categoria ID: " + categoryId);
+		System.out.println("Editore ID: " + publisherId);
+		System.out.println("Email: " + email);
+		
+		try {
+			bookService.insertBook(title, authorId, publisherId, date, categoryId, isbn);
+			redirectAttributes.addFlashAttribute("popupType", "addEdition");
+			redirectAttributes.addFlashAttribute("popupBookTitle", title);
+			redirectAttributes.addFlashAttribute("popupBookIsbn", isbn);
+		} catch (Exception ex) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", "Impossibile aggiungere l'edizione: " + ex.getMessage());
+		}
+		
+		return "redirect:/dashboard?email=" + email + "&section=edition";
+	}
+
 }

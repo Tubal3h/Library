@@ -37,21 +37,21 @@ function openPopup(action, bookId, titleTxt, authorTxt, categoryTxt, publisherTx
          */
         title.innerText = 'Modifica Libro';
         icon.className = 'fa-solid fa-pen-to-square text-white';
-        
+
         // Gestione classi per lo sfondo dell'icona (Design System)
         icon.parentElement.classList.remove('icon-bg-success');
         icon.parentElement.classList.add('icon-box-accent');
-        
+
         editContent.classList.remove('none');
-        document.querySelector('.btn-link-action').classList.remove('none'); 
-        
+        document.querySelector('.btn-link-action').classList.remove('none');
+
         // Popolamento dinamico delle informazioni del libro
         const bookNameElem = document.getElementById('editBookName');
         if (bookNameElem) bookNameElem.innerText = titleTxt;
-        
+
         const titleInput = document.getElementById('editTitleInput');
         if (titleInput) titleInput.value = titleTxt;
-        
+
         // Selezione dell'autore corretto nel dropdown
         const authorSelect = document.getElementById('editAuthorInput');
         if (authorSelect && authorTxt) {
@@ -62,7 +62,7 @@ function openPopup(action, bookId, titleTxt, authorTxt, categoryTxt, publisherTx
                 }
             }
         }
-        
+
         // Selezione della categoria nel dropdown
         const categorySelect = document.getElementById('editCategoryInput');
         if (categorySelect && categoryTxt) {
@@ -73,7 +73,7 @@ function openPopup(action, bookId, titleTxt, authorTxt, categoryTxt, publisherTx
                 }
             }
         }
-        
+
         // Selezione dell'editore nel dropdown
         const publisherSelect = document.getElementById('editPublisherInput');
         if (publisherSelect && publisherTxt) {
@@ -84,32 +84,32 @@ function openPopup(action, bookId, titleTxt, authorTxt, categoryTxt, publisherTx
                 }
             }
         }
-        
+
         confirmBtn.innerText = 'Salva Cambiamenti';
-    } 
+    }
     else if (action === 'addCopy') {
         /**
          * MODALITÀ: SUCCESSO (AGGIUNTA COPIA)
          */
         title.innerText = 'Operazione Riuscita';
         icon.className = 'fa-solid fa-circle-check text-white';
-        
+
         // Cambio colore icona in stile "Successo"
         icon.parentElement.classList.remove('icon-box-accent');
         icon.parentElement.classList.add('icon-bg-success');
-        
+
         addCopyContent.classList.remove('none');
-        
+
         const addCopyNameElem = document.getElementById('addCopyBookName');
         if (addCopyNameElem) addCopyNameElem.innerText = titleTxt;
-        
+
         confirmBtn.innerText = 'Chiudi';
         document.querySelector('.btn-link-action').classList.add('none');
     }
 
     // Visualizza il popup e blocca lo scroll del body
     popup.classList.remove('none');
-    document.body.style.overflow = 'hidden'; 
+    document.body.style.overflow = 'hidden';
 
     /**
      * Listener per il pulsante di conferma.
@@ -129,7 +129,7 @@ function closePopup() {
     const popup = document.getElementById('genericPopup');
     if (popup) {
         popup.classList.add('none');
-        document.body.style.overflow = ''; 
+        document.body.style.overflow = '';
     }
 }
 
@@ -170,20 +170,20 @@ function openAddEditionPopup() {
 
     // Reset form
     const titleInput = document.getElementById('addEditionTitleInput');
-    const isbnInput  = document.getElementById('addEditionIsbnInput');
-    const dateInput  = document.getElementById('addEditionDateInput');
-    const authorSel  = document.getElementById('addEditionAuthorInput');
-    const catSel     = document.getElementById('addEditionCategoryInput');
-    const pubSel     = document.getElementById('addEditionPublisherInput');
-    const isbnErr    = document.getElementById('addEditionIsbnError');
+    const isbnInput = document.getElementById('addEditionIsbnInput');
+    const dateInput = document.getElementById('addEditionDateInput');
+    const authorSel = document.getElementById('addEditionAuthorInput');
+    const catSel = document.getElementById('addEditionCategoryInput');
+    const pubSel = document.getElementById('addEditionPublisherInput');
+    const isbnErr = document.getElementById('addEditionIsbnError');
 
     if (titleInput) titleInput.value = '';
-    if (isbnInput)  isbnInput.value  = '';
-    if (dateInput)  dateInput.value  = '';
-    if (authorSel)  authorSel.selectedIndex = 0;
-    if (catSel)     catSel.selectedIndex    = 0;
-    if (pubSel)     pubSel.selectedIndex    = 0;
-    if (isbnErr)    isbnErr.style.display   = 'none';
+    if (isbnInput) isbnInput.value = '';
+    if (dateInput) dateInput.value = '';
+    if (authorSel) authorSel.selectedIndex = 0;
+    if (catSel) catSel.selectedIndex = 0;
+    if (pubSel) pubSel.selectedIndex = 0;
+    if (isbnErr) isbnErr.style.display = 'none';
 
     addEditionContent.classList.remove('none');
 
@@ -195,31 +195,14 @@ function openAddEditionPopup() {
 
     // Conferma con validazione ISBN
     confirmBtn.onclick = () => {
-        const isbn = isbnInput ? isbnInput.value.trim() : '';
-
-        if (isbn.length !== 13 || !/^[0-9]{13}$/.test(isbn)) {
-            if (isbnErr) {
-                isbnErr.textContent = 'L\'ISBN deve essere esattamente 13 cifre numeriche.';
-                isbnErr.style.display = 'block';
-            }
-            isbnInput.focus();
-            return;
-        }
-
         if (isbnErr) isbnErr.style.display = 'none';
 
-        console.log('[Popup] Aggiungi Edizione:', {
-            titolo:    titleInput?.value,
-            isbn,
-            data:      dateInput?.value,
-            autoreId:  authorSel?.value,
-            catId:     catSel?.value,
-            edId:      pubSel?.value
-        });
-
-        // TODO: collegare al backend (es. fetch POST /api/addEdition)
-        alert('Simulazione: Edizione aggiunta correttamente.');
-        closePopup();
+        // Validazione HTML5 e invio tramite Thymeleaf Form
+        const form = document.getElementById('addEditionForm');
+        if (form) {
+            console.log('[Popup] Sottomissione form Aggiungi Edizione...');
+            form.submit();
+        }
     };
 
     // Mostra il popup

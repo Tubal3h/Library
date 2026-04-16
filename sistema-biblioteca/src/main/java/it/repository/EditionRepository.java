@@ -99,13 +99,14 @@ public class EditionRepository implements EditionRepositoryInterface {
 							 + "VALUES((SELECT book_name_id FROM books_names WHERE title = :title),\r\n"
 							 + "(SELECT author_id FROM author WHERE author_id = :authorId),\r\n"
 							 + "(SELECT publisher_id FROM publisher WHERE publisher_id = :publisherId),\r\n"
-							 + "('2000-09-21'),\r\n"
+							 + "(:publishingDate),\r\n"
 							 + "(SELECT category_id FROM category WHERE category_id = :categoryId),\r\n"
 							 + "(:isbn))";
 		
 		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("title", title)
 																	 .addValue("authorId", authorId) 
 																	 .addValue("publisherId", publisherId) 
+																	 .addValue("publishingDate", publishingDate)
 																	 .addValue("categoryId", categoryId) 
 																	 .addValue("isbn", isbn);
 		

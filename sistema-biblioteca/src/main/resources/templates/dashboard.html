@@ -22,8 +22,10 @@
 
                 <button th:if="${user.userRole == 'role_admin' && section == 'edition'}"
                     class="btn-create btn-sm shadow-soft"
-                    onclick="openAddEditionPopup()">
-                    <i class="fa-solid fa-plus"></i> Aggiungi Edizione
+                    onclick="openAddEditionPopup()"
+                    title="Aggiungi Edizione">
+                    <i class="fa-solid fa-plus"></i>
+                    <span class="btn-label">Aggiungi Edizione</span>
                 </button>
 <!-- 
                 <button th:if="${user.userRole == 'role_admin' && section == 'users'}"

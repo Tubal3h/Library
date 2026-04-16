@@ -33,19 +33,21 @@
 .popup-content {
     width: 92%;
     max-width: 600px;
-    padding: 3.5rem; /* Increased padding */
+    padding: 3.5rem;
+    /* Increased padding */
     border: 1px solid rgba(255, 255, 255, 0.15);
     transform: scale(1) translateY(0);
     transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
-    box-shadow: 0 32px 64px -16px rgba(0, 0, 0, 0.2), 
-                0 0 0 1px rgba(255, 255, 255, 0.1);
+    box-shadow: 0 32px 64px -16px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.1);
 }
 
 [data-theme="light"] .popup-content {
-    background: rgba(255, 255, 255, 0.85); /* Slightly more opaque glass */
+    background: rgba(255, 255, 255, 0.85);
+    /* Slightly more opaque glass */
     border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 32px 64px -16px rgba(0, 0, 0, 0.1), 
-                0 0 0 1px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 32px 64px -16px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(0, 0, 0, 0.05);
 }
 
 .popup-overlay.none .popup-content {
@@ -58,8 +60,9 @@
     border: none;
     color: var(--color-text);
     opacity: 0.6;
-    font-size: 1.125rem; 
-    min-width: 120px; /* Standard minimum width */
+    font-size: 1.125rem;
+    min-width: 120px;
+    /* Standard minimum width */
     text-align: center;
 }
 
@@ -70,7 +73,8 @@
 
 /* Primary Button in Popup */
 #popupConfirmBtn {
-    min-width: 180px; /* Stronger primary action */
+    min-width: 180px;
+    /* Stronger primary action */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -105,7 +109,8 @@
     margin-top: 1rem;
     overflow-y: auto;
     max-height: 55vh;
-    padding-right: 4px; /* evita che la scrollbar tocchi i bordi degli input */
+    padding-right: 4px;
+    /* evita che la scrollbar tocchi i bordi degli input */
 }
 
 .input-group label {
@@ -117,7 +122,7 @@
 }
 
 /* Premium Inputs */
-.input-group input, 
+.input-group input,
 .input-group textarea,
 .input-group select {
     background: var(--color-surface-2) !important;
@@ -125,11 +130,12 @@
     color: var(--color-text);
     font-family: var(--font-main);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    appearance: none; /* Rimuove lo stile freccia di default sui vari browser */
+    appearance: none;
+    /* Rimuove lo stile freccia di default sui vari browser */
 }
 
 /* Focus states */
-.input-group input:focus, 
+.input-group input:focus,
 .input-group textarea:focus,
 .input-group select:focus {
     outline: none;
@@ -157,6 +163,7 @@
         opacity: 0;
         transform: translateY(15px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -165,7 +172,8 @@
 
 /* Form block spacing */
 .flex.flex-column.gap-5 {
-    gap: 1.75rem !important; /* Specific margin for input fields */
+    gap: 1.75rem !important;
+    /* Specific margin for input fields */
 }
 
 /* ============================================================
@@ -193,14 +201,16 @@
 /* ---- Mobile (≤640px) ---- */
 @media (max-width: 640px) {
     .popup-overlay {
-        align-items: flex-end;          /* Slide-up dal basso su mobile */
+        align-items: flex-end;
+        /* Slide-up dal basso su mobile */
     }
 
     .popup-content {
         width: 100%;
         max-width: 100%;
         padding: 1.75rem 1.25rem 1.5rem;
-        border-radius: 24px 24px 0 0;  /* Solo angoli superiori arrotondati */
+        border-radius: 24px 24px 0 0;
+        /* Solo angoli superiori arrotondati */
         max-height: 92dvh;
         display: flex;
         flex-direction: column;
@@ -208,7 +218,8 @@
 
     .popup-body {
         flex: 1;
-        max-height: none;               /* Controlla il parent, non il body */
+        max-height: none;
+        /* Controlla il parent, non il body */
         overflow-y: auto;
     }
 
@@ -226,7 +237,8 @@
     }
 
     .popup-footer {
-        flex-direction: column-reverse; /* Conferma sopra, Annulla sotto */
+        flex-direction: column-reverse;
+        /* Conferma sopra, Annulla sotto */
         gap: 0.5rem !important;
         margin-top: 1rem !important;
         padding-top: 0.75rem !important;

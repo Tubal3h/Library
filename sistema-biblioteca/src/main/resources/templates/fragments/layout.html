@@ -62,6 +62,7 @@
                 // Nascondi tutti i pannelli del body
                 document.getElementById('editBookContent').classList.add('none');
                 document.getElementById('addCopyContent').classList.add('none');
+                document.getElementById('addEditionSuccessContent')?.classList.add('none');
                 document.getElementById('deleteBookContent').classList.add('none');
                 document.getElementById('errorContent').classList.add('none');
 
@@ -75,6 +76,13 @@
                     document.getElementById('addCopyBookTitle').textContent = bookTitle || '';
                     document.getElementById('addCopyBookName').textContent = bookIsbn || '';
                     document.getElementById('addCopyContent').classList.remove('none');
+
+                } else if (popupType === 'addEdition') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-circle-check text-white font-size-medium';
+                    document.getElementById('popupTitle').textContent = 'Edizione aggiunta';
+                    document.getElementById('addEditionSuccessBookTitle').textContent = bookTitle || '';
+                    document.getElementById('addEditionSuccessBookIsbn').textContent = bookIsbn || '';
+                    document.getElementById('addEditionSuccessContent').classList.remove('none');
 
                 } else if (popupType === 'deleteBook') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-trash-can text-white font-size-medium';

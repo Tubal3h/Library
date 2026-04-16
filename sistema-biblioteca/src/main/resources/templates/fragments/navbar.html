@@ -2,11 +2,17 @@
     -------------------------------------------------------------------------
     NAVBAR FRAGMENT (NAVBAR.HTML)
     -------------------------------------------------------------------------
-    Gestisce la barra di navigazione laterale (Sidebar).
+    Gestisce la barra di navigazione laterale (Sidebar) su desktop
+    e la bottom navigation bar su mobile (max 5 voci).
     Include il logo, i link di navigazione contestuali al ruolo dell'utente,
     lo switch per il tema (Light/Dark) e il pulsante di logout.
 -->
-<nav th:fragment="navbar" id="sidebar"
+<th:block th:fragment="navbar">
+
+<!-- =====================================================================
+     SIDEBAR — visibile solo su desktop (> 768px)
+     ===================================================================== -->
+<nav id="sidebar"
     class="glass radius-32 flex flex-column shadow-soft animate-slide-in-left opacity-0 p-3">
     
     <!-- Logo della Biblioteca -->
@@ -43,8 +49,8 @@
                 th:href="@{/dashboard(email=${user.userEmail}, section='edition')}"
                 class="sidebar-link flex align-center gap-2 p-2 radius-12"
                 th:classappend="${section == 'edition' ? 'active' : ''}">
-                <i class="fa-solid fa-list-ul"></i>
-                <span class="fw-600">Visualizza Manuali</span>
+                <i class="fa-solid fa-book-open"></i>
+                <span class="fw-600">Manuali</span>
             </a>
 
             <!-- Sezione Utente: I Miei Prestiti -->
@@ -96,4 +102,88 @@
             </form>
         </div>
     </div>
-</nav>
+
+</nav>
+
+<!-- =====================================================================
+     BOTTOM NAV — visibile solo su mobile (≤ 768px), max 5 voci
+     ===================================================================== -->
+<nav id="mobile-bottom-nav" class="mobile-bottom-nav glass shadow-soft animate-fade-in-up opacity-0">
+
+    <!-- Voce 1: Home / Dashboard -->
+    <a th:href="@{/dashboard(email=${user.userEmail}, section='home')}"
+       class="mobile-nav-item"
+       th:classappend="${section == 'home' ? ' mobile-nav-item--active' : ''}">
+        <span class="mobile-nav-icon">
+            <i class="fa-solid fa-house"></i>
+        </span>
+        <span class="mobile-nav-label">Home</span>
+    </a>
+
+    <!-- Voce 2: Catalogo (Comune a tutti) -->
+    <a th:href="@{/dashboard(email=${user.userEmail}, section='catalog')}"
+       class="mobile-nav-item"
+       th:classappend="${section == 'catalog' ? ' mobile-nav-item--active' : ''}">
+        <span class="mobile-nav-icon">
+            <i class="fa-solid fa-list-ul"></i>
+        </span>
+        <span class="mobile-nav-label">Libreria</span>
+    </a>
+
+    <!-- Voce 3a: Edizioni (solo admin) -->
+    <a th:if="${user.userRole == 'role_admin'}"
+       th:href="@{/dashboard(email=${user.userEmail}, section='edition')}"
+       class="mobile-nav-item"
+       th:classappend="${section == 'edition' ? ' mobile-nav-item--active' : ''}">
+        <span class="mobile-nav-icon">
+            <i class="fa-solid fa-book-open"></i>
+        </span>
+        <span class="mobile-nav-label">Manuali</span>
+    </a>
+
+    <!-- Voce 3b: Prestiti (solo utente) -->
+    <a th:if="${user.userRole == 'role_user'}"
+       th:href="@{/dashboard(email=${user.userEmail}, section='rents')}"
+       class="mobile-nav-item"
+       th:classappend="${section == 'rents' ? ' mobile-nav-item--active' : ''}">
+        <span class="mobile-nav-icon">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+        </span>
+        <span class="mobile-nav-label">Prestiti</span>
+    </a>
+
+    <!-- Voce 4: Utenti (solo admin) -->
+    <a th:if="${user.userRole == 'role_admin'}"
+       th:href="@{/dashboard(email=${user.userEmail}, section='users')}"
+       class="mobile-nav-item"
+       th:classappend="${section == 'users' ? ' mobile-nav-item--active' : ''}">
+        <span class="mobile-nav-icon">
+            <i class="fa-solid fa-users"></i>
+        </span>
+        <span class="mobile-nav-label">Utenti</span>
+    </a>
+
+    <!-- Voce 5a: Prestiti admin -->
+    <a th:if="${user.userRole == 'role_admin'}"
+       th:href="@{/dashboard(email=${user.userEmail}, section='rents')}"
+       class="mobile-nav-item"
+       th:classappend="${section == 'rents' ? ' mobile-nav-item--active' : ''}">
+        <span class="mobile-nav-icon">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+        </span>
+        <span class="mobile-nav-label">Prestiti</span>
+    </a>
+
+    <!-- Voce 5: Logout (comune) -->
+    <form th:if="${user != null}" th:action="@{/api/logout}" method="post" class="m-0">
+        <button type="submit" class="mobile-nav-item mobile-nav-item--btn">
+            <span class="mobile-nav-icon">
+                <i class="fa-solid fa-right-from-bracket"></i>
+            </span>
+            <span class="mobile-nav-label">Esci</span>
+        </button>
+    </form>
+
+</nav>
+
+</th:block>
