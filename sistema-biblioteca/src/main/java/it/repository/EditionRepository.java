@@ -1,5 +1,7 @@
 package it.repository;
 
+import java.time.LocalDate;
+
 /* -------------------------------------------------------------------------- */
 /*                                 REPOSITORY                                 */
 /* -------------------------------------------------------------------------- */
@@ -7,6 +9,9 @@ package it.repository;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import it.entity.Edition;
@@ -18,9 +23,10 @@ import it.mapper.EditionJoinRowMapper;
  * Repository per la gestione delle edizioni dei libri nel database.
  */
 @Repository
-public class EditionRepository {
+public class EditionRepository implements EditionRepositoryInterface {
     private final EditionRowMapper editionRowMapper;
     private final JdbcTemplate jdbcTemplate;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final EditionJoinRowMapper editionJoinRowMapper;
     
     /**
@@ -30,10 +36,11 @@ public class EditionRepository {
      * @param editionRowMapper Mapper per convertire i record del database in oggetti Edition
      * @param editionJoinRowMapper Mapper per convertire i record del database in oggetti EditionJoin
      */
-    public EditionRepository(JdbcTemplate jdbcTemplate, EditionRowMapper editionRowMapper, EditionJoinRowMapper editionJoinRowMapper) {
+    public EditionRepository(JdbcTemplate jdbcTemplate, EditionRowMapper editionRowMapper, EditionJoinRowMapper editionJoinRowMapper, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.editionRowMapper = editionRowMapper;
         this.editionJoinRowMapper = editionJoinRowMapper;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     /**
@@ -84,6 +91,24 @@ public class EditionRepository {
         String sql = "SELECT * FROM edition WHERE edition_id = ?";
         return jdbcTemplate.queryForObject(sql, editionRowMapper, editionId);
     }
+
+	@Override
+	public int insertEdition(String title, int authorId, int publisherId, LocalDate publishingDate, int categoryId,
+			String isbn) {
+		String insertEdition = "INSERT INTO edition (book_name_id, author_id, publisher_id, publishing_date, category_id, isbn)\r\n"
+							 + "VALUES((SELECT book_name_id FROM books_names WHERE title = :title),\r\n"
+							 + "(SELECT author_id FROM author WHERE author_id = :authorId),\r\n"
+							 + "(SELECT publisher_id FROM publisher WHERE publisher_id = :publisherId),\r\n"
+							 + "('2000-09-21'),\r\n"
+							 + "(SELECT category_id FROM category WHERE category_id = :categoryId),\r\n"
+							 + "(:isbn))";
+		
+		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("title", title);
+		
+		return 0;
+	}
+    
+    
 }
 
 

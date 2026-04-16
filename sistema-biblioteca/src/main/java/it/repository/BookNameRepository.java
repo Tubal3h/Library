@@ -7,6 +7,9 @@ package it.repository;
 import java.util.List;
 
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import it.entity.BookName;
@@ -20,6 +23,7 @@ public class BookNameRepository {
 
     private final JdbcTemplate jdbcTemplate;
     private final BookNameRowMapper bookNameRowMapper;
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     /**
      * Costruttore per BookNameRepository.
@@ -27,9 +31,10 @@ public class BookNameRepository {
      * @param jdbcTemplate      Il template JDBC per le operazioni sul database
      * @param bookNameRowMapper Mapper per convertire i record del database in oggetti BookName
      */
-    public BookNameRepository(JdbcTemplate jdbcTemplate, BookNameRowMapper bookNameRowMapper) {
+    public BookNameRepository(JdbcTemplate jdbcTemplate, BookNameRowMapper bookNameRowMapper, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.bookNameRowMapper = bookNameRowMapper;
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     /**
@@ -51,5 +56,13 @@ public class BookNameRepository {
     public String getBookNameById(int titleId) {
         String sql = "SELECT title FROM books_names WHERE book_name_id = ?";
         return jdbcTemplate.queryForObject(sql, String.class, titleId);
+    }
+    
+    public int insertBookByTitle(String title) {
+		String insertBook = "INSERT INTO books_names(title)\r\n"
+				  		  + "VALUES(:title)";
+		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue(title, "title");
+		int res = namedParameterJdbcTemplate.update(insertBook, sqlParameters);
+		return res;
     }
 }

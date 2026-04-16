@@ -16,7 +16,7 @@ import it.mapper.CategoryRowMapper;
  * Repository per la gestione delle categorie dei libri nel database.
  */
 @Repository
-public class CategoryRepository {
+public class CategoryRepository implements CategoryRepositoryInterface{
     private final JdbcTemplate jdbcTemplate;
     private final CategoryRowMapper categoryRowMapper;
 
