@@ -1,6 +1,6 @@
 ***
 
-# Sistema Biblioteca - Documentazione Tecnica (Aggiornata)
+# Sistema Biblioteca - Documentazione Tecnica 
 
 Questo documento fornisce una panoramica tecnica completa dell’architettura backend e del nuovo sistema di design frontend per il progetto "Sistema Biblioteca".
 
@@ -10,7 +10,7 @@ Questo documento fornisce una panoramica tecnica completa dell’architettura ba
 Il "Sistema Biblioteca" è una dashboard gestionale moderna sviluppata con **Spring Boot** e **Java 21+**. Il sistema offre un'interfaccia premium basata sui ruoli per la gestione di utenti, catalogo libri e noleggi.
 
 ### Evoluzione Recente:
-Recentemente il progetto è stato sottoposto a un profondo processo di **refactoring e documentazione** globale:
+Recentemente il progetto è stato sottoposto a un profondo processo di **documentazione** globale:
 - **CSS Architecture**: Passaggio da stili inline a un sistema di classi di utilità centralizzato in `style.css`.
 - **Administrative Expansion**: Introduzione di workflow avanzati per l'aggiunta di edizioni e copie fisiche con validazione ISBN.
 - **Mobile Optimization**: Implementazione di una navigazione "Bottom Bar" nativa per dispositivi touch e popup adattivi.
@@ -78,9 +78,9 @@ Il sistema utilizza un'architettura **Stateless Redirect**:
 
 ### Ricerca Globale
 La ricerca utilizza un sistema di redirect intelligente:
-1. L'utente preme la barra di ricerca o `Ctrl+K`.
+1. L'utente preme la barra di ricerca.
 2. Il JS cattura la query e ricarica la dashboard con parametri URL aggiuntivi (`&search=...`).
-3. Il `BookService` riceve la query e filtra i risultati tramite pattern matching (LIKE) nel database.
+3. Il `BookService` riceve la query e filtra i risultati.
 
 ***
 
