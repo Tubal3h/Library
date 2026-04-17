@@ -13,10 +13,10 @@
         <!-- Header -->
         <header class="dashboard-header flex justify-between align-center mb-2 animate-fade-in-up opacity-0">
             <div class="greeting">
-                <h1 class="fw-700">Ciao, <span th:text="${user.userName}">User</span>!</h1>
+                <h2 class="fw-700">Ciao, <span th:text="${user.userName}">User</span>.</h2>
 
-                <p th:text="${user.userRole == 'role_admin' ? 'Benvenuto, nella dashboard Admin.' : 'Benvenuto, nella dashboard.'}"
-                    class="opacity-70">Benvenuto, nella dashboard.</p>
+                <p th:text="${user.userRole == 'role_admin' ? 'Benvenuto nella dashboard Admin.' : 'Benvenuto nella dashboard.'}"
+                    class="opacity-70">Benvenuto nella dashboard.</p>
             </div>
             <div class="header-actions flex align-center gap-2">
 
@@ -47,48 +47,44 @@
             <!-- Card 1: Users totali -->
             <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
-                    <span class="opacity-70 font-size-small uppercase fw-700">Utenti Registrati</span>
+                    <span class="opacity-70 font-size-small uppercase fw-700">Dipendenti Registrati</span>
                     <i class="fa-solid fa-users text-brand"></i>
                 </div>
                 <div class="flex align-end gap-2">
                     <span class="text-3xl fw-700" th:text="${totalUsers}">totalUsers</span>
-                    <span class="opacity-50 font-size-small mb-1">Totale utenti nel sistema</span>
                 </div>
             </div>
 
             <!-- Card 2: Books totali -->
             <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
-                    <span class="opacity-70 font-size-small uppercase fw-700">Totale Libri</span>
+                    <span class="opacity-70 font-size-small uppercase fw-700">Totale manuali</span>
                     <i class="fa-solid fa-book text-brand"></i>
                 </div>
                 <div class="flex align-end gap-2">
                     <span class="text-3xl fw-700" th:text="${totalBooks}">totalBooks</span>
-                    <span class="opacity-50 font-size-small mb-1">Totale libri nel sistema</span>
                 </div>
             </div>
 
             <!-- Card 3: Books disponibili -->
             <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
-                    <span class="opacity-70 font-size-small uppercase fw-700">Libri Disponibili</span>
+                    <span class="opacity-70 font-size-small uppercase fw-700">Manuali disponibili</span>
                     <i class="fa-solid fa-check-to-slot text-success"></i>
                 </div>
                 <div class="flex align-end gap-2">
                     <span class="text-3xl fw-700" th:text="${totalBooks - totalRents}">availableBooks</span>
-                    <span class="opacity-50 font-size-small mb-1">Pronti al prestito</span>
                 </div>
             </div>
 
             <!-- Card 4: Books prenotati/prestati -->
             <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
-                    <span class="opacity-70 font-size-small uppercase fw-700">Libri Prestati</span>
+                    <span class="opacity-70 font-size-small uppercase fw-700">Manuali in prestito</span>
                     <i class="fa-solid fa-hand-holding-hand text-warning"></i>
                 </div>
                 <div class="flex align-end gap-2">
                     <span class="text-3xl fw-700" th:text="${totalRents}">borrowedBooks</span>
-                    <span class="opacity-50 font-size-small mb-1">In prestito</span>
                 </div>
             </div>
 
