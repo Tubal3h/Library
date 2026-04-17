@@ -58,6 +58,12 @@ public class BookNameRepository {
         return jdbcTemplate.queryForObject(sql, String.class, titleId);
     }
     
+    /**
+     * Inserisce un nuovo titolo nella tabella books_names.
+     *
+     * @param title Il titolo del libro da inserire
+     * @return Numero di record inseriti
+     */
     public int insertBookByTitle(String title) {
 		
     	String insertBook = "INSERT INTO books_names(title)\r\n"

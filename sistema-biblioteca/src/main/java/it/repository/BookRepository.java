@@ -123,6 +123,13 @@ public class BookRepository implements BookRepositoryInterface{
         return jdbcTemplate.query(sql, bookJoinMapper);
     }
     
+    /**
+     * Inserisce una nuova copia fisica nella tabella books tramite il codice ISBN dell'edizione.
+     * La copia viene inizializzata con lo stato 'disponibilita'.
+     *
+     * @param isbn Codice ISBN dell'edizione
+     * @return Numero di record inseriti
+     */
 	public int insertBookByIsbn(String isbn) {
 		String query = "INSERT INTO books(edition_id, status)\r\n"
 					 + "VALUES((SELECT edition_id FROM edition WHERE isbn = :isbn), \r\n"
@@ -133,6 +140,12 @@ public class BookRepository implements BookRepositoryInterface{
 		return res;
 	}
 
+    /**
+     * Esegue l'eliminazione logica di un libro impostando lo stato a 'eliminato'.
+     *
+     * @param id ID univoco del libro fisico
+     * @return Numero di record aggiornati
+     */
 	@Override
 	public int deleteBookById(int id) {
 		String query = "UPDATE books\r\n"
@@ -143,7 +156,15 @@ public class BookRepository implements BookRepositoryInterface{
 		return res;
 	}
 	
-	public int insertBookByTitle(String title){
+
+    /**
+     * Inserisce una nuova copia fisica basandosi sul titolo del libro.
+     * Utilizzato durante la creazione di una nuova edizione per aggiungere la prima copia.
+     *
+     * @param title Titolo del libro
+     * @return Numero di record inseriti
+     */
+	public int insertBookByTitle(String title) {
 		String insertBook = "INSERT INTO books (edition_id, status)\r\n"
 						  + "VALUES((SELECT edition_id FROM edition INNER JOIN books_names ON edition.book_name_id = books_names.book_name_id WHERE title = :title),\r\n"
 						  + "('disponibilita'))";
