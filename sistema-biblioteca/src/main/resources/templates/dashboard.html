@@ -45,7 +45,7 @@
             class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
 
             <!-- Card 1: Users totali -->
-            <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+            <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
                     <span class="opacity-70 font-size-small uppercase fw-700">Dipendenti Registrati</span>
                     <i class="fa-solid fa-users text-brand"></i>
@@ -56,7 +56,7 @@
             </div>
 
             <!-- Card 2: Books totali -->
-            <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+            <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
                     <span class="opacity-70 font-size-small uppercase fw-700">Totale manuali</span>
                     <i class="fa-solid fa-book text-brand"></i>
@@ -67,7 +67,7 @@
             </div>
 
             <!-- Card 3: Books disponibili -->
-            <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+            <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
                     <span class="opacity-70 font-size-small uppercase fw-700">Manuali disponibili</span>
                     <i class="fa-solid fa-check-to-slot text-success"></i>
@@ -78,7 +78,7 @@
             </div>
 
             <!-- Card 4: Books prenotati/prestati -->
-            <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+            <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
                     <span class="opacity-70 font-size-small uppercase fw-700">Manuali in prestito</span>
                     <i class="fa-solid fa-hand-holding-hand text-warning"></i>
@@ -95,7 +95,7 @@
             class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
 
             <!-- Card 1: Borrowed Books -->
-            <div class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+            <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
                     <span class="opacity-70 font-size-small uppercase fw-700">Libri Prestati</span>
                     <i class="fa-solid fa-hand-holding-hand text-warning"></i>
@@ -111,27 +111,27 @@
         <!-- Sezione catalogo libri -->
         <div th:if="${section == 'catalog'}" class="grid gap-3 animate-fade-in-up opacity-0 delay-1">
             <div th:replace="~{fragments/catalog :: catalog}"
-                class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+                class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
 
             </div>
         </div>
 
         <div th:if="${section == 'edition'}" class="grid gap-3 animate-fade-in-up opacity-0 delay-1">
             <div th:replace="~{fragments/catalog :: edition}"
-                class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+                class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
 
             </div>
         </div>
         <!-- Sezione lista utenti per admin-->
         <div th:if="${section == 'users'}" class="grid gap-3 animate-fade-in-up opacity-0 delay-1">
             <div th:replace="~{fragments/users :: users}"
-                class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+                class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
             </div>
         </div>
         <!-- Sezione lista prestiti -->
         <div th:if="${section == 'rents'}" class="grid gap-3 animate-fade-in-up opacity-0 delay-1">
             <div th:replace="~{fragments/rents :: rents}"
-                class="card glass radius-24 p-3 shadow-card flex flex-column justify-between border-none">
+                class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
             </div>
         </div>
 
