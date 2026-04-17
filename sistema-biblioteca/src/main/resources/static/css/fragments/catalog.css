@@ -4,7 +4,7 @@
    ============================================================ */
 
 .book-card-horizontal {
-    min-height: 180px;
+    min-height: 140px;
     height: 100%;
     transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     background: var(--color-surface);
@@ -60,9 +60,9 @@
 
 .category-label {
     display: inline-block;
-    padding: 6px 12px;
+    padding: 5px 10px;
     background: rgba(var(--color-text-rgb), 0.05);
-    border-radius: 8px;
+    border-radius: 5px;
     font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 0.15em;
@@ -101,8 +101,8 @@
 .btn-modern-action {
     background: var(--color-surface-2);
     color: var(--color-text);
-    padding: 12px 24px;
-    border-radius: 30px;
+    padding: 5px 10px;
+    border-radius: 15px;
     border: 1px solid rgba(var(--color-text-rgb), 0.1);
     font-size: 0.8rem;
     letter-spacing: 0.1em;
