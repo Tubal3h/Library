@@ -188,31 +188,6 @@ INSERT INTO edition (book_name_id, author_id, publisher_id, publishing_date, cat
 (22, 28, 6, '2022-01-01', 5, '9788836006953'), -- Programmare con JavaScript → JavaScript
 (23, 15, 6, '2012-01-01', 5, '9788848128346'), -- JavaScript. Guida pocket → JavaScript
 
-<<<<<<< HEAD
-<<<<<<< HEAD
--- rental_record
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (20, 15, '2025-01-10 09:00:00', '2025-02-10', '2025-01-25 09:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (15, 24, '2025-01-15 10:00:00', '2025-02-15', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (11, 16, '2025-02-01 11:00:00', '2025-03-01', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (27, 12, '2025-02-14 08:00:00', '2025-03-14', '2025-02-28 08:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (23, 17, '2025-03-05 14:00:00', '2025-04-05', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (7, 21, '2025-03-10 09:00:00', '2025-04-10', '2025-03-30 09:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (6, 18, '2025-03-20 10:00:00', '2025-04-20', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (13, 8, '2025-04-01 11:00:00', '2025-05-01', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (12, 27, '2025-04-08 09:00:00', '2025-05-08', '2025-04-22 09:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (16, 20, '2025-04-15 10:00:00', '2025-05-15', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (10, 10, '2025-01-10 09:00:00', '2025-02-10', '2025-01-25 09:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (26, 13, '2025-01-15 10:00:00', '2025-02-15', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (30, 28, '2025-02-01 11:00:00', '2025-03-01', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (22, 2, '2025-02-14 08:00:00', '2025-03-14', '2025-02-28 08:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (17, 30, '2025-03-05 14:00:00', '2025-04-05', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (28, 3, '2025-03-10 09:00:00', '2025-04-10', '2025-03-30 09:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (2, 4, '2025-03-20 10:00:00', '2025-04-20', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (14, 22, '2025-04-01 11:00:00', '2025-05-01', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (19, 7, '2025-04-08 09:00:00', '2025-05-08', '2025-04-22 09:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (3, 5, '2025-04-15 10:00:00', '2025-05-15', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (18, 29, '2025-01-10 09:00:00', '2025-02-10', '2025-01-25 09:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (29, 11, '2025-01-15 10:00:00', '2025-02-15', NULL);
 =======
 -- Libri HTML/CSS italiani
 (24, 17, 7, '2019-04-01', 6, '9788850334735'), -- Imparare a programmare con HTML e CSS → HTML/CSS
@@ -401,20 +376,5 @@ INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, renta
 (36, 14, '2025-12-15 11:00:00', '2026-01-14', '2026-01-12 15:00:00'),
 (44, 15, '2026-01-08 09:00:00', '2026-02-07', '2026-02-05 10:00:00'),
 (49, 16, '2025-11-20 10:00:00', '2025-12-20', '2025-12-18 14:00:00');
->>>>>>> 3c954d7ce866356aeeaf43f6037e41dd2d233d14
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (5, 14, '2025-02-01 11:00:00', '2025-03-01', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (25, 23, '2025-02-14 08:00:00', '2025-03-14', '2025-02-28 08:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (8, 6, '2025-03-05 14:00:00', '2025-04-05', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (9, 25, '2025-03-10 09:00:00', '2025-04-10', '2025-03-30 09:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (24, 1, '2025-03-20 10:00:00', '2025-04-20', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (1, 26, '2025-04-01 11:00:00', '2025-05-01', NULL);
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (4, 9, '2025-04-08 09:00:00', '2025-05-08', '2025-04-22 09:00:00');
-INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES (21, 19, '2025-04-15 10:00:00', '2025-05-15', NULL);
-<<<<<<< HEAD
 
-
-=======
 -- users e rental_record rimangono identici a prima
->>>>>>> 1bcc96dd00b5f0e8c641afa3950527bd5347297b
-=======
->>>>>>> 3c954d7ce866356aeeaf43f6037e41dd2d233d14

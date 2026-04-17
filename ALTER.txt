@@ -1,0 +1,15 @@
+ALTER TABLE books_names 
+ADD UNIQUE (title);
+
+ALTER TABLE category
+ADD UNIQUE (category_name);
+
+ALTER TABLE publisher
+ADD UNIQUE (publisher_name);
+
+ALTER TABLE books
+DROP CONSTRAINT books_status_check;
+
+ALTER TABLE books
+ADD CONSTRAINT books_status_check 
+CHECK (status IN ('disponibilita', 'in prestito', 'eliminato', 'prenotato'));
