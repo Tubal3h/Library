@@ -1,5 +1,13 @@
 package it.entity;
 
+import org.springframework.security.core.userdetails.UserDetails;
+import java.util.Collection;
+import java.util.List;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+
+
 /* -------------------------------------------------------------------------- */
 /*                                   ENTITY                                   */
 /* -------------------------------------------------------------------------- */
@@ -7,14 +15,14 @@ package it.entity;
 /**
  * Entità che rappresenta un utente del sistema.
  */
-public class User {
+public class User implements UserDetails {
 
     private int userId;
     private String userName;
-    private String userSurname;
-    private String userEmail;
-    private String userPassword;
-    private String userRole;
+    private String userLastName;
+    private String email;
+    private String pass;
+    private String role;
 
     /**
      * Costruttore di default.
@@ -31,13 +39,63 @@ public class User {
      * @param userPassword Password dell'utente
      * @param userRole Ruolo dell'utente
      */
-    public User(String userName, String userSurname, String userEmail, String userPassword, String userRole) {
+    public User(String userName, String userLastName, String email, String pass, String role) {
         this.userName = userName;
-        this.userSurname = userSurname;
-        this.userEmail = userEmail;
-        this.userPassword = userPassword;
-        this.userRole = userRole;
+        this.userLastName = userLastName;
+        this.email = email;
+        this.pass = pass;
+        this.role = role;
     }
+
+    /**
+     * Metodi per l'interfaccia UserDetails
+     */
+
+    /**
+     * @return Email dell'utente
+     */
+    @Override
+    public String getUsername(){
+        return email;
+    }
+
+    /**
+     * @return Password dell'utente
+     */
+    @Override
+    public String getPassword(){
+        return pass;
+    }
+
+    /**
+     * 
+     */
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role.toUpperCase()));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+
+
 
     /**
      * @return ID dell'utente
@@ -70,67 +128,61 @@ public class User {
     /**
      * @return Cognome dell'utente
      */
-    public String getUserSurname() {
-        return userSurname;
+    public String getUserLastName() {
+        return userLastName;
     }
 
     /**
-     * @param userSurname Cognome dell'utente
+     * @param userLastName Cognome dell'utente
      */
-    public void setUserSurname(String userSurname) {
-        this.userSurname = userSurname;
+    public void setUserLastName(String userLastName) {
+        this.userLastName = userLastName;
     }
 
     /**
      * @return Email dell'utente
      */
-    public String getUserEmail() {
-        return userEmail;
+    public String getEmail() {
+        return email;
     }
 
     /**
      * @param userEmail Email dell'utente
      */
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    /**
-     * @return Password dell'utente
-     */
-    public String getUserPassword() {
-        return userPassword;
-    }
 
     /**
      * @param userPassword Password dell'utente
      */
-    public void setUserPassword(String userPassword) {
-        this.userPassword = userPassword;
+    public void setPass(String pass) {
+        this.pass = pass;
     }
 
     /**
      * @return Ruolo dell'utente (es. ADMIN, USER)
      */
     public String getUserRole() {
-        return userRole;
+        return role;
     }
 
     /**
      * @param userRole Ruolo dell'utente
      */
     public void setUserRole(String userRole) {
-        this.userRole = userRole;
+        this.role = userRole;
     }
 
     @Override
     public String toString() {
         return "User [userId=" + userId +
                 ", userName=" + userName +
-                ", userSurname=" + userSurname +
-                ", userEmail=" + userEmail +
-                ", userPassword=" + userPassword +
-                ", userRole=" + userRole + "]";
+                ", userSurname=" + userLastName +
+                ", userEmail=" + email +
+                ", userPassword=" + pass +
+                ", userRole=" + role + "]";
     }
 }
-
+

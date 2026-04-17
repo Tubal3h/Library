@@ -37,8 +37,7 @@ public class UserRepository {
      */
     public User findByEmail(String email) {
         String sql = "SELECT * FROM users WHERE email = ?";
-        List<User> users = jdbcTemplate.query(sql, userRowMapper, email);
-        return users.isEmpty() ? null : users.get(0);
+        return jdbcTemplate.queryForObject(sql, userRowMapper, email);
     }
 
     /**

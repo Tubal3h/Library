@@ -40,7 +40,7 @@ public class AuthService {
             return null;
         }
 
-        if (!user.getUserPassword().equals(loginDto.getPassword())) {
+        if (!user.getPassword().equals(loginDto.getPassword())) {
             return null;
         }
 

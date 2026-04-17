@@ -64,7 +64,7 @@ public class AuthController {
             return "redirect:/?error=service_unavailable";
         }
 
-        return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=home";
+        return "redirect:/dashboard?email=" + user.getEmail() + "&section=home";
     }
 
     /**
