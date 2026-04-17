@@ -3,6 +3,7 @@ package it.repository;
 import java.util.List;
 
 import it.entity.BookJoin;
+import it.exception.InsertBookNameException;
 
 public interface BookRepositoryInterface {
 	public String getAuthorFullNameByID(int authorId);
@@ -13,6 +14,6 @@ public interface BookRepositoryInterface {
 	public List<BookJoin> getAllBooks();
 	public int insertBookByIsbn(String isbn);
 	public int deleteBookById(int id);
-	public int insertBookByTitle(String title);
+	public int insertBookByTitle(String title) throws InsertBookNameException;
 	
 }

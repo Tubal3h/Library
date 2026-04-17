@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import it.entity.BookJoin;
+import it.exception.InsertBookNameException;
 import it.mapper.BookJoinRowMapper;
 
 /**
@@ -142,14 +143,14 @@ public class BookRepository implements BookRepositoryInterface{
 		return res;
 	}
 	
-	public int insertBookByTitle(String title) {
+	public int insertBookByTitle(String title){
 		String insertBook = "INSERT INTO books (edition_id, status)\r\n"
 						  + "VALUES((SELECT edition_id FROM edition INNER JOIN books_names ON edition.book_name_id = books_names.book_name_id WHERE title = :title),\r\n"
-						  + "('disponibilita'));";
+						  + "('disponibilita'))";
 		
 		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("title", title);
-		int res = namedParameterJdbcTemplate.update(insertBook, sqlParameter);
-		return res;
-	}
+			int res = namedParameterJdbcTemplate.update(insertBook, sqlParameter);
+			return res;
 
+	}
 }
