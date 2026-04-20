@@ -31,4 +31,27 @@ public class FeaturesController {
         session.setAttribute("search",search);
         return "redirect:/dashboard";
     }
+
+    @GetMapping("/api/navigation")
+    public String navigate(
+        @RequestParam(value = "section", required = false) String section,
+        HttpSession session,Model model) {
+        UserDto user = (UserDto) session.getAttribute("user");
+        if (user == null) {
+            return "redirect:/";
+        }
+        if (section == null) {
+            return "redirect:/dashboard";
+        }
+        if (user.getUserRole().equals("role_user")) {
+            if (section.equals("users")) {
+                return "redirect:/dashboard";
+            }
+
+            return "redirect:/dashboard";
+        }
+
+        session.setAttribute("section",section);
+        return "redirect:/dashboard";
+    }
 }
