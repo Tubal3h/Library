@@ -67,11 +67,7 @@ public class AuthController {
     	
     	if(user != null) {
     		session.setAttribute("user", user);
-    		session.setAttribute("section", "home");
-    		session.setAttribute("search", "");
-    		model.addAttribute("user", user);
-    		
-    		
+    		session.setAttribute("section", "home"); 		
     		return "redirect:/dashboard";
     	}else {
     		return "redirect:/";
