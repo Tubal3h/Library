@@ -44,11 +44,14 @@
                     <span th:if="${book.status.equals('eliminato')}">Eliminato</span>
                 </div>
             </div>
-            <a th:href="@{/api/deleteBook(email=${user.userEmail}, bookId=${book.bookId}, bookName=${book.title})}"
+            <button type="button"
                 th:if="${user.userRole == 'role_admin' and book.status == 'disponibilita'}"
-                class="m-1 btn-modern-action pointer transition shadow-soft">
+                th:data-title="${book.title}"
+                th:data-url="@{/api/deleteBook(email=${user.userEmail}, bookId=${book.bookId}, bookName=${book.title})}"
+                onclick="triggerConfirmDelete(this)"
+                class="m-1 btn-modern-action pointer transition shadow-soft border-none bg-transparent">
                 <span class="text-center">Elimina Copia</span>
-            </a>
+            </button>
 
             <a th:if="${user.userRole != 'role_admin'}"
                 th:href="@{/api/borrow(email=${user.userEmail}, bookId=${book.bookId})}"
@@ -104,11 +107,14 @@
                     <span class="fw-700" th:text="'Quantità: ' + ${edition.quantity}"></span>
                 </div>
             </div>
-            <a th:href="@{/api/addBook(email=${user.userEmail}, isbn=${edition.isbnCode}, bookName=${edition.bookName})}"
-                class="w-100 btn-modern-action pointer transition shadow-soft">
+            <button type="button"
+                th:data-title="${edition.bookName}"
+                th:data-url="@{/api/addBook(email=${user.userEmail}, isbn=${edition.isbnCode}, bookName=${edition.bookName})}"
+                onclick="triggerConfirmAdd(this)"
+                class="w-100 btn-modern-action pointer transition shadow-soft border-none bg-transparent">
                 <span>Aggiungi</span>
                 <i class="fa-solid fa-plus"></i>
-            </a>
+            </button>
         </div>
     </div>
 </th:block>

@@ -26,9 +26,11 @@ function openPopup(action, bookId, titleTxt, authorTxt, categoryTxt, publisherTx
     // Verifica che tutti gli elementi necessari siano presenti nel DOM
     if (!popup || !title || !icon || !confirmBtn || !editContent || !addCopyContent) return;
 
-    // Reset iniziale dello stato dei contenuti
-    editContent.classList.add('none');
-    addCopyContent.classList.add('none');
+    // Nasconde tutti gli altri pannelli
+    ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'confirmContent', 'errorContent'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('none');
+    });
 
     // Configurazione del popup basata sull'azione richiesta
     if (action === 'edit') {
@@ -86,6 +88,8 @@ function openPopup(action, bookId, titleTxt, authorTxt, categoryTxt, publisherTx
         }
 
         confirmBtn.innerText = 'Salva Cambiamenti';
+        confirmBtn.style.background = ''; 
+        confirmBtn.style.borderColor = '';
     }
     else if (action === 'addCopy') {
         /**
@@ -104,6 +108,8 @@ function openPopup(action, bookId, titleTxt, authorTxt, categoryTxt, publisherTx
         if (addCopyNameElem) addCopyNameElem.innerText = titleTxt;
 
         confirmBtn.innerText = 'Chiudi';
+        confirmBtn.style.background = ''; 
+        confirmBtn.style.borderColor = '';
         document.querySelector('.btn-link-action').classList.add('none');
     }
 
@@ -144,6 +150,107 @@ function closePopupOnBackdrop(event) {
 }
 
 /**
+ * Helper per avviare la conferma eliminazione leggendo i dati dall'elemento HTML.
+ * @param {HTMLElement} element - Il bottone cliccato.
+ */
+function triggerConfirmDelete(element) {
+    const title = element.getAttribute('data-title');
+    const url = element.getAttribute('data-url');
+    openConfirmPopup('delete', title, 'Sei sicuro di voler eliminare questa copia fisica dal catalogo?', url);
+}
+
+/**
+ * Helper per avviare la conferma aggiunta copia leggendo i dati dall'elemento HTML.
+ * @param {HTMLElement} element - Il bottone cliccato.
+ */
+function triggerConfirmAdd(element) {
+    const title = element.getAttribute('data-title');
+    const url = element.getAttribute('data-url');
+    openConfirmPopup('add', title, 'Vuoi aggiungere una nuova copia fisica per questa edizione?', url);
+}
+
+/**
+ * Apre il popup in modalità di conferma ("Sei sicuro?").
+ * 
+ * @param {string} action - 'delete', 'add', o altro tipo di azione.
+ * @param {string} titleTxt - Titolo dell'operazione (es. il nome del libro).
+ * @param {string} message - Messaggio di conferma.
+ * @param {string} confirmUrl - URL a cui reindirizzare dopo la conferma.
+ */
+function openConfirmPopup(action, titleTxt, message, confirmUrl) {
+    const popup = document.getElementById('genericPopup');
+    const title = document.getElementById('popupTitle');
+    const icon = document.getElementById('popupIcon');
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    const confirmContent = document.getElementById('confirmContent');
+
+    if (!popup || !title || !icon || !confirmBtn || !confirmContent) return;
+
+    // Nasconde tutti gli altri pannelli
+    ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'errorContent', 'addEditionContent'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('none');
+    });
+
+    // Configurazione Header
+    title.innerText = 'Richiesta Conferma';
+    icon.className = 'fa-solid fa-circle-question text-white';
+    icon.parentElement.classList.remove('icon-bg-success');
+    icon.parentElement.classList.add('icon-box-accent');
+
+    // Configurazione Contenuto Conferma
+    const confirmTitleElem = document.getElementById('confirmTitle');
+    const confirmMsgElem = document.getElementById('confirmMessage');
+    const confirmDetailsElem = document.getElementById('confirmDetails');
+    const confirmIconBox = document.getElementById('confirmIconBox');
+    const confirmIconInner = document.getElementById('confirmIconInner');
+
+    if (confirmTitleElem) confirmTitleElem.innerText = 'Sei sicuro?';
+    if (confirmMsgElem) confirmMsgElem.innerText = message;
+    
+    if (confirmDetailsElem) {
+        confirmDetailsElem.innerText = titleTxt;
+        confirmDetailsElem.style.display = titleTxt ? 'block' : 'none';
+    }
+
+    // Design specifico per azione
+    if (action === 'delete') {
+        confirmBtn.innerText = 'Sì, elimina';
+        confirmBtn.style.setProperty('background', 'var(--color-error)', 'important');
+        confirmBtn.style.setProperty('border-color', 'var(--color-error)', 'important');
+        if (confirmIconBox) {
+            confirmIconBox.style.background = 'rgba(198, 40, 40, 0.1)';
+            confirmIconBox.style.color = 'var(--color-error)';
+        }
+        if (confirmIconInner) confirmIconInner.className = 'fa-solid fa-trash-can';
+    } else {
+        confirmBtn.innerText = 'Sì, procedi';
+        confirmBtn.style.background = ''; 
+        confirmBtn.style.borderColor = '';
+        if (confirmIconBox) {
+            confirmIconBox.style.background = 'rgba(245, 166, 35, 0.1)';
+            confirmIconBox.style.color = 'var(--color-accent)';
+        }
+        if (confirmIconInner) confirmIconInner.className = 'fa-solid fa-circle-question';
+    }
+
+    confirmContent.classList.remove('none');
+
+    // Mostra il pulsante Annulla
+    const cancelBtn = document.querySelector('.btn-link-action');
+    if (cancelBtn) cancelBtn.classList.remove('none');
+
+    // Handler conferma
+    confirmBtn.onclick = () => {
+        window.location.href = confirmUrl;
+    };
+
+    // Mostra il popup
+    popup.classList.remove('none');
+    document.body.style.overflow = 'hidden';
+}
+
+/**
  * Apre il popup in modalità "Aggiungi Edizione".
  * Mostra il form con i campi Titolo, ISBN (13 cifre numeriche), Data, Autore, Categoria, Editore.
  */
@@ -157,7 +264,7 @@ function openAddEditionPopup() {
     if (!popup || !title || !icon || !confirmBtn || !addEditionContent) return;
 
     // Nasconde tutti gli altri pannelli
-    ['editBookContent', 'addCopyContent', 'deleteBookContent', 'errorContent'].forEach(id => {
+    ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'confirmContent', 'errorContent'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add('none');
     });
@@ -192,6 +299,8 @@ function openAddEditionPopup() {
     if (cancelBtn) cancelBtn.classList.remove('none');
 
     confirmBtn.innerText = 'Aggiungi Edizione';
+    confirmBtn.style.background = ''; 
+    confirmBtn.style.borderColor = '';
 
     // Conferma con validazione ISBN
     confirmBtn.onclick = () => {
@@ -200,7 +309,6 @@ function openAddEditionPopup() {
         // Validazione HTML5 e invio tramite Thymeleaf Form
         const form = document.getElementById('addEditionForm');
         if (form) {
-            console.log('[Popup] Sottomissione form Aggiungi Edizione...');
             form.submit();
         }
     };
