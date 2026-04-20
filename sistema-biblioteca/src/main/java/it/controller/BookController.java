@@ -53,6 +53,9 @@ public class BookController {
 		if (user == null) {
 			return "redirect:/";
 		}
+		if (user.getUserRole().equals("role")) {
+			return "redirect:/";
+		}
 		try {
 			BookDto bookDto = new BookDto(isbn);
 			bookService.addBook(bookDto.getIsbnCode());
