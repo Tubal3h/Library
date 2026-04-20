@@ -13,7 +13,6 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import it.entity.BookJoin;
-import it.exception.InsertBookNameException;
 import it.mapper.BookJoinRowMapper;
 
 /**

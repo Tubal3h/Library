@@ -2,6 +2,7 @@ package it.controller;
 
 import java.time.LocalDate;
 
+
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,18 +17,28 @@ import it.exception.NoIsbnFoundException;
 import it.service.BookService;
 import it.service.UserService;
 
+import jakarta.servlet.http.HttpSession;
+
+
 @Controller
 public class BookController {
 	
+
 	private final BookService bookService;
 	private final UserService userService;
-	
-	public BookController(BookService bookService, UserService userService) {
-		this.bookService = bookService;
-		this.userService = userService;
-	}
-	
-	/**
+
+    /**
+     * Costruttore per BookController.
+     *
+     * @param bookRepository Repository per la gestione dei libri
+     * @param userRepository Repository per la gestione degli utenti
+     */
+    public BookController(BookService bookService, UserService userService) {
+        this.bookService = bookService;
+        this.userService = userService;
+    }
+
+    	/**
 	 * Gestisce l'aggiunta di una nuova copia fisica tramite il suo codice ISBN.
 	 *
 	 * @param email              Email dell'amministratore che esegue l'operazione
@@ -58,6 +69,7 @@ public class BookController {
 		}
 		return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=edition";
 	}
+
 
 	/**
 	 * Gestisce l'eliminazione (logica) di una copia fisica tramite il suo ID.
@@ -117,16 +129,13 @@ public class BookController {
 			@RequestParam("categoryId") Integer categoryId,
 			@RequestParam("publisherId") Integer publisherId,
 			@RequestParam("email") String email,
+			HttpSession session,
+			
 			RedirectAttributes redirectAttributes) {
-		// Ora 'date' è un oggetto LocalDate pronto all'uso
-		System.out.println("Data ricevuta: " + date);
-		System.out.println("Titolo: " + title);
-		System.out.println("ISBN: " + isbn);
-		System.out.println("Autore ID: " + authorId);
-		System.out.println("Categoria ID: " + categoryId);
-		System.out.println("Editore ID: " + publisherId);
-		System.out.println("Email: " + email);
-
+		UserDto user = (UserDto) session.getAttribute("user");
+		if (user == null) {
+			return "redirect:/";
+		}
 		try {
 			bookService.insertBook(title, authorId, publisherId, date, categoryId, isbn);
 			redirectAttributes.addFlashAttribute("popupType", "addEdition");
@@ -137,6 +146,7 @@ public class BookController {
 			redirectAttributes.addFlashAttribute("popupErrorMessage", "Impossibile aggiungere l'edizione.");
 		}
 
-		return "redirect:/dashboard?email=" + email + "&section=edition";
+		return "redirect:/dashboard";
 	}
+ 
 }

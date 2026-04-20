@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import it.dto.LoginDto;
+import it.dto.UserDto;
 import it.entity.User;
 import it.service.AuthService;
 
@@ -51,7 +52,7 @@ public class AuthController {
      */
     @PostMapping("/api/login")
     public String login(LoginDto loginDto, Model model) {
-        User user;
+        UserDto user = null;
         try {
             user = authService.login(loginDto);
             if (user == null) {
