@@ -75,10 +75,8 @@ public class DashboardController {
         if(section == null || section.isEmpty()) {
             section = "home";
         }
-        String search = (String) session.getAttribute("search");
-        if (user == null) {
-            return "redirect:/";
-        }
+        String search = (String) model.asMap().get("search");
+
 
 
         model.addAttribute("user", user);
@@ -117,6 +115,8 @@ public class DashboardController {
                 model.addAttribute("categories", categoryService.getAllCategories());
                 model.addAttribute("publishers", publisherService.getAllPublishers());
             }
+
+            
 
         } catch (Exception e) {
             System.out.println("Errore di caricamento db: " + e.getMessage());
