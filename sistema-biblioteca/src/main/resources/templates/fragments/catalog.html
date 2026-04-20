@@ -49,7 +49,7 @@
                 th:data-title="${book.title}"
                 th:data-url="@{/api/deleteBook(email=${user.userEmail}, bookId=${book.bookId}, bookName=${book.title})}"
                 onclick="triggerConfirmDelete(this)"
-                class="m-1 btn-modern-action pointer transition shadow-soft border-none bg-transparent">
+                class="m-1 btn-modern-action pointer transition shadow-soft">
                 <span class="text-center">Elimina Copia</span>
             </button>
 
@@ -111,7 +111,7 @@
                 th:data-title="${edition.bookName}"
                 th:data-url="@{/api/addBook(email=${user.userEmail}, isbn=${edition.isbnCode}, bookName=${edition.bookName})}"
                 onclick="triggerConfirmAdd(this)"
-                class="w-100 btn-modern-action pointer transition shadow-soft border-none bg-transparent">
+                class="w-100 btn-modern-action pointer transition shadow-soft">
                 <span>Aggiungi</span>
                 <i class="fa-solid fa-plus"></i>
             </button>
