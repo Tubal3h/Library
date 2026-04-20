@@ -61,15 +61,24 @@ public class AuthController {
     	if(loginDto.getEmail() != null && !loginDto.getEmail().isBlank()) {
     		if(loginDto.getPassword() != null && !loginDto.getPassword().isBlank()) {
     			user = userService.getUserByEmail(loginDto.getEmail());
+    		}else {
+    			return "redirect:/?error=invalid_credentials";
     		}
-    	}
+    	}else {
+    		return "redirect:/?error=invalid_credentials";
+		}
+
     	
     	if(user != null) {
     		session.setAttribute("user", user);
+    		session.setAttribute("section", "home");
+    		session.setAttribute("search", "");
     		model.addAttribute("user", user);
+    		
+    		
     		return "redirect:/dashboard";
     	}else {
-    		return "index";
+    		return "redirect:/";
     	}
     }
 /*    
