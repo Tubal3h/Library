@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import it.dto.RentDto;
 import it.dto.UserDto;
 import it.service.RentService;
-import it.service.UserService;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Controller per la gestione delle operazioni di noleggio dei libri.
@@ -20,17 +20,14 @@ import it.service.UserService;
 @Controller
 public class RentController {
 
-    private final UserService userService;
     private final RentService rentService;
 
     /**
      * Costruttore per RentController.
      *
-     * @param userService Servizio per la gestione degli utenti
      * @param rentService Servizio per la gestione dei noleggi
      */
-    public RentController(UserService userService, RentService rentService) {
-        this.userService = userService;
+    public RentController(RentService rentService) {
         this.rentService = rentService;
     }
 
@@ -45,22 +42,19 @@ public class RentController {
      */
     @GetMapping("/api/borrow")
     public String borrowBook(
-            @RequestParam(value = "email", required = false) String email,
-            @RequestParam(value = "bookId", required = false) String bookId) {
-
-        if (email == null || email.isEmpty()) {
-            return "redirect:/";
-        }
-
-        UserDto user = userService.getUserByEmail(email);
-
+            @RequestParam(value = "bookId", required = false) String bookId,
+            HttpSession session
+        ) {
+        UserDto user = (UserDto) session.getAttribute(bookId);
+        session.setAttribute("section","rents");  
         if (user == null) {
             return "redirect:/";
         }
-        if (bookId == null || bookId.isEmpty()) {
-            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog";
-        }
 
+        if (bookId == null || bookId.isEmpty()) {
+            return "redirect:/dashboard";
+        }
+        
         int parsedBookId;
         try {
             parsedBookId = Integer.parseInt(bookId);
@@ -77,12 +71,12 @@ public class RentController {
             rentService.createRental(rental);
         } catch (Exception e) {
             System.out.println("Errore: impossibile noleggiare il libro - " + bookId);
-            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog&error=rental_failed";
+            session.setAttribute("section","404");
+            return "redirect:/dashboard";
         }
 
-        return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=rents";
+        return "redirect:/dashboard";
     }
-
     /**
      * Gestisce la restituzione di un libro precedentemente noleggiato.
      *
@@ -93,21 +87,19 @@ public class RentController {
      */
     @GetMapping("/api/delivered")
     public String deliveredBook(
-            @RequestParam(value = "email", required = false) String email,
             @RequestParam(value = "bookID", required = false) String bookID,
-            @RequestParam(value = "rentID", required = false) String rentID) {
-
-        if (email == null || email.isEmpty()) {
-            return "redirect:/";
-        }
-
-        UserDto user = userService.getUserByEmail(email);
+            @RequestParam(value = "rentID", required = false) String rentID,
+            HttpSession session
+        ) {
+        UserDto user = (UserDto) session.getAttribute("user");
+        session.setAttribute("section","rents");  
 
         if (user == null) {
             return "redirect:/";
         }
-        if (bookID == null || bookID.isEmpty()) {
-            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog";
+
+        if (bookID == null || bookID.isEmpty() || rentID == null || rentID.isEmpty()) {
+            return "redirect:/dashboard";
         }
 
         try {
@@ -120,6 +112,6 @@ public class RentController {
             return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=404";
         }
 
-        return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=rents";
+        return "redirect:/dashboard";
     }
 }

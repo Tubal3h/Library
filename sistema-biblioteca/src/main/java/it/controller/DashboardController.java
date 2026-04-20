@@ -9,13 +9,13 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import it.dto.RentDto;
 import it.dto.UserDto;
 import it.service.BookService;
 import it.service.RentService;
 import it.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import it.service.AuthorService;
 import it.service.CategoryService;
 import it.service.PublisherService;
@@ -68,18 +68,11 @@ public class DashboardController {
      * @throws Exception se si verifica un errore durante il caricamento dei dati
      */
     @GetMapping("/dashboard")
-    public String dashboard(
-        @RequestParam(value = "email", required = false) String email,
-        @RequestParam(value = "section", defaultValue = "home") String section,
-        @RequestParam(value = "search", required = false) String search,
-        Model model
+    public String dashboard(HttpSession session,Model model
     ) {
-        if (email == null || email.isEmpty()) {
-            return "redirect:/";
-        }
-
-        UserDto user = userService.getUserByEmail(email);
-
+        UserDto user = (UserDto) session.getAttribute("user");
+        String section = (String) session.getAttribute("section");
+        String search = (String) session.getAttribute("search");
         if (user == null) {
             return "redirect:/";
         }
@@ -130,36 +123,5 @@ public class DashboardController {
         }
 
         return "dashboard";
-    }
-
-    /**
-     * Gestisce la richiesta di ricerca.
-     * Reindirizza l'utente alla dashboard con il parametro di ricerca incluso nell'URL.
-     *
-     * @param email   Email dell'utente loggato
-     * @param section Sezione in cui si sta effettuando la ricerca
-     * @param search  Stringa di ricerca immessa dall'utente
-     * @param model   il modello per la vista
-     * @return Redirect alla dashboard con i parametri aggiornati
-     */
-    @GetMapping("/api/search")
-    public String search(
-        @RequestParam(value = "email", required = false) String email,
-        @RequestParam(value = "section", required = false) String section,
-        @RequestParam(value = "search", required = false) String search, Model model) {
-        if (email == null || email.isEmpty()) {
-            return "redirect:/";
-        }
-
-        UserDto user = userService.getUserByEmail(email);
-
-        if (user == null) {
-            return "redirect:/";
-        }
-
-        model.addAttribute("user", user);
-        model.addAttribute("section", section);
-        model.addAttribute("search", search);
-        return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=" + section + "&search=" + search;
     }
 }

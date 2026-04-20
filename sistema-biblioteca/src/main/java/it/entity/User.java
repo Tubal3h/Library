@@ -70,14 +70,14 @@ public class User {
     /**
      * @return Cognome dell'utente
      */
-    public String getUserSurname() {
+    public String getUserLastName() {
         return userSurname;
     }
 
     /**
      * @param userSurname Cognome dell'utente
      */
-    public void setUserSurname(String userSurname) {
+    public void setUserLastName(String userSurname) {
         this.userSurname = userSurname;
     }
 
@@ -133,4 +133,4 @@ public class User {
                 ", userRole=" + userRole + "]";
     }
 }
-
+
