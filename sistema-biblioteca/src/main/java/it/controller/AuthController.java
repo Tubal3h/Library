@@ -10,9 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import it.dto.LoginDto;
-import it.dto.UserDto;
+import it.entity.User;
 import it.service.AuthService;
-import jakarta.servlet.http.HttpSession;
 
 /**
  * Controller per la gestione dell'autenticazione degli utenti (login e logout).
@@ -51,11 +50,8 @@ public class AuthController {
      * @return Redirect alla dashboard in caso di successo, o ritorno alla pagina di login in caso di errore
      */
     @PostMapping("/api/login")
-    public String login(LoginDto loginDto,HttpSession session, Model model) {
-        UserDto user = (UserDto) session.getAttribute("user");
-        if (user != null) {
-            return "redirect:/";
-        }
+    public String login(LoginDto loginDto, Model model) {
+        User user;
         try {
             user = authService.login(loginDto);
             if (user == null) {
