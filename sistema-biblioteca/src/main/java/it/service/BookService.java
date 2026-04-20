@@ -155,6 +155,7 @@ public class BookService {
      * @param userRole Il ruolo dell'utente che effettua la ricerca
      * @return Lista di BookDto contenente le informazioni condensate dei libri filtrati per nome del libro
      */
+	
 	public List<BookDto> getBookListByName(String search, String userRole) {
 		List<BookDto> myList = getAllBooks(userRole);
 		List<BookDto> filteredList = new ArrayList<>();
@@ -171,6 +172,7 @@ public class BookService {
 			return filteredList;
 		}
 	}
+	
 
     /**
      * Inserisce un nuovo libro e la sua relativa edizione nel sistema.
@@ -187,6 +189,7 @@ public class BookService {
      * @param isbn Codice ISBN dell'edizione
      * @return Somma dei risultati delle operazioni di inserimento
      */
+	
 	public int insertBook(String title, Integer authorId, Integer publisherId, LocalDate date, Integer categoryId, String isbn) {
 
 		System.out.println("title: " + title);
@@ -195,9 +198,12 @@ public class BookService {
 		System.out.println("date: " + date);
 		System.out.println("categoryId: " + categoryId);
 		System.out.println("isbn: " + isbn);
+		
 		int firstRes = bookNameRepository.insertBookByTitle(title);
 		int secondRes = editionRepository.insertEdition(title, authorId, publisherId, date, categoryId, isbn);
 		int thirdRes = bookRepository.insertBookByTitle(title);
 		return firstRes + secondRes + thirdRes;
 	}
+	
+
 }

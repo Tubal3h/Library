@@ -33,7 +33,7 @@ function openSearchPopup(section) {
     } else if (section === 'edition') {
         title.innerText = 'Ricerca Edizioni';
         subtitle.innerText = 'Cerca tra le edizioni disponibili';
-        inputLabel.innerText = 'Cerca per titolo, editore o anno';
+        inputLabel.innerText = 'Cerca per titolo, editore, categoria';
         inputField.placeholder = 'Es: Mondadori, 2023...';
     } else if (section === 'rents') {
         title.innerText = 'Ricerca Prestiti';
