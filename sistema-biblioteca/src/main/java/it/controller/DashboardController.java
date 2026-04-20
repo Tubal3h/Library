@@ -75,10 +75,8 @@ public class DashboardController {
         if(section == null || section.isEmpty()) {
             section = "home";
         }
-        String search = (String) session.getAttribute("search");
-        if (user == null) {
-            return "redirect:/";
-        }
+        String search = (String) model.asMap().get("search");
+
 
 
         model.addAttribute("user", user);

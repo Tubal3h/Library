@@ -36,7 +36,7 @@ CREATE TABLE edition(
 CREATE TABLE books(
     book_id SERIAL PRIMARY KEY,
     edition_id INTEGER NOT NULL,
-    status TEXT NOT NULL CHECK(status IN ('disponibilita', 'in prestito', 'eliminato',' prenotato')),
+    status TEXT NOT NULL CHECK(status IN ('disponibilita', 'in prestito', 'eliminato', 'prenotato')),
     FOREIGN KEY(edition_id) REFERENCES edition(edition_id) ON DELETE CASCADE
 );
 
@@ -159,60 +159,59 @@ INSERT INTO books_names (title) VALUES
 ('Sviluppare applicazioni con Django');
 
 INSERT INTO edition (book_name_id, author_id, publisher_id, publishing_date, category_id, isbn) VALUES
--- Libri generali di programmazione/algoritmi
-(1, 1, 1, '2008-08-01', 1, '9780132350884'),   -- Clean Code → Programmazione
-(2, 2, 1, '2019-09-23', 1, '9780135957059'),   -- The Pragmatic Programmer → Programmazione
-(3, 3, 2, '1994-10-21', 3, '9780201633610'),   -- Design Patterns → Design Patterns
-(4, 4, 5, '2009-07-31', 2, '9780262033848'),   -- Introduction to Algorithms → Algoritmi
-(5, 5, 3, '2005-06-28', 4, '9780596009205'),   -- Head First Java → Java
-(6, 6, 4, '2016-01-06', 4, '9781617292545'),   -- Spring Boot in Action → Java
-(7, 7, 3, '2008-05-01', 5, '9780596517748'),   -- JavaScript: The Good Parts → JavaScript
-(8, 8, 2, '1968-01-01', 2, '9780201038040'),   -- The Art of Computer Programming → Algoritmi
-(9, 9, 1, '2018-11-20', 1, '9780134757599'),   -- Refactoring → Programmazione
-(10, 10, 3, '2015-03-02', 5, '9781491924464'), -- You Don't Know JS → JavaScript
+-- Generali
+(1, 1, 1, '2008-08-01', 1, '9780132350884'),
+(2, 2, 1, '2019-09-23', 1, '9780135957059'),
+(3, 3, 2, '1994-10-21', 3, '9780201633610'),
+(4, 4, 5, '2009-07-31', 2, '9780262033848'),
+(5, 5, 3, '2005-06-28', 4, '9780596009205'),
+(6, 6, 4, '2016-01-06', 4, '9781617292545'),
+(7, 7, 3, '2008-05-01', 5, '9780596517748'),
+(8, 8, 2, '1968-01-01', 2, '9780201038040'),
+(9, 9, 1, '2018-11-20', 1, '9780134757599'),
+(10, 10, 3, '2015-03-02', 5, '9781491924464'),
 
--- Libri Java italiani
-(11, 12, 8, '2024-01-01', 4, '9791254911181'), -- Programmare con Java. Guida completa → Java
-(12, 11, 6, '2020-09-01', 4, '9788820399306'), -- Il nuovo Java → Java
-(13, 11, 6, '2018-03-01', 4, '9788820383022'), -- Manuale di Java 9 → Java
-(14, 11, 6, '2014-01-01', 4, '9788820362911'), -- Manuale di Java 8 → Java
-(15, 11, 6, '2011-01-01', 4, '9788820344771'), -- Manuale di Java 7 → Java
-(16, 11, 6, '2006-01-01', 4, '9788820336585'), -- Manuale di Java 6 → Java
-(17, 27, 6, '2002-10-01', 4, '9788820331245'), -- Java mattone dopo mattone → Java
-(18, 13, 6, '2002-01-01', 4, '9788836003303'), -- Corso di informatica Java. Volume A → Java
-(19, 13, 6, '2002-01-01', 4, '9788836003310'), -- Corso di informatica Java. Volume B → Java
+-- Java italiani
+(11, 12, 8, '2024-01-01', 4, '9791254911181'),
+(12, 11, 6, '2020-09-01', 4, '9788820399306'),
+(13, 11, 6, '2018-03-01', 4, '9788820383022'),
+(14, 11, 6, '2014-01-01', 4, '9788820362911'),
+(15, 11, 6, '2011-01-01', 4, '9788820344771'),
+(16, 11, 6, '2006-01-01', 4, '9788820336585'),
+(17, 27, 6, '2002-10-01', 4, '9788820331245'),
+(18, 13, 6, '2002-01-01', 4, '9788836003303'),
+(19, 13, 6, '2002-01-01', 4, '9788836003310'),
 
--- Libri JavaScript italiani
-(20, 15, 7, '2021-04-01', 5, '9788850335657'), -- JavaScript. La guida definitiva → JavaScript
-(21, 16, 7, '2017-11-01', 5, '9788850334285'), -- Imparare a programmare con JavaScript → JavaScript
-(22, 28, 6, '2022-01-01', 5, '9788836006953'), -- Programmare con JavaScript → JavaScript
-(23, 15, 6, '2012-01-01', 5, '9788848128346'), -- JavaScript. Guida pocket → JavaScript
+-- JavaScript italiani
+(20, 15, 7, '2021-04-01', 5, '9788850335657'),
+(21, 16, 7, '2017-11-01', 5, '9788850334285'),
+(22, 28, 6, '2022-01-01', 5, '9788836006953'),
+(23, 15, 6, '2012-01-01', 5, '9788848128346'),
 
-=======
--- Libri HTML/CSS italiani
-(24, 17, 7, '2019-04-01', 6, '9788850334735'), -- Imparare a programmare con HTML e CSS → HTML/CSS
-(25, 17, 7, '2015-06-01', 6, '9788850333394'), -- HTML5 → HTML/CSS
-(26, 18, 7, '2011-06-01', 6, '9788850330256'), -- CSS → HTML/CSS
+-- HTML/CSS italiani
+(24, 17, 7, '2019-04-01', 6, '9788850334735'),
+(25, 17, 7, '2015-06-01', 6, '9788850333394'),
+(26, 18, 7, '2011-06-01', 6, '9788850330256'),
 
--- Libri C# italiani
-(27, 19, 8, '2022-01-01', 7, '9788868959326'), -- Programmare con C# 10. Guida completa → C#
-(28, 19, 8, '2019-10-01', 7, '9788868957698'), -- Programmare con C# 8. Guida completa → C#
-(29, 20, 6, '2013-03-01', 7, '9788820352530'), -- C# 5. Guida completa → C#
-(30, 20, 6, '2010-01-01', 7, '9788820344689'), -- C# 4. Guida completa → C#
+-- C# italiani
+(27, 19, 8, '2022-01-01', 7, '9788868959326'),
+(28, 19, 8, '2019-10-01', 7, '9788868957698'),
+(29, 20, 6, '2013-03-01', 7, '9788820352530'),
+(30, 20, 6, '2010-01-01', 7, '9788820344689'),
 
--- Libri PHP italiani
-(31, 16, 7, '2018-10-01', 8, '9788850334636'), -- Imparare a programmare con PHP → PHP
-(32, 22, 7, '2016-07-01', 8, '9788850333776'), -- Programmare con PHP 7 → PHP
-(33, 22, 7, '2018-02-01', 8, '9788850334155'), -- Sviluppare applicazioni con PHP e MySQL → PHP
-(34, 22, 7, '2023-05-01', 8, '9788850336685'), -- Sviluppare applicazioni con PHP e MySQL. Nuova edizione → PHP
+-- PHP italiani
+(31, 16, 7, '2018-10-01', 8, '9788850334636'),
+(32, 22, 7, '2016-07-01', 8, '9788850333776'),
+(33, 22, 7, '2018-02-01', 8, '9788850334155'),
+(34, 22, 7, '2023-05-01', 8, '9788850336685'),
 
--- Libri Python italiani
-(35, 21, 7, '2019-03-01', 9, '9788850334810'), -- Python → Python
-(36, 30, 7, '2018-06-01', 9, '9788891628893'), -- Programmazione in Python → Python
-(37, 29, 9, '2018-05-01', 9, '9788823822641'), -- Pensare in Python → Python
-(38, 23, 7, '2020-03-01', 9, '9788850335107'), -- Deep Learning con Python → Python
-(39, 24, 7, '2017-06-01', 9, '9788850334148'), -- Data Science con Python → Python
-(40, 25, 7, '2024-02-01', 11, '9788850336968'); -- Sviluppare applicazioni con Django → Sviluppo Web
+-- Python italiani
+(35, 21, 7, '2019-03-01', 9, '9788850334810'),
+(36, 30, 7, '2018-06-01', 9, '9788891628893'),
+(37, 29, 9, '2018-05-01', 9, '9788823822641'),
+(38, 23, 7, '2020-03-01', 9, '9788850335107'),
+(39, 24, 7, '2017-06-01', 9, '9788850334148'),
+(40, 25, 7, '2024-02-01', 11, '9788850336968');
 
 INSERT INTO books (edition_id, status) VALUES
 (1, 'in prestito'),
@@ -329,7 +328,7 @@ INSERT INTO users (user_name, user_last_name, email, pass, roles) VALUES
 ('Monica', 'Poli', 'monica.poli30@biblioteca.it', 'Password123!', 'role_user');
 
 INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, rental_ended) VALUES
--- Prestiti attivi (rental_ended = NULL) — coerenti con status 'in prestito'
+-- Prestiti attivi
 (1,  2,  '2026-03-01 10:00:00', '2026-03-31', NULL),
 (2,  3,  '2026-03-05 11:00:00', '2026-04-04', NULL),
 (5,  4,  '2026-03-10 14:00:00', '2026-04-09', NULL),
@@ -365,7 +364,7 @@ INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, renta
 (77, 5,  '2026-04-10 11:00:00', '2026-05-10', NULL),
 (80, 6,  '2026-03-23 15:00:00', '2026-04-22', NULL),
 
--- Prestiti chiusi (storico) — coerenti con status 'disponibilita'
+-- Prestiti chiusi (storico)
 (3,  7,  '2026-01-10 09:00:00', '2026-02-09', '2026-02-07 10:00:00'),
 (4,  8,  '2025-11-05 10:00:00', '2025-12-05', '2025-12-03 14:00:00'),
 (6,  9,  '2026-01-15 09:00:00', '2026-02-14', '2026-02-12 11:00:00'),
@@ -376,5 +375,3 @@ INSERT INTO rental_record (book_id, users_id, rental_date, rental_expired, renta
 (36, 14, '2025-12-15 11:00:00', '2026-01-14', '2026-01-12 15:00:00'),
 (44, 15, '2026-01-08 09:00:00', '2026-02-07', '2026-02-05 10:00:00'),
 (49, 16, '2025-11-20 10:00:00', '2025-12-20', '2025-12-18 14:00:00');
-
--- users e rental_record rimangono identici a prima
