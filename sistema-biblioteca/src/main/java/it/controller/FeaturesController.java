@@ -3,7 +3,7 @@ package it.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import it.dto.UserDto;
 import jakarta.servlet.http.HttpSession;
@@ -20,9 +20,9 @@ public class FeaturesController {
      * @param model   il modello per la vista
      * @return Redirect alla dashboard con i parametri aggiornati
      */
-    @GetMapping("/api/search")
+    @GetMapping("/api/search/{search}")
     public String search(
-        @RequestParam(value = "search", required = false) String search,
+        @PathVariable(value = "search", required = false) String search,
         HttpSession session,Model model) {
         UserDto user = (UserDto) session.getAttribute("user");
         if (user == null) {
@@ -32,23 +32,22 @@ public class FeaturesController {
         return "redirect:/dashboard";
     }
 
-    @GetMapping("/api/navigation")
+    @GetMapping("/api/navigation/{section}")
     public String navigate(
-        @RequestParam(value = "section", required = false) String section,
+        @PathVariable(value = "section", required = false) String section,
         HttpSession session,Model model) {
         UserDto user = (UserDto) session.getAttribute("user");
+        System.out.println("Section: " + section);
         if (user == null) {
             return "redirect:/";
         }
-        if (section == null) {
+        if (section == null || section.isEmpty()) {
             return "redirect:/dashboard";
         }
         if (user.getUserRole().equals("role_user")) {
-            if (section.equals("users")) {
-                return "redirect:/dashboard";
+            if (section.equals("users") || section.equals("edition")) {
+                section = "home";
             }
-
-            return "redirect:/dashboard";
         }
 
         session.setAttribute("section",section);

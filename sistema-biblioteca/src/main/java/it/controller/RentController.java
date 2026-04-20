@@ -106,10 +106,12 @@ public class RentController {
             rentService.updateStatus(Integer.parseInt(bookID), Integer.parseInt(rentID));
         } catch (NumberFormatException e) {
             System.out.println("Errore: bookId non valido - " + bookID);
-            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=404";
+            session.setAttribute("section","404");
+            return "redirect:/dashboard";
         } catch (Exception e) {
             System.out.println("Errore: impossibile registrare la restituzione del libro - " + bookID);
-            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=404";
+            session.setAttribute("section","404");
+            return "redirect:/dashboard";
         }
 
         return "redirect:/dashboard";
