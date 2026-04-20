@@ -34,7 +34,7 @@ public class FeaturesController {
 
     @GetMapping("/api/navigation/{section}")
     public String navigate(
-        @PathVariable(value = "section", required = false) String section,
+        @PathVariable(value = "section") String section,
         HttpSession session,Model model) {
         UserDto user = (UserDto) session.getAttribute("user");
         System.out.println("Section: " + section);
