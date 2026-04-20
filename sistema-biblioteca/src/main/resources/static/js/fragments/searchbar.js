@@ -75,12 +75,9 @@ function closeSearchPopup() {
  */
 function executeSearch() {
     const inputField = document.getElementById('searchInputField');
-    const query = inputField.value;
-    const overlay = document.getElementById('searchPopupOverlay');
+    const query = inputField.value.trim();
 
-    // Validazione: Impedisci ricerche vuote
-    if (query.trim() === '') {
-        // Feedback visivo con classe CSS per l'errore
+    if (query === '') {
         inputField.classList.add('border-error');
         setTimeout(() => {
             inputField.classList.remove('border-error');
@@ -88,15 +85,11 @@ function executeSearch() {
         return;
     }
 
-    // Costruzione dell'URL con il nuovo parametro di ricerca
-    const currentUrl = new URL(window.location.href);
-    
-    // Aggiungi o aggiorna il parametro "search" mantenendo gli altri (email, section, etc.)
-    currentUrl.searchParams.set('search', query);
+    closeSearchPopup();
 
-    // Reindirizzamento alla stessa pagina filtrata
-    window.location.href = currentUrl.toString();
+    window.location.href = `/api/search/${encodeURIComponent(query)}`;
 }
+
 
 /**
  * Inizializzazione dei listener per il campo di ricerca e l'overlay.

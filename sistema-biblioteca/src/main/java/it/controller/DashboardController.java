@@ -72,6 +72,9 @@ public class DashboardController {
     ) {
         UserDto user = (UserDto) session.getAttribute("user");
         String section = (String) session.getAttribute("section");
+        if(section == null || section.isEmpty()) {
+            section = "home";
+        }
         String search = (String) session.getAttribute("search");
         if (user == null) {
             return "redirect:/";
@@ -100,7 +103,6 @@ public class DashboardController {
             if ("catalog".equals(section)) {
                 
                 model.addAttribute("books", bookService.getBookListByName(search,user.getUserRole()));
-                // model.addAttribute("books", bookService.getAllBooks(user.getUserRole()));
 
             }
 

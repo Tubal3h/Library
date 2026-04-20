@@ -17,7 +17,8 @@
     
     <!-- Logo della Biblioteca -->
     <div class="sidebar-header flex align-center justify-center pt-3">
-        <a th:href="@{/dashboard(email=${user.userEmail}, section='home')}"
+        <a th:href="@{/dashboard}"
+            th:onclick="|setSection('home')|"
             class="sidebar-logo flex align-center justify-center radius-12">
             <img th:src="@{/img/logo_mba.svg}" alt="MBA Logo" class="sidebar-img">
         </a>
@@ -29,24 +30,26 @@
             <span class="nav-label font-size-small uppercase fw-700 opacity-50 px-2 mb-2 block">Menu</span>
 
             <!-- Link Home / Dashboard -->
-            <a th:href="@{/dashboard(email=${user.userEmail}, section='home')}"
-                class="sidebar-link flex align-center gap-2 p-2 radius-12"
-                th:classappend="${section == 'home' ? 'active' : ''}">
+            <a th:href="@{/api/navigation/home}"
+            class="sidebar-link flex align-center gap-2 p-2 radius-12"
+            th:classappend="${section == 'home' ? 'active' : ''}">
                 <i class="fa-solid fa-house"></i>
                 <span class="fw-600">Dashboard</span>
             </a>
 
+
             <!-- Link Catalogo (Comune a tutti) -->
-            <a th:href="@{/dashboard(email=${user.userEmail}, section='catalog')}"
+            <a th:if="${user.userRole == 'role_user'}"
+            th:href="@{/api/navigation/catalog}"
                 class="sidebar-link flex align-center gap-2 p-2 radius-12"
                 th:classappend="${section == 'catalog' ? 'active' : ''}">
                 <i class="fa-solid fa-list-ul"></i>
-                <span class="fw-600">Visualizza Libreria</span>
+                <span class="fw-600">Libreria</span>
             </a>
 
             <!-- Sezione Amministratore: Manuali/Edizioni -->
             <a th:if="${user.userRole == 'role_admin'}"
-                th:href="@{/dashboard(email=${user.userEmail}, section='edition')}"
+                th:href="@{/api/navigation/edition}"
                 class="sidebar-link flex align-center gap-2 p-2 radius-12"
                 th:classappend="${section == 'edition' ? 'active' : ''}">
                 <i class="fa-solid fa-book-open"></i>
@@ -54,7 +57,8 @@
             </a>
 
             <!-- Sezione Utente: I Miei Prestiti -->
-            <a th:if="${user.userRole == 'role_user'}" th:href="@{/dashboard(email=${user.userEmail}, section='rents')}"
+            <a th:if="${user.userRole == 'role_user'}" 
+            th:href="@{/api/navigation/rents}"
                 class="sidebar-link flex align-center gap-2 p-2 radius-12"
                 th:classappend="${section == 'rents' ? 'active' : ''}">
                 <i class="fa-solid fa-clock-rotate-left"></i>
@@ -63,7 +67,7 @@
 
             <!-- Sezione Amministratore: Gestione Utenti -->
             <a th:if="${user.userRole == 'role_admin'}"
-                th:href="@{/dashboard(email=${user.userEmail}, section='users')}"
+                th:href="@{/api/navigation/users}"
                 class="sidebar-link flex align-center gap-2 p-2 radius-12"
                 th:classappend="${section == 'users' ? 'active' : ''}">
                 <i class="fa-solid fa-users"></i>
@@ -72,7 +76,7 @@
 
             <!-- Sezione Amministratore: Gestione Prestiti Totali -->
             <a th:if="${user.userRole == 'role_admin'}"
-                th:href="@{/dashboard(email=${user.userEmail}, section='rents')}"
+                th:href="@{/api/navigation/rents}"
                 class="sidebar-link flex align-center gap-2 p-2 radius-12"
                 th:classappend="${section == 'rents' ? 'active' : ''}">
                 <i class="fa-solid fa-clock-rotate-left"></i>
@@ -186,4 +190,4 @@
 
 </nav>
 
-</th:block>
+</th:block>

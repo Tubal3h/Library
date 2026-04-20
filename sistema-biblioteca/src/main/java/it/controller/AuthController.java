@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import it.dto.LoginDto;
 import it.dto.UserDto;
-import it.entity.User;
-import it.service.AuthService;
 import jakarta.servlet.http.HttpSession;
 
 /**
@@ -24,15 +22,13 @@ import jakarta.servlet.http.HttpSession;
 public class AuthController {
 
     private final UserService userService;
-	private final AuthService authService;
 
     /**
      * Costruttore per AuthController.
      *
      * @param authService Servizio per la gestione dell'autenticazione
      */
-    public AuthController(AuthService authService, UserService userService) {
-        this.authService = authService;
+    public AuthController(UserService userService) {
 		this.userService = userService;
     }
 
