@@ -73,31 +73,7 @@ public class AuthController {
     		return "redirect:/";
     	}
     }
-/*    
-    @PostMapping("/api/login")
-    public String login(LoginDto loginDto, Model model) {
-        UserDto user = null;
-        try {
-            user = authService.login(loginDto);
-            if (user == null) {
-                model.addAttribute("error", "Email o password errati");
-                return "redirect:/?error=invalid_credentials";
-            }
-        } catch (Exception e) {
-            System.out.println("Errore di caricamento db: " + e.getMessage());
-            model.addAttribute("errorMessage", "Servizio momentaneamente non disponibile.");
-            return "redirect:/?error=service_unavailable";
-        }
 
-        return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=home";
-    }
-
-*/
-    /**
-     * Gestisce il logout dell'utente invalidando la sessione corrente.
-     *
-     * @return Redirect alla pagina di login ("/")
-     */
     @GetMapping("/api/logout")
     public String logout(HttpSession session) {
         session.invalidate();

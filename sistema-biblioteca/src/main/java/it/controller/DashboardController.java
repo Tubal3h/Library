@@ -118,6 +118,8 @@ public class DashboardController {
                 model.addAttribute("publishers", publisherService.getAllPublishers());
             }
 
+            
+
         } catch (Exception e) {
             System.out.println("Errore di caricamento db: " + e.getMessage());
             model.addAttribute("errorMessage", "Servizio momentaneamente non disponibile.");
