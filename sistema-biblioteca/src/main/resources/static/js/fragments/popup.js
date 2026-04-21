@@ -170,9 +170,19 @@ function triggerConfirmAdd(element) {
 }
 
 /**
+ * Helper per avviare la conferma consegna leggendo i dati dall'elemento HTML.
+ * @param {HTMLElement} element - Il bottone cliccato.
+ */
+function triggerConfirmDelivered(element) {
+    const title = element.getAttribute('data-title');
+    const url = element.getAttribute('data-url');
+    openConfirmPopup('delivered', title, 'Sei sicuro di voler consegnare questo libro?', url);
+}
+
+/**
  * Apre il popup in modalità di conferma ("Sei sicuro?").
  * 
- * @param {string} action - 'delete', 'add', o altro tipo di azione.
+ * @param {string} action - 'delete', 'add', 'delivered' o altro tipo di azione.
  * @param {string} titleTxt - Titolo dell'operazione (es. il nome del libro).
  * @param {string} message - Messaggio di conferma.
  * @param {string} confirmUrl - URL a cui reindirizzare dopo la conferma.
@@ -187,7 +197,7 @@ function openConfirmPopup(action, titleTxt, message, confirmUrl) {
     if (!popup || !title || !icon || !confirmBtn || !confirmContent) return;
 
     // Nasconde tutti gli altri pannelli
-    ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'errorContent', 'addEditionContent'].forEach(id => {
+    ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'errorContent', 'addEditionContent', 'deliveredRentContent'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add('none');
     });

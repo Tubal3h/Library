@@ -15,14 +15,15 @@
         <!-- Colonna Sinistra: Informazioni sul Libro e sul Prestito -->
         <div class="card-info-main flex-1 p-5 flex flex-column justify-center">
 
- <!-- Titolo e Autore del Libro -->
+            <!-- Titolo e Autore del Libro -->
             <div class="mb-4">
                 <div class="flex self-center gap-1">
-                    <h3 class="text-2xl italic fw-700 text-brand mb-1" th:text="${rent.book != null ? rent.book.title : 'N/A'}"></h3>
+                    <h3 class="text-2xl italic fw-700 text-brand mb-1"
+                        th:text="${rent.book != null ? rent.book.title : 'N/A'}"></h3>
                     <p class="text-2xl fw-400 opacity-60 mb-3"
-                    th:text="${rent.book != null ? rent.book.authorFullName : 'N/A'}"></p>
+                        th:text="${rent.book != null ? rent.book.authorFullName : 'N/A'}"></p>
                 </div>
-                                
+
                 <!-- Label Categoria -->
                 <div class="category-label font-mono text-sm italic tracking-widest opacity-80 uppercase"
                     th:text="${rent.book != null ? rent.book.categoryName : 'ALTRO'}">CATEGORIA</div>
@@ -36,21 +37,21 @@
                     <span class="font-mono fw-600 pr-2">Preso il:</span>
                     <span th:text="${rent.rentalDate}" class="fw-600">Inizio</span>
                 </div>
-                
+
                 <!-- Data di Scadenza -->
                 <div class="flex align-center font-size-small">
                     <i class="fa-solid fa-calendar-arrow-down text-sm text-brand pr-1"></i>
                     <span class="font-mono fw-600 pr-2">Scadenza:</span>
                     <span th:text="${rent.rentalExpired}" class="fw-600">Scadenza</span>
                 </div>
-                
+
                 <!-- Codice ISBN -->
                 <div class="flex align-center font-size-small" th:if="${rent.book != null}">
                     <i class="fa-solid fa-barcode text-sm text-brand pr-1"></i>
                     <span class="font-mono fw-600 pr-2">ISBN:</span>
                     <span th:text="${rent.book.isbnCode}" class="font-mono fw-600">ISBN</span>
                 </div>
-                
+
                 <!-- ID Utente (Utile per gli Admin) -->
                 <div class="flex align-center font-size-small">
                     <i class="fa-solid fa-user text-sm text-brand pr-1"></i>
@@ -61,10 +62,10 @@
 
         <!-- Colonna Destra: Stato e Azioni Gestionali -->
         <div class="card-action-column p-4 flex flex-column justify-center align-center border-l">
-            
+
             <!-- Sezione visibile solo agli Amministratori -->
             <div th:if="${user.userRole == 'role_admin'}" class="w-100 flex flex-column align-center">
-                
+
                 <!-- Indicatore di Stato Dinamico (Restituito, Da Restituire, Scaduto) -->
                 <div class="mb-3 status-context"
                     th:classappend="${rent.rentalEnded != null ? 'status-vibrant-active' : (rent.rentalDate.isAfter(rent.rentalExpired) ? 'status-vibrant-error' : 'status-vibrant-pending')}">
@@ -81,12 +82,16 @@
                     </div>
                 </div>
 
-                <!-- Pulsante per confermare la restituzione (Consegnato) -->
-                <a th:href="@{/api/delivered(email=${user.userEmail}, bookID=${rent.bookId}, rentID=${rent.rentId})}"
-                    class="w-100 btn-modern-action pointer transition shadow-soft no-underline">
+                <!-- Pulsante per confermare la restituzione (Consegnato) con Popup -->
+                <button type="button"
+                    th:if="${rent.book != null}"
+                    th:data-title="${rent.book.title}"
+                    th:data-url="@{/api/delivered(email=${user.userEmail}, bookID=${rent.bookId}, rentID=${rent.rentId})}"
+                    onclick="triggerConfirmDelivered(this)"
+                    class="w-100 btn-modern-action pointer transition shadow-soft">
                     <span>Consegnato</span>
                     <i class="fa-solid fa-check"></i>
-                </a>
+                </button>
             </div>
         </div>
     </div>
