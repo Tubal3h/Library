@@ -13,9 +13,12 @@ import org.springframework.stereotype.Service;
 
 import it.dto.BookDto;
 import it.dto.RentDto;
+import it.dto.UserDto;
 import it.entity.RentalRecord;
 import it.entity.RentalRecordJoin;
+import it.entity.User;
 import it.repository.RentRecordRepository;
+import it.repository.UserRepository;
 
 /**
  * Servizio per la gestione dei prestiti dei libri.
@@ -25,14 +28,16 @@ import it.repository.RentRecordRepository;
 public class RentService {
 
     private final RentRecordRepository rentRepository;
+    private final UserRepository userRepository;
 
     /**
      * Costruttore per RentService.
      *
      * @param rentRepository Repository per i record di noleggio
      */
-    public RentService(RentRecordRepository rentRepository) {
+    public RentService(RentRecordRepository rentRepository, UserRepository userRepository) {
         this.rentRepository = rentRepository;
+        this.userRepository = userRepository;
     }
 
     /**
@@ -68,7 +73,11 @@ public class RentService {
      * @return DTO convertito con i dati del libro inclusi
      */
     private RentDto toRentDto(RentalRecordJoin rent) {
-        BookDto book = new BookDto();
+    	UserDto user = new UserDto();
+    	user.setUserName(rent.getUserName());
+    	user.setUserLastName(rent.getUserLastName());
+    	
+    	BookDto book = new BookDto();
         book.setBookId(rent.getBookId());
         book.setTitle(rent.getBookName());
         book.setAuthorFullName(rent.getAuthorFullName());
@@ -82,6 +91,7 @@ public class RentService {
         dto.setUserId(rent.getUserId());
         dto.setBookId(rent.getBookId());
         dto.setBook(book);
+        dto.setUser(user);
         dto.setRentalDate(rent.getRentalDate());
         dto.setRentalExpired(rent.getRentalExpired());
         dto.setRentalEnded(rent.getRentalEnded());
@@ -149,18 +159,36 @@ public class RentService {
      */
     public List<RentDto> getBookListByName(String search, String userRole, int userId) {
 		List<RentDto> myList = new ArrayList<>();
+		
         if(userRole.equals("role_user")) {
 			myList = getRentedBooksByUserId(userId);
 		}else {
             myList = getRentedAllRents();
         }
-		List<RentDto> filteredList = new ArrayList<>();
+		
+        List<RentDto> filteredList = new ArrayList<>();
 		if(search != null && !search.isBlank()) {
+			String [] arraySearch = search.toLowerCase().trim().split("\\s+");
 			for(RentDto rent : myList) {
-				if(rent.getBook().getTitle().replaceAll("\\s+","").toLowerCase().equals(search.replaceAll("\\s+","").toLowerCase())) {
-					filteredList.add(rent);
+				String userName = rent.getUser().getUserName();
+				String userLastName = rent.getUser().getUserLastName();
+				String title = rent.getBook().getTitle();
+				String finalString = (userName + " " + userLastName + " " +  title).toLowerCase();
+				boolean allMatch = true;
+				for(String s : arraySearch) {
+					System.out.println("nome " + userName);
+					System.out.println("stringa " + arraySearch[0]);
+					if(!finalString.contains(s)) {
+						allMatch = false;
+						break;
+					}
 				}
-			}	
+				if(allMatch) {					
+					filteredList.add(rent);
+				}	
+			}
+		}else {
+			return myList;
 		}
 		if(filteredList.isEmpty() || filteredList == null) {
 			return myList;
