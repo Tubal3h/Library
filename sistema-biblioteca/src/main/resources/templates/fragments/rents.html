@@ -46,14 +46,14 @@
                 </div>
 
                 <!-- Codice ISBN -->
-                <div class="flex align-center font-size-small" th:if="${rent.book != null}">
+                <div th:if="${user.userRole == 'role_admin' and rent.book != null}" class="flex align-center font-size-small">
                     <i class="fa-solid fa-barcode text-sm text-brand pr-1"></i>
                     <span class="font-mono fw-600 pr-2">ISBN:</span>
                     <span th:text="${rent.book.isbnCode}" class="font-mono fw-600">ISBN</span>
                 </div>
 
                 <!-- ID Utente (Utile per gli Admin) -->
-                <div class="flex align-center font-size-small">
+                <div th:if="${user.userRole == 'role_admin'}" class="flex align-center font-size-small">
                     <i class="fa-solid fa-user text-sm text-brand pr-1"></i>
                     <span th:text="'User ID: ' + ${rent.userId}" class="font-mono fw-600">USER</span>
                 </div>
@@ -71,8 +71,7 @@
                     th:classappend="${rent.rentalEnded != null ? 'status-vibrant-active' : (rent.rentalDate.isAfter(rent.rentalExpired) ? 'status-vibrant-error' : 'status-vibrant-pending')}">
 
                     <div
-                        class="glass-indicator radius-10 font-size-xs tracking-widest flex align-center gap-2 p-2 px-8">
-                        <div class="dot"></div>
+                        class="glass-indicator radius-10 font-size-xs tracking-widest flex align-center gap-1 p-2 px-8">
                         <span
                             th:if="${rent.rentalDate.isBefore(rent.rentalExpired) || rent.rentalDate.isEqual(rent.rentalExpired)}"
                             th:text="${rent.rentalEnded != null ? 'Restituito' : 'Da Restituire'}">STATO</span>
@@ -90,7 +89,6 @@
                     onclick="triggerConfirmDelivered(this)"
                     class="w-100 btn-modern-action pointer transition shadow-soft">
                     <span>Consegnato</span>
-                    <i class="fa-solid fa-check"></i>
                 </button>
             </div>
         </div>
