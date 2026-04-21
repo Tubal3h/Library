@@ -27,7 +27,7 @@
                 </button>
                 <!-- 
                 <button th:if="${user.userRole == 'role_admin' && section == 'users'}"
-                    class="btn-create radius-full py-2 px-3 fw-600 glass shadow-soft cursor-pointer">
+                    class="btn-create radius-full fw-600 glass shadow-soft cursor-pointer">
                     <i class="fa-solid fa-plus mr-1"></i> Aggiungi Utente
                 </button> -->
 
@@ -42,7 +42,7 @@
 
         <!-- Sezione Home per admin-->
         <div th:if="${section == 'home' && user.userRole == 'role_admin'}"
-            class="dashboard-grid grid gap-3 animate-fade-in-up opacity-0 delay-1">
+            class="dashboard-grid grid flex-wrap gap-3 animate-fade-in-up opacity-0 delay-1">
 
             <!-- Card 1: Users totali -->
             <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">

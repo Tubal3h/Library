@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import it.dto.LoginDto;
 import it.dto.UserDto;
+import it.component.UserSession;
 import jakarta.servlet.http.HttpSession;
 
 /**
@@ -22,14 +23,17 @@ import jakarta.servlet.http.HttpSession;
 public class AuthController {
 
     private final UserService userService;
+    private final UserSession userSession;
 
     /**
      * Costruttore per AuthController.
      *
-     * @param authService Servizio per la gestione dell'autenticazione
+     * @param userService Servizio per la gestione degli utenti
+     * @param userSession Componente per la gestione della sessione utente
      */
-    public AuthController(UserService userService) {
-		this.userService = userService;
+    public AuthController(UserService userService, UserSession userSession) {
+        this.userService = userService;
+        this.userSession = userSession;
     }
 
     /**
@@ -52,7 +56,7 @@ public class AuthController {
      * @return Redirect alla dashboard in caso di successo, o ritorno alla pagina di login in caso di errore
      */
     @PostMapping("/api/login")
-    public String login(@ModelAttribute LoginDto loginDto, Model model, HttpSession session) {
+    public String login(@ModelAttribute LoginDto loginDto, Model model) {
     	UserDto user = null;
     	if(loginDto.getEmail() != null && !loginDto.getEmail().isBlank()) {
     		if(loginDto.getPassword() != null && !loginDto.getPassword().isBlank()) {
@@ -66,17 +70,17 @@ public class AuthController {
 
     	
     	if(user != null) {
-    		session.setAttribute("user", user);
-    		session.setAttribute("section", "home"); 		
+    		userSession.setUser(user);
+    		userSession.setSection("home"); 		
     		return "redirect:/dashboard";
     	}else {
     		return "redirect:/";
     	}
     }
 
-    @GetMapping("/api/logout")
-    public String logout(HttpSession session) {
-        session.invalidate();
+    @PostMapping("/api/logout")
+    public String logout() {
+        userSession.logout();
     	return "redirect:/";
-    }
+    }   
 }

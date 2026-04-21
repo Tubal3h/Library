@@ -26,6 +26,10 @@ function openPopup(action, bookId, titleTxt, authorTxt, categoryTxt, publisherTx
     // Verifica che tutti gli elementi necessari siano presenti nel DOM
     if (!popup || !title || !icon || !confirmBtn || !editContent || !addCopyContent) return;
 
+    // Assicura che il footer sia visibile (potrebbe essere stato nascosto da un messaggio di successo/errore)
+    const footer = document.querySelector('.popup-footer');
+    if (footer) footer.classList.remove('none');
+
     // Nasconde tutti gli altri pannelli
     ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'confirmContent', 'errorContent'].forEach(id => {
         const el = document.getElementById(id);
@@ -129,14 +133,55 @@ function openPopup(action, bookId, titleTxt, authorTxt, categoryTxt, publisherTx
 }
 
 /**
- * Chiude il popup modale e ripristina lo scroll della pagina.
+ * Chiude il popup modale e ripristina la dashboard pulendo l'URL dai parametri.
  */
 function closePopup() {
     const popup = document.getElementById('genericPopup');
     if (popup) {
         popup.classList.add('none');
         document.body.style.overflow = '';
+        
+        // Se l'URL contiene parametri del popup, ricarichiamo la dashboard pulita
+        if (window.location.search.includes('action=viewCopies')) {
+            window.location.href = '/dashboard';
+            return;
+        }
     }
+}
+
+/**
+ * Funzione di inizializzazione chiamata lato server (via bridge script in popup.html)
+ * per aprire il popup delle copie senza fetch.
+ */
+function initServerSidePopup() {
+    const popup = document.getElementById('genericPopup');
+    const viewContent = document.getElementById('viewBooksEditionContent');
+    const title = document.getElementById('popupTitle');
+    const icon = document.getElementById('popupIcon');
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+
+    if (!popup || !viewContent || !title || !icon || !confirmBtn) return;
+
+    // Assicura che il footer sia visibile
+    const footer = document.querySelector('.popup-footer');
+    if (footer) footer.classList.remove('none');
+
+    // Header specifico per "Visualizza Copie"
+    title.innerText = 'Visualizza Copie';
+    icon.className = 'fa-solid fa-eye text-white';
+    icon.parentElement.classList.remove('icon-bg-success');
+    icon.parentElement.classList.add('icon-box-accent');
+
+    // Mostra il pannello delle copie
+    viewContent.classList.remove('none');
+
+    // Configurazione Bottone (Chiudi)
+    confirmBtn.innerText = 'Chiudi';
+    confirmBtn.onclick = () => closePopup();
+
+    // Mostra l'overlay
+    popup.classList.remove('none');
+    document.body.style.overflow = 'hidden';
 }
 
 /**
@@ -170,9 +215,19 @@ function triggerConfirmAdd(element) {
 }
 
 /**
+ * Helper per avviare la conferma consegna leggendo i dati dall'elemento HTML.
+ * @param {HTMLElement} element - Il bottone cliccato.
+ */
+function triggerConfirmDelivered(element) {
+    const title = element.getAttribute('data-title');
+    const url = element.getAttribute('data-url');
+    openConfirmPopup('delivered', title, 'Sei sicuro di voler consegnare questo libro?', url);
+}
+
+/**
  * Apre il popup in modalità di conferma ("Sei sicuro?").
  * 
- * @param {string} action - 'delete', 'add', o altro tipo di azione.
+ * @param {string} action - 'delete', 'add', 'delivered' o altro tipo di azione.
  * @param {string} titleTxt - Titolo dell'operazione (es. il nome del libro).
  * @param {string} message - Messaggio di conferma.
  * @param {string} confirmUrl - URL a cui reindirizzare dopo la conferma.
@@ -186,8 +241,12 @@ function openConfirmPopup(action, titleTxt, message, confirmUrl) {
 
     if (!popup || !title || !icon || !confirmBtn || !confirmContent) return;
 
+    // Assicura che il footer sia visibile
+    const footer = document.querySelector('.popup-footer');
+    if (footer) footer.classList.remove('none');
+
     // Nasconde tutti gli altri pannelli
-    ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'errorContent', 'addEditionContent'].forEach(id => {
+    ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'errorContent', 'addEditionContent', 'deliveredRentContent', 'viewBooksEditionContent'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add('none');
     });
@@ -262,6 +321,10 @@ function openAddEditionPopup() {
     const addEditionContent = document.getElementById('addEditionContent');
 
     if (!popup || !title || !icon || !confirmBtn || !addEditionContent) return;
+
+    // Assicura che il footer sia visibile
+    const footer = document.querySelector('.popup-footer');
+    if (footer) footer.classList.remove('none');
 
     // Nasconde tutti gli altri pannelli
     ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'confirmContent', 'errorContent'].forEach(id => {

@@ -7,10 +7,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.dto.UserDto;
-import jakarta.servlet.http.HttpSession;
+import it.component.UserSession;
 
 @Controller
 public class FeaturesController {
+    private final UserSession userSession;
+
+    public FeaturesController(UserSession userSession) {
+        this.userSession = userSession;
+    }
     /**
      * Gestisce la richiesta di ricerca.
      * Reindirizza l'utente alla dashboard con il parametro di ricerca incluso nell'URL.
@@ -24,9 +29,8 @@ public class FeaturesController {
     @GetMapping("/api/search/{search}")
     public String search(
         @PathVariable(value = "search", required = false) String search,
-        HttpSession session,
         RedirectAttributes redirectAttributes) {
-        UserDto user = (UserDto) session.getAttribute("user");
+        UserDto user = userSession.getUser();
         if (user == null) {
             return "redirect:/";
         }
@@ -37,8 +41,8 @@ public class FeaturesController {
     @GetMapping("/api/navigation/{section}")
     public String navigate(
         @PathVariable(value = "section") String section,
-        HttpSession session,Model model) {
-        UserDto user = (UserDto) session.getAttribute("user");
+        Model model) {
+        UserDto user = userSession.getUser();
         System.out.println("Section: " + section);
         if (user == null) {
             return "redirect:/";
@@ -52,7 +56,7 @@ public class FeaturesController {
             }
         }
 
-        session.setAttribute("section",section);
+        userSession.setSection(section);
         return "redirect:/dashboard";
     }
 }

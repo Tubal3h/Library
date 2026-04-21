@@ -9,10 +9,23 @@
 }
 
 .dashboard-grid {
-    display: grid;
-    grid-template-columns: 1fr; /* Display as a single column */
-    grid-template-rows: auto;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: 100%;
 }
+
+.dashboard-grid > .card {
+    flex: 1 1 260px;
+    min-width: 240px;
+    max-width: calc(25% - 1rem);
+}
+
+/*.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+}*/
 
 /* Header Styles */
 .header-icon,
@@ -157,9 +170,42 @@
     }
 }
 
+@media (max-width: 1024px) {
+    .dashboard-grid > .card {
+        max-width: calc(50% - 1rem);
+    }
+}
+
 /* ---- Mobile (≤480px) ---- */
 @media (max-width: 480px) {
-    /* Il bottone + già è cerchio da 768px, su mobile riduce leggermente */
+    .btn-create.btn-sm {
+        width: 34px;
+        height: 34px;
+        font-size: 0.85rem;
+        box-shadow: 0 3px 10px rgba(245, 166, 35, 0.35);
+    }
+
+    .dashboard-grid {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .dashboard-grid > .card {
+        max-width: 100%;
+        min-width: 100%;
+    }
+
+    .header-icon,
+    .user-profile {
+        width: 36px;
+        height: 36px;
+        font-size: 0.95rem;
+    }
+}
+
+/* Il bottone + già è cerchio da 768px, su mobile riduce leggermente */
+/*@media (max-width: 480px) {
+    
     .btn-create.btn-sm {
         width: 34px;
         height: 34px;
@@ -177,7 +223,7 @@
         height: 36px;
         font-size: 0.95rem;
     }
-}
+}*/
 
 /* ============================================================
    MOBILE BOTTOM NAVIGATION BAR
@@ -328,4 +374,4 @@
         width: 100%;
         font-size: inherit;
     }
-}
+}

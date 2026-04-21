@@ -9,7 +9,7 @@
 <th:block th:fragment="users">
     <!-- Contenitore delle Card Utente -->
     <div th:each="user, iter : ${users}"
-        class="book-card-horizontal glass radius-24 p-0 shadow-card flex border-none animate-card overflow-hidden"
+        class="book-card-horizontal glass radius-12 p-0 shadow-card flex border-none animate-card overflow-hidden"
         th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
 
         <!-- Colonna Sinistra: Informazioni Utente (Profilo e Ruolo) -->
@@ -17,7 +17,7 @@
             <!-- Badge Ruolo -->
             <div class="flex align-end mb-1 status-context status-vibrant-active">
                 <div class="glass-indicator radius-10 tracking-widest flex align-center gap-1 p-1">
-                    <p class="text-sm" th:text="${user.userRole != 'role_admin' ? 'Utente' : 'Amministratore'}">RUOLO
+                    <p class="text-sm" th:text="${user.userRole != 'role_admin' ? 'Dipendente' : 'Amministratore'}">RUOLO
                     </p>
                 </div>
             </div>
