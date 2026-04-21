@@ -129,14 +129,51 @@ function openPopup(action, bookId, titleTxt, authorTxt, categoryTxt, publisherTx
 }
 
 /**
- * Chiude il popup modale e ripristina lo scroll della pagina.
+ * Chiude il popup modale e ripristina la dashboard pulendo l'URL dai parametri.
  */
 function closePopup() {
     const popup = document.getElementById('genericPopup');
     if (popup) {
         popup.classList.add('none');
         document.body.style.overflow = '';
+        
+        // Se l'URL contiene parametri del popup, ricarichiamo la dashboard pulita
+        if (window.location.search.includes('action=viewCopies')) {
+            window.location.href = '/dashboard';
+            return;
+        }
     }
+}
+
+/**
+ * Funzione di inizializzazione chiamata lato server (via bridge script in popup.html)
+ * per aprire il popup delle copie senza fetch.
+ */
+function initServerSidePopup() {
+    const popup = document.getElementById('genericPopup');
+    const viewContent = document.getElementById('viewBooksEditionContent');
+    const title = document.getElementById('popupTitle');
+    const icon = document.getElementById('popupIcon');
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+
+    if (!popup || !viewContent || !title || !icon || !confirmBtn) return;
+
+    // Header specifico per "Visualizza Copie"
+    title.innerText = 'Visualizza Copie';
+    icon.className = 'fa-solid fa-eye text-white';
+    icon.parentElement.classList.remove('icon-bg-success');
+    icon.parentElement.classList.add('icon-box-accent');
+
+    // Mostra il pannello delle copie
+    viewContent.classList.remove('none');
+
+    // Configurazione Bottone (Chiudi)
+    confirmBtn.innerText = 'Chiudi';
+    confirmBtn.onclick = () => closePopup();
+
+    // Mostra l'overlay
+    popup.classList.remove('none');
+    document.body.style.overflow = 'hidden';
 }
 
 /**
@@ -197,7 +234,7 @@ function openConfirmPopup(action, titleTxt, message, confirmUrl) {
     if (!popup || !title || !icon || !confirmBtn || !confirmContent) return;
 
     // Nasconde tutti gli altri pannelli
-    ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'errorContent', 'addEditionContent', 'deliveredRentContent'].forEach(id => {
+    ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'errorContent', 'addEditionContent', 'deliveredRentContent', 'viewBooksEditionContent'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add('none');
     });

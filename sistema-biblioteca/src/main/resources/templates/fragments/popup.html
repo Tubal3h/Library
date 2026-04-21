@@ -247,6 +247,78 @@
                 </form>
             </div>
 
+            <!-- View books edition -->
+            <div id="viewBooksEditionContent" class="animate-fade-in-up" th:classappend="${showCopiesPopup == null} ? 'none' : ''">
+                <div class="mb-6 flex justify-between align-center">
+                    <div>
+                        <h3 id="viewBooksEditionTitle" class="text-xl fw-700 text-brand mb-1" th:text="${popupEditionTitle}">Titolo Edizione</h3>
+                        <p class="opacity-70 text-sm leading-relaxed">
+                            Elenco delle copie fisiche disponibili per questa edizione.
+                        </p>
+                    </div>
+                    
+                    <a th:if="${showCopiesPopup}" 
+                       th:href="@{/dashboard(editionId=${popupEditionId}, action='viewCopies', includeDeleted=${!popupIncludeDeleted})}"
+                       class="flex align-center gap-2 bg-surface-2 p-2 px-3 radius-12 border no-select cursor-pointer no-decoration"
+                       style="color: inherit;">
+                        <i class="fa-solid" th:classappend="${popupIncludeDeleted ? 'fa-square-check text-brand' : 'fa-square opacity-30'}"></i>
+                        <label class="text-xs fw-700 uppercase tracking-wider cursor-pointer">Mostra Eliminati</label>
+                    </a>
+                </div>
+                
+                <div class="flex flex-column gap-3 max-h-300 overflow-y-auto pr-2 custom-scrollbar">
+                    <table class="w-100 border-collapse">
+                        <thead>
+                            <tr class="text-left border-b opacity-60">
+                                <th class="py-2 text-xs uppercase tracking-widest fw-700">ID Libro</th>
+                                <th class="py-2 text-xs uppercase tracking-widest fw-700">Stato</th>
+                                <th class="py-2 text-xs uppercase tracking-widest fw-700 text-right">Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody id="viewBooksListContainer" th:fragment="bookCopiesList" th:with="booksToShow=${popupBooks != null ? popupBooks : books}">
+                            <!-- Righe della tabella generate lato server via Thymeleaf -->
+                            <tr th:each="book : ${booksToShow}" 
+                                class="border-b hover-bg-light transition"
+                                th:style="${book.status == 'eliminato' ? 'opacity: 0.6' : ''}">
+                                
+                                <td class="py-3 font-mono fw-600 text-brand">#[[${book.bookId}]]</td>
+                                <td class="py-3">
+                                    <div th:with="statusClass=${book.status == 'disponibilita' ? 'status-vibrant-active' : (book.status == 'eliminato' ? 'status-vibrant-error' : 'status-vibrant-pending')},
+                                                  statusLabel=${book.status == 'disponibilita' ? 'Disponibile' : (book.status == 'eliminato' ? 'Eliminato' : (book.status == 'in prestito' ? 'In Prestito' : book.status))}"
+                                         th:class="${statusClass}" style="display: inline-block;">
+                                        <div class="glass-indicator radius-full px-3 py-1 font-size-xs fw-700 uppercase tracking-widest"
+                                             th:text="${statusLabel}">
+                                            STATO
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-3 text-right">
+                                    <button th:if="${book.status == 'disponibilita'}"
+                                            type="button" 
+                                            class="btn-modern-action pointer transition shadow-soft radius-12"
+                                            style="width: 38px; height: 38px;"
+                                            th:data-title="${popupEditionTitle} + ' (Copia #' + ${book.bookId} + ')'" 
+                                            th:data-url="'/api/deleteBook?bookId=' + ${book.bookId} + '&bookName=' + ${#uris.escapeQueryParam(popupEditionTitle != null ? popupEditionTitle : '')}"
+                                            onclick="triggerConfirmDelete(this)"
+                                            title="Elimina Copia">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
+                                    <span th:unless="${book.status == 'disponibilita'}" 
+                                          class="text-xs opacity-50 italic">Azione non permessa</span>
+                                </td>
+                            </tr>
+                            <!-- Messaggio se la lista è vuota -->
+                            <tr th:if="${#lists.isEmpty(booksToShow)}">
+                                <td colspan="3" class="py-8 text-center opacity-50 italic">
+                                    <th:block th:if="${popupIncludeDeleted}">Non ci sono libri eliminati.</th:block>
+                                    <th:block th:unless="${popupIncludeDeleted}">Nessuna copia attiva trovata per questa edizione.</th:block>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
 
         <!-- Footer Section -->
@@ -259,5 +331,13 @@
                 Conferma Azione
             </button>
         </div>
-    </div>
+    <!-- Bridge Script per aprire il popup automaticamente se il server ha caricato i dati -->
+    <script th:if="${showCopiesPopup}">
+        document.addEventListener('DOMContentLoaded', () => {
+            if (typeof initServerSidePopup === 'function') {
+                initServerSidePopup();
+            }
+        });
+    </script>
+</div>
 </div>
