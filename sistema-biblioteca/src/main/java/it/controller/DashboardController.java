@@ -14,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import it.dto.BookDto;
 import it.dto.RentDto;
 import it.dto.UserDto;
+import it.component.UserSession;
 import it.service.BookService;
 import it.service.RentService;
 import it.service.UserService;
-import jakarta.servlet.http.HttpSession;
 import it.service.AuthorService;
 import it.service.CategoryService;
 import it.service.PublisherService;
@@ -37,6 +37,7 @@ public class DashboardController {
     private final CategoryService categoryService;
     private final PublisherService publisherService;
     private final EditionService editionService;
+    private final UserSession userSession;
 
     /**
      * Costruttore per DashboardController.
@@ -49,7 +50,7 @@ public class DashboardController {
      * @param publisherService Servizio per la gestione degli editori
      * @param editionService Servizio per la gestione delle edizioni
      */
-    public DashboardController(UserService userService, BookService bookService, RentService rentService, AuthorService authorService, CategoryService categoryService, PublisherService publisherService, EditionService editionService) {
+    public DashboardController(UserService userService, BookService bookService, RentService rentService, AuthorService authorService, CategoryService categoryService, PublisherService publisherService, EditionService editionService, UserSession userSession) {
         this.userService = userService;
         this.bookService = bookService;
         this.rentService = rentService;
@@ -57,6 +58,7 @@ public class DashboardController {
         this.categoryService = categoryService;
         this.publisherService = publisherService;
         this.editionService = editionService;
+        this.userSession = userSession;
     }
 
     /**
@@ -70,13 +72,13 @@ public class DashboardController {
      * @throws Exception se si verifica un errore durante il caricamento dei dati
      */
     @GetMapping("/dashboard")
-    public String dashboard(HttpSession session, Model model,
+    public String dashboard(Model model,
             @RequestParam(value = "editionId", required = false) Integer editionId,
             @RequestParam(value = "action", required = false) String action,
             @RequestParam(value = "includeDeleted", defaultValue = "false") boolean includeDeleted
     ) {
-        UserDto user = (UserDto) session.getAttribute("user");
-        String section = (String) session.getAttribute("section");
+        UserDto user = userSession.getUser();
+        String section = userSession.getSection();
         if(section == null || section.isEmpty()) {
             section = "home";
         }

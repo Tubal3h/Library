@@ -12,27 +12,28 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.dto.BookDto;
 import it.dto.UserDto;
+import it.component.UserSession;
 import it.exception.NoBookIdFoundException;
 import it.exception.NoIsbnFoundException;
 import it.service.BookService;
-
-import jakarta.servlet.http.HttpSession;
 
 
 @Controller
 public class BookController {
 	
 
-	private final BookService bookService;
+    private final BookService bookService;
+    private final UserSession userSession;
 
     /**
      * Costruttore per BookController.
      *
-     * @param bookRepository Repository per la gestione dei libri
-     * @param userRepository Repository per la gestione degli utenti
+     * @param bookService Servizio per la gestione dei libri
+     * @param userSession Componente per la gestione della sessione utente
      */
-    public BookController(BookService bookService) {
+    public BookController(BookService bookService, UserSession userSession) {
         this.bookService = bookService;
+        this.userSession = userSession;
     }
 
     	/**
@@ -46,11 +47,10 @@ public class BookController {
 	 */
 	@GetMapping("/api/addBook")
 	public String addBook(
-			HttpSession session,
 			@RequestParam(value = "isbn", required = false) String isbn,
 			@RequestParam(value = "bookName", required = false) String bookName,
 			RedirectAttributes redirectAttributes) {
-		UserDto user = (UserDto) session.getAttribute("user");
+		UserDto user = userSession.getUser();
 		if (user == null || !"role_admin".equals(user.getUserRole())) {
 			return "redirect:/";
 		}
@@ -79,11 +79,10 @@ public class BookController {
 	 */
 	@GetMapping("api/deleteBook")
 	public String deleteBook(
-			HttpSession session,
 			@RequestParam(value = "bookId", required = false) Integer bookId,
 			@RequestParam(value = "bookName", required = false) String bookName,
 			RedirectAttributes redirectAttributes) {
-		UserDto user = (UserDto) session.getAttribute("user");
+		UserDto user = userSession.getUser();
 		if (user == null || !"role_admin".equals(user.getUserRole())) {
 			return "redirect:/";
 		}
@@ -126,10 +125,9 @@ public class BookController {
 			@RequestParam("categoryId") Integer categoryId,
 			@RequestParam("publisherId") Integer publisherId,
 			@RequestParam("email") String email,
-			HttpSession session,
 			
 			RedirectAttributes redirectAttributes) {
-		UserDto user = (UserDto) session.getAttribute("user");
+		UserDto user = userSession.getUser();
 		if (user == null) {
 			return "redirect:/";
 		}

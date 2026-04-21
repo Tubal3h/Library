@@ -77,7 +77,7 @@
 
 /* Fix visibility in Dark Mode if background is light */
 [data-theme="dark"] .sidebar-link-sm {
-    color: var(--color-bg);
+    color: var(--color-text);
 }
 
 /* On hover in dark mode, background becomes dark (surface-2), so text should be white */

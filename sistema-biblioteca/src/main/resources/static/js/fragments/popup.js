@@ -26,6 +26,10 @@ function openPopup(action, bookId, titleTxt, authorTxt, categoryTxt, publisherTx
     // Verifica che tutti gli elementi necessari siano presenti nel DOM
     if (!popup || !title || !icon || !confirmBtn || !editContent || !addCopyContent) return;
 
+    // Assicura che il footer sia visibile (potrebbe essere stato nascosto da un messaggio di successo/errore)
+    const footer = document.querySelector('.popup-footer');
+    if (footer) footer.classList.remove('none');
+
     // Nasconde tutti gli altri pannelli
     ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'confirmContent', 'errorContent'].forEach(id => {
         const el = document.getElementById(id);
@@ -158,6 +162,10 @@ function initServerSidePopup() {
 
     if (!popup || !viewContent || !title || !icon || !confirmBtn) return;
 
+    // Assicura che il footer sia visibile
+    const footer = document.querySelector('.popup-footer');
+    if (footer) footer.classList.remove('none');
+
     // Header specifico per "Visualizza Copie"
     title.innerText = 'Visualizza Copie';
     icon.className = 'fa-solid fa-eye text-white';
@@ -232,6 +240,10 @@ function openConfirmPopup(action, titleTxt, message, confirmUrl) {
     const confirmContent = document.getElementById('confirmContent');
 
     if (!popup || !title || !icon || !confirmBtn || !confirmContent) return;
+
+    // Assicura che il footer sia visibile
+    const footer = document.querySelector('.popup-footer');
+    if (footer) footer.classList.remove('none');
 
     // Nasconde tutti gli altri pannelli
     ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'errorContent', 'addEditionContent', 'deliveredRentContent', 'viewBooksEditionContent'].forEach(id => {
@@ -309,6 +321,10 @@ function openAddEditionPopup() {
     const addEditionContent = document.getElementById('addEditionContent');
 
     if (!popup || !title || !icon || !confirmBtn || !addEditionContent) return;
+
+    // Assicura che il footer sia visibile
+    const footer = document.querySelector('.popup-footer');
+    if (footer) footer.classList.remove('none');
 
     // Nasconde tutti gli altri pannelli
     ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'confirmContent', 'errorContent'].forEach(id => {

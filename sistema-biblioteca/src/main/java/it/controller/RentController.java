@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import it.dto.RentDto;
 import it.dto.UserDto;
+import it.component.UserSession;
 import it.service.RentService;
-import jakarta.servlet.http.HttpSession;
 
 /**
  * Controller per la gestione delle operazioni di noleggio dei libri.
@@ -21,14 +21,17 @@ import jakarta.servlet.http.HttpSession;
 public class RentController {
 
     private final RentService rentService;
+    private final UserSession userSession;
 
     /**
      * Costruttore per RentController.
      *
      * @param rentService Servizio per la gestione dei noleggi
+     * @param userSession Componente per la gestione della sessione utente
      */
-    public RentController(RentService rentService) {
+    public RentController(RentService rentService, UserSession userSession) {
         this.rentService = rentService;
+        this.userSession = userSession;
     }
 
     /**
@@ -42,11 +45,10 @@ public class RentController {
      */
     @GetMapping("/api/borrow")
     public String borrowBook(
-            @RequestParam(value = "bookId", required = false) String bookId,
-            HttpSession session
+            @RequestParam(value = "bookId", required = false) String bookId
         ) {
-        UserDto user = (UserDto) session.getAttribute(bookId);
-        session.setAttribute("section","rents");  
+        UserDto user = userSession.getUser();
+        userSession.setSection("rents");  
         if (user == null) {
             return "redirect:/";
         }
@@ -71,7 +73,7 @@ public class RentController {
             rentService.createRental(rental);
         } catch (Exception e) {
             System.out.println("Errore: impossibile noleggiare il libro - " + bookId);
-            session.setAttribute("section","404");
+            userSession.setSection("404");
             return "redirect:/dashboard";
         }
 
@@ -88,11 +90,10 @@ public class RentController {
     @GetMapping("/api/delivered")
     public String deliveredBook(
             @RequestParam(value = "bookID", required = false) String bookID,
-            @RequestParam(value = "rentID", required = false) String rentID,
-            HttpSession session
+            @RequestParam(value = "rentID", required = false) String rentID
         ) {
-        UserDto user = (UserDto) session.getAttribute("user");
-        session.setAttribute("section","rents");  
+        UserDto user = userSession.getUser();
+        userSession.setSection("rents");  
 
         if (user == null) {
             return "redirect:/";
@@ -106,11 +107,11 @@ public class RentController {
             rentService.updateStatus(Integer.parseInt(bookID), Integer.parseInt(rentID));
         } catch (NumberFormatException e) {
             System.out.println("Errore: bookId non valido - " + bookID);
-            session.setAttribute("section","404");
+            userSession.setSection("404");
             return "redirect:/dashboard";
         } catch (Exception e) {
             System.out.println("Errore: impossibile registrare la restituzione del libro - " + bookID);
-            session.setAttribute("section","404");
+            userSession.setSection("404");
             return "redirect:/dashboard";
         }
 
