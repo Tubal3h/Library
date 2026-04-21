@@ -2,9 +2,9 @@ package it.controller;
 
 import java.time.LocalDate;
 
-
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,7 +15,6 @@ import it.dto.UserDto;
 import it.exception.NoBookIdFoundException;
 import it.exception.NoIsbnFoundException;
 import it.service.BookService;
-import it.service.UserService;
 
 import jakarta.servlet.http.HttpSession;
 
@@ -25,7 +24,6 @@ public class BookController {
 	
 
 	private final BookService bookService;
-	private final UserService userService;
 
     /**
      * Costruttore per BookController.
@@ -33,9 +31,8 @@ public class BookController {
      * @param bookRepository Repository per la gestione dei libri
      * @param userRepository Repository per la gestione degli utenti
      */
-    public BookController(BookService bookService, UserService userService) {
+    public BookController(BookService bookService) {
         this.bookService = bookService;
-        this.userService = userService;
     }
 
     	/**
@@ -148,5 +145,26 @@ public class BookController {
 
 		return "redirect:/dashboard";
 	}
- 
+
+	/**
+	 * Restituisce il frammento HTML per la lista delle copie di un'edizione.
+	 * Utilizzato per il caricamento dinamico nel popup tramite Thymeleaf Fragments.
+	 *
+	 * @param editionId      ID dell'edizione
+	 * @param includeDeleted Flag per includere le copie eliminate
+	 * @param editionTitle   Titolo dell'edizione (opzionale)
+	 * @param model          Modello Thymeleaf
+	 * @return Il frammento "bookCopiesList" all'interno di popup.html
+	 */
+	@GetMapping("/fragments/book-copies")
+	public String getBookCopiesFragment(
+			@RequestParam("editionId") int editionId,
+			@RequestParam(value = "includeDeleted", defaultValue = "false") boolean includeDeleted,
+			@RequestParam(value = "editionTitle", required = false) String editionTitle,
+			Model model) {
+		model.addAttribute("books", bookService.getBooksByEditionId(editionId, includeDeleted));
+		model.addAttribute("includeDeleted", includeDeleted);
+		model.addAttribute("editionTitle", editionTitle);
+		return "fragments/popup :: bookCopiesList";
+	}
 }

@@ -157,6 +157,7 @@ public class RentService {
 		List<RentDto> filteredList = new ArrayList<>();
 		if(search != null && !search.isBlank()) {
 			for(RentDto rent : myList) {
+                
 				if(rent.getBook().getTitle().replaceAll("\\s+","").toLowerCase().equals(search.replaceAll("\\s+","").toLowerCase())) {
 					filteredList.add(rent);
 				}

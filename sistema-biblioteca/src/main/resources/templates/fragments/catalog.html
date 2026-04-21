@@ -116,14 +116,11 @@
                 <span>Aggiungi Copia</span>
                 <i class="fa-solid fa-plus-circle"></i>
             </button>
-            <button type="button"
-                th:data-id="${edition.editionId}"
-                th:data-title="${edition.bookName}"
-                onclick="openViewBooksPopup(this)"
-                class="w-100 btn-modern-action pointer transition shadow-soft">
+            <a th:href="@{/dashboard(editionId=${edition.editionId}, action='viewCopies')}"
+                class="w-100 btn-modern-action pointer transition shadow-soft" style="text-decoration: none;">
                 <span>Visualizza Copie</span>
                 <i class="fa-solid fa-layer-group"></i>
-            </button>
+            </a>
         </div>
     </div>
 </th:block>

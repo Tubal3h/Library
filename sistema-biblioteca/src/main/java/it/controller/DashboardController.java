@@ -9,7 +9,9 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
+import it.dto.BookDto;
 import it.dto.RentDto;
 import it.dto.UserDto;
 import it.service.BookService;
@@ -68,7 +70,10 @@ public class DashboardController {
      * @throws Exception se si verifica un errore durante il caricamento dei dati
      */
     @GetMapping("/dashboard")
-    public String dashboard(HttpSession session,Model model
+    public String dashboard(HttpSession session, Model model,
+            @RequestParam(value = "editionId", required = false) Integer editionId,
+            @RequestParam(value = "action", required = false) String action,
+            @RequestParam(value = "includeDeleted", defaultValue = "false") boolean includeDeleted
     ) {
         UserDto user = (UserDto) session.getAttribute("user");
         String section = (String) session.getAttribute("section");
@@ -114,8 +119,20 @@ public class DashboardController {
                 model.addAttribute("publishers", publisherService.getAllPublishers());
             }
 
-            
-
+            // Gestione Popup Visualizzazione Copie (Server-Side)
+            if ("viewCopies".equals(action) && editionId != null) {
+                List<BookDto> popupBooks = bookService.getBooksByEditionId(editionId, includeDeleted);
+                model.addAttribute("popupBooks", popupBooks);
+                model.addAttribute("showCopiesPopup", true);
+                model.addAttribute("popupEditionId", editionId);
+                model.addAttribute("popupIncludeDeleted", includeDeleted);
+                
+                if (!popupBooks.isEmpty()) {
+                    model.addAttribute("popupEditionTitle", popupBooks.get(0).getTitle());
+                } else {
+                    model.addAttribute("popupEditionTitle", "Edizione #" + editionId);
+                }
+            }
         } catch (Exception e) {
             System.out.println("Errore di caricamento db: " + e.getMessage());
             model.addAttribute("errorMessage", "Servizio momentaneamente non disponibile.");
