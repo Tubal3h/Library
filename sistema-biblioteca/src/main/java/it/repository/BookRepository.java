@@ -173,4 +173,35 @@ public class BookRepository implements BookRepositoryInterface{
 			return res;
 
 	}
+
+    /**
+     * Recupera tutte le copie fisiche associate a una specifica edizione.
+     *
+     * @param editionId ID dell'edizione
+     * @return Lista di oggetti BookJoin con i dati delle copie associate
+     */
+    @Override
+    public List<BookJoin> getBooksByEditionId(int editionId, boolean includeDeleted) {
+        String filter = includeDeleted ? "" : " AND b.status != 'eliminato'";
+        String sql = """
+                SELECT
+                    e.edition_id,
+                    b.book_id,
+                    bn.title,
+                    CONCAT(a.author_name, ' ', a.author_last_name) AS author_full_name,
+                    p.publisher_name,
+                    e.publishing_date,
+                    c.category_name,
+                    e.isbn,
+                    b.status
+                FROM books b
+                JOIN edition e ON b.edition_id = e.edition_id
+                JOIN books_names bn ON e.book_name_id = bn.book_name_id
+                JOIN author a ON e.author_id = a.author_id
+                JOIN publisher p ON e.publisher_id = p.publisher_id
+                JOIN category c ON e.category_id = c.category_id
+                WHERE e.edition_id = ?
+                """ + filter;
+        return jdbcTemplate.query(sql, bookJoinMapper, editionId);
+    }
 }

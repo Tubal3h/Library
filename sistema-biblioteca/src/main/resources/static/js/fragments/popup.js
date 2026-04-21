@@ -197,7 +197,7 @@ function openConfirmPopup(action, titleTxt, message, confirmUrl) {
     if (!popup || !title || !icon || !confirmBtn || !confirmContent) return;
 
     // Nasconde tutti gli altri pannelli
-    ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'errorContent', 'addEditionContent', 'deliveredRentContent'].forEach(id => {
+    ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'errorContent', 'addEditionContent', 'deliveredRentContent', 'viewBooksEditionContent'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add('none');
     });
@@ -322,6 +322,156 @@ function openAddEditionPopup() {
             form.submit();
         }
     };
+
+    // Mostra il popup
+    popup.classList.remove('none');
+    document.body.style.overflow = 'hidden';
+}
+
+// Variabili globali per gestire il refresh del popup copie
+let currentViewEditionId = null;
+let currentViewEditionTitle = null;
+
+/**
+ * Gestisce il cambio di stato del filtro eliminati e ricarica i dati.
+ */
+function toggleDeletedFilter() {
+    const toggle = document.getElementById('showDeletedToggle');
+    if (toggle) {
+        // Se il click è avvenuto sul contenitore (non sul checkbox direttamente via click event del checkbox)
+        // ma toggleDeletedFilter è chiamato dall'onclick del div, allora invertiamo manualmente se serve.
+        // In realtà l'onclick sul div triggera anche se clicchi l'input.
+        // Per semplicità, ricarichiamo semplicemente chiamando openViewBooksPopup con i dati correnti.
+        openViewBooksPopup(null, currentViewEditionId, currentViewEditionTitle);
+    }
+}
+
+/**
+ * Apre il popup per visualizzare l'elenco dei libri (copie) di un'edizione.
+ * Carica i dati tramite una chiamata REST e popola la tabella.
+ * 
+ * @param {HTMLElement|null} element - L'elemento (bottone) cliccato (null se chiamato per refresh).
+ * @param {number|null} id - ID manuale per refresh.
+ * @param {string|null} titleText - Titolo manuale per refresh.
+ */
+function openViewBooksPopup(element, id = null, titleText = null) {
+    const editionId = element ? element.getAttribute('data-id') : id;
+    const editionTitle = element ? element.getAttribute('data-title') : titleText;
+    
+    // Salviamo i dati per eventuali refresh (cambio filtro)
+    currentViewEditionId = editionId;
+    currentViewEditionTitle = editionTitle;
+
+    const popup = document.getElementById('genericPopup');
+    const title = document.getElementById('popupTitle');
+    const icon = document.getElementById('popupIcon');
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    const viewContent = document.getElementById('viewBooksEditionContent');
+    const listContainer = document.getElementById('viewBooksListContainer');
+    const editionTitleElem = document.getElementById('viewBooksEditionTitle');
+    const showDeletedToggle = document.getElementById('showDeletedToggle');
+
+    if (!popup || !title || !icon || !confirmBtn || !viewContent || !listContainer || !editionTitleElem) return;
+
+    const includeDeleted = showDeletedToggle ? showDeletedToggle.checked : false;
+
+    // Nasconde tutti gli altri pannelli
+    ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'confirmContent', 'errorContent', 'addEditionContent'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('none');
+    });
+
+    // Configurazione Header
+    title.innerText = 'Visualizza Copie';
+    icon.className = 'fa-solid fa-eye text-white';
+    icon.parentElement.classList.remove('icon-bg-success');
+    icon.parentElement.classList.add('icon-box-accent');
+
+    // Imposta Titolo Edizione
+    editionTitleElem.innerText = editionTitle;
+
+    // Svuota lista e mostra caricamento
+    listContainer.innerHTML = '<tr><td colspan="3" class="py-4 text-center opacity-50 italic">Caricamento in corso...</td></tr>';
+
+    viewContent.classList.remove('none');
+
+    // Configurazione Bottone (Semplice chiusura)
+    confirmBtn.innerText = 'Chiudi';
+    confirmBtn.style.background = '';
+    confirmBtn.style.borderColor = '';
+    confirmBtn.onclick = () => closePopup();
+
+    // Nasconde pulsante Annulla (non serve qui)
+    const cancelBtn = document.querySelector('.btn-link-action');
+    if (cancelBtn) cancelBtn.classList.add('none');
+
+    // Recupero dati tramite API
+    fetch(`/api/books/edition/${editionId}?includeDeleted=${includeDeleted}`)
+        .then(response => {
+            if (!response.ok) throw new Error('Errore nel recupero dei dati');
+            return response.json();
+        })
+        .then(books => {
+            listContainer.innerHTML = '';
+            if (books.length === 0) {
+                listContainer.innerHTML = '<tr><td colspan="3" class="py-4 text-center opacity-50 italic">Nessuna copia trovata.</td></tr>';
+                return;
+            }
+
+            books.forEach(book => {
+                const tr = document.createElement('tr');
+                tr.className = 'border-b hover-bg-light transition';
+                if (book.status === 'eliminato') tr.style.opacity = '0.6';
+                
+                // Badge Stato
+                let statusClass = 'status-vibrant-pending';
+                let statusLabel = book.status;
+
+                if (book.status === 'disponibilita') {
+                    statusClass = 'status-vibrant-active';
+                    statusLabel = 'Disponibile';
+                } else if (book.status === 'eliminato') {
+                    statusClass = 'status-vibrant-error';
+                    statusLabel = 'Eliminato';
+                } else if (book.status === 'in prestito') {
+                    statusLabel = 'In Prestito';
+                }
+
+                // Genera URL per eliminazione
+                const deleteUrl = `/api/deleteBook?bookId=${book.bookId}&bookName=${encodeURIComponent(editionTitle)}`;
+                
+                const deleteBtnHtml = book.status !== 'eliminato' ? `
+                    <button type="button" 
+                            class="btn-modern-action pointer transition shadow-soft radius-12"
+                            style="width: 38px; height: 38px;"
+                            data-title="${editionTitle} (Copia #${book.bookId})" 
+                            data-url="${deleteUrl}"
+                            onclick="triggerConfirmDelete(this)"
+                            title="Elimina Copia">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                ` : `<span class="text-xs opacity-50 italic">Non disponibile</span>`;
+
+                tr.innerHTML = `
+                    <td class="py-3 font-mono fw-600 text-brand">#${book.bookId}</td>
+                    <td class="py-3">
+                        <div class="${statusClass}" style="display: inline-block;">
+                            <div class="glass-indicator radius-full px-3 py-1 font-size-xs fw-700 uppercase tracking-widest">
+                                ${statusLabel}
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-3 text-right">
+                        ${deleteBtnHtml}
+                    </td>
+                `;
+                listContainer.appendChild(tr);
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching books:', error);
+            listContainer.innerHTML = `<tr><td colspan="3" class="py-4 text-center text-error fw-600">Errore: ${error.message}</td></tr>`;
+        });
 
     // Mostra il popup
     popup.classList.remove('none');

@@ -206,4 +206,28 @@ public class BookService {
 	}
 	
 
+    /**
+     * Recupera la lista di libri (copie) associate a una specifica edizione.
+     *
+     * @param editionId ID dell'edizione
+     * @param includeDeleted Flag per includere anche i libri eliminati
+     * @return Lista di BookDto delle copie trovate
+     */
+    public List<BookDto> getBooksByEditionId(int editionId, boolean includeDeleted) {
+        return bookRepository.getBooksByEditionId(editionId, includeDeleted).stream()
+            .map(book -> {
+                BookDto dto = new BookDto();
+                dto.setEditionId(book.getEditionId());
+                dto.setBookId(book.getBookId());
+                dto.setTitle(book.getBookName());
+                dto.setAuthorFullName(book.getAuthorFullName());
+                dto.setPublisherName(book.getPublisherName());
+                dto.setPublishingDate(book.getPublicationDate());
+                dto.setIsbnCode(book.getIsbnCode());
+                dto.setCategoryName(book.getCategoryName());
+                dto.setStatus(book.getStatus());
+                return dto;
+            })
+            .toList();
+    }
 }

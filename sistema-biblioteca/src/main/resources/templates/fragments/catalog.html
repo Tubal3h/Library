@@ -51,6 +51,7 @@
                 onclick="triggerConfirmDelete(this)"
                 class="m-1 btn-modern-action pointer transition shadow-soft">
                 <span class="text-center">Elimina Copia</span>
+                <i class="fa-solid fa-trash-can"></i>
             </button>
 
             <a th:if="${user.userRole != 'role_admin'}"
@@ -101,7 +102,7 @@
             </div>
         </div>
 
-        <div class="card-action-column p-4 flex flex-column justify-center align-center border-l">
+        <div class="card-action-column p-4 flex flex-column justify-center align-center border-l gap-2">
             <div class="mb-3 status-context status-vibrant-active">
                 <div class="glass-indicator radius-10 font-size-xs tracking-widest flex align-center p-2 px-8">
                     <span class="fw-700" th:text="'Quantità: ' + ${edition.quantity}"></span>
@@ -112,8 +113,16 @@
                 th:data-url="@{/api/addBook(email=${user.userEmail}, isbn=${edition.isbnCode}, bookName=${edition.bookName})}"
                 onclick="triggerConfirmAdd(this)"
                 class="w-100 btn-modern-action pointer transition shadow-soft">
-                <span>Aggiungi</span>
-                <i class="fa-solid fa-plus"></i>
+                <span>Aggiungi Copia</span>
+                <i class="fa-solid fa-plus-circle"></i>
+            </button>
+            <button type="button"
+                th:data-id="${edition.editionId}"
+                th:data-title="${edition.bookName}"
+                onclick="openViewBooksPopup(this)"
+                class="w-100 btn-modern-action pointer transition shadow-soft">
+                <span>Visualizza Copie</span>
+                <i class="fa-solid fa-layer-group"></i>
             </button>
         </div>
     </div>

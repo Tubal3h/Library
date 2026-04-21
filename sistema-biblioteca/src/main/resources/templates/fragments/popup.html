@@ -247,6 +247,38 @@
                 </form>
             </div>
 
+            <!-- View books edition -->
+            <div id="viewBooksEditionContent" class="none animate-fade-in-up">
+                <div class="mb-6 flex justify-between align-center">
+                    <div>
+                        <h3 id="viewBooksEditionTitle" class="text-xl fw-700 text-brand mb-1">Titolo Edizione</h3>
+                        <p class="opacity-70 text-sm leading-relaxed">
+                            Elenco delle copie fisiche disponibili per questa edizione.
+                        </p>
+                    </div>
+                    
+                    <div class="flex align-center gap-2 bg-surface-2 p-2 px-3 radius-12 border no-select cursor-pointer" onclick="toggleDeletedFilter()">
+                        <input type="checkbox" id="showDeletedToggle" class="cursor-pointer" style="width: 16px; height: 16px;">
+                        <label for="showDeletedToggle" class="text-xs fw-700 uppercase tracking-wider cursor-pointer">Mostra Eliminati</label>
+                    </div>
+                </div>
+                
+                <div class="flex flex-column gap-3 max-h-300 overflow-y-auto pr-2 custom-scrollbar">
+                    <table class="w-100 border-collapse">
+                        <thead>
+                            <tr class="text-left border-b opacity-60">
+                                <th class="py-2 text-xs uppercase tracking-widest fw-700">ID Libro</th>
+                                <th class="py-2 text-xs uppercase tracking-widest fw-700">Stato</th>
+                                <th class="py-2 text-xs uppercase tracking-widest fw-700 text-right">Azioni</th>
+                            </tr>
+                        </thead>
+                        <tbody id="viewBooksListContainer">
+                            <!-- Le righe verranno caricate dinamicamente via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
 
         <!-- Footer Section -->
