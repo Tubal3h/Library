@@ -4,10 +4,13 @@ package it.dto;
 /*                                     DTO                                    */
 /* -------------------------------------------------------------------------- */
 
+import java.io.Serializable;
+
 /**
  * Data Transfer Object per i dati dell'utente.
  */
-public class UserDto {
+public class UserDto implements Serializable {
+    private static final long serialVersionUID = 1L;
     private int userId;
     private String userName;
     private String userLastName;
