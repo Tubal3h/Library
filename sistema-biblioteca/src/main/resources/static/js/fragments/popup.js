@@ -136,6 +136,10 @@ function closePopup() {
     if (popup) {
         popup.classList.add('none');
         document.body.style.overflow = '';
+        
+        // Reset filtro eliminati se presente
+        const toggle = document.getElementById('showDeletedToggle');
+        if (toggle) toggle.checked = false;
     }
 }
 
@@ -413,12 +417,19 @@ function openViewBooksPopup(element, id = null, titleText = null) {
         })
         .then(books => {
             listContainer.innerHTML = '';
-            if (books.length === 0) {
-                listContainer.innerHTML = '<tr><td colspan="3" class="py-4 text-center opacity-50 italic">Nessuna copia trovata.</td></tr>';
-                return;
-            }
+            
+            // Variabile per contare quanti elementi passano il filtro
+            let count = 0;
 
             books.forEach(book => {
+                // Filtraggio lato client per "mostrare solo quelli eliminati" se la spunta è attiva
+                if (includeDeleted) {
+                    if (book.status !== 'eliminato') return;
+                } else {
+                    if (book.status === 'eliminato') return;
+                }
+
+                count++;
                 const tr = document.createElement('tr');
                 tr.className = 'border-b hover-bg-light transition';
                 if (book.status === 'eliminato') tr.style.opacity = '0.6';
@@ -440,7 +451,11 @@ function openViewBooksPopup(element, id = null, titleText = null) {
                 // Genera URL per eliminazione
                 const deleteUrl = `/api/deleteBook?bookId=${book.bookId}&bookName=${encodeURIComponent(editionTitle)}`;
                 
-                const deleteBtnHtml = book.status !== 'eliminato' ? `
+                // Condizione: Si può eliminare SOLO se è disponibile. 
+                // Se è in prestito o già eliminato, il tasto non deve apparire.
+                const canDelete = book.status === 'disponibilita';
+                
+                const deleteBtnHtml = canDelete ? `
                     <button type="button" 
                             class="btn-modern-action pointer transition shadow-soft radius-12"
                             style="width: 38px; height: 38px;"
@@ -450,7 +465,7 @@ function openViewBooksPopup(element, id = null, titleText = null) {
                             title="Elimina Copia">
                         <i class="fa-solid fa-trash-can"></i>
                     </button>
-                ` : `<span class="text-xs opacity-50 italic">Non disponibile</span>`;
+                ` : `<span class="text-xs opacity-50 italic">Azione non permessa</span>`;
 
                 tr.innerHTML = `
                     <td class="py-3 font-mono fw-600 text-brand">#${book.bookId}</td>
@@ -467,6 +482,14 @@ function openViewBooksPopup(element, id = null, titleText = null) {
                 `;
                 listContainer.appendChild(tr);
             });
+
+            // Se dopo il filtraggio non ci sono elementi
+            if (count === 0) {
+                const emptyMessage = includeDeleted 
+                    ? "Non ci sono libri eliminati." 
+                    : "Nessuna copia attiva trovata per questa edizione.";
+                listContainer.innerHTML = `<tr><td colspan="3" class="py-8 text-center opacity-50 italic">${emptyMessage}</td></tr>`;
+            }
         })
         .catch(error => {
             console.error('Error fetching books:', error);

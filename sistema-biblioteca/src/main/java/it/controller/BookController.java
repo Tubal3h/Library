@@ -49,15 +49,12 @@ public class BookController {
 	 */
 	@GetMapping("/api/addBook")
 	public String addBook(
-			@RequestParam(value = "email", required = false) String email,
+			HttpSession session,
 			@RequestParam(value = "isbn", required = false) String isbn,
 			@RequestParam(value = "bookName", required = false) String bookName,
 			RedirectAttributes redirectAttributes) {
-		UserDto user = userService.getUserByEmail(email);
-		if (user == null) {
-			return "redirect:/";
-		}
-		if (user.getUserRole().equals("role")) {
+		UserDto user = (UserDto) session.getAttribute("user");
+		if (user == null || !"role_admin".equals(user.getUserRole())) {
 			return "redirect:/";
 		}
 		try {
@@ -70,7 +67,7 @@ public class BookController {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("errorMessage ", ex.getMessage());
 		}
-		return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=edition";
+		return "redirect:/dashboard";
 	}
 
 
@@ -85,12 +82,12 @@ public class BookController {
 	 */
 	@GetMapping("api/deleteBook")
 	public String deleteBook(
-			@RequestParam(value = "email", required = false) String email,
+			HttpSession session,
 			@RequestParam(value = "bookId", required = false) Integer bookId,
 			@RequestParam(value = "bookName", required = false) String bookName,
 			RedirectAttributes redirectAttributes) {
-		UserDto user = userService.getUserByEmail(email);
-		if (user == null) {
+		UserDto user = (UserDto) session.getAttribute("user");
+		if (user == null || !"role_admin".equals(user.getUserRole())) {
 			return "redirect:/";
 		}
 		try {
@@ -103,7 +100,7 @@ public class BookController {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.getMessage());
 		}
-		return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog";
+		return "redirect:/dashboard";
 	}
 
 	/**
