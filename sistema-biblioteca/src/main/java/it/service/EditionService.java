@@ -56,14 +56,15 @@ public class EditionService {
 	public List<EditionDto> getEditionListByName(String search) {
 		List<EditionDto> myList = getAllEditions();
 		List<EditionDto> filteredList = new ArrayList<>();
-		String [] strings = search.toLowerCase().trim().split("\\s+");
 		
 		if(search != null && !search.isBlank()) {
+			String [] strings = search.toLowerCase().trim().split("\\s+");
 			for(EditionDto edition : myList) {
 				String title = edition.getBookName();
 				String author = edition.getAuthorName();
 				String category = edition.getCategoryName();
-				String finalBook = (title + " " + author + " " + " " + category).toLowerCase();
+				String isbn = edition.getIsbnCode();
+				String finalBook = (title + " " + author + " " + category + " " + isbn).toLowerCase();
 				boolean allMatch = true;
 				for(String s : strings) {
 					if(!(finalBook.contains(s))) {
@@ -76,6 +77,8 @@ public class EditionService {
 					filteredList.add(edition);
 				}
 			}	
+		}else {
+			return myList;
 		}
 		if(filteredList.isEmpty() || filteredList == null) {
 			return myList;

@@ -77,8 +77,6 @@ public class DashboardController {
         }
         String search = (String) model.asMap().get("search");
 
-
-
         model.addAttribute("user", user);
         model.addAttribute("section", section);
         model.addAttribute("search", search);
