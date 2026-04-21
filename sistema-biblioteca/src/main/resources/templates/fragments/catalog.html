@@ -1,12 +1,12 @@
 <th:block th:fragment="catalog">
     <div th:each="book, iter : ${books}"
-        class="book-card-horizontal glass radius-24 shadow-card flex animate-card p-relative"
+        class="book-card-horizontal glass radius-12 shadow-card flex animate-card p-relative"
         th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
 
-        <div class="card-info-main flex-1 p-5 flex flex-column justify-center">
+        <div class="card-info-main flex-1 p-2 flex flex-column justify-center">
 
             <!--  Title & Author -->
-            <div class="mb-4">
+            <div class="mb-2">
                 <div class="flex self-center gap-1">
                     <h3 class="text-2xl italicfw-700 text-brand mb-1" th:text="${book.title}"></h3>
                     <p class="text-2xl fw-400 opacity-60 mb-3" th:text="${book.authorFullName}"></p>
@@ -16,25 +16,27 @@
             </div>
 
             <!-- Info book -->
-            <div class="card-meta mt-auto flex align-center gap-4 opacity-70">
-                <div class="flex align-center gap-2 font-size-small" th:title="${book.publisherName}">
-                    <i class="fa-solid fa-building-columns text-sm text-brand"></i>
-                    <span th:text="${book.publisherName}" class="text-truncate fw-600"
-                        style="max-width: 120px;">Editore</span>
+            <div class="card-meta mt-auto flex align-center gap-3 opacity-70">
+                <div class="flex align-center font-size-small" th:title="${book.publisherName}">
+                    <i class="fa-solid fa-building-columns text-sm text-brand pr-1"></i>
+                    <span class="font-mono fw-600 pr-2">Editore:</span>
+                    <span th:text="${book.publisherName}" class="fw-600">Editore</span>   
                 </div>
-                <div class="flex align-center gap-2 font-size-small">
-                    <i class="fa-solid fa-calendar-check text-sm text-brand"></i>
+                <div class="flex align-center font-size-small">
+                    <i class="fa-solid fa-calendar-check text-sm text-brand pr-1"></i>
+                    <span class="font-mono fw-600 pr-2">Pubblicato il:</span>
                     <span th:text="${book.publishingDate}" class="fw-600">Data</span>
                 </div>
-                <div class="flex align-center gap-2 font-size-small">
-                    <i class="fa-solid fa-barcode text-sm text-brand"></i>
+                <div class="flex align-center font-size-small">
+                    <i class="fa-solid fa-barcode text-sm text-brand pr-1"></i>
+                    <span class="font-mono fw-600 pr-2">ISBN:</span>
                     <span th:text="${book.isbnCode}" class="font-mono fw-600">ISBN</span>
                 </div>
             </div>
         </div>
 
         <!-- Status - Returned/Del/Booking-->
-        <div class="card-action-column p-4 flex flex-column justify-center align-center border-l">
+        <div class="card-action-column p-1 flex flex-column justify-center align-center border-l">
             <div th:if="${user.userRole == 'role_admin'}" class="flex align-center mb-3 status-context"
                 th:classappend="${book.status == 'disponibilita' ? 'status-vibrant-active' : 'status-vibrant-pending'}">
 
@@ -57,7 +59,6 @@
             <a th:if="${user.userRole != 'role_admin'}"
                 th:href="@{/api/borrow(email=${user.userEmail}, bookId=${book.bookId})}"
                 class="btn-modern-action pointer transition shadow-soft" style="text-decoration: none;">
-
                 <span>Prenota</span>
                 <i class="fa-solid fa-bookmark"></i>
             </a>
@@ -67,13 +68,13 @@
 
 <th:block th:fragment="edition">
     <div th:each="edition, iter : ${editions}"
-        class="book-card-horizontal glass radius-24 shadow-card flex animate-card p-relative"
+        class="book-card-horizontal glass radius-12 shadow-card flex animate-card p-relative"
         th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
 
-        <div class="card-info-main flex-1 p-5 flex flex-column justify-center">
+        <div class="card-info-main flex-1 p-2 flex flex-column justify-center">
 
             <!--  Title & Author -->
-            <div class="mb-4">
+            <div class="mb-2">
                 <div class="flex self-center gap-1">
                     <h3 class="text-2xl italicfw-700 text-brand mb-1" th:text="${edition.bookName}"></h3>
                     <p class="text-2xl fw-400 opacity-60 mb-3" th:text="${edition.authorName}"></p>
@@ -102,9 +103,9 @@
             </div>
         </div>
 
-        <div class="card-action-column p-4 flex flex-column justify-center align-center border-l gap-2">
-            <div class="mb-3 status-context status-vibrant-active">
-                <div class="glass-indicator radius-10 font-size-xs tracking-widest flex align-center p-2 px-8">
+        <div class="card-action-column p-2 flex flex-column justify-center align-center border-l gap-1">
+            <div class="mb-1 status-context status-vibrant-active">
+                <div class="glass-indicator radius-8 font-size-xs tracking-widest flex align-center p-2 px-8">
                     <span class="fw-700" th:text="'Quantità: ' + ${edition.quantity}"></span>
                 </div>
             </div>

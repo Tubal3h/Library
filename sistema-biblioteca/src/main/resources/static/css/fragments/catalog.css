@@ -4,7 +4,7 @@
    ============================================================ */
 
 .book-card-horizontal {
-    min-height: 140px;
+    min-height: 100px;
     height: 100%;
     transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     background: var(--color-surface);

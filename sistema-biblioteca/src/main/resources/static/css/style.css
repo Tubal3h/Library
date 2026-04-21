@@ -73,8 +73,8 @@ body {
 
 /* Minimal Modern Scrollbar (Global & Browser) */
 * {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-surface-2) transparent;
+    scrollbar-width: 2rem;
+    scrollbar-color: var(--color-text-muted) transparent;
 }
 
 ::-webkit-scrollbar {

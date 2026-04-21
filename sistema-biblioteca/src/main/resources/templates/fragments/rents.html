@@ -25,7 +25,7 @@
                 </div>
 
                 <!-- Label Categoria -->
-                <div class="category-label font-mono text-sm italic tracking-widest opacity-80 uppercase"
+                <div th:if="${user.userRole == 'role_admin'}" class="category-label font-mono text-sm italic tracking-widest opacity-80 uppercase"
                     th:text="${rent.book != null ? rent.book.categoryName : 'ALTRO'}">CATEGORIA</div>
             </div>
 
