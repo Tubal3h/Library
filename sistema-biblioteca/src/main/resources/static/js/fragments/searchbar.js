@@ -38,7 +38,7 @@ function openSearchPopup(section) {
     } else if (section === 'rents') {
         title.innerText = 'Ricerca Prestiti';
         subtitle.innerText = 'Cerca tra i prestiti in corso o scaduti';
-        inputLabel.innerText = 'Cerca per ISBN, ID utente o data';
+        inputLabel.innerText = 'Cerca per ISBN, ID utente o Data di Scadenza';
         inputField.placeholder = 'Es: 978-..., user-id...';
     } else {
         title.innerText = 'Ricerca Generale';
