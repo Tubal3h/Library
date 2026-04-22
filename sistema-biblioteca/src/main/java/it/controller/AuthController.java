@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import it.dto.LoginDto;
 import it.dto.UserDto;
 import it.component.UserSession;
-import jakarta.servlet.http.HttpSession;
 
 /**
  * Controller per la gestione dell'autenticazione degli utenti (login e logout).
@@ -69,12 +68,12 @@ public class AuthController {
 		}
 
     	
-    	if(user != null) {
+    	if(user.getUserEmail().equals(loginDto.getEmail()) && user.getUserPassword().equals(loginDto.getPassword())) {
     		userSession.setUser(user);
     		userSession.setSection("home"); 		
     		return "redirect:/dashboard";
     	}else {
-    		return "redirect:/";
+    		return "redirect:/?error=invalid_credentials";
     	}
     }
 

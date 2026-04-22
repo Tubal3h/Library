@@ -15,6 +15,7 @@ public class UserDto implements Serializable {
     private String userName;
     private String userLastName;
     private String userEmail;
+    private String userPassword;
     private String userRole;
     
     /**
@@ -71,6 +72,20 @@ public class UserDto implements Serializable {
      */
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
+
+    /**
+     * @return Password dell'utente
+     */
+    public String getUserPassword() {
+        return userPassword;
+    }
+
+    /**
+     * @param userPassword Password dell'utente
+     */
+    public void setUserPassword(String userPassword) {
+        this.userPassword = userPassword;
     }
 
     /**

@@ -16,7 +16,6 @@ import it.dto.RentDto;
 import it.dto.UserDto;
 import it.entity.RentalRecord;
 import it.entity.RentalRecordJoin;
-import it.entity.User;
 import it.repository.RentRecordRepository;
 import it.repository.UserRepository;
 
