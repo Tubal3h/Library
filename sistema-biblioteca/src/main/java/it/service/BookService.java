@@ -68,6 +68,7 @@ public class BookService {
      * @param userRole Ruolo dell'utente (es. role_user, role_admin)
      * @return Lista di {@link BookDto} dei libri accessibili all'utente
      */
+    @Transactional(readOnly = true)
     private List<BookDto> getAllBooks(String userRole) {
         List<BookJoin> repoBook = bookRepository.getAllBooks();
         return repoBook.stream()
@@ -96,6 +97,7 @@ public class BookService {
      * @return {@link BookDto} del libro trovato
      * @throws BookNotFoundException se nessun libro corrisponde all'ID specificato
      */
+    @Transactional(readOnly = true)
     public BookDto getBookById(int bookId) {
         var book = bookRepository.getAllBooks().stream()
             .filter(b -> b.getBookId() == bookId)
@@ -120,6 +122,7 @@ public class BookService {
      *
      * @return Numero totale di libri nel database
      */
+    @Transactional(readOnly = true)
     public int getTotalCountBooks() {
         return bookRepository.countBooks();
     }
@@ -133,6 +136,7 @@ public class BookService {
      * @throws NoIsbnFoundException se l'ISBN non viene fornito o non è valido
      */
 	@SuppressWarnings("null")
+	@Transactional
 	public int addBook(String isbn) throws NoIsbnFoundException {
 		int res = 0;
 		if(isbn != null && !isbn.isEmpty()) {
@@ -152,6 +156,7 @@ public class BookService {
      * @throws NoBookIdFoundException se l'ID non è fornito o non è trovato
      */
 	@SuppressWarnings("null")
+	@Transactional
 	public int deleteBook(Integer id) throws NoBookIdFoundException {
 		int res = 0;
 		if(id != null || id != 0) {
@@ -215,7 +220,6 @@ public class BookService {
 		System.out.println("date: " + date);
 		System.out.println("category: " + category);
 		System.out.println("isbn: " + isbn);
-		
 		try {
 			int firstRes = bookNameRepository.insertBookByTitle(title);
 			int authorResult = authorRepository.insertAuthorByNameAndLastName(authorName, authorLastName);
@@ -226,8 +230,7 @@ public class BookService {
 			return firstRes + authorResult + categoryResult + publisherResult + secondRes + thirdRes;
 		}catch(RuntimeException ex) {
 			System.out.println(ex.toString());
-			throw new InsertBookServiceException("errore nell'inserimento di un libro");
-			
+			throw new InsertBookServiceException("errore nell'inserimento di un libro");	
 		}
 	}
 	
