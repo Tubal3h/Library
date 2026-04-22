@@ -55,11 +55,11 @@ public class BookController {
 			return "redirect:/";
 		}
 		try {
-			BookDto bookDto = new BookDto(isbn);
-			bookService.addBook(bookDto.getIsbnCode());
+			int newBookId = bookService.addBook(isbn);
 			redirectAttributes.addFlashAttribute("popupType", "addCopy");
 			redirectAttributes.addFlashAttribute("popupBookIsbn", isbn);
 			redirectAttributes.addFlashAttribute("popupBookTitle", bookName);
+			redirectAttributes.addFlashAttribute("popupBookId", newBookId);
 		} catch (NoIsbnFoundException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("errorMessage ", ex.getMessage());
