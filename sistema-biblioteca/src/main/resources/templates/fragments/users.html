@@ -13,7 +13,8 @@
         th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
 
         <!-- Colonna Sinistra: Informazioni Utente (Profilo e Ruolo) -->
-        <div class="card-info-main flex-1 p-7 flex flex-column">
+        <div class="card-info-main flex-1 p-2 flex flex-column">
+
             <!-- Badge Ruolo -->
             <div class="flex align-end mb-1 status-context status-vibrant-active">
                 <div class="glass-indicator radius-10 tracking-widest flex align-center gap-1 p-1">
@@ -41,10 +42,10 @@
         </div>
 
         <!-- Colonna Destra: Azioni Administrative (Eliminazione) -->
-        <!-- <div class="card-action-column p-2 flex flex-column justify-center border-l">
-            <button class="btn-modern-action pointer transition shadow-soft flex align-center gap-2">
-                <span>Elimina Account</span>
+        <div class="card-action-column p-2 flex flex-column justify-center border-l">
+            <button th:if="${user.userRole != 'role_admin'}"class="btn-modern-action pointer transition shadow-soft flex align-center gap-2">
+                <span>Elimina profilo</span>
             </button>
-        </div> -->
+        </div>
     </div>
 </th:block>
