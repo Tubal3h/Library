@@ -9,7 +9,7 @@
 <body>
 
 
-    <main class="dashboard-wrapper flex flex-column gap-3 w-100 h-100">
+    <main class="dashboard-wrapper flex flex-column gap-1 w-100 h-100">
         <!-- Header -->
         <header class="dashboard-header flex justify-between align-center mb-2 animate-fade-in-up opacity-0">
             <div class="greeting">
@@ -25,11 +25,12 @@
                     <i class="fa-solid fa-plus"></i>
                     <span class="btn-label">Aggiungi Edizione</span>
                 </button>
-                <!-- 
+                
                 <button th:if="${user.userRole == 'role_admin' && section == 'users'}"
-                    class="btn-create radius-full fw-600 glass shadow-soft cursor-pointer">
-                    <i class="fa-solid fa-plus mr-1"></i> Aggiungi Utente
-                </button> -->
+                    class="btn-create btn-sm shadow-soft " onclick="openAddUserPopup()" title="Aggiungi Dipendente">
+                    <i class="fa-solid fa-plus"></i> 
+                    <span class="btn-label">Aggiungi dipendente</span>
+                </button>
 
                 <div th:if="${(section == 'catalog' || section == 'users' || section == 'edition' || section == 'rents')}"
                     class="header-icon glass radius-circle center pointer shadow-soft" th:data-section="${section}"

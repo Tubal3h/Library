@@ -5,6 +5,28 @@
  * e gestisce il riempimento dinamico dei campi del form.
  */
 
+const POPUP_PANELS = [
+    'editBookContent', 
+    'addCopyContent', 
+    'addEditionSuccessContent', 
+    'deleteBookContent', 
+    'confirmContent', 
+    'errorContent', 
+    'addEditionContent', 
+    'deliveredRentContent', 
+    'viewBooksEditionContent'
+];
+
+/**
+ * Nasconde tutti i pannelli del popup.
+ */
+function hideAllPanels() {
+    POPUP_PANELS.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.add('none');
+    });
+}
+
 /**
  * Apre il popup modale per la modifica di un libro o per confermare un'operazione.
  * 
@@ -31,10 +53,7 @@ function openPopup(action, bookId, titleTxt, authorTxt, categoryTxt, publisherTx
     if (footer) footer.classList.remove('none');
 
     // Nasconde tutti gli altri pannelli
-    ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'confirmContent', 'errorContent'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add('none');
-    });
+    hideAllPanels();
 
     // Configurazione del popup basata sull'azione richiesta
     if (action === 'edit') {
@@ -173,7 +192,7 @@ function initServerSidePopup() {
     if (footer) footer.classList.remove('none');
 
     // Header specifico per "Visualizza Copie"
-    title.innerText = 'Visualizza Copie';
+    title.innerText = 'Gestione copie';
     icon.className = 'fa-solid fa-eye text-white';
     icon.parentElement.classList.remove('icon-bg-success');
     icon.parentElement.classList.add('icon-box-accent');
@@ -207,7 +226,7 @@ function closePopupOnBackdrop(event) {
 function triggerConfirmDelete(element) {
     const title = element.getAttribute('data-title');
     const url = element.getAttribute('data-url');
-    openConfirmPopup('delete', title, 'Sei sicuro di voler eliminare questa copia fisica dal catalogo?', url);
+    openConfirmPopup('delete', title, 'Verrà eliminata questa copia dalla libreria', url);
 }
 
 /**
@@ -217,7 +236,7 @@ function triggerConfirmDelete(element) {
 function triggerConfirmAdd(element) {
     const title = element.getAttribute('data-title');
     const url = element.getAttribute('data-url');
-    openConfirmPopup('add', title, 'Vuoi aggiungere una nuova copia fisica per questa edizione?', url);
+    openConfirmPopup('add', title, 'Si aggiungerà una nuova copia per questa edizione', url);
 }
 
 /**
@@ -227,7 +246,7 @@ function triggerConfirmAdd(element) {
 function triggerConfirmDelivered(element) {
     const title = element.getAttribute('data-title');
     const url = element.getAttribute('data-url');
-    openConfirmPopup('delivered', title, 'Sei sicuro di voler consegnare questo libro?', url);
+    openConfirmPopup('delivered', title, 'Il libro verrà dato in carico al richiedente', url);
 }
 
 /**
@@ -252,10 +271,7 @@ function openConfirmPopup(action, titleTxt, message, confirmUrl) {
     if (footer) footer.classList.remove('none');
 
     // Nasconde tutti gli altri pannelli
-    ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'errorContent', 'addEditionContent', 'deliveredRentContent', 'viewBooksEditionContent'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add('none');
-    });
+    hideAllPanels();
 
     // Configurazione Header
     title.innerText = 'Richiesta Conferma';
@@ -333,10 +349,7 @@ function openAddEditionPopup() {
     if (footer) footer.classList.remove('none');
 
     // Nasconde tutti gli altri pannelli
-    ['editBookContent', 'addCopyContent', 'addEditionSuccessContent', 'deleteBookContent', 'confirmContent', 'errorContent'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.classList.add('none');
-    });
+    hideAllPanels();
 
     // Intestazione popup
     title.innerText = 'Aggiungi Edizione';
@@ -348,17 +361,19 @@ function openAddEditionPopup() {
     const titleInput = document.getElementById('addEditionTitleInput');
     const isbnInput = document.getElementById('addEditionIsbnInput');
     const dateInput = document.getElementById('addEditionDateInput');
-    const authorSel = document.getElementById('addEditionAuthorInput');
-    const catSel = document.getElementById('addEditionCategoryInput');
-    const pubSel = document.getElementById('addEditionPublisherInput');
+    const authorNameInput = document.getElementById('addEditionAuthorNameInput');
+    const authorLastNameInput = document.getElementById('addEditionAuthorLastNameInput');
+    const catInput = document.getElementById('addEditionCategoryInput');
+    const pubInput = document.getElementById('addEditionPublisherInput');
     const isbnErr = document.getElementById('addEditionIsbnError');
 
     if (titleInput) titleInput.value = '';
     if (isbnInput) isbnInput.value = '';
     if (dateInput) dateInput.value = '';
-    if (authorSel) authorSel.selectedIndex = 0;
-    if (catSel) catSel.selectedIndex = 0;
-    if (pubSel) pubSel.selectedIndex = 0;
+    if (authorNameInput) authorNameInput.value = '';
+    if (authorLastNameInput) authorLastNameInput.value = '';
+    if (catInput) catInput.value = '';
+    if (pubInput) pubInput.value = '';
     if (isbnErr) isbnErr.style.display = 'none';
 
     addEditionContent.classList.remove('none');
