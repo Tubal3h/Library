@@ -10,6 +10,7 @@ import java.util.List;
 import java.time.LocalDate;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.dto.BookDto;
 import it.dto.RentDto;
@@ -46,6 +47,7 @@ public class RentService {
      * @param userId ID dell'utente
      * @return Lista di {@link RentDto} rappresentanti i prestiti attivi dell'utente
      */
+    @Transactional(readOnly = true)
     private List<RentDto> getRentedBooksByUserId(int userId) {
         return rentRepository.getActiveRentsByUserId(userId).stream()
             .map(this::toRentDto)
@@ -58,6 +60,8 @@ public class RentService {
      *
      * @return Lista di {@link RentDto} rappresentanti tutti i noleggi non ancora conclusi
      */
+    
+    @Transactional(readOnly = true)
     private List<RentDto> getRentedAllRents() {
         return rentRepository.getActiveRents().stream()
             .map(this::toRentDto)
@@ -71,6 +75,8 @@ public class RentService {
      * @param rent Record di noleggio aggregato da convertire
      * @return DTO convertito con i dati del libro inclusi
      */
+    
+    
     private RentDto toRentDto(RentalRecordJoin rent) {
     	UserDto user = new UserDto();
     	user.setUserName(rent.getUserName());
@@ -102,6 +108,8 @@ public class RentService {
      *
      * @return Numero totale di prestiti non ancora conclusi
      */
+    
+    @Transactional
     public int getTotalRents() {
         return rentRepository.countRents();
     }
@@ -112,6 +120,8 @@ public class RentService {
      * @param userId ID dell'utente
      * @return Numero di prestiti attivi dell'utente specificato
      */
+   
+    @Transactional(readOnly = true)
     public int getTotalRentsByUserId(int userId) {
         return rentRepository.countRentsByUserId(userId);
     }
@@ -123,7 +133,9 @@ public class RentService {
      * @param rentDto DTO contenente i dati del noleggio (userId, bookId)
      * @throws RuntimeException se si verifica un errore durante la creazione del noleggio
      */
-    public void createRental(RentDto rentDto) {
+    
+    @Transactional
+    public void createRental(RentDto rentDto) throws RuntimeException {
         try {
             RentalRecord rental = new RentalRecord();
             rental.setUserId(rentDto.getUserId());
@@ -144,6 +156,7 @@ public class RentService {
      * @param bookId ID del libro restituito
      * @param rentId ID del record di noleggio da chiudere
      */
+    @Transactional
     public void updateStatus(int bookId, int rentId) {
         rentRepository.endRental(bookId, rentId);
     }
@@ -156,6 +169,8 @@ public class RentService {
      * @param userId L'ID dell'utente che effettua la ricerca
      * @return Lista di RentDto contenente le informazioni condensate dei prestiti filtrati per nome del libro
      */
+    
+    @Transactional(readOnly = true)
     public List<RentDto> getBookListByName(String search, String userRole, int userId) {
 		List<RentDto> myList = new ArrayList<>();
 		

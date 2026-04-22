@@ -25,7 +25,7 @@
                 <div class="flex align-center font-size-small">
                     <i class="fa-solid fa-calendar-check text-sm text-brand pr-1"></i>
                     <span class="font-mono fw-600 pr-2">Pubblicato il:</span>
-                    <span th:text="${#temporals.format(book.publishingDate, dd-MM-yyyy)}" class="fw-600">Data</span>
+                    <span th:text="${#temporals.format(book.publishingDate, 'dd-MM-yyyy')}" class="fw-600">Data</span>
                 </div>
                 <div class="flex align-center font-size-small">
                     <i class="fa-solid fa-barcode text-sm text-brand pr-1"></i>
