@@ -20,14 +20,16 @@
             </div>
             <div class="header-actions flex align-center gap-2">
 
+                <!-- Aggiungi nuova edizione -->
                 <button th:if="${user.userRole == 'role_admin' && section == 'edition'}"
                     class="btn-create btn-sm shadow-soft" onclick="openAddEditionPopup()" title="Aggiungi Edizione">
                     <i class="fa-solid fa-plus"></i>
                     <span class="btn-label">Aggiungi Edizione</span>
                 </button>
                 
+                <!-- Aggiungi nuovo dipendente -->
                 <button th:if="${user.userRole == 'role_admin' && section == 'users'}"
-                    class="btn-create btn-sm shadow-soft " onclick="openAddUserPopup()" title="Aggiungi Dipendente">
+                    class="btn-create btn-sm shadow-soft" onclick="openAddUserPopup()" title="Aggiungi Dipendente">
                     <i class="fa-solid fa-plus"></i> 
                     <span class="btn-label">Aggiungi dipendente</span>
                 </button>

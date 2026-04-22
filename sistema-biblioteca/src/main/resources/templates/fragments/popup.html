@@ -79,11 +79,11 @@
                 </div>
                 <h3 class="text-2xl fw-700 text-brand mb-2">Copia aggiunta</h3>
                 <p class="opacity-70 text-sm leading-relaxed">
-                    Una nuova copia fisica di <br>
-                    <strong id="addCopyBookTitle" class="text-brand text-lg"></strong> <br>
-                    <span class="opacity-60 font-size-small">ISBN: <span id="addCopyBookName"
-                            class="font-mono"></span></span><br>
-                    è stata inserita correttamente a sistema.
+                    Una nuova copia di <br>
+                    "<strong id="addCopyBookTitle" class="text-brand text-lg"></strong>" <br>
+                    <span class="opacity-60 font-size-small">ISBN: "<span id="addCopyBookName"
+                            class="font-mono"></span></span>"<br>
+                    è stata aggiunta al catalogo.
                 </p>
             </div>
 
@@ -101,7 +101,7 @@
                     "<strong id="addEditionSuccessBookTitle" class="text-brand text-lg"></strong>"<br>
                     <span class="opacity-60 font-size-small">con ISBN: "<span id="addEditionSuccessBookIsbn"
                             class="font-mono"></span></span>"<br>
-                è stato inserito in libreria.
+                    è stato inserito in libreria.
                 </p>
             </div>
 
@@ -115,11 +115,11 @@
                 </div>
                 <h3 class="text-2xl fw-700 mb-2" style="color: var(--color-error);">Copia eliminata</h3>
                 <p class="opacity-70 text-sm leading-relaxed">
-                    La copia di<br>
+                    La copia <br>
                     "<strong id="deleteBookTitle" class="text-brand text-lg"></strong>"<br>
                     <span class="opacity-60 font-size-small">con ID "<span id="deleteBookId"
                             class="font-mono"></span></span>"<br>
-                    è stata rimossa correttamente dal catalogo.
+                    è stata rimossa dal catalogo.
                 </p>
             </div>
 
@@ -132,11 +132,11 @@
                 </div>
                 <h3 class="text-2xl fw-700 mb-2" style="color: var(--color-error);">Copia consegnata</h3>
                 <p class="opacity-70 text-sm leading-relaxed">
-                    La copia "<br>
-                    <strong id="deliveredBookTitle" class="text-brand text-lg"></strong> <br>
+                    La copia <br>
+                    "<strong id="deliveredBookTitle" class="text-brand text-lg"></strong>" <br>
                     <span class="opacity-60 font-size-small">" con ID "<span id="deliveredBookId"
-                            class="font-mono"></span></span><br>
-                    " è stata consegnata correttamente.
+                            class="font-mono"></span></span>"<br>
+                    è stata data in carico al richiedente.
                 </p>
             </div>
 
@@ -150,7 +150,7 @@
                 </div> -->
                 <h3 id="confirmTitle" class="text-2xl fw-700 text-brand mb-2">Attenzione</h3>
                 <p id="confirmMessage" class="opacity-70 text-sm leading-relaxed px-6">
-                    Stai per eseguire questa operazione. Vuoi procedere?
+                    Confermi l'operazione?
                 </p>
                 <div id="confirmDetails" class="mt-4 p-4 radius-12 bg-darkgrey font-size-small opacity-80" style="display: none;">
                 </div>
@@ -173,7 +173,7 @@
             <!-- Add Edition Content -->
             <div id="addEditionContent" class="none animate-fade-in-up">
                 <p class="mb-6 opacity-70 text-sm leading-relaxed">
-                    Compila i dati per aggiungere una nuova edizione al catalogo.
+                    Inserire i dati per una nuova edizione.
                 </p>
 
                 <form id="addEditionForm" th:action="@{/api/addEdition}" method="post">
@@ -188,7 +188,7 @@
                             </label>
                             <input type="text" id="addEditionTitleInput" name="title"
                                 class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="Esempio: Il Nome della Rosa" required>
+                                placeholder="Esempio: Programmare in JavaS" required>
                         </div>
                         <!-- ISBN (13 cifre numeriche) -->
                         <div class="input-group">
@@ -215,7 +215,7 @@
                             </label>
                             <input type="text" id="addEditionAuthorNameInput" name="authorName"
                                 class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="Esempio: Umberto" required>
+                                placeholder="Esempio: Mario" required>
                         </div>
                         <!-- Autore Cognome-->
                         <div class="input-group">
@@ -224,7 +224,7 @@
                             </label>
                             <input type="text" id="addEditionAuthorLastNameInput" name="authorLastName"
                                 class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="Esempio: Eco" required>
+                                placeholder="Esempio: Rossi" required>
                         </div>
                         <!-- Categoria -->
                         <div class="input-group">
@@ -233,7 +233,7 @@
                             </label>
                             <input type="text" id="addEditionCategoryInput" name="categoryName"
                                 class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="Esempio: Romanzo" required>
+                                placeholder="Esempio: Java" required>
                         </div>
                         <!-- Editore -->
                         <div class="input-group">
@@ -242,7 +242,7 @@
                             </label>
                             <input type="text" id="addEditionPublisherInput" name="publisherName"
                                 class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="Esempio: Mondadori" required>
+                                placeholder="Esempio: Apogeo" required>
                         </div>
                     </div>
                 </form>
