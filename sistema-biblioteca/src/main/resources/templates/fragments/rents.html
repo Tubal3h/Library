@@ -76,7 +76,7 @@
                             th:if="${rent.rentalDate.isBefore(rent.rentalExpired) || rent.rentalDate.isEqual(rent.rentalExpired)}"
                             th:text="${rent.rentalEnded != null ? 'Restituito' : 'Da Restituire'}">STATO</span>
 
-                        <span th:if="${rent.rentalDate.isAfter(rent.rentalExpired)}"
+                        <span th:if="${rent.rentalExpired.isAfter(rent.rentalDate)}"
                             th:text="${rent.rentalEnded != null ? 'Restituito' : 'Scaduto'}">STATO</span>
                     </div>
                 </div>
