@@ -121,7 +121,7 @@ public class BookService {
 	@SuppressWarnings("null")
 	public int addBook(String isbn) throws NoIsbnFoundException {
 		int res = 0;
-		if(isbn != null || !isbn.isEmpty()) {
+		if(isbn != null && !isbn.isEmpty()) {
 			res = bookRepository.insertBookByIsbn(isbn);
 		}else {
 			throw new NoIsbnFoundException("attenzione isbn non trovato");

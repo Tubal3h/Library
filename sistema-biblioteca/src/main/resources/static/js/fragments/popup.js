@@ -108,8 +108,14 @@ function openPopup(action, bookId, titleTxt, authorTxt, categoryTxt, publisherTx
 
         addCopyContent.classList.remove('none');
 
-        const addCopyNameElem = document.getElementById('addCopyBookName');
-        if (addCopyNameElem) addCopyNameElem.innerText = titleTxt;
+        const addCopyTitleElem = document.getElementById('addCopyBookTitle');
+        if (addCopyTitleElem) addCopyTitleElem.innerText = titleTxt;
+
+        const addCopyIdElem = document.getElementById('addCopyBookId');
+        if (addCopyIdElem) addCopyIdElem.innerText = bookId;
+
+        const addCopyIsbnElem = document.getElementById('addCopyBookName');
+        if (addCopyIsbnElem) addCopyIsbnElem.innerText = ''; // Non abbiamo l'ISBN in questo metodo, ma evitiamo testi errati
 
         confirmBtn.innerText = 'Chiudi';
         confirmBtn.style.background = ''; 
