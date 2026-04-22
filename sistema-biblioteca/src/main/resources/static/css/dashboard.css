@@ -15,7 +15,7 @@
     width: 100%;
 }
 
-.dashboard-grid > .card {
+.dashboard-grid>.card {
     flex: 1 1 260px;
     min-width: 240px;
     max-width: calc(25% - 1rem);
@@ -171,7 +171,7 @@
 }
 
 @media (max-width: 1024px) {
-    .dashboard-grid > .card {
+    .dashboard-grid>.card {
         max-width: calc(50% - 1rem);
     }
 }
@@ -190,7 +190,7 @@
         gap: 0.75rem;
     }
 
-    .dashboard-grid > .card {
+    .dashboard-grid>.card {
         max-width: 100%;
         min-width: 100%;
     }
@@ -365,8 +365,15 @@
     }
 
     @keyframes dotPop {
-        from { transform: translateX(-50%) scale(0); opacity: 0; }
-        to   { transform: translateX(-50%) scale(1); opacity: 1; }
+        from {
+            transform: translateX(-50%) scale(0);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateX(-50%) scale(1);
+            opacity: 1;
+        }
     }
 
     /* ---- Pulsante form (Logout) ---- */
@@ -374,4 +381,97 @@
         width: 100%;
         font-size: inherit;
     }
+}
+
+/* ============================================================
+   FILTER BAR & TOGGLE SWITCH
+   ============================================================ */
+
+.filter-bar {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 0;
+    margin-bottom: 20px;
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    background: rgba(var(--color-brand-rgb), 0.05);
+    padding: 8px 16px;
+    border-radius: 999px;
+    border: 1px solid rgba(var(--color-text-rgb), 0.1);
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+}
+
+.toggle-container:hover {
+    background: rgba(var(--color-brand-rgb), 0.08);
+    transform: translateY(-2px);
+    border-color: var(--color-accent);
+}
+
+.toggle-label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    opacity: 0.8;
+    color: var(--color-text);
+}
+
+.toggle-switch {
+    position: relative;
+    width: 48px;
+    height: 24px;
+    background: rgba(var(--color-text-rgb), 0.1);
+    border-radius: 20px;
+    border: 1px solid rgba(var(--color-text-rgb), 0.1);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.toggle-container input {
+    display: none;
+}
+
+.toggle-container input:checked+.toggle-switch {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+.toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 16px;
+    height: 16px;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.toggle-container input:checked+.toggle-switch::after {
+    transform: translateX(24px);
+}
+
+.card-hidden {
+    display: none !important;
+}
+
+/* Animazione di entrata/uscita per il filtraggio */
+.fade-out {
+    opacity: 0;
+    transform: scale(0.95);
+    transition: all 0.3s ease;
+}
+
+.fade-in {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.3s ease;
 }
