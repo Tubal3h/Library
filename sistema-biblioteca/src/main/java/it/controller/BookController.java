@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import it.dto.BookDto;
 import it.dto.UserDto;
 import it.component.UserSession;
+import it.exception.InsertBookServiceException;
 import it.exception.NoBookIdFoundException;
 import it.exception.NoIsbnFoundException;
 import it.service.BookService;
@@ -121,9 +122,10 @@ public class BookController {
 			@RequestParam("title") String title,
 			@RequestParam("isbn") String isbn,
 			@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-			@RequestParam("authorId") Integer authorId,
-			@RequestParam("categoryId") Integer categoryId,
-			@RequestParam("publisherId") Integer publisherId,
+			@RequestParam("authorName") String authorName,
+			@RequestParam("authorLastName") String authorLastName,
+			@RequestParam("categoryName") String categoryName,
+			@RequestParam("publisherName") String publisherName,
 			@RequestParam("email") String email,
 			
 			RedirectAttributes redirectAttributes) {
@@ -132,13 +134,13 @@ public class BookController {
 			return "redirect:/";
 		}
 		try {
-			bookService.insertBook(title, authorId, publisherId, date, categoryId, isbn);
+			bookService.insertBook(title, authorName, authorLastName, date, categoryName, publisherName, isbn);
 			redirectAttributes.addFlashAttribute("popupType", "addEdition");
 			redirectAttributes.addFlashAttribute("popupBookTitle", title);
 			redirectAttributes.addFlashAttribute("popupBookIsbn", isbn);
-		} catch (Exception ex) {
+		} catch (InsertBookServiceException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
-			redirectAttributes.addFlashAttribute("popupErrorMessage", "Impossibile aggiungere l'edizione.");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
 		}
 
 		return "redirect:/dashboard";

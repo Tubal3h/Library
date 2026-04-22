@@ -6,6 +6,7 @@ package it.repository;
 
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -13,6 +14,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import it.entity.BookName;
+import it.exception.InsertBookNameException;
 import it.mapper.BookNameRowMapper;
 
 /**
@@ -64,13 +66,16 @@ public class BookNameRepository {
      * @param title Il titolo del libro da inserire
      * @return Numero di record inseriti
      */
-    public int insertBookByTitle(String title) {
+    public int insertBookByTitle(String title) throws InsertBookNameException{
 		
     	String insertBook = "INSERT INTO books_names(title)\r\n"
 				  		  + "VALUES(:title)";
 		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("title", title);
-		int res = namedParameterJdbcTemplate.update(insertBook, sqlParameters);
-		return res;
-    
+		try {
+			int res = namedParameterJdbcTemplate.update(insertBook, sqlParameters);
+			return res;
+		}catch(DataAccessException ex) {
+			throw new InsertBookNameException("errore nell'inserimento del titolo del libro");
+		}    
     }
 }

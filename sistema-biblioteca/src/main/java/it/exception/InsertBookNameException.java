@@ -1,6 +1,6 @@
 package it.exception;
 
-public class InsertBookNameException extends Exception {
+public class InsertBookNameException extends RuntimeException {
 
 	/**
 	 * 
@@ -9,6 +9,7 @@ public class InsertBookNameException extends Exception {
 	private String message;
 	
 	public InsertBookNameException(String message) {
+		super();
 		this.message = message;
 	}
 	

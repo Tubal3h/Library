@@ -6,6 +6,7 @@ package it.repository;
 
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -15,6 +16,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import it.entity.BookJoin;
+import it.exception.InsertBookException;
 import it.mapper.BookJoinRowMapper;
 
 /**
@@ -167,17 +169,20 @@ public class BookRepository implements BookRepositoryInterface{
      * @param title Titolo del libro
      * @return Numero di record inseriti
      */
-	public int insertBookByTitle(String title) {
+	public int insertBookByTitle(String title) throws InsertBookException {
 		String insertBook = "INSERT INTO books (edition_id, status)\r\n"
 						  + "VALUES((SELECT edition_id FROM edition INNER JOIN books_names ON edition.book_name_id = books_names.book_name_id WHERE title = :title),\r\n"
 						  + "('disponibilita'))";
 		
 		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("title", title);
+		try {
 			int res = namedParameterJdbcTemplate.update(insertBook, sqlParameter);
 			return res;
-
+		}catch(DataAccessException ex) {
+			throw new InsertBookException("errore nell'inserimento della copia");
+		}
 	}
-
+	
     /**
      * Recupera tutte le copie fisiche associate a una specifica edizione.
      *
