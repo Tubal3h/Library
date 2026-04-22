@@ -17,7 +17,6 @@ import it.dto.UserDto;
 import it.entity.RentalRecord;
 import it.entity.RentalRecordJoin;
 import it.repository.RentRecordRepository;
-import it.repository.UserRepository;
 
 /**
  * Servizio per la gestione dei prestiti dei libri.
