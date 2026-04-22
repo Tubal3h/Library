@@ -27,16 +27,14 @@ import it.repository.UserRepository;
 public class RentService {
 
     private final RentRecordRepository rentRepository;
-    private final UserRepository userRepository;
 
     /**
      * Costruttore per RentService.
      *
      * @param rentRepository Repository per i record di noleggio
      */
-    public RentService(RentRecordRepository rentRepository, UserRepository userRepository) {
-        this.rentRepository = rentRepository;
-        this.userRepository = userRepository;
+    public RentService(RentRecordRepository rentRepository) {
+            this.rentRepository = rentRepository;
     }
 
     /**
