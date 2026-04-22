@@ -6,6 +6,7 @@ package it.repository;
 
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -13,6 +14,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import it.entity.Author;
+import it.exception.InsertAuthorException;
 import it.mapper.AuthorRowMapper;
 
 /**
@@ -45,13 +47,16 @@ public class AuthorRepository {
         return jdbcTemplate.query(sql, authorRowMapper);
     }
     
-    public int insertAuthorByNameAndLastName(String name, String lastName) {
-    	String insert = "INSERTO INTO author (author_name, author_last_name) VALUES (:name, :lastName)";
+    public int insertAuthorByNameAndLastName(String name, String lastName) throws InsertAuthorException {
+    	String insert = "INSERT INTO author (author_name, author_last_name) VALUES (:name, :lastName)";
     	SqlParameterSource parameterSource  = new MapSqlParameterSource().addValue("name", name)
-    																	.addValue("lastname", lastName);
-    	
-    	int res = namedParameterJdbcTemplate.update(insert, parameterSource);
-    	return res;
+    																	 .addValue("lastName", lastName);
+    	try {
+    		int res = namedParameterJdbcTemplate.update(insert, parameterSource);
+    		return res;
+    	}catch(DataAccessException ex) {
+    		throw new InsertAuthorException("errore nell'inserimento dell'autore");
+    	}
     }
 }
 

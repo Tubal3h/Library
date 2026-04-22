@@ -209,7 +209,8 @@ public class BookService {
 		String authorFullName = authorName.concat(" ").concat(authorLastName);
 		System.out.println("author full name: " + authorFullName);
 		System.out.println("title: " + title);
-		System.out.println("author: " + authorName);
+		System.out.println("authorName: " + authorName);
+		System.out.println("authorLastName " + authorLastName);
 		System.out.println("publisher: " + publisher);
 		System.out.println("date: " + date);
 		System.out.println("category: " + category);
@@ -224,7 +225,9 @@ public class BookService {
 			int thirdRes = bookRepository.insertBookByTitle(title);
 			return firstRes + authorResult + categoryResult + publisherResult + secondRes + thirdRes;
 		}catch(RuntimeException ex) {
+			System.out.println(ex.toString());
 			throw new InsertBookServiceException("errore nell'inserimento di un libro");
+			
 		}
 	}
 	
