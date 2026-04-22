@@ -1,6 +1,8 @@
 package it.component;
 
 import it.dto.UserDto;
+import jakarta.servlet.http.HttpSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 import java.io.Serializable;
@@ -16,6 +18,9 @@ public class UserSession implements Serializable {
 
     private UserDto user;
     private String section = "home";
+
+    @Autowired
+    private transient HttpSession session;
 
     /**
      * @return L'utente attualmente in sessione
@@ -65,5 +70,8 @@ public class UserSession implements Serializable {
     public void logout() {
         this.user = null;
         this.section = "home";
+        if (session != null) {
+            session.invalidate();
+        }
     }
 }

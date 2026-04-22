@@ -7,8 +7,20 @@
     Gli amministratori dispongono di azioni per segnare il libro come restituito.
 -->
 <th:block th:fragment="rents">
+    <!-- Barra dei Filtri -->
+    <div class="rents animate-fade-in-up">
+        <label class="toggle-container shadow-soft">
+            <i class="fa-solid fa-clock-rotate-left text-brand"></i>
+            <span class="toggle-label">Solo Scaduti</span>
+            <input type="checkbox" id="filterExpired" onchange="toggleExpiredFilter(this)">
+            <span class="toggle-switch"></span>
+        </label>
+    </div>
+
     <!-- Contenitore delle Card dei Prestiti -->
     <div th:each="rent, iter : ${rentedBooks}"
+        th:with="todayStr=${#temporals.format(#temporals.createNow(), 'yyyyMMdd')}, rentDateStr=${rent.rentalExpired != null ? #temporals.format(rent.rentalExpired, 'yyyyMMdd') : '99999999'}, isExpired=${rent.rentalEnded == null && rentDateStr < todayStr}"
+        th:data-expired="${isExpired}"
         class="book-card-horizontal glass radius-12 shadow-card flex animate-card p-relative"
         th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
 
@@ -25,7 +37,8 @@
                 </div>
 
                 <!-- Label Categoria -->
-                <div th:if="${user.userRole == 'role_admin'}" class="category-label font-mono text-sm italic tracking-widest opacity-80 uppercase"
+                <div th:if="${user.userRole == 'role_admin'}"
+                    class="category-label font-mono text-sm italic tracking-widest opacity-80 uppercase"
                     th:text="${rent.book != null ? rent.book.categoryName : 'ALTRO'}">CATEGORIA</div>
             </div>
 
@@ -42,11 +55,13 @@
                 <div class="flex align-center font-size-small">
                     <i class="fa-solid fa-calendar-arrow-down text-sm text-brand pr-1"></i>
                     <span class="font-mono fw-600 pr-2">Scadenza:</span>
-                    <span th:text="${#temporals.format(rent.rentalExpired, 'dd-MM-yyyy')}" class="fw-600">Scadenza</span>
+                    <span th:text="${#temporals.format(rent.rentalExpired, 'dd-MM-yyyy')}"
+                        class="fw-600">Scadenza</span>
                 </div>
 
                 <!-- Codice ISBN -->
-                <div th:if="${user.userRole == 'role_admin' and rent.book != null}" class="flex align-center font-size-small">
+                <div th:if="${user.userRole == 'role_admin' and rent.book != null}"
+                    class="flex align-center font-size-small">
                     <i class="fa-solid fa-barcode text-sm text-brand pr-1"></i>
                     <span class="font-mono fw-600 pr-2">ISBN:</span>
                     <span th:text="${rent.book.isbnCode}" class="font-mono fw-600">ISBN</span>
@@ -55,7 +70,8 @@
                 <!-- ID Utente (Utile per gli Admin) -->
                 <div th:if="${user.userRole == 'role_admin'}" class="flex align-center font-size-small">
                     <i class="fa-solid fa-user text-sm text-brand pr-1"></i>
-                    <span th:text="'Utente: ' + ${rent.user.getUserName + ' ' + rent.user.getUserLastName}" class="font-mono fw-600">USER</span>
+                    <span th:text="'Utente: ' + ${rent.user.getUserName + ' ' + rent.user.getUserLastName}"
+                        class="font-mono fw-600">USER</span>
                 </div>
             </div>
         </div>
@@ -68,23 +84,18 @@
 
                 <!-- Indicatore di Stato Dinamico (Restituito, Da Restituire, Scaduto) -->
                 <div class="mb-3 status-context"
-                    th:classappend="${rent.rentalEnded != null ? 'status-vibrant-active' : (rent.rentalDate.isAfter(rent.rentalExpired) ? 'status-vibrant-error' : 'status-vibrant-pending')}">
+                    th:classappend="${rent.rentalEnded != null ? 'status-vibrant-active' : (isExpired ? 'status-vibrant-error' : 'status-vibrant-pending')}">
 
                     <div
                         class="glass-indicator radius-10 font-size-xs tracking-widest flex align-center gap-1 p-2 px-8">
-                        <span
-                            th:if="${rent.rentalDate.isBefore(rent.rentalExpired) || rent.rentalDate.isEqual(rent.rentalExpired)}"
-                            th:text="${rent.rentalEnded != null ? 'Restituito' : 'Da Restituire'}">STATO</span>
-
-                        <span th:if="${rent.rentalExpired.isAfter(rent.rentalDate)}"
-                            th:text="${rent.rentalEnded != null ? 'Restituito' : 'Scaduto'}">STATO</span>
+                        <span th:if="${rent.rentalEnded != null}" th:text="'Restituito'">STATO</span>
+                        <span th:if="${rent.rentalEnded == null && !isExpired}" th:text="'In Corso'">STATO</span>
+                        <span th:if="${rent.rentalEnded == null && isExpired}" th:text="'Scaduto'">STATO</span>
                     </div>
                 </div>
 
                 <!-- Pulsante per confermare la restituzione (Consegnato) con Popup -->
-                <button type="button"
-                    th:if="${rent.book != null}"
-                    th:data-title="${rent.book.title}"
+                <button type="button" th:if="${rent.book != null}" th:data-title="${rent.book.title}"
                     th:data-url="@{/api/delivered(email=${user.userEmail}, bookID=${rent.bookId}, rentID=${rent.rentId})}"
                     onclick="triggerConfirmDelivered(this)"
                     class="w-100 btn-modern-action pointer transition shadow-soft">
@@ -93,4 +104,7 @@
             </div>
         </div>
     </div>
+
+    <!-- Script specifico per i noleggi -->
+    <script th:src="@{/js/fragments/rents.js}"></script>
 </th:block>
