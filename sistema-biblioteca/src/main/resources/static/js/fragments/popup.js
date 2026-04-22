@@ -167,7 +167,7 @@ function initServerSidePopup() {
     if (footer) footer.classList.remove('none');
 
     // Header specifico per "Visualizza Copie"
-    title.innerText = 'Visualizza Copie';
+    title.innerText = 'Gestione copie';
     icon.className = 'fa-solid fa-eye text-white';
     icon.parentElement.classList.remove('icon-bg-success');
     icon.parentElement.classList.add('icon-box-accent');
@@ -201,7 +201,7 @@ function closePopupOnBackdrop(event) {
 function triggerConfirmDelete(element) {
     const title = element.getAttribute('data-title');
     const url = element.getAttribute('data-url');
-    openConfirmPopup('delete', title, 'Sei sicuro di voler eliminare questa copia fisica dal catalogo?', url);
+    openConfirmPopup('delete', title, 'Verrà eliminata questa copia dalla libreria', url);
 }
 
 /**
@@ -211,7 +211,7 @@ function triggerConfirmDelete(element) {
 function triggerConfirmAdd(element) {
     const title = element.getAttribute('data-title');
     const url = element.getAttribute('data-url');
-    openConfirmPopup('add', title, 'Vuoi aggiungere una nuova copia fisica per questa edizione?', url);
+    openConfirmPopup('add', title, 'Si aggiungerà una nuova copia per questa edizione', url);
 }
 
 /**
@@ -221,7 +221,7 @@ function triggerConfirmAdd(element) {
 function triggerConfirmDelivered(element) {
     const title = element.getAttribute('data-title');
     const url = element.getAttribute('data-url');
-    openConfirmPopup('delivered', title, 'Sei sicuro di voler consegnare questo libro?', url);
+    openConfirmPopup('delivered', title, 'Il libro verrà dato in carico al richiedente', url);
 }
 
 /**
