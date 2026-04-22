@@ -124,6 +124,8 @@ public class RentRecordRepository {
                     r.rental_date, r.rental_expired, r.rental_ended,
                     bn.title,
                     CONCAT(a.author_name, ' ', a.author_last_name) AS author_full_name,
+                    u.user_name, 
+                    u.user_last_name,
                     p.publisher_name,
                     e.publishing_date,
                     c.category_name,
@@ -135,6 +137,7 @@ public class RentRecordRepository {
                 JOIN author a       ON e.author_id     = a.author_id
                 JOIN publisher p    ON e.publisher_id  = p.publisher_id
                 JOIN category c     ON e.category_id   = c.category_id
+                JOIN users u        ON r.users_id      = u.users_id
                 WHERE r.rental_ended IS NULL
                   AND r.users_id = ?
                 """;

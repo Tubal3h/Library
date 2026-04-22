@@ -25,7 +25,7 @@
                 <div class="flex align-center font-size-small">
                     <i class="fa-solid fa-calendar-check text-sm text-brand pr-1"></i>
                     <span class="font-mono fw-600 pr-2">Pubblicato il:</span>
-                    <span th:text="${#temporals.format(book.publishingDate, dd-MM-yyyy)}" class="fw-600">Data</span>
+                    <span th:text="${#temporals.format(book.publishingDate, 'dd-MM-yyyy')}" class="fw-600">Data</span>
                 </div>
                 <div class="flex align-center font-size-small">
                     <i class="fa-solid fa-barcode text-sm text-brand pr-1"></i>
@@ -46,15 +46,6 @@
                     <span th:if="${book.status.equals('eliminato')}">Eliminato</span>
                 </div>
             </div>
-            <button type="button"
-                th:if="${user.userRole == 'role_admin' and book.status == 'disponibilita'}"
-                th:data-title="${book.title}"
-                th:data-url="@{/api/deleteBook(email=${user.userEmail}, bookId=${book.bookId}, bookName=${book.title})}"
-                onclick="triggerConfirmDelete(this)"
-                class="m-1 btn-modern-action pointer transition shadow-soft">
-                <span class="text-center">Elimina Copia</span>
-                <i class="fa-solid fa-trash-can"></i>
-            </button>
 
             <a th:if="${user.userRole != 'role_admin'}"
                 th:href="@{/api/borrow(email=${user.userEmail}, bookId=${book.bookId})}"
