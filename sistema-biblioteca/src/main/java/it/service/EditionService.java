@@ -63,8 +63,9 @@ public class EditionService {
 				String title = edition.getBookName();
 				String author = edition.getAuthorName();
 				String category = edition.getCategoryName();
+				String myEdition = edition.getPublisherName();
 				String isbn = edition.getIsbnCode();
-				String finalBook = (title + " " + author + " " + category + " " + isbn).toLowerCase();
+				String finalBook = (title + " " + author + " " + myEdition + " " + category + " " + isbn).toLowerCase();
 				boolean allMatch = true;
 				for(String s : strings) {
 					if(!(finalBook.contains(s))) {

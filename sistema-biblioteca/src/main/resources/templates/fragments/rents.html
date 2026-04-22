@@ -35,14 +35,14 @@
                 <div class="flex align-center font-size-small">
                     <i class="fa-solid fa-calendar-arrow-up text-sm text-brand pr-1"></i>
                     <span class="font-mono fw-600 pr-2">Preso il:</span>
-                    <span th:text="${rent.rentalDate}" class="fw-600">Inizio</span>
+                    <span th:text="${#temporals.format(rent.rentalDate, 'dd-MM-yyyy')}" class="fw-600">Inizio</span>
                 </div>
 
                 <!-- Data di Scadenza -->
                 <div class="flex align-center font-size-small">
                     <i class="fa-solid fa-calendar-arrow-down text-sm text-brand pr-1"></i>
                     <span class="font-mono fw-600 pr-2">Scadenza:</span>
-                    <span th:text="${rent.rentalExpired}" class="fw-600">Scadenza</span>
+                    <span th:text="${#temporals.format(rent.rentalExpired, 'dd-MM-yyyy')}" class="fw-600">Scadenza</span>
                 </div>
 
                 <!-- Codice ISBN -->
@@ -55,7 +55,7 @@
                 <!-- ID Utente (Utile per gli Admin) -->
                 <div th:if="${user.userRole == 'role_admin'}" class="flex align-center font-size-small">
                     <i class="fa-solid fa-user text-sm text-brand pr-1"></i>
-                    <span th:text="'User ID: ' + ${rent.userId}" class="font-mono fw-600">USER</span>
+                    <span th:text="'Utente: ' + ${rent.user.getUserName + ' ' + rent.user.getUserLastName}" class="font-mono fw-600">USER</span>
                 </div>
             </div>
         </div>

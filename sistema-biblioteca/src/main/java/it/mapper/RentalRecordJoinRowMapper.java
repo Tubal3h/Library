@@ -37,6 +37,8 @@ public class RentalRecordJoinRowMapper implements RowMapper<RentalRecordJoin> {
         record.setBookId(rs.getInt("book_id"));
         record.setBookName(rs.getString("title"));
         record.setAuthorFullName(rs.getString("author_full_name"));
+        record.setUserName(rs.getString("user_name"));
+        record.setUserLastName(rs.getString("user_last_name"));
         record.setPublisherName(rs.getString("publisher_name"));
         record.setPublicationDate(rs.getDate("publishing_date").toLocalDate());
         record.setCategoryName(rs.getString("category_name"));

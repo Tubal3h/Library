@@ -79,9 +79,8 @@ public class AuthController {
     }
 
     @PostMapping("/api/logout")
-    public String logout(HttpSession session) {
+    public String logout() {
         userSession.logout();
-        session.invalidate();
     	return "redirect:/";
     }   
 }

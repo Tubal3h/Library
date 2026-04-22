@@ -14,6 +14,7 @@ public class RentDto {
     private int userId;
     private int bookId;
     private BookDto book;
+    private UserDto user;
     private LocalDate rentalDate;
     private LocalDate rentalExpired;
     private LocalDate rentalEnded;
@@ -25,7 +26,15 @@ public class RentDto {
         return rentId;
     }
 
-    /**
+    public UserDto getUser() {
+		return user;
+	}
+
+	public void setUser(UserDto user) {
+		this.user = user;
+	}
+
+	/**
      * @param rentId ID del noleggio
      */
     public void setRentId(int rentId) {
