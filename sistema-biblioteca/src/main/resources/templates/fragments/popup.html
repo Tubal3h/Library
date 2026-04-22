@@ -89,7 +89,7 @@
             </div>
 
             <!-- Add Edition Success Content (Confirmation Style) -->
-            <div id="addEditionSuccessContent" class="none animate-fade-in-up text-center py-6">
+             <div id="addEditionSuccessContent" class="none animate-fade-in-up text-center py-6">
                 <div class="flex justify-center mb-6">
                     <div class="radius-circle p-8 flex center shadow-soft"
                         style="background: rgba(46, 125, 50, 0.1); color: var(--color-success); border-radius: 50%;">
@@ -184,8 +184,9 @@
                     <div class="flex flex-column gap-5">
                         <!-- Titolo -->
                         <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Titolo
-                                Opera</label>
+                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
+                                Titolo
+                            </label>
                             <input type="text" id="addEditionTitleInput" name="title"
                                 class="w-100 p-4 radius-12 border-none font-size-small"
                                 placeholder="Esempio: Il Nome della Rosa" required>
@@ -208,41 +209,41 @@
                             <input type="date" id="addEditionDateInput" name="date"
                                 class="w-100 p-4 radius-12 border-none font-size-small cursor-pointer" required>
                         </div>
-                        <!-- Autore -->
+                        <!-- Autore Nome -->
                         <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Autore
-                                Principale</label>
-                            <select id="addEditionAuthorInput" name="authorId"
-                                class="w-100 p-4 radius-12 border-none font-size-small cursor-pointer" required>
-                                <option value="">Seleziona un autore...</option>
-                                <option th:each="author : ${authors}" th:value="${author.authorId}"
-                                    th:text="${author.authorName} + ' ' + ${author.authorLastName}">
-                                </option>
-                            </select>
+                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
+                                Autore
+                            </label>
+                            <input type="text" id="addEditionAuthorNameInput" name="authorName"
+                                class="w-100 p-4 radius-12 border-none font-size-small"
+                                placeholder="Esempio: Umberto" required>
+                        </div>
+                        <!-- Autore Cognome-->
+                        <div class="input-group">
+                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
+                                Autore
+                            </label>
+                            <input type="text" id="addEditionAuthorLastNameInput" name="authorLastName"
+                                class="w-100 p-4 radius-12 border-none font-size-small"
+                                placeholder="Esempio: Eco" required>
                         </div>
                         <!-- Categoria -->
                         <div class="input-group">
-                            <label
-                                class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Categoria</label>
-                            <select id="addEditionCategoryInput" name="categoryId"
-                                class="w-100 p-4 radius-12 border-none font-size-small cursor-pointer" required>
-                                <option value="">Seleziona una categoria...</option>
-                                <option th:each="category : ${categories}" th:value="${category.categoryId}"
-                                    th:text="${category.categoryName}">
-                                </option>
-                            </select>
+                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
+                                Categoria
+                            </label>
+                            <input type="text" id="addEditionCategoryInput" name="categoryName"
+                                class="w-100 p-4 radius-12 border-none font-size-small"
+                                placeholder="Esempio: Romanzo" required>
                         </div>
                         <!-- Editore -->
                         <div class="input-group">
-                            <label
-                                class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Editore</label>
-                            <select id="addEditionPublisherInput" name="publisherId"
-                                class="w-100 p-4 radius-12 border-none font-size-small cursor-pointer" required>
-                                <option value="">Seleziona un editore...</option>
-                                <option th:each="publisher : ${publishers}" th:value="${publisher.publisherId}"
-                                    th:text="${publisher.publisherName}">
-                                </option>
-                            </select>
+                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
+                                Editore
+                            </label>
+                            <input type="text" id="addEditionPublisherInput" name="publisherName"
+                                class="w-100 p-4 radius-12 border-none font-size-small"
+                                placeholder="Esempio: Mondadori" required>
                         </div>
                     </div>
                 </form>
