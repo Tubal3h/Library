@@ -12,26 +12,26 @@
     <link rel="icon" type="image/svg+xml" th:href="@{/img/logo_mba.svg}">
 </head>
 
-<body data-theme="light">
+<body data-theme="light" class="flex align-center justify-center">
 
-    <div id="login-wrapper" class="flex w-100 overflow-hidden">
+    <div id="login-wrapper" class="flex w-60 overflow-hidden">
 
-        <div id="left-panel" class="flex flex-column justify-between p-relative radius-20 overflow-hidden">
+        <!-- <div id="left-panel" class="flex flex-column justify-between p-relative radius-20 overflow-hidden">
             <div id="left-overlay" class="p-absolute z-1"></div>
-        </div>
+        </div -->
 
 
-        <div id="right-panel" class="flex flex-column align-center overflow-y-auto">
+        <div id="right-panel" class="flex flex-column align-end overflow-y-auto">
 
             <!-- Logo -->
-            <div id="right-logo" class="self-start">
+            <div id="right-logo" class="self-end">
                 <img th:src="@{/img/logo_mba.svg}" alt="MBA Logo" class="w-100">
             </div>
 
             <!-- form al centro -->
             <div id="right-form-wrapper" class="flex flex-column mw-400 w-100">
                 <h1 id="form-title" class="fw-700">Bentornato!</h1>
-                <p id="form-subtitle">Accedi al sistema biblioteca</p>
+                <p id="form-subtitle">Accedi alla libreria aziendale</p>
 
                 <!-- messaggio errore server-side da Spring Model Controller -->
                 <div th:if="${error != null}" class="flex align-center radius-10 p-2 mb-2"
@@ -49,7 +49,7 @@
                 <form id="login-form" class="flex flex-column" th:action="@{/api/login}" method="post">
                     <div class="input-group flex flex-column">
                         <label for="email" class="fw-600 uppercase">Email</label>
-                        <div class="input-wrapper flex align-center radius-12">
+                        <div class="input-wrapper flex align-center radius-10">
                             <i class="fa-solid fa-user input-icon no-pointer"></i>
                             <input type="text" id="email" name="email" placeholder="La tua email"
                                 autocomplete="username" required>
@@ -58,7 +58,7 @@
                     <!-- Password -->
                     <div class="input-group flex flex-column">
                         <label for="password" class="fw-600 uppercase">Password</label>
-                        <div class="input-wrapper flex align-center radius-12">
+                        <div class="input-wrapper flex align-center radius-10">
                             <i class="fa-solid fa-lock input-icon no-pointer"></i>
                             <input type="password" id="password" name="password" placeholder="La tua password"
                                 autocomplete="current-password" required>
@@ -78,8 +78,8 @@
             </div>
 
             <!-- footer -->
-            <div id="right-footer" class="self-center text-center">
-                <p> MAFproject - Libreria aziendale - © 2026</p>
+            <div id="right-footer" class="align-end text-center">
+                <p> M.A.Fproject - Libreria aziendale - © 2026</p>
             </div>
         </div>
 
