@@ -19,7 +19,7 @@ import it.mapper.RentalRecordJoinRowMapper;
  * Repository per la gestione dei record di noleggio (prestiti) nel database.
  */
 @Repository
-public class RentRecordRepository {
+public class RentRecordRepository implements RentRecordRepositoryInterface {
 
     private final JdbcTemplate jdbcTemplate;
     private final RentRecordRowMapper rentRecordRowMapper;

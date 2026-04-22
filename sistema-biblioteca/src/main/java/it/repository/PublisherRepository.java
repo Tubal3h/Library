@@ -21,7 +21,7 @@ import it.mapper.PublisherRowMapper;
  * Repository per la gestione delle case editrici nel database.
  */
 @Repository
-public class PublisherRepository {
+public class PublisherRepository implements PublisherRepositoryInterface{
     private final JdbcTemplate jdbcTemplate;
     private final PublisherRowMapper publisherRowMapper;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;

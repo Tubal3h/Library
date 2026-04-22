@@ -21,7 +21,7 @@ import it.mapper.AuthorRowMapper;
  * Repository per la gestione dei dati degli autori nel database.
  */
 @Repository
-public class AuthorRepository {
+public class AuthorRepository implements AuthorRepositoryInterface{
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     private final AuthorRowMapper authorRowMapper;

@@ -21,7 +21,7 @@ import it.mapper.BookNameRowMapper;
  * Repository per la gestione dei nomi/titoli dei libri nel database.
  */
 @Repository
-public class BookNameRepository {
+public class BookNameRepository implements BookNameRepositoryInterface {
 
     private final JdbcTemplate jdbcTemplate;
     private final BookNameRowMapper bookNameRowMapper;
