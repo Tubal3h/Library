@@ -4,7 +4,7 @@
         <!-- Header Section -->
         <div class="popup-header flex justify-between align-center mb-8">
             <div class="flex align-center gap-4">
-                <div class="icon-box-accent radius-16 p-3 flex center">
+                <div class="icon-box-accent radius-12 p-3 flex center">
                     <i id="popupIcon" class="fa-solid fa-pen-to-square text-white font-size-medium"></i>
                 </div>
                 <div>
@@ -253,7 +253,7 @@
                     <div>
                         <h3 id="viewBooksEditionTitle" class="text-xl fw-700 text-brand mb-1" th:text="${popupEditionTitle}">Titolo Edizione</h3>
                         <p class="opacity-70 text-sm leading-relaxed">
-                            Elenco delle copie fisiche disponibili per questa edizione.
+                            Elenco copie disponibili per questa edizione.
                         </p>
                     </div>
                     
@@ -281,8 +281,8 @@
                                 class="border-b hover-bg-light transition"
                                 th:style="${book.status == 'eliminato' ? 'opacity: 0.6' : ''}">
                                 
-                                <td class="py-3 font-mono fw-600 text-brand">#[[${book.bookId}]]</td>
-                                <td class="py-3">
+                                <td class="font-mono fw-600 text-brand">#[[${book.bookId}]]</td>
+                                <td>
                                     <div th:with="statusClass=${book.status == 'disponibilita' ? 'status-vibrant-active' : (book.status == 'eliminato' ? 'status-vibrant-error' : 'status-vibrant-pending')},
                                                   statusLabel=${book.status == 'disponibilita' ? 'Disponibile' : (book.status == 'eliminato' ? 'Eliminato' : (book.status == 'in prestito' ? 'In Prestito' : book.status))}"
                                          th:class="${statusClass}" style="display: inline-block;">
@@ -292,7 +292,7 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="py-3 text-right">
+                                <td class="text-right">
                                     <button th:if="${book.status == 'disponibilita'}"
                                             type="button" 
                                             class="btn-modern-action pointer transition shadow-soft radius-12"
