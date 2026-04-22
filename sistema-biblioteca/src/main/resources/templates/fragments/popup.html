@@ -4,12 +4,12 @@
         <!-- Header Section -->
         <div class="popup-header flex justify-between align-center mb-8">
             <div class="flex align-center gap-4">
-                <div class="icon-box-accent radius-16 p-3 flex center">
+                <div class="icon-box-accent radius-12 p-3 flex center">
                     <i id="popupIcon" class="fa-solid fa-pen-to-square text-white font-size-medium"></i>
                 </div>
                 <div>
                     <h3 id="popupTitle" class="text-2xl fw-700 text-brand leading-tight">Modifica Libro</h3>
-                    <p class="text-xs uppercase tracking-wider opacity-50 fw-600 mt-1">Gestione Catalogo</p>
+                    <p class="text-xs tracking-wider opacity-50 fw-600 mt-1">Aggiornamento libreria</p>
                 </div>
             </div>
             <button type="button" class="btn-icon-close cursor-pointer transition shadow-card" onclick="closePopup()"
@@ -81,7 +81,6 @@
                 <p class="opacity-70 text-sm leading-relaxed">
                     Una nuova copia fisica di <br>
                     <strong id="addCopyBookTitle" class="text-brand text-lg"></strong> <br>
-                    ID: <strong id="addCopyBookId" class="text-brand text-lg"></strong> <br>
                     <span class="opacity-60 font-size-small">ISBN: <span id="addCopyBookName"
                             class="font-mono"></span></span><br>
                     è stata inserita correttamente a sistema.
@@ -96,13 +95,13 @@
                         <i class="fa-solid fa-circle-check" style="font-size: 3rem;"></i>
                     </div>
                 </div>
-                <h3 class="text-2xl fw-700 text-brand mb-2">Edizione aggiunta</h3>
+                <h3 class="text-2xl fw-700 text-brand mb-2">Nuovo manuale aggiunto</h3>
                 <p class="opacity-70 text-sm leading-relaxed">
-                    L'edizione di <br>
-                    <strong id="addEditionSuccessBookTitle" class="text-brand text-lg"></strong> <br>
-                    <span class="opacity-60 font-size-small">ISBN: <span id="addEditionSuccessBookIsbn"
-                            class="font-mono"></span></span><br>
-                    è stata creata correttamente a sistema.
+                    Il manuale <br>
+                    "<strong id="addEditionSuccessBookTitle" class="text-brand text-lg"></strong>"<br>
+                    <span class="opacity-60 font-size-small">con ISBN: "<span id="addEditionSuccessBookIsbn"
+                            class="font-mono"></span></span>"<br>
+                è stato inserito in libreria.
                 </p>
             </div>
 
@@ -116,10 +115,10 @@
                 </div>
                 <h3 class="text-2xl fw-700 mb-2" style="color: var(--color-error);">Copia eliminata</h3>
                 <p class="opacity-70 text-sm leading-relaxed">
-                    La copia di <br>
-                    <strong id="deleteBookTitle" class="text-brand text-lg"></strong> <br>
-                    <span class="opacity-60 font-size-small">ID copia: <span id="deleteBookId"
-                            class="font-mono"></span></span><br>
+                    La copia di<br>
+                    "<strong id="deleteBookTitle" class="text-brand text-lg"></strong>"<br>
+                    <span class="opacity-60 font-size-small">con ID "<span id="deleteBookId"
+                            class="font-mono"></span></span>"<br>
                     è stata rimossa correttamente dal catalogo.
                 </p>
             </div>
@@ -133,23 +132,23 @@
                 </div>
                 <h3 class="text-2xl fw-700 mb-2" style="color: var(--color-error);">Copia consegnata</h3>
                 <p class="opacity-70 text-sm leading-relaxed">
-                    La copia di <br>
+                    La copia "<br>
                     <strong id="deliveredBookTitle" class="text-brand text-lg"></strong> <br>
-                    <span class="opacity-60 font-size-small">ID copia: <span id="deliveredBookId"
+                    <span class="opacity-60 font-size-small">" con ID "<span id="deliveredBookId"
                             class="font-mono"></span></span><br>
-                    è stata consegnata correttamente.
+                    " è stata consegnata correttamente.
                 </p>
             </div>
 
             <!-- Confirm Content (Generic "Are you sure?" style) -->
             <div id="confirmContent" class="none animate-fade-in-up text-center py-6">
-                <div class="flex justify-center mb-6">
+                <!-- <div class="flex justify-center mb-6">
                     <div id="confirmIconBox" class="radius-circle p-8 flex center shadow-soft"
                         style="background: rgba(245, 166, 35, 0.1); color: var(--color-accent); border-radius: 50%;">
                         <i id="confirmIconInner" class="fa-solid fa-circle-question" style="font-size: 3rem;"></i>
                     </div>
-                </div>
-                <h3 id="confirmTitle" class="text-2xl fw-700 text-brand mb-2">Sei sicuro?</h3>
+                </div> -->
+                <h3 id="confirmTitle" class="text-2xl fw-700 text-brand mb-2">Attenzione</h3>
                 <p id="confirmMessage" class="opacity-70 text-sm leading-relaxed px-6">
                     Stai per eseguire questa operazione. Vuoi procedere?
                 </p>
@@ -251,62 +250,62 @@
 
             <!-- View books edition -->
             <div id="viewBooksEditionContent" class="animate-fade-in-up" th:classappend="${showCopiesPopup == null} ? 'none' : ''">
-                <div class="mb-6 flex justify-between align-center">
+                <div class="mb-6 flex">
                     <div>
                         <h3 id="viewBooksEditionTitle" class="text-xl fw-700 text-brand mb-1" th:text="${popupEditionTitle}">Titolo Edizione</h3>
-                        <p class="opacity-70 text-sm leading-relaxed">
-                            Elenco delle copie fisiche disponibili per questa edizione.
-                        </p>
-                    </div>
-                    
-                    <a th:if="${showCopiesPopup}" 
-                       th:href="@{/dashboard(editionId=${popupEditionId}, action='viewCopies', includeDeleted=${!popupIncludeDeleted})}"
-                       class="flex align-center gap-2 bg-surface-2 p-2 px-3 radius-12 border no-select cursor-pointer no-decoration"
-                       style="color: inherit;">
-                        <i class="fa-solid" th:classappend="${popupIncludeDeleted ? 'fa-square-check text-brand' : 'fa-square opacity-30'}"></i>
-                        <label class="text-xs fw-700 uppercase tracking-wider cursor-pointer">Mostra Eliminati</label>
-                    </a>
+                        <div>
+                            <span class="opacity-70 text-sm leading-relaxed">Elenco copie disponibili per questa edizione.</span>
+                            <a th:if="${showCopiesPopup}" 
+                                th:href="@{/dashboard(editionId=${popupEditionId}, action='viewCopies', includeDeleted=${!popupIncludeDeleted})}"
+                                class="flex align-center gap-2 bg-surface-2 p-2 px-3 radius-12 border no-select cursor-pointer no-decoration"
+                                style="color: inherit;">
+                                <i class="fa-solid" th:classappend="${popupIncludeDeleted ? 'fa-square-check text-brand' : 'fa-square opacity-30'}"></i>
+                                <label class="text-xs fw-700 uppercase tracking-wider cursor-pointer">Mostra Eliminati</label>
+                            </a>
+                        </div>
+                    </div>   
                 </div>
                 
                 <div class="flex flex-column gap-3 max-h-300 overflow-y-auto pr-2 custom-scrollbar">
                     <table class="w-100 border-collapse">
                         <thead>
-                            <tr class="text-left border-b opacity-60">
-                                <th class="py-2 text-xs uppercase tracking-widest fw-700">ID Libro</th>
-                                <th class="py-2 text-xs uppercase tracking-widest fw-700">Stato</th>
-                                <th class="py-2 text-xs uppercase tracking-widest fw-700 text-right">Azioni</th>
+                            <tr class="text-center border-b opacity-60">
+                                <th class=" text-xs uppercase tracking-widest fw-700">ID Libro</th>
+                                <th class=" text-xs uppercase tracking-widest fw-700">Stato</th>
+                                <th class=" text-xs uppercase tracking-widest fw-700 text-right">Azioni</th>
                             </tr>
                         </thead>
                         <tbody id="viewBooksListContainer" th:fragment="bookCopiesList" th:with="booksToShow=${popupBooks != null ? popupBooks : books}">
                             <!-- Righe della tabella generate lato server via Thymeleaf -->
                             <tr th:each="book : ${booksToShow}" 
-                                class="border-b hover-bg-light transition"
+                                class="text-center border-b hover-bg-light transition"
                                 th:style="${book.status == 'eliminato' ? 'opacity: 0.6' : ''}">
                                 
-                                <td class="py-3 font-mono fw-600 text-brand">#[[${book.bookId}]]</td>
-                                <td class="py-3">
+                                <td class="m-2 font-mono fw-600 text-brand">#[[${book.bookId}]]</td>
+                                <td>
                                     <div th:with="statusClass=${book.status == 'disponibilita' ? 'status-vibrant-active' : (book.status == 'eliminato' ? 'status-vibrant-error' : 'status-vibrant-pending')},
                                                   statusLabel=${book.status == 'disponibilita' ? 'Disponibile' : (book.status == 'eliminato' ? 'Eliminato' : (book.status == 'in prestito' ? 'In Prestito' : book.status))}"
                                          th:class="${statusClass}" style="display: inline-block;">
-                                        <div class="glass-indicator radius-full px-3 py-1 font-size-xs fw-700 uppercase tracking-widest"
+                                        <div class="glass-indicator radius-4 p-1 font-size-xs fw-700 uppercase tracking-widest"
                                              th:text="${statusLabel}">
                                             STATO
                                         </div>
                                     </div>
                                 </td>
-                                <td class="py-3 text-right">
+                                <td>
                                     <button th:if="${book.status == 'disponibilita'}"
                                             type="button" 
                                             class="btn-modern-action pointer transition shadow-soft radius-12"
-                                            style="width: 38px; height: 38px;"
+                                            
                                             th:data-title="${popupEditionTitle} + ' (Copia #' + ${book.bookId} + ')'" 
                                             th:data-url="'/api/deleteBook?bookId=' + ${book.bookId} + '&bookName=' + ${#uris.escapeQueryParam(popupEditionTitle != null ? popupEditionTitle : '')}"
                                             onclick="triggerConfirmDelete(this)"
                                             title="Elimina Copia">
-                                        <i class="fa-solid fa-trash-can"></i>
+                                        <!-- <i class="fa-solid fa-trash-can"></i> -->
+                                        <span class="text-center">Elimina</span>
                                     </button>
                                     <span th:unless="${book.status == 'disponibilita'}" 
-                                          class="text-xs opacity-50 italic">Azione non permessa</span>
+                                          class="text-xs opacity-50 italic">Impossibile eliminare</span>
                                 </td>
                             </tr>
                             <!-- Messaggio se la lista è vuota -->
