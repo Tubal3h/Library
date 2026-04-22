@@ -10,6 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import it.entity.BookJoin;
@@ -135,8 +137,10 @@ public class BookRepository implements BookRepositoryInterface{
 				     + "('disponibilita'))";
 		
 		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("isbn", isbn);
-		int res = namedParameterJdbcTemplate.update(query, sqlParameters);
-		return res;
+		KeyHolder keyHolder = new GeneratedKeyHolder();
+		namedParameterJdbcTemplate.update(query, sqlParameters, keyHolder, new String[] { "book_id" });
+		
+		return keyHolder.getKey().intValue();
 	}
 
     /**
