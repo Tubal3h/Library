@@ -161,17 +161,17 @@ public class BookController {
 	 * @param model          Modello Thymeleaf
 	 * @return Il frammento "bookCopiesList" all'interno di popup.html
 	 */
-	@GetMapping("/fragments/book-copies")
-	public String getBookCopiesFragment(
-			@RequestParam("editionId") int editionId,
-			@RequestParam(value = "includeDeleted", defaultValue = "false") boolean includeDeleted,
-			@RequestParam(value = "editionTitle", required = false) String editionTitle,
-			Model model) {
-		model.addAttribute("books", bookService.getBooksByEditionId(editionId, includeDeleted));
-		model.addAttribute("includeDeleted", includeDeleted);
-		model.addAttribute("editionTitle", editionTitle);
-		return "fragments/popup :: bookCopiesList";
-	}
+	// @GetMapping("/fragments/book-copies")
+	// public String getBookCopiesFragment(
+	// 		@RequestParam("editionId") int editionId,
+	// 		@RequestParam(value = "includeDeleted", defaultValue = "false") boolean includeDeleted,
+	// 		@RequestParam(value = "editionTitle", required = false) String editionTitle,
+	// 		Model model) {
+	// 	model.addAttribute("books", bookService.getBooksByEditionId(editionId, includeDeleted));
+	// 	model.addAttribute("includeDeleted", includeDeleted);
+	// 	model.addAttribute("editionTitle", editionTitle);
+	// 	return "fragments/popup :: bookCopiesList";
+	// }
 	
 	private boolean hasNullOrBlankParameters(String... params) {
 		for(String s : params) {

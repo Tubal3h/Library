@@ -50,6 +50,7 @@ public class BookRepository implements BookRepositoryInterface{
      * @param authorId ID dell'autore
      * @return Nome completo dell'autore (nome + cognome concatenati)
      */
+    @Override
     public String getAuthorFullNameByID(int authorId) {
         String sql = "SELECT CONCAT(author_name, ' ', author_last_name) AS author_full_name FROM author WHERE author_id = ?";
         return jdbcTemplate.queryForObject(sql, String.class, authorId);
@@ -61,6 +62,7 @@ public class BookRepository implements BookRepositoryInterface{
      * @param publisherId ID della casa editrice
      * @return Nome della casa editrice
      */
+    @Override
     public String getPublisherNameByID(int publisherId) {
         String sql = "SELECT publisher_name FROM publisher WHERE publisher_id = ?";
         return jdbcTemplate.queryForObject(sql, String.class, publisherId);
@@ -72,6 +74,7 @@ public class BookRepository implements BookRepositoryInterface{
      * @param isbnId ID dell'ISBN
      * @return Codice ISBN corrispondente
      */
+    @Override
     public String getIsbnCodeByID(int isbnId) {
         String sql = "SELECT code FROM isbn WHERE isbn_id = ?";
         return jdbcTemplate.queryForObject(sql, String.class, isbnId);
@@ -83,6 +86,7 @@ public class BookRepository implements BookRepositoryInterface{
      * @param categoryId ID della categoria
      * @return Nome della categoria
      */
+    @Override
     public String getCategoryNameByID(int categoryId) {
         String sql = "SELECT category_name FROM category WHERE category_id = ?";
         return jdbcTemplate.queryForObject(sql, String.class, categoryId);
@@ -93,6 +97,7 @@ public class BookRepository implements BookRepositoryInterface{
      *
      * @return Numero totale di libri presenti nella tabella books
      */
+    @Override
     public int countBooks() {
         String sql = "SELECT COUNT(*) FROM books";
         return jdbcTemplate.queryForObject(sql, Integer.class);
@@ -104,6 +109,7 @@ public class BookRepository implements BookRepositoryInterface{
      *
      * @return Lista di oggetti {@link BookJoin} con i dati completi di ogni libro
      */
+    @Override
     public List<BookJoin> getAllBooks() {
         String sql = """
                 SELECT
@@ -133,6 +139,7 @@ public class BookRepository implements BookRepositoryInterface{
      * @param isbn Codice ISBN dell'edizione
      * @return Numero di record inseriti
      */
+    @Override
 	public int insertBookByIsbn(String isbn) {
 		String query = "INSERT INTO books(edition_id, status)\r\n"
 					 + "VALUES((SELECT edition_id FROM edition WHERE isbn = :isbn), \r\n"
@@ -169,6 +176,7 @@ public class BookRepository implements BookRepositoryInterface{
      * @param title Titolo del libro
      * @return Numero di record inseriti
      */
+	@Override
 	public int insertBookByTitle(String title) throws InsertBookException {
 		String insertBook = "INSERT INTO books (edition_id, status)\r\n"
 						  + "VALUES((SELECT edition_id FROM edition INNER JOIN books_names ON edition.book_name_id = books_names.book_name_id WHERE title = :title),\r\n"
