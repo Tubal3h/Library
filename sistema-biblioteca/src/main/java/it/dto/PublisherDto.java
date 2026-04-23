@@ -3,6 +3,14 @@ package it.dto;
 public class PublisherDto {
     private int publisherId;
     private String publisherName;
+
+    public PublisherDto() {
+    }
+
+    public PublisherDto(int publisherId, String publisherName) {
+        this.publisherId = publisherId;
+        this.publisherName = publisherName;
+    }
     
     public int getPublisherId() {
         return publisherId;

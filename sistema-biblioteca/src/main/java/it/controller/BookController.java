@@ -9,13 +9,17 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import it.dto.AuthorDto;
 import it.dto.BookDto;
+import it.dto.PublisherDto;
 import it.dto.UserDto;
 import it.component.UserSession;
 import it.exception.InsertBookServiceException;
 import it.exception.NoBookIdFoundException;
 import it.exception.NoIsbnFoundException;
+import it.service.AuthorService;
 import it.service.BookService;
+import it.service.PublisherService;
 
 
 @Controller
@@ -24,6 +28,8 @@ public class BookController {
 
     private final BookService bookService;
     private final UserSession userSession;
+	private final AuthorService authorService;
+	private final PublisherService publisherService;
 
     /**
      * Costruttore per BookController.
@@ -31,9 +37,11 @@ public class BookController {
      * @param bookService Servizio per la gestione dei libri
      * @param userSession Componente per la gestione della sessione utente
      */
-    public BookController(BookService bookService, UserSession userSession) {
+    public BookController(BookService bookService, UserSession userSession, AuthorService authorService, PublisherService publisherService) {
         this.bookService = bookService;
         this.userSession = userSession;
+		this.authorService = authorService;
+		this.publisherService = publisherService;
     }
 
     	/**
@@ -150,6 +158,15 @@ public class BookController {
 		return "redirect:/dashboard";
 	}
 
+	/**
+     * Aggiorna il titolo di un libro.
+     *
+     * @param bookNameId ID del libro
+     * @param title      Nuovo titolo del libro
+     * @param redirectAttributes Attributi di redirect per passare messaggi alla vista
+     * @return Redirect alla sezione delle edizioni con i parametri necessari
+     */
+
 	@GetMapping("/api/updateBookTitle")
 	public String updateBookTitle(
 		@RequestParam(value = "bookNameId", required = false) Integer bookNameId, 
@@ -175,6 +192,109 @@ public class BookController {
 		}
 		return "redirect:/dashboard";
 	}
+	
+
+	/**
+     * Aggiorna l'autore di un libro.
+     *
+     * @param authorId ID dell'autore
+     * @param authorName Nuovo nome dell'autore
+     * @param authorLastName Nuova cognome dell'autore
+     * @param redirectAttributes Attributi di redirect per passare messaggi alla vista
+     * @return Redirect alla sezione delle edizioni con i parametri necessari
+     */
+
+	@GetMapping("/api/updateAuthor")
+	public String updateAuthor(
+		@RequestParam(value = "authorId", required = false) Integer authorId,
+		@RequestParam(value = "authorName", required = false) String authorName,
+		@RequestParam(value = "authorLastName", required = false) String authorLastName,
+		RedirectAttributes redirectAttributes) {
+		UserDto user = userSession.getUser();
+		if (user == null) {
+			return "redirect:/";
+		}
+
+		
+		AuthorDto authorDto = new AuthorDto(authorId, authorName, authorLastName);
+		try {
+
+		if(!user.getUserRole().equals("role_admin")) {
+			userSession.setSection("home");
+			return "redirect:/dashboard";
+		}
+		if(hasNullOrBlankParameters(authorDto.getAuthorName(), authorDto.getAuthorLastName())) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
+			return "redirect:/dashboard";
+		}
+
+		if (authorService.isAuthorPresent(authorDto)) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
+			return "redirect:/dashboard";
+		}
+			authorService.updateAuthor(authorDto);
+			redirectAttributes.addFlashAttribute("popupType", "updateAuthor");
+			redirectAttributes.addFlashAttribute("popupAuthorId", authorId);
+			redirectAttributes.addFlashAttribute("popupAuthorName", authorName);
+			redirectAttributes.addFlashAttribute("popupAuthorLastName", authorLastName);
+		} catch (Exception ex) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
+		}
+		return "redirect:/dashboard";
+	}
+
+	/**
+	 * Aggiorna la casa editrice di un libro.
+	 *
+	 * @param publisherId ID della casa editrice
+	 * @param publisherName Nuovo nome della casa editrice
+	 * @param redirectAttributes Attributi di redirect per passare messaggi alla vista
+	 * @return Redirect alla sezione delle edizioni con i parametri necessari
+	 */
+
+	@GetMapping("/api/updatePublisher")
+	public String updatePublisher(
+		@RequestParam(value = "publisherId", required = false) Integer publisherId,
+		@RequestParam(value = "publisherName", required = false) String publisherName,
+		RedirectAttributes redirectAttributes) {
+		UserDto user = userSession.getUser();
+		if (user == null) {
+			return "redirect:/";
+		}
+
+		
+		PublisherDto publisherDto = new PublisherDto(publisherId, publisherName);
+		try {
+
+		if(!user.getUserRole().equals("role_admin")) {
+			userSession.setSection("home");
+			return "redirect:/dashboard";
+		}
+		if(hasNullOrBlankParameters(publisherDto.getPublisherName())) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
+			return "redirect:/dashboard";
+		}
+
+		if (publisherService.isPublisherPresent(publisherDto)) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
+			return "redirect:/dashboard";
+		}
+			publisherService.updatePublisher(publisherDto);
+			redirectAttributes.addFlashAttribute("popupType", "updatePublisher");
+			redirectAttributes.addFlashAttribute("popupPublisherId", publisherId);
+			redirectAttributes.addFlashAttribute("popupPublisherName", publisherName);
+		} catch (Exception ex) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
+		}
+		return "redirect:/dashboard";
+	}
+
 	/**
 	 * Restituisce il frammento HTML per la lista delle copie di un'edizione.
 	 * Utilizzato per il caricamento dinamico nel popup tramite Thymeleaf Fragments.
