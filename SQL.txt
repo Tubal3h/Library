@@ -53,6 +53,7 @@ CREATE TABLE rental_record(
     rental_id SERIAL PRIMARY KEY,
     book_id INTEGER NOT NULL,
     users_id INTEGER NOT NULL,
+    booking_date TIMESTAMP,
     rental_date TIMESTAMP,
     rental_expired DATE,
     rental_ended TIMESTAMP NULL,
