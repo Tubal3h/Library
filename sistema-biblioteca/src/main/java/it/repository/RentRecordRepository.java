@@ -205,4 +205,18 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                 """;
         jdbcTemplate.update(sql, date, rentId);
     }
+
+	@Override
+	public void updateStatusToLend(int bookId) {
+		String sql = """
+				UPDATE books
+				SET status = 'prenotato'
+				WHERE status = 'disponibilita'
+				AND book_id = ?
+				""";
+		
+		jdbcTemplate.update(sql, bookId);
+	}
+    
+    
 }

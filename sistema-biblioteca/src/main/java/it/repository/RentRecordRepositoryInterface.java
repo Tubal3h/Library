@@ -11,6 +11,7 @@ public interface RentRecordRepositoryInterface {
 	public int countRentsByUserId(int userId);
 	public List<RentalRecordJoin> getActiveRents();
 	public List<RentalRecordJoin> getActiveRentsByUserId(int userId);
+	public void updateStatusToLend(int bookId);
 	public void createRental(RentalRecord rental);
 	public void endRental(int bookId, int rentId);
 }

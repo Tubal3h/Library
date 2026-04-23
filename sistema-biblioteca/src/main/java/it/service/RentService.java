@@ -138,15 +138,17 @@ public class RentService {
             rental.setUserId(rentDto.getUserId());
             rental.setBookId(rentDto.getBookId());
             rental.setRentalDate(LocalDate.now());
-            rental.setRentalExpired(LocalDate.now().plusDays(14));
+            rental.setRentalExpired(null);
             rental.setRentalEnded(null);
+            
             rentRepository.createRental(rental);
+            rentRepository.updateStatusToLend(rentDto.getBookId());
         } catch (Exception e) {
             System.out.println("Eccezione nella repository: " + e.getMessage());
             throw new RuntimeException("Impossibile creare il noleggio in questo momento.");
         }
     }
-
+    
     /**
      * Aggiorna lo stato di un noleggio registrando la restituzione del libro.
      *
