@@ -74,7 +74,7 @@ public class RentController {
         rental.setBookId(parsedBookId);
 
         try {
-            rentService.createRental(rental);
+            rentService.createBookedDate(rental);
             redirectAttributes.addFlashAttribute("popupType", "booked");
             redirectAttributes.addFlashAttribute("popupBookId", bookId);
         } catch (Exception e) {

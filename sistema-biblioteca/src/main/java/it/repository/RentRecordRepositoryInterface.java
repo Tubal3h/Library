@@ -14,4 +14,7 @@ public interface RentRecordRepositoryInterface {
 	public void updateStatusToLend(int bookId);
 	public void createRental(RentalRecord rental);
 	public void endRental(int bookId, int rentId);
+	public void updateRentalStatusOk(int bookId);
+	public void updateRentalStatusNotOk(int bookId);
+	public void deleteRentalById(int rentId);
 }

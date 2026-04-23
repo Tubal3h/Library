@@ -25,7 +25,8 @@ public class RentalRecordJoin {
     private LocalDate rentalDate;
     private LocalDate rentalExpired;
     private LocalDate rentalEnded;
-	public RentalRecordJoin(int rentalId, int bookId, int userId, String bookName, String authorFullName,
+	
+    public RentalRecordJoin(int rentalId, int bookId, int userId, String bookName, String authorFullName,
 			String userName, String userLastName, String publisherName, LocalDate publicationDate, String categoryName, String isbnCode,
 			LocalDate rentalDate, LocalDate rentalExpired, LocalDate rentalEnded) {
 		this.rentalId = rentalId;
