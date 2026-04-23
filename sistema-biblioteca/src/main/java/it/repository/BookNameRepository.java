@@ -78,4 +78,17 @@ public class BookNameRepository implements BookNameRepositoryInterface {
 			throw new InsertBookNameException("errore nell'inserimento del titolo del libro");
 		}    
     }
+
+    /**
+     * Aggiorna il titolo di un libro.
+     *
+     * @param bookNameId ID del libro
+     * @param title Titolo del libro
+     */
+
+    public void updateBookTitle(int bookNameId, String title) {
+        String updateBook = "UPDATE books_names SET title = :title WHERE book_name_id = :book_name_id";
+        SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("title", title).addValue("book_name_id", bookNameId);
+        namedParameterJdbcTemplate.update(updateBook, sqlParameters);
+    }
 }

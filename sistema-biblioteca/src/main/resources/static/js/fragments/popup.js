@@ -20,7 +20,8 @@ const POPUP_PANELS = [
     'editPublisherOnlyContent',
     'editCategoryOnlyContent',
     'addUserContent',
-    'addUserSuccessContent'
+    'addUserSuccessContent',
+    'updateTitleContent'
 ];
 
 /**
@@ -510,8 +511,7 @@ function openEditTitlePopup(id, currentTitle) {
         const newVal = inputElem ? inputElem.value.trim() : '';
         if (!newVal) return;
         console.log(`[Popup] Modifica titolo id=${id} → "${newVal}"`);
-        // TODO: integrazione backend
-        closePopup();
+        window.location.href = `/api/updateBookTitle?bookNameId=${id}&title=${encodeURIComponent(newVal)}`;
     };
 
     popup.classList.remove('none');

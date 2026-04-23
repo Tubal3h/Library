@@ -4,7 +4,6 @@ import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -151,6 +150,31 @@ public class BookController {
 		return "redirect:/dashboard";
 	}
 
+	@GetMapping("/api/updateBookTitle")
+	public String updateBookTitle(
+		@RequestParam(value = "bookNameId", required = false) Integer bookNameId, 
+		@RequestParam(value = "title", required = false) String title,
+		RedirectAttributes redirectAttributes) {
+		UserDto user = userSession.getUser();
+		if (user == null) {
+			return "redirect:/";
+		}
+		if(!user.getUserRole().equals("role_admin")) {
+			userSession.setSection("home");
+			return "redirect:/dashboard";
+		}
+
+		try {
+			bookService.updateBookTitle(bookNameId, title);
+			redirectAttributes.addFlashAttribute("popupType", "updateTitle");
+			redirectAttributes.addFlashAttribute("popupBookId", bookNameId);
+			redirectAttributes.addFlashAttribute("popupBookTitle", title);
+		} catch (Exception ex) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
+		}
+		return "redirect:/dashboard";
+	}
 	/**
 	 * Restituisce il frammento HTML per la lista delle copie di un'edizione.
 	 * Utilizzato per il caricamento dinamico nel popup tramite Thymeleaf Fragments.

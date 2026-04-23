@@ -74,6 +74,7 @@
                 document.getElementById('addUserSuccessContent')?.classList.add('none');
                 document.getElementById('deliveredRentContent')?.classList.add('none');
                 document.getElementById('bookedRentContent')?.classList.add('none');
+                document.getElementById('updateTitleContent')?.classList.add('none');
 
                 // Nascondi il footer con "Annulla / Conferma" (non serve per i popup di feedback)
                 const footer = document.querySelector('.popup-footer');
@@ -133,6 +134,13 @@
                     setTextIfExists('popupTitle', 'Prenotata');
                     setTextIfExists('bookedBookId', bookId || '');
                     document.getElementById('bookedRentContent').classList.remove('none');
+                    
+                } else if (popupType === 'updateTitle') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-pen-to-square text-white font-size-medium';
+                    setTextIfExists('popupTitle', 'Titolo aggiornato');
+                    setTextIfExists('updateTitleBookId', bookId || '');
+                    setTextIfExists('updateTitleBookName', bookTitle || '');
+                    document.getElementById('updateTitleContent').classList.remove('none');
                 }
 
                 // Mostra l'overlay del popup
