@@ -182,7 +182,8 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
         String sql = """
                 UPDATE books
                 SET status = CASE
-                    WHEN status = 'disponibilita' THEN 'in prestito'
+                    WHEN status = 'disponibilita' THEN 'prenotato'
+                    WHEN status = 'prenotato' THEN 'in prestito'
                     WHEN status = 'in prestito' THEN 'disponibilita'
                 END
                 WHERE book_id = ?
