@@ -14,7 +14,9 @@ const POPUP_PANELS = [
     'errorContent', 
     'addEditionContent', 
     'deliveredRentContent', 
-    'viewBooksEditionContent'
+    'viewBooksEditionContent',
+    'addUserContent',
+    'addUserSuccessContent'
 ];
 
 /**
@@ -286,7 +288,7 @@ function openConfirmPopup(action, titleTxt, message, confirmUrl) {
     const confirmIconBox = document.getElementById('confirmIconBox');
     const confirmIconInner = document.getElementById('confirmIconInner');
 
-    if (confirmTitleElem) confirmTitleElem.innerText = 'Sei sicuro?';
+    if (confirmTitleElem) confirmTitleElem.innerText = 'Confermi lU+0027operazione?';
     if (confirmMsgElem) confirmMsgElem.innerText = message;
     
     if (confirmDetailsElem) {
@@ -296,7 +298,7 @@ function openConfirmPopup(action, titleTxt, message, confirmUrl) {
 
     // Design specifico per azione
     if (action === 'delete') {
-        confirmBtn.innerText = 'Sì, elimina';
+        confirmBtn.innerText = 'Elimina.';
         confirmBtn.style.setProperty('background', 'var(--color-error)', 'important');
         confirmBtn.style.setProperty('border-color', 'var(--color-error)', 'important');
         if (confirmIconBox) {
@@ -305,7 +307,7 @@ function openConfirmPopup(action, titleTxt, message, confirmUrl) {
         }
         if (confirmIconInner) confirmIconInner.className = 'fa-solid fa-trash-can';
     } else {
-        confirmBtn.innerText = 'Sì, procedi';
+        confirmBtn.innerText = 'Procedi.';
         confirmBtn.style.background = ''; 
         confirmBtn.style.borderColor = '';
         if (confirmIconBox) {
@@ -401,3 +403,58 @@ function openAddEditionPopup() {
     popup.classList.remove('none');
     document.body.style.overflow = 'hidden';
 }
+
+/**
+ * Apre il popup per l'inserimento di un nuovo dipendente.
+ */
+function openAddUserPopup() {
+    const popup = document.getElementById('genericPopup');
+    const title = document.getElementById('popupTitle');
+    const icon = document.getElementById('popupIcon');
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    const addUserContent = document.getElementById('addUserContent');
+
+    if (!popup || !title || !icon || !confirmBtn || !addUserContent) return;
+
+    const footer = document.querySelector('.popup-footer');
+    if (footer) footer.classList.remove('none');
+
+    hideAllPanels();
+
+    title.innerText = 'Aggiungi Dipendente';
+    icon.className = 'fa-solid fa-user-plus text-white font-size-medium';
+    icon.parentElement.classList.remove('icon-bg-success');
+    icon.parentElement.classList.add('icon-box-accent');
+
+    const nameInput = document.getElementById('addUserNameInput');
+    const lastNameInput = document.getElementById('addUserLastNameInput');
+    const emailInput = document.getElementById('addUserEmailInput');
+    const passwordInput = document.getElementById('addUserPasswordInput');
+    const roleInput = document.getElementById('addUserRoleInput');
+
+    if (nameInput) nameInput.value = '';
+    if (lastNameInput) lastNameInput.value = '';
+    if (emailInput) emailInput.value = '';
+    if (passwordInput) passwordInput.value = '';
+    if (roleInput) roleInput.value = 'role_user';
+
+    addUserContent.classList.remove('none');
+
+    const cancelBtn = document.querySelector('.btn-link-action');
+    if (cancelBtn) cancelBtn.classList.remove('none');
+
+    confirmBtn.innerText = 'Crea Dipendente';
+    confirmBtn.style.background = '';
+    confirmBtn.style.borderColor = '';
+
+    confirmBtn.onclick = () => {
+        const form = document.getElementById('addUserForm');
+        if (form) {
+            form.submit();
+        }
+    };
+
+    popup.classList.remove('none');
+    document.body.style.overflow = 'hidden';
+}
+
