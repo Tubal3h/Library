@@ -132,21 +132,47 @@ public class RentService {
      */
     
     @Transactional
-    public void createRental(RentDto rentDto) throws RuntimeException {
+    public void createBookedDate(RentDto rentDto) throws RuntimeException {
         try {
             RentalRecord rental = new RentalRecord();
             rental.setUserId(rentDto.getUserId());
             rental.setBookId(rentDto.getBookId());
-            rental.setRentalDate(LocalDate.now());
-            rental.setRentalExpired(null);
-            rental.setRentalEnded(null);
-            
-            rentRepository.createRental(rental);
+            rentRepository.createABookedDate(rental);
             rentRepository.updateStatusToLend(rentDto.getBookId());
         } catch (Exception e) {
             System.out.println("Eccezione nella repository: " + e.getMessage());
-            throw new RuntimeException("Impossibile creare il noleggio in questo momento.");
+            throw new RuntimeException("impossibile effettuare la prenotazione.");
         }
+    }
+    
+    @Transactional
+    public void createRental(RentDto rentDto, Boolean confirmed) throws RuntimeException {
+    	if(rentDto != null) {
+    		if(confirmed) {
+    			try {
+    				RentalRecord rental = new RentalRecord();
+    				rental.setRentalId(rentDto.getRentId());
+    				rental.setRentalDate(LocalDate.now());
+    				rental.setRentalExpired(LocalDate.now().plusDays(14));;
+    				rentRepository.createRental(rental);
+    				rentRepository.updateRentalStatusOk(rental.getBookId());
+    				
+    			}catch(Exception e) {
+    				System.out.println("eccezione aggiunta rentalRecord");
+    				throw new RuntimeException("impossibile effettuare la prenotazione");
+    			}
+    		}else {
+    			try {
+    				RentalRecord rental = new RentalRecord();
+    				rental.setRentalId(rentDto.getRentId());
+    				rental.setBookId(rentDto.getBookId());
+    				rentRepository.deleteRentalById(rental.getRentalId());
+    				rentRepository.updateRentalStatusNotOk(rental.getBookId());
+    			}catch(Exception e) {
+    				System.out.println("eccezione aggiunta delete");
+    			}
+    		}
+    	}
     }
     
     /**

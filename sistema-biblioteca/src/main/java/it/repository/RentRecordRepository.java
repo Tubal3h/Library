@@ -151,15 +151,19 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
      */
     public void createRental(RentalRecord rental) {
         String sql = """
-            INSERT INTO
-                rental_record
-                (users_id, book_id, rental_date, rental_expired, rental_ended)
-            VALUES
-                (?, ?, ?, ?, ?)
-        """;
-        updateRentalStatus(rental.getBookId());
-        jdbcTemplate.update(sql, rental.getUserId(), rental.getBookId(), rental.getRentalDate(),
-                rental.getRentalExpired(), rental.getRentalEnded());
+                UPDATE rental_record
+                SET rental_date = ?, rental_expired = ?
+                WHERE rental_id = ?
+            """;
+        jdbcTemplate.update(sql, rental.getRentalDate(), rental.getRentalEnded(), rental.getRentalId());
+    }
+    
+    public void createABookedDate(RentalRecord rental) {
+    	String sql = """
+    		INSERT INTO rental_record (users_id, book_id, booking_date)
+    		VALUES (?, ?, ?)
+    		""";
+    	jdbcTemplate.update(sql, rental.getUserId(), rental.getBookId(), rental.getBookingDate());
     }
 
     /**
@@ -170,7 +174,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
      */
     public void endRental(int bookId, int rentId) {
         updateRentalEnded(rentId);
-        updateRentalStatus(bookId);
+        updateRentalStatusOk(bookId);
     }
 
     /**
@@ -178,7 +182,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
      *
      * @param bookId ID del libro di cui aggiornare lo stato
      */
-    private void updateRentalStatus(int bookId) {
+    public void updateRentalStatusOk(int bookId) {
         String sql = """
                 UPDATE books
                 SET status = CASE
@@ -190,6 +194,18 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                 """;
         jdbcTemplate.update(sql, bookId);
     }
+    
+    public void updateRentalStatusNotOk(int bookId) {
+    	String sql = """
+        		UPDATE books
+        		SET status = CASE
+        		WHEN status = 'prenotato' THEN 'disponibilita'
+        		END
+        		WHERE book_id = ?
+        				""";
+    	jdbcTemplate.update(sql, bookId);
+    }
+  
 
     /**
      * Registra la data di restituzione effettiva per il noleggio specificato.
@@ -217,6 +233,18 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 		
 		jdbcTemplate.update(sql, bookId);
 	}
-    
+
+	@Override
+	public void deleteRentalById(int rentId) {
+		String sql = """
+				DELETE FROM books
+				WHERE rent_id = ?
+				""";
+		jdbcTemplate.update(sql, rentId);
+	}
+
+
+
+
     
 }
