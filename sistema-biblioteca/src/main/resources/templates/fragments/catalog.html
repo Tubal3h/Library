@@ -7,9 +7,23 @@
 
             <!--  Title & Author -->
             <div class="mb-2">
-                <div class="flex self-center gap-1">
+                <div class="flex align-center gap-2">
                     <h3 class="text-2xl italicfw-700 text-brand mb-1" th:text="${book.title}"></h3>
+                    <i th:if="${user.userRole == 'role_admin'}" 
+                       class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
+                       th:data-id="${book.bookId}"
+                       th:data-title="${book.title}"
+                       onclick="openEditTitlePopup(this.getAttribute('data-id'), this.getAttribute('data-title'))"
+                       title="Modifica Titolo"></i>
+                </div>
+                <div class="flex align-center gap-2">
                     <p class="text-2xl fw-400 opacity-60 mb-3" th:text="${book.authorFullName}"></p>
+                    <i th:if="${user.userRole == 'role_admin'}" 
+                       class="fa-solid fa-user-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
+                       th:data-id="${book.bookId}"
+                       th:data-author="${book.authorFullName}"
+                       onclick="openEditAuthorPopup(this.getAttribute('data-id'), this.getAttribute('data-author'))"
+                       title="Modifica Autore"></i>
                 </div>
                 <div class="category-label font-mono italic tracking-widest opacity-80 uppercase"
                     th:text="${book.categoryName}">CATEGORIA</div>
@@ -66,9 +80,23 @@
 
             <!--  Title & Author -->
             <div class="mb-2">
-                <div class="flex self-center gap-1">
+                <div class="flex align-center gap-2">
                     <h3 class="text-2xl italicfw-700 text-brand mb-1" th:text="${edition.bookName}"></h3>
+                    <i th:if="${user.userRole == 'role_admin'}" 
+                       class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
+                       th:data-id="${edition.editionId}"
+                       th:data-title="${edition.bookName}"
+                       onclick="openEditTitlePopup(this.getAttribute('data-id'), this.getAttribute('data-title'))"
+                       title="Modifica Titolo"></i>
+                </div>
+                <div class="flex align-center gap-2">
                     <p class="text-2xl fw-400 opacity-60 mb-3" th:text="${edition.authorName}"></p>
+                    <i th:if="${user.userRole == 'role_admin'}" 
+                       class="fa-solid fa-user-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
+                       th:data-id="${edition.editionId}"
+                       th:data-author="${edition.authorName}"
+                       onclick="openEditAuthorPopup(this.getAttribute('data-id'), this.getAttribute('data-author'))"
+                       title="Modifica Autore"></i>
                 </div>
                 <div class="category-label font-mono italic tracking-widest opacity-80 uppercase"
                     th:text="${edition.categoryName}">CATEGORIA</div>

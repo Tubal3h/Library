@@ -14,7 +14,9 @@ const POPUP_PANELS = [
     'errorContent', 
     'addEditionContent', 
     'deliveredRentContent', 
-    'viewBooksEditionContent'
+    'viewBooksEditionContent',
+    'editTitleOnlyContent',
+    'editAuthorOnlyContent'
 ];
 
 /**
@@ -398,6 +400,90 @@ function openAddEditionPopup() {
     };
 
     // Mostra il popup
+    popup.classList.remove('none');
+    document.body.style.overflow = 'hidden';
+}
+
+/**
+ * Apre il popup per la modifica del solo titolo dell'edizione.
+ */
+function openEditTitlePopup(editionId, currentTitle) {
+    const popup = document.getElementById('genericPopup');
+    const title = document.getElementById('popupTitle');
+    const icon = document.getElementById('popupIcon');
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    const content = document.getElementById('editTitleOnlyContent');
+
+    if (!popup || !title || !icon || !confirmBtn || !content) return;
+
+    hideAllPanels();
+
+    title.innerText = 'Modifica Titolo';
+    icon.className = 'fa-solid fa-pen-to-square text-white';
+    icon.parentElement.classList.remove('icon-bg-success');
+    icon.parentElement.classList.add('icon-box-accent');
+
+    const currentTitleElem = document.getElementById('editTitleOnlyCurrent');
+    if (currentTitleElem) currentTitleElem.innerText = currentTitle;
+
+    const input = document.getElementById('editTitleOnlyInput');
+    if (input) input.value = currentTitle;
+
+    content.classList.remove('none');
+
+    confirmBtn.innerText = 'Salva Titolo';
+    confirmBtn.onclick = () => {
+        console.log(`[Popup] Update Title for Edition ${editionId}: ${input.value}`);
+        alert(`Front-end: Titolo aggiornato in "${input.value}"`);
+        closePopup();
+    };
+
+    popup.classList.remove('none');
+    document.body.style.overflow = 'hidden';
+}
+
+/**
+ * Apre il popup per la modifica dell'autore (nome e cognome).
+ */
+function openEditAuthorPopup(editionId, fullName) {
+    const popup = document.getElementById('genericPopup');
+    const title = document.getElementById('popupTitle');
+    const icon = document.getElementById('popupIcon');
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    const content = document.getElementById('editAuthorOnlyContent');
+
+    if (!popup || !title || !icon || !confirmBtn || !content) return;
+
+    hideAllPanels();
+
+    title.innerText = 'Modifica Autore';
+    icon.className = 'fa-solid fa-user-pen text-white';
+    icon.parentElement.classList.remove('icon-bg-success');
+    icon.parentElement.classList.add('icon-box-accent');
+
+    const currentAuthorElem = document.getElementById('editAuthorOnlyCurrent');
+    if (currentAuthorElem) currentAuthorElem.innerText = fullName;
+
+    // Split base per nome e cognome
+    const parts = fullName.split(' ');
+    const firstName = parts[0] || '';
+    const lastName = parts.slice(1).join(' ') || '';
+
+    const firstNameInput = document.getElementById('editAuthorFirstNameInput');
+    const lastNameInput = document.getElementById('editAuthorLastNameInput');
+    if (firstNameInput) firstNameInput.value = firstName;
+    if (lastNameInput) lastNameInput.value = lastName;
+
+    content.classList.remove('none');
+
+    confirmBtn.innerText = 'Salva Autore';
+    confirmBtn.onclick = () => {
+        const newFullName = `${firstNameInput.value} ${lastNameInput.value}`.trim();
+        console.log(`[Popup] Update Author for Edition ${editionId}: ${newFullName}`);
+        alert(`Front-end: Autore aggiornato in "${newFullName}"`);
+        closePopup();
+    };
+
     popup.classList.remove('none');
     document.body.style.overflow = 'hidden';
 }

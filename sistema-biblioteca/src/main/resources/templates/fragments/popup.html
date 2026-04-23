@@ -68,6 +68,42 @@
                     </div>
                 </div>
             </div>
+            
+            <!-- Edit Title Only -->
+            <div id="editTitleOnlyContent" class="none animate-fade-in-up">
+                <p class="mb-6 opacity-70 text-sm leading-relaxed">
+                    Stai modificando il titolo dell'opera: <br>
+                    <strong id="editTitleOnlyCurrent" class="text-brand text-lg"></strong>
+                </p>
+                <div class="input-group">
+                    <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nuovo Titolo</label>
+                    <input type="text" id="editTitleOnlyInput"
+                        class="w-100 p-4 radius-12 border-none font-size-small"
+                        placeholder="Esempio: Il Nome della Rosa">
+                </div>
+            </div>
+
+            <!-- Edit Author Only -->
+            <div id="editAuthorOnlyContent" class="none animate-fade-in-up">
+                <p class="mb-6 opacity-70 text-sm leading-relaxed">
+                    Stai modificando l'autore per: <br>
+                    <strong id="editAuthorOnlyCurrent" class="text-brand text-lg"></strong>
+                </p>
+                <div class="flex flex-column gap-5">
+                    <div class="input-group">
+                        <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nome Autore</label>
+                        <input type="text" id="editAuthorFirstNameInput"
+                            class="w-100 p-4 radius-12 border-none font-size-small"
+                            placeholder="Esempio: Umberto">
+                    </div>
+                    <div class="input-group">
+                        <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Cognome Autore</label>
+                        <input type="text" id="editAuthorLastNameInput"
+                            class="w-100 p-4 radius-12 border-none font-size-small"
+                            placeholder="Esempio: Eco">
+                    </div>
+                </div>
+            </div>
 
             <!-- Add Copy Content (Confirmation Style) -->
             <div id="addCopyContent" class="none animate-fade-in-up text-center py-6">
