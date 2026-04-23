@@ -89,7 +89,7 @@ public class EditionRepository implements EditionRepositoryInterface {
      * @param editionId l'ID dell'edizione
      * @return L'oggetto Edition corrispondente all'ID fornito
      */
-    public Edition getEditionById(int editionId) {
+    public Edition findById(int editionId) {
         String sql = "SELECT * FROM edition WHERE edition_id = ?";
         return jdbcTemplate.queryForObject(sql, editionRowMapper, editionId);
     }
@@ -131,6 +131,34 @@ public class EditionRepository implements EditionRepositoryInterface {
 			throw new InsertEditionException("errore nell'inserimento dell'edizione del libro");
 		}
 	} 
+
+	@Override
+	public void updateBookTitleId(int editionId, int bookNameId) {
+		String sql = "UPDATE edition SET book_name_id = :bookNameId WHERE edition_id = :editionId";
+		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("bookNameId", bookNameId).addValue("editionId", editionId);
+		namedParameterJdbcTemplate.update(sql, sqlParameter);
+	}
+
+	@Override
+	public void updateAuthorId(int editionId, int authorId) {
+		String sql = "UPDATE edition SET author_id = :authorId WHERE edition_id = :editionId";
+		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("authorId", authorId).addValue("editionId", editionId);
+		namedParameterJdbcTemplate.update(sql, sqlParameter);
+	}
+
+	@Override
+	public void updatePublisherId(int editionId, int publisherId) {
+		String sql = "UPDATE edition SET publisher_id = :publisherId WHERE edition_id = :editionId";
+		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("publisherId", publisherId).addValue("editionId", editionId);
+		namedParameterJdbcTemplate.update(sql, sqlParameter);
+	}
+
+	@Override
+	public void updateCategoryId(int editionId, int categoryId) {
+		String sql = "UPDATE edition SET category_id = :categoryId WHERE edition_id = :editionId";
+		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("categoryId", categoryId).addValue("editionId", editionId);
+		namedParameterJdbcTemplate.update(sql, sqlParameter);
+	}
 }
 
 

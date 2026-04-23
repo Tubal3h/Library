@@ -3,6 +3,16 @@ package it.dto;
 public class CategoryDto {
     private int categoryId;
     private String categoryName;
+
+    public CategoryDto() {
+    }
+    
+    public CategoryDto(int categoryId, String categoryName) {
+        this.categoryId = categoryId;
+        this.categoryName = categoryName;
+    }
+    
+
     
     public int getCategoryId() {
         return categoryId;

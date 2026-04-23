@@ -10,12 +10,12 @@ import java.time.LocalDate;
  * Entità che rappresenta un'edizione di un libro nel sistema.
  */
 public class Edition {
-    private int edition_id;
-    private int book_name_id;
-    private int author_id;
-    private int publisher_id;
-    private int category_id;
-    private LocalDate publishing_date;
+    private int editionId;
+    private int bookNameId;
+    private int authorId;
+    private int publisherId;
+    private int categoryId;
+    private LocalDate publishingDate;
     private String isbn;
 
     /**
@@ -27,102 +27,102 @@ public class Edition {
     /**
      * Costruttore con parametri.
      * 
-     * @param book_name_id ID del nome del libro
-     * @param author_id ID dell'autore
-     * @param publisher_id ID dell'editore
-     * @param category_id ID della categoria
-     * @param publishing_date Data di pubblicazione
+     * @param bookNameId ID del nome del libro
+     * @param authorId ID dell'autore
+     * @param publisherId ID dell'editore
+     * @param categoryId ID della categoria
+     * @param publishingDate Data di pubblicazione
      */
-    public Edition(int book_name_id, int author_id, int publisher_id, int category_id, LocalDate publishing_date) {
-        this.book_name_id = book_name_id;
-        this.author_id = author_id;
-        this.publisher_id = publisher_id;
-        this.category_id = category_id;
-        this.publishing_date = publishing_date;
+    public Edition(int bookNameId, int authorId, int publisherId, int categoryId, LocalDate publishingDate) {
+        this.bookNameId = bookNameId;
+        this.authorId = authorId;
+        this.publisherId = publisherId;
+        this.categoryId = categoryId;
+        this.publishingDate = publishingDate;
     }
 
     /**
      * @return ID dell'edizione
      */
     public int getEditionId() {
-        return edition_id;
+        return editionId;
     }
 
     /**
-     * @param edition_id ID dell'edizione
+     * @param editionId ID dell'edizione
      */
-    public void setEditionId(int edition_id) {
-        this.edition_id = edition_id;
+    public void setEditionId(int editionId) {
+        this.editionId = editionId;
     }
 
     /**
      * @return ID del nome del libro
      */
     public int getBookNameId() {
-        return book_name_id;
+        return bookNameId;
     }
 
     /**
-     * @param book_name_id ID del nome del libro
+     * @param bookNameId ID del nome del libro
      */
-    public void setBookNameId(int book_name_id) {
-        this.book_name_id = book_name_id;
+    public void setBookNameId(int bookNameId) {
+        this.bookNameId = bookNameId;
     }
 
     /**
      * @return ID dell'autore
      */
     public int getAuthorId() {
-        return author_id;
+        return authorId;
     }
 
     /**
-     * @param author_id ID dell'autore
+     * @param authorId ID dell'autore
      */
-    public void setAuthorId(int author_id) {
-        this.author_id = author_id;
+    public void setAuthorId(int authorId) {
+        this.authorId = authorId;
     }
 
     /**
      * @return ID dell'editore
      */
     public int getPublisherId() {
-        return publisher_id;
+        return publisherId;
     }
 
     /**
-     * @param publisher_id ID dell'editore
+     * @param publisherId ID dell'editore
      */
-    public void setPublisherId(int publisher_id) {
-        this.publisher_id = publisher_id;
+    public void setPublisherId(int publisherId) {
+        this.publisherId = publisherId;
     }
 
     /**
      * @return ID della categoria
      */
     public int getCategoryId() {
-        return category_id;
+        return categoryId;
     }
 
     /**
-     * @param category_id ID della categoria
+     * @param categoryId ID della categoria
      */
-    public void setCategoryId(int category_id) {
-        this.category_id = category_id;
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     /**
      * @return Data di pubblicazione
      */
     public LocalDate getPublishingDate() {
-        return publishing_date;
+        return publishingDate;
     }
 
     /**
-     * @param publishing_date Data di pubblicazione
+     * @param publishingDate Data di pubblicazione
      */
-    public void setPublishingDate(LocalDate publishing_date) {
-        this.publishing_date = publishing_date;
+    public void setPublishingDate(LocalDate publishingDate) {
+        this.publishingDate = publishingDate;
     }
 
     /**
@@ -141,7 +141,7 @@ public class Edition {
 
     @Override
     public String toString() {
-        return "Edition [editionId=" + edition_id + ", bookNameId=" + book_name_id + ", authorId=" + author_id + ", publisherId=" + publisher_id + ", publishingDate=" + publishing_date + "]";
+        return "Edition [editionId=" + editionId + ", bookNameId=" + bookNameId + ", authorId=" + authorId + ", publisherId=" + publisherId + ", publishingDate=" + publishingDate + "]";
     }
 }
 

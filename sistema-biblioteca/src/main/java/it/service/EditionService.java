@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import it.dto.EditionDto;
+import it.dto.EditionJoinDto;
+import it.entity.Edition;
 import it.entity.EditionJoin;
 import it.repository.EditionRepository;
 
@@ -30,18 +32,18 @@ public class EditionService {
      * 
      * @return Lista di EditionDto contenente i metadati completi dell'edizione
      */
-    private List<EditionDto> getAllEditions() {
+    private List<EditionJoinDto> getAllEditions() {
         List<EditionJoin> editions = editionRepository.getAllEditions();
         return editions.stream().map(edition -> {
-            EditionDto dto = new EditionDto();
+            EditionJoinDto dto = new EditionJoinDto();
             dto.setEditionId(edition.getEditionId());
             dto.setBookId(edition.getBookId());
             dto.setBookName(edition.getBookName());
             dto.setAuthorName(edition.getAuthor());
             dto.setPublisherName(edition.getPublisher());
             dto.setCategoryName(edition.getCategory());
-            dto.setPublicationDate(edition.getPublishingDate());
-            dto.setIsbnCode(edition.getIsbn());
+            dto.setPublishingDate(edition.getPublishingDate());
+            dto.setIsbn(edition.getIsbn());
             dto.setQuantity(edition.getQuantity());
             return dto;
         }).toList();
@@ -53,18 +55,18 @@ public class EditionService {
      * @param search Il termine di ricerca per il nome del libro
      * @return Lista di EditionDto contenente le informazioni condensate delle edizioni filtrati per nome del libro
      */
-	public List<EditionDto> getEditionListByName(String search) {
-		List<EditionDto> myList = getAllEditions();
-		List<EditionDto> filteredList = new ArrayList<>();
+	public List<EditionJoinDto> getEditionListByName(String search) {
+		List<EditionJoinDto> myList = getAllEditions();
+		List<EditionJoinDto> filteredList = new ArrayList<>();
 		
 		if(search != null && !search.isBlank()) {
 			String [] strings = search.toLowerCase().trim().split("\\s+");
-			for(EditionDto edition : myList) {
+			for(EditionJoinDto edition : myList) {
 				String title = edition.getBookName();
 				String author = edition.getAuthorName();
 				String category = edition.getCategoryName();
 				String myEdition = edition.getPublisherName();
-				String isbn = edition.getIsbnCode();
+				String isbn = edition.getIsbn();
 				String finalBook = (title + " " + author + " " + myEdition + " " + category + " " + isbn).toLowerCase();
 				boolean allMatch = true;
 				for(String s : strings) {
@@ -87,4 +89,78 @@ public class EditionService {
 			return filteredList;
 		}
 	}
+
+    public void updateTitleId(int editionId, int bookNameId) {
+        editionRepository.updateBookTitleId(editionId, bookNameId);
+    }
+
+    public void updateAuthorId(int editionId, int authorId) {
+        Edition edition = editionRepository.findById(editionId);
+        edition.setAuthorId(authorId);
+        editionRepository.updateAuthorId(edition.getEditionId(), edition.getAuthorId());
+    }
+
+    public void updatePublisherId(int editionId, int publisherId) {
+        Edition edition = editionRepository.findById(editionId);
+        edition.setPublisherId(publisherId);
+        editionRepository.updatePublisherId(edition.getEditionId(), edition.getPublisherId());
+    }
+
+    public void updateCategoryId(int editionId, int categoryId) {
+        Edition edition = editionRepository.findById(editionId);
+        edition.setCategoryId(categoryId);
+        editionRepository.updateCategoryId(edition.getEditionId(), edition.getCategoryId());
+    }
+
+    private EditionDto convertEditionDto(Edition edition) {
+        EditionDto dto = new EditionDto();
+        dto.setEditionId(edition.getEditionId());
+        dto.setBookNameId(edition.getBookNameId());
+        dto.setAuthorId(edition.getAuthorId());
+        dto.setPublisherId(edition.getPublisherId());
+        dto.setCategoryId(edition.getCategoryId());
+        dto.setPublishingDate(edition.getPublishingDate());
+        dto.setIsbnCode(edition.getIsbn());
+        return dto;
+    }
+
+    private EditionJoinDto convertEdition(EditionJoin edition) {
+        EditionJoinDto dto = new EditionJoinDto();
+        dto.setEditionId(edition.getEditionId());
+        dto.setBookId(edition.getBookId());
+        dto.setBookName(edition.getBookName());
+        dto.setAuthorName(edition.getAuthor());
+        dto.setPublisherName(edition.getPublisher());
+        dto.setCategoryName(edition.getCategory());
+        dto.setPublishingDate(edition.getPublishingDate());
+        dto.setIsbn(edition.getIsbn());
+        dto.setQuantity(edition.getQuantity());
+        return dto;
+    }
+
+    private Edition convertEditionDto(EditionDto dto) {
+        Edition edition = new Edition();
+        edition.setEditionId(dto.getEditionId());
+        edition.setBookNameId(dto.getBookNameId());
+        edition.setPublishingDate(dto.getPublishingDate());
+        edition.setIsbn(dto.getIsbn());
+        edition.setAuthorId(dto.getAuthorId());
+        edition.setCategoryId(dto.getCategoryId());
+        edition.setPublisherId(dto.getPublisherId());
+        return edition;
+    }
+
+    private EditionJoin convertEditionDto(EditionJoinDto editionJoinDto) {
+        EditionJoin editionJoin = new EditionJoin();
+        editionJoin.setEditionId(editionJoinDto.getEditionId());
+        editionJoin.setBookId(editionJoinDto.getBookId());
+        editionJoin.setBookName(editionJoinDto.getBookName());
+        editionJoin.setAuthor(editionJoinDto.getAuthorName());
+        editionJoin.setPublisher(editionJoinDto.getPublisherName());
+        editionJoin.setCategory(editionJoinDto.getCategoryName());
+        editionJoin.setPublishingDate(editionJoinDto.getPublishingDate());
+        editionJoin.setIsbn(editionJoinDto.getIsbn());
+        editionJoin.setStatus(editionJoinDto.getStatus());
+        return editionJoin;
+    }
 }
