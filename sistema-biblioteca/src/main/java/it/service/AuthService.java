@@ -7,6 +7,7 @@ package it.service;
 import org.springframework.stereotype.Service;
 
 import it.dto.LoginDto;
+import it.dto.UserDto;
 import it.entity.User;
 import it.repository.UserRepository;
 
@@ -33,18 +34,21 @@ public class AuthService {
      * @param loginDto DTO contenente le credenziali dell'utente
      * @return L'oggetto User se le credenziali sono corrette, null altrimenti
      */
-    public User login(LoginDto loginDto) {
+    public UserDto login(LoginDto loginDto) {
         User user = userRepository.findByEmail(loginDto.getEmail());
+        UserDto userDto = new UserDto();
+        userDto.setUserName(user.getUserName());
+        userDto.setUserLastName(user.getUserLastName());
+        userDto.setUserEmail(user.getUserEmail());
+        userDto.setUserPassword(user.getUserPassword());
+        userDto.setUserRole(user.getUserRole());
 
-        if (user == null) {
+
+        if (!userDto.getUserPassword().equals(loginDto.getPassword())) {
             return null;
         }
 
-        if (!user.getPassword().equals(loginDto.getPassword())) {
-            return null;
-        }
-
-        return user;
+        return userDto;
     }
 }
 

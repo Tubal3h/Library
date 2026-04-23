@@ -135,7 +135,7 @@ public class BookService {
      * @return Il numero di righe inserite (1 se successo)
      * @throws NoIsbnFoundException se l'ISBN non viene fornito o non è valido
      */
-	@SuppressWarnings("null")
+	// @SuppressWarnings("null")
 	@Transactional
 	public int addBook(String isbn) throws NoIsbnFoundException {
 		int res = 0;
