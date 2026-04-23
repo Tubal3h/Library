@@ -234,6 +234,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 		jdbcTemplate.update(sql, bookId);
 	}
 
+	
 	@Override
 	public void deleteRentalById(int rentId) {
 		String sql = """

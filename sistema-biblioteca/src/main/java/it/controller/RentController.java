@@ -36,6 +36,7 @@ public class RentController {
     }
 
     /**
+     * Inserire forse id utente come parametro dato che la conferma la faccio dalla parte admin
      * Gestisce la richiesta di prestito di un libro da parte di un utente.
      * Valida i parametri, costruisce il DTO con i dati corretti e delega
      * la creazione del noleggio al {@link it.service.RentService}.
@@ -45,7 +46,59 @@ public class RentController {
      * @return Redirect alla sezione noleggi in caso di successo, o redirect al catalogo con errore
      */
     @GetMapping("/api/borrow")
-    public String borrowBook(
+    public String borrowBook(@RequestParam(value = "bookId", required = false) String bookId, 
+    						 @RequestParam(value = "userId", required = false) String userId,
+    						 Boolean confirmed, 
+    						 RedirectAttributes redirectAttributes) {
+    
+    	if(userId == null) {
+    		return "redirect:/";	
+    	}
+    	int parsedBookId;
+    	int parsedUserId;
+    	UserDto user = userSession.getUser();
+    	if(bookId == null || bookId.isEmpty()) {
+    		return "redirect:/dashboard";
+    	}
+     
+        try {
+            parsedBookId = Integer.parseInt(bookId);
+        } catch (NumberFormatException e) {
+            System.out.println("Errore: bookId non valido - " + bookId);
+            redirectAttributes.addFlashAttribute("popupType", "error");
+            redirectAttributes.addFlashAttribute("popupErrorMessage", "ID non valido.");
+            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog&error=invalid_id";
+        }
+        
+        try {
+            parsedUserId = Integer.parseInt(bookId);
+        } catch (NumberFormatException e) {
+            System.out.println("Errore: bookId non valido - " + bookId);
+            redirectAttributes.addFlashAttribute("popupType", "error");
+            redirectAttributes.addFlashAttribute("popupErrorMessage", "ID non valido.");
+            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog&error=invalid_id";
+        }
+        
+        RentDto rent = new RentDto();
+        rent.setBookId(parsedBookId);
+        rent.setUserId(parsedUserId);
+        
+        try {
+        	rentService.createRental(rent, confirmed);
+        	redirectAttributes.addFlashAttribute("popupType", "rental");
+        	redirectAttributes.addFlashAttribute("popupBookId", bookId);
+        	redirectAttributes.addFlashAttribute("popupConfirmed", confirmed ? "prestito accettato" : "prestito rifiutato");
+        	
+        }catch(Exception e) {
+        	
+        }
+    	
+        return "redirect:/dashboard";
+    }
+    
+    
+    @GetMapping("/api/booked")
+    public String bookedBook(
             @RequestParam(value = "bookId", required = false) String bookId,
             RedirectAttributes redirectAttributes
         ) {
