@@ -14,7 +14,7 @@ import org.springframework.stereotype.Repository;
  * Repository per la gestione dei dati degli utenti nel database.
  */
 @Repository
-public class UserRepository {
+public class UserRepository implements UserRepositoryInterface{
     private final JdbcTemplate jdbcTemplate;
     private final UserRowMapper userRowMapper;
 

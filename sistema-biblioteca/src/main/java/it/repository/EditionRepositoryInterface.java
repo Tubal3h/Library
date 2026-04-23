@@ -10,10 +10,11 @@ public interface EditionRepositoryInterface {
 	public List<EditionJoin> getAllEditions();
 	public Edition getEditionById(int editionId);
 	public int insertEdition(String title, 
-							 int authorId, 
-							 int publisherId, 
+							 String authorName,
+							 String authotLastName,
+							 String publisher, 
 							 LocalDate publishingDate, 
-							 int categoryId, 
+							 String category, 
 							 String isbn);
 	
 }

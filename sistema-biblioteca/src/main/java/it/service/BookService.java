@@ -13,16 +13,22 @@ import java.util.List;
 
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.exception.NoBookIdFoundException;
 
 import it.dto.BookDto;
 import it.entity.BookJoin;
 import it.exception.BookNotFoundException;
+import it.exception.InsertBookServiceException;
+import it.repository.AuthorRepository;
 import it.repository.BookNameRepository;
 import it.repository.BookRepository;
 import it.repository.EditionRepository;
+import it.repository.PublisherRepository;
+import it.repository.CategoryRepository;
 import it.exception.NoIsbnFoundException;
+
 
 /**
  * Servizio per la gestione del catalogo dei libri.
@@ -34,16 +40,24 @@ public class BookService {
     private final BookRepository bookRepository;
     private final EditionRepository editionRepository;
     private final BookNameRepository bookNameRepository;
+    private final AuthorRepository authorRepository;
+    private final CategoryRepository categoryRepository;
+    private final PublisherRepository publisherRepository;
 
     /**
      * Costruttore per BookService.
      *
      * @param bookRepository Repository per l'accesso ai dati dei libri
+     * 
      */
-    public BookService(BookRepository bookRepository, EditionRepository editionRepository, BookNameRepository bookNameRepository) {
+    public BookService(BookRepository bookRepository, EditionRepository editionRepository, BookNameRepository bookNameRepository,
+    				   AuthorRepository authorRepository, CategoryRepository categoryRepository, PublisherRepository publisherRepository) {
         this.bookRepository = bookRepository;
 		this.editionRepository = editionRepository;
 		this.bookNameRepository = bookNameRepository;
+		this.authorRepository = authorRepository;
+		this.categoryRepository = categoryRepository;
+		this.publisherRepository = publisherRepository;
     }
 
     /**
@@ -54,6 +68,7 @@ public class BookService {
      * @param userRole Ruolo dell'utente (es. role_user, role_admin)
      * @return Lista di {@link BookDto} dei libri accessibili all'utente
      */
+    @Transactional(readOnly = true)
     private List<BookDto> getAllBooks(String userRole) {
         List<BookJoin> repoBook = bookRepository.getAllBooks();
         return repoBook.stream()
@@ -82,6 +97,7 @@ public class BookService {
      * @return {@link BookDto} del libro trovato
      * @throws BookNotFoundException se nessun libro corrisponde all'ID specificato
      */
+    @Transactional(readOnly = true)
     public BookDto getBookById(int bookId) {
         var book = bookRepository.getAllBooks().stream()
             .filter(b -> b.getBookId() == bookId)
@@ -106,6 +122,7 @@ public class BookService {
      *
      * @return Numero totale di libri nel database
      */
+    @Transactional(readOnly = true)
     public int getTotalCountBooks() {
         return bookRepository.countBooks();
     }
@@ -119,6 +136,7 @@ public class BookService {
      * @throws NoIsbnFoundException se l'ISBN non viene fornito o non è valido
      */
 	@SuppressWarnings("null")
+	@Transactional
 	public int addBook(String isbn) throws NoIsbnFoundException {
 		int res = 0;
 		if(isbn != null && !isbn.isEmpty()) {
@@ -138,6 +156,7 @@ public class BookService {
      * @throws NoBookIdFoundException se l'ID non è fornito o non è trovato
      */
 	@SuppressWarnings("null")
+	@Transactional
 	public int deleteBook(Integer id) throws NoBookIdFoundException {
 		int res = 0;
 		if(id != null || id != 0) {
@@ -190,19 +209,29 @@ public class BookService {
      * @return Somma dei risultati delle operazioni di inserimento
      */
 	
-	public int insertBook(String title, Integer authorId, Integer publisherId, LocalDate date, Integer categoryId, String isbn) {
-
+	@Transactional
+	public int insertBook(String title, String authorName, String authorLastName, LocalDate date, String category, String publisher, String isbn) throws InsertBookServiceException {
+		String authorFullName = authorName.concat(" ").concat(authorLastName);
+		System.out.println("author full name: " + authorFullName);
 		System.out.println("title: " + title);
-		System.out.println("authorId: " + authorId);
-		System.out.println("publisherId: " + publisherId);
+		System.out.println("authorName: " + authorName);
+		System.out.println("authorLastName " + authorLastName);
+		System.out.println("publisher: " + publisher);
 		System.out.println("date: " + date);
-		System.out.println("categoryId: " + categoryId);
+		System.out.println("category: " + category);
 		System.out.println("isbn: " + isbn);
-		
-		int firstRes = bookNameRepository.insertBookByTitle(title);
-		int secondRes = editionRepository.insertEdition(title, authorId, publisherId, date, categoryId, isbn);
-		int thirdRes = bookRepository.insertBookByTitle(title);
-		return firstRes + secondRes + thirdRes;
+		try {
+			int firstRes = bookNameRepository.insertBookByTitle(title);
+			int authorResult = authorRepository.insertAuthorByNameAndLastName(authorName, authorLastName);
+			int categoryResult = categoryRepository.insertCategoryByNameCategory(category);
+			int publisherResult = publisherRepository.insertPublisherByPubliserName(publisher);
+			int secondRes = editionRepository.insertEdition(title, authorName, authorLastName, publisher, date, category, isbn);
+			int thirdRes = bookRepository.insertBookByTitle(title);
+			return firstRes + authorResult + categoryResult + publisherResult + secondRes + thirdRes;
+		}catch(RuntimeException ex) {
+			System.out.println(ex.toString());
+			throw new InsertBookServiceException("errore nell'inserimento di un libro");	
+		}
 	}
 	
 

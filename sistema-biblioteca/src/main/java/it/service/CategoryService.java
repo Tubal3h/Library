@@ -2,6 +2,7 @@ package it.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.dto.CategoryDto;
 import it.repository.CategoryRepository;
@@ -30,6 +31,7 @@ public class CategoryService {
      * 
      * @return Lista di CategoryDto
      */
+    @Transactional(readOnly = true)
     public List<CategoryDto> getAllCategories() {
         return categoryRepository.getAllCategories().stream()
             .map(this::toCategoryDto)

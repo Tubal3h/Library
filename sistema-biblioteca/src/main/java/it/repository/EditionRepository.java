@@ -8,6 +8,7 @@ import java.time.LocalDate;
 
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Repository;
 
 import it.entity.Edition;
 import it.entity.EditionJoin;
+import it.exception.InsertEditionException;
 import it.mapper.EditionRowMapper;
 import it.mapper.EditionJoinRowMapper;
 
@@ -105,26 +107,29 @@ public class EditionRepository implements EditionRepositoryInterface {
      * @return Numero di righe inserite
      */
 	@Override
-	public int insertEdition(String title, int authorId, int publisherId, LocalDate publishingDate, int categoryId,
-			String isbn) {
+	public int insertEdition(String title, String authorName, String authorLastName, String publisher, LocalDate publishingDate, String category,
+			String isbn) throws InsertEditionException {
 		String insertEdition = "INSERT INTO edition (book_name_id, author_id, publisher_id, publishing_date, category_id, isbn)\r\n"
 							 + "VALUES((SELECT book_name_id FROM books_names WHERE title = :title),\r\n"
-							 + "(SELECT author_id FROM author WHERE author_id = :authorId),\r\n"
-							 + "(SELECT publisher_id FROM publisher WHERE publisher_id = :publisherId),\r\n"
+							 + "(SELECT author_id FROM author WHERE author_name = :authorName AND author_last_name = :authorLastName),\r\n"
+							 + "(SELECT publisher_id FROM publisher WHERE publisher_name = :publisher),\r\n"
 							 + "(:publishingDate),\r\n"
-							 + "(SELECT category_id FROM category WHERE category_id = :categoryId),\r\n"
+							 + "(SELECT category_id FROM category WHERE category_name = :category),\r\n"
 							 + "(:isbn))";
 		
 		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("title", title)
-																	 .addValue("authorId", authorId) 
-																	 .addValue("publisherId", publisherId) 
+																	 .addValue("authorName", authorName)
+																	 .addValue("authorLastName", authorLastName) 
+																	 .addValue("publisher", publisher) 
 																	 .addValue("publishingDate", publishingDate)
-																	 .addValue("categoryId", categoryId) 
+																	 .addValue("category", category) 
 																	 .addValue("isbn", isbn);
-		
-		int res = namedParameterJdbcTemplate.update(insertEdition, sqlParameter);
-															 
-		return res;
+		try {
+			int res = namedParameterJdbcTemplate.update(insertEdition, sqlParameter);
+			return res;
+		}catch(DataAccessException ex) {
+			throw new InsertEditionException("errore nell'inserimento dell'edizione del libro");
+		}
 	} 
 }
 

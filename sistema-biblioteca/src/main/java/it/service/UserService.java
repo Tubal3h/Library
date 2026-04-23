@@ -10,6 +10,7 @@ import java.text.Normalizer;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.dto.UserDto;
 import it.entity.User;
@@ -36,6 +37,7 @@ public class UserService {
      * 
      * @return Lista di UserDto contenente le informazioni condensate degli utenti
      */
+    @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
         List<User> entities = userRepository.getAllUsers();
         return entities.stream().map(u -> {
@@ -78,6 +80,7 @@ public class UserService {
      * @param email L'email dell'utente
      * @return UserDto dell'utente se trovato, null altrimenti
      */
+    @Transactional(readOnly = true)
     public UserDto getUserByEmail(String email) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
@@ -97,7 +100,8 @@ public class UserService {
      * 
      * @return Il numero totale di utenti registrati con ruolo 'role_user'
      */
-
+    
+    @Transactional(readOnly = true)
     public int getTotalUsers() {
         int users = userRepository.countUsers();
         return users;

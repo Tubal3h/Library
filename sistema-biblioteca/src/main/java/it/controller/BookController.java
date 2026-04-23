@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import it.dto.BookDto;
 import it.dto.UserDto;
 import it.component.UserSession;
+import it.exception.InsertBookServiceException;
 import it.exception.NoBookIdFoundException;
 import it.exception.NoIsbnFoundException;
 import it.service.BookService;
@@ -118,27 +119,33 @@ public class BookController {
 	 */
 	@PostMapping("/api/addEdition")
 	public String addEdition(
-			@RequestParam("title") String title,
-			@RequestParam("isbn") String isbn,
-			@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-			@RequestParam("authorId") Integer authorId,
-			@RequestParam("categoryId") Integer categoryId,
-			@RequestParam("publisherId") Integer publisherId,
-			@RequestParam("email") String email,
-			
-			RedirectAttributes redirectAttributes) {
+	        @RequestParam(value = "title", required = false) String title,
+	        @RequestParam(value = "isbn", required = false) String isbn,
+	        @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+	        @RequestParam(value = "authorName", required = false) String authorName,
+	        @RequestParam(value = "authorLastName", required = false) String authorLastName,
+	        @RequestParam(value = "categoryName", required = false) String categoryName,
+	        @RequestParam(value = "publisherName", required = false) String publisherName,
+	        @RequestParam(value = "email", required = false) String email,
+	        RedirectAttributes redirectAttributes) {
+			if(hasNullOrBlankParameters(title, isbn, authorName, authorLastName, categoryName, publisherName, email) && date == null) {
+				redirectAttributes.addFlashAttribute("popupType", "error");
+				redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
+				return "redirect:/dashboard";
+			}
+		
 		UserDto user = userSession.getUser();
 		if (user == null) {
 			return "redirect:/";
 		}
 		try {
-			bookService.insertBook(title, authorId, publisherId, date, categoryId, isbn);
+			bookService.insertBook(title, authorName, authorLastName, date, categoryName, publisherName, isbn);
 			redirectAttributes.addFlashAttribute("popupType", "addEdition");
 			redirectAttributes.addFlashAttribute("popupBookTitle", title);
 			redirectAttributes.addFlashAttribute("popupBookIsbn", isbn);
-		} catch (Exception ex) {
+		} catch (InsertBookServiceException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
-			redirectAttributes.addFlashAttribute("popupErrorMessage", "Impossibile aggiungere l'edizione.");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
 		}
 
 		return "redirect:/dashboard";
@@ -164,5 +171,14 @@ public class BookController {
 		model.addAttribute("includeDeleted", includeDeleted);
 		model.addAttribute("editionTitle", editionTitle);
 		return "fragments/popup :: bookCopiesList";
+	}
+	
+	private boolean hasNullOrBlankParameters(String... params) {
+		for(String s : params) {
+			if(s == null || s.isBlank()) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
