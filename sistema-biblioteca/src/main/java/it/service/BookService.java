@@ -220,6 +220,7 @@ public class BookService {
 		System.out.println("date: " + date);
 		System.out.println("category: " + category);
 		System.out.println("isbn: " + isbn);
+		
 		try {
 			int firstRes = bookNameRepository.insertBookByTitle(title);
 			int authorResult = authorRepository.insertAuthorByNameAndLastName(authorName, authorLastName);

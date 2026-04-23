@@ -73,7 +73,7 @@ public class RentController {
         try {
             parsedUserId = Integer.parseInt(bookId);
         } catch (NumberFormatException e) {
-            System.out.println("Errore: bookId non valido - " + bookId);
+            System.out.println("Errore: user non valido - " + userId);
             redirectAttributes.addFlashAttribute("popupType", "error");
             redirectAttributes.addFlashAttribute("popupErrorMessage", "ID non valido.");
             return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog&error=invalid_id";
@@ -90,7 +90,11 @@ public class RentController {
         	redirectAttributes.addFlashAttribute("popupConfirmed", confirmed ? "prestito accettato" : "prestito rifiutato");
         	
         }catch(Exception e) {
-        	
+            System.out.println("Errore: impossibile creare un noleggio - " + bookId);
+            redirectAttributes.addFlashAttribute("popupType", "error");
+            redirectAttributes.addFlashAttribute("popupErrorMessage", "Errore in prenotazione.");
+            userSession.setSection("404");
+            return "redirect:/dashboard";
         }
     	
         return "redirect:/dashboard";
