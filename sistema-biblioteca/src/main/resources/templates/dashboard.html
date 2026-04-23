@@ -20,15 +20,18 @@
             </div>
             <div class="header-actions flex align-center gap-2">
 
+                <!-- Aggiungi nuova edizione -->
                 <button th:if="${user.userRole == 'role_admin' && section == 'edition'}"
                     class="btn-create btn-sm shadow-soft" onclick="openAddEditionPopup()" title="Aggiungi Edizione">
                     <i class="fa-solid fa-plus"></i>
                     <span class="btn-label">Aggiungi Edizione</span>
                 </button>
                 
+                <!-- Aggiungi nuovo dipendente -->
                 <button th:if="${user.userRole == 'role_admin' && section == 'users'}"
-                    class="btn-create radius-full fw-600 glass shadow-soft cursor-pointer">
-                    <i class="fa-solid fa-plus mr-1"></i> Aggiungi dipendente
+                    class="btn-create btn-sm shadow-soft" onclick="openAddUserPopup()" title="Aggiungi Dipendente">
+                    <i class="fa-solid fa-plus"></i> 
+                    <span class="btn-label">Aggiungi dipendente</span>
                 </button>
 
                 <div th:if="${(section == 'catalog' || section == 'users' || section == 'edition' || section == 'rents')}"
@@ -42,7 +45,7 @@
 
         <!-- Sezione Home per admin-->
         <div th:if="${section == 'home' && user.userRole == 'role_admin'}"
-            class="dashboard-grid grid flex-wrap gap-3 animate-fade-in-up opacity-0 delay-1">
+            class="dashboard-grid grid flex nowrap gap-3 animate-fade-in-up opacity-0 delay-1">
 
             <!-- Card 1: Users totali -->
             <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
@@ -82,6 +85,17 @@
                 <div class="flex justify-between align-center mb-2">
                     <span class="opacity-70 font-size-small uppercase fw-700">Manuali in prestito</span>
                     <i class="fa-solid fa-hand-holding-hand text-warning"></i>
+                </div>
+                <div class="flex align-end gap-2">
+                    <span class="text-3xl fw-700" th:text="${totalRents}">borrowedBooks</span>
+                </div>
+            </div>
+
+            <!-- Card 5: Books in attesa SOSTITUIRE TOTALRENTS CON TOTALPENDINGS-->
+            <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
+                <div class="flex justify-between align-center mb-2">
+                    <span class="opacity-70 font-size-small uppercase fw-700">Manuali in attesa</span>
+                    <i class="fa-solid fa-clock text-info"></i>
                 </div>
                 <div class="flex align-end gap-2">
                     <span class="text-3xl fw-700" th:text="${totalRents}">borrowedBooks</span>

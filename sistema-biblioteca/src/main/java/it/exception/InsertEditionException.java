@@ -1,0 +1,13 @@
+package it.exception;
+
+public class InsertEditionException extends RuntimeException{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5940959917778592805L;
+	
+	public InsertEditionException(String message) {
+		super(message);
+	}
+}

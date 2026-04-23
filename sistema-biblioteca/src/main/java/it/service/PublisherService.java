@@ -2,6 +2,7 @@ package it.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.dto.PublisherDto;
 import it.repository.PublisherRepository;
@@ -30,6 +31,7 @@ public class PublisherService {
      * 
      * @return Lista di PublisherDto
      */
+    @Transactional(readOnly = true)
     public List<PublisherDto> getAllPublishers() {
         return publisherRepository.getAllPublishers().stream()
             .map(this::toPublisherDto)

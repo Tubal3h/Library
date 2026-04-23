@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import it.dto.UserDto;
 import it.entity.User;
@@ -35,6 +36,7 @@ public class UserService {
      * 
      * @return Lista di UserDto contenente le informazioni condensate degli utenti
      */
+    @Transactional(readOnly = true)
     public List<UserDto> getAllUsers() {
         List<User> entities = userRepository.getAllUsers();
         return entities.stream().map(u -> {
@@ -77,6 +79,7 @@ public class UserService {
      * @param email L'email dell'utente
      * @return UserDto dell'utente se trovato, null altrimenti
      */
+    @Transactional(readOnly = true)
     public UserDto getUserByEmail(String email) {
         User user = userRepository.findByEmail(email);
         if (user == null) {
@@ -96,10 +99,73 @@ public class UserService {
      * 
      * @return Il numero totale di utenti registrati con ruolo 'role_user'
      */
-
+    
+    @Transactional(readOnly = true)
     public int getTotalUsers() {
         int users = userRepository.countUsers();
         return users;
     }
+
+    /**
+     * Crea un nuovo utente nel sistema con i dati forniti.
+     *
+     * @param userDto dati del nuovo utente
+     * @return numero di righe inserite
+     */
+
+    public int createUser(UserDto userDto) {
+        validateUser(userDto);
+
+        if (userRepository.existsByEmail(userDto.getUserEmail())) {
+            throw new IllegalArgumentException("Esiste già un utente con questa email: " + userDto.getUserEmail());
+        }
+
+        return userRepository.insertUser(
+                userDto.getUserName().trim(),
+                userDto.getUserLastName().trim(),
+                userDto.getUserEmail().trim().toLowerCase(),
+                userDto.getUserPassword().trim(),
+                userDto.getUserRole().trim().toLowerCase());
+    }
+
+    private void validateUser(UserDto userDto) {
+        if (userDto == null) {
+            throw new IllegalArgumentException("Dati utente mancanti.");
+        }
+
+        if (userDto.getUserName() == null || userDto.getUserName().isBlank()) {
+            throw new IllegalArgumentException("Il nome è obbligatorio.");
+        }
+
+        if (userDto.getUserLastName() == null || userDto.getUserLastName().isBlank()) {
+            throw new IllegalArgumentException("Il cognome è obbligatorio.");
+        }
+
+        if (userDto.getUserPassword() == null || userDto.getUserPassword().isBlank()) {
+            throw new IllegalArgumentException("La password è obbligatoria.");
+        }
+
+        String role = userDto.getUserRole();
+        if (role == null || role.isBlank()) {
+            throw new IllegalArgumentException("Il ruolo è obbligatorio.");
+        }
+
+        String normalizedRole = role.trim().toLowerCase();
+        if (!"role_admin".equals(normalizedRole) && !"role_user".equals(normalizedRole)) {
+            throw new IllegalArgumentException("Ruolo non valido. Usare ROLE_ADMIN o ROLE_USER.");
+        }
+    }
+
+    /**
+     * Elimina un utente dal sistema tramite il suo ID.
+     *
+     * @param userId ID dell'utente da eliminare
+     * @return numero di righe eliminate
+     */
+    @Transactional
+    public int deleteUserById(String userId) {
+        return userRepository.deleteUserById(userId);
+    }
+
 }
 

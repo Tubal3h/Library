@@ -20,6 +20,7 @@
 
         <!-- Body Section -->
         <div id="popupBody" class="popup-body">
+            
             <!-- Edit Content -->
             <div id="editBookContent" class="none animate-fade-in-up">
                 <p class="mb-6 opacity-70 text-sm leading-relaxed">
@@ -115,11 +116,11 @@
                 </div>
                 <h3 class="text-2xl fw-700 text-brand mb-2">Copia aggiunta</h3>
                 <p class="opacity-70 text-sm leading-relaxed">
-                    Una nuova copia fisica di <br>
-                    <strong id="addCopyBookTitle" class="text-brand text-lg"></strong> <br>
-                    <span class="opacity-60 font-size-small">ISBN: <span id="addCopyBookName"
-                            class="font-mono"></span></span><br>
-                    è stata inserita correttamente a sistema.
+                    Una nuova copia di <br>
+                    "<strong id="addCopyBookTitle" class="text-brand text-lg"></strong>" <br>
+                    <span class="opacity-60 font-size-small">ISBN: "<span id="addCopyBookName"
+                            class="font-mono"></span></span>"<br>
+                    è stata aggiunta al catalogo.
                 </p>
             </div>
 
@@ -137,7 +138,7 @@
                     "<strong id="addEditionSuccessBookTitle" class="text-brand text-lg"></strong>"<br>
                     <span class="opacity-60 font-size-small">con ISBN: "<span id="addEditionSuccessBookIsbn"
                             class="font-mono"></span></span>"<br>
-                è stato inserito in libreria.
+                    è stato inserito in libreria.
                 </p>
             </div>
 
@@ -151,11 +152,11 @@
                 </div>
                 <h3 class="text-2xl fw-700 mb-2" style="color: var(--color-error);">Copia eliminata</h3>
                 <p class="opacity-70 text-sm leading-relaxed">
-                    La copia di<br>
+                    La copia <br>
                     "<strong id="deleteBookTitle" class="text-brand text-lg"></strong>"<br>
                     <span class="opacity-60 font-size-small">con ID "<span id="deleteBookId"
                             class="font-mono"></span></span>"<br>
-                    è stata rimossa correttamente dal catalogo.
+                    è stata rimossa dal catalogo.
                 </p>
             </div>
 
@@ -168,11 +169,11 @@
                 </div>
                 <h3 class="text-2xl fw-700 mb-2" style="color: var(--color-error);">Copia consegnata</h3>
                 <p class="opacity-70 text-sm leading-relaxed">
-                    La copia "<br>
-                    <strong id="deliveredBookTitle" class="text-brand text-lg"></strong> <br>
+                    La copia <br>
+                    "<strong id="deliveredBookTitle" class="text-brand text-lg"></strong>" <br>
                     <span class="opacity-60 font-size-small">" con ID "<span id="deliveredBookId"
-                            class="font-mono"></span></span><br>
-                    " è stata consegnata correttamente.
+                            class="font-mono"></span></span>"<br>
+                    è stata data in carico al richiedente.
                 </p>
             </div>
 
@@ -186,7 +187,7 @@
                 </div> -->
                 <h3 id="confirmTitle" class="text-2xl fw-700 text-brand mb-2">Attenzione</h3>
                 <p id="confirmMessage" class="opacity-70 text-sm leading-relaxed px-6">
-                    Stai per eseguire questa operazione. Vuoi procedere?
+                    Confermi l'operazione?
                 </p>
                 <div id="confirmDetails" class="mt-4 p-4 radius-12 bg-darkgrey font-size-small opacity-80" style="display: none;">
                 </div>
@@ -209,7 +210,7 @@
             <!-- Add Edition Content -->
             <div id="addEditionContent" class="none animate-fade-in-up">
                 <p class="mb-6 opacity-70 text-sm leading-relaxed">
-                    Compila i dati per aggiungere una nuova edizione al catalogo.
+                    Inserire i dati per una nuova edizione.
                 </p>
 
                 <form id="addEditionForm" th:action="@{/api/addEdition}" method="post">
@@ -224,7 +225,7 @@
                             </label>
                             <input type="text" id="addEditionTitleInput" name="title"
                                 class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="Esempio: Il Nome della Rosa" required>
+                                placeholder="Esempio: Programmare in JavaS" required>
                         </div>
                         <!-- ISBN (13 cifre numeriche) -->
                         <div class="input-group">
@@ -251,7 +252,7 @@
                             </label>
                             <input type="text" id="addEditionAuthorNameInput" name="authorName"
                                 class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="Esempio: Umberto" required>
+                                placeholder="Esempio: Mario" required>
                         </div>
                         <!-- Autore Cognome-->
                         <div class="input-group">
@@ -260,7 +261,7 @@
                             </label>
                             <input type="text" id="addEditionAuthorLastNameInput" name="authorLastName"
                                 class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="Esempio: Eco" required>
+                                placeholder="Esempio: Rossi" required>
                         </div>
                         <!-- Categoria -->
                         <div class="input-group">
@@ -269,7 +270,7 @@
                             </label>
                             <input type="text" id="addEditionCategoryInput" name="categoryName"
                                 class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="Esempio: Romanzo" required>
+                                placeholder="Esempio: Java" required>
                         </div>
                         <!-- Editore -->
                         <div class="input-group">
@@ -278,10 +279,86 @@
                             </label>
                             <input type="text" id="addEditionPublisherInput" name="publisherName"
                                 class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="Esempio: Mondadori" required>
+                                placeholder="Esempio: Apogeo" required>
                         </div>
                     </div>
                 </form>
+            </div>
+
+            <!-- Add User Content -->
+            <div id="addUserContent" class="none animate-fade-in-up">
+                <p class="mb-6 opacity-70 text-sm leading-relaxed">
+                    Inserire i dati per un nuovo utente. <br>
+                    inserire la mail aziendale seguendo il formato <br>
+                    <strong>nome.cognome@biblioteca.it</strong>.
+                </p>
+
+                <form id="addUserForm" th:action="@{/api/addUser}" method="post">
+                    <div class="flex flex-column gap-5">
+                        <div class="input-group">
+                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
+                                Nome
+                            </label>
+                            <input type="text" id="addUserNameInput" name="userName"
+                                class="w-100 p-4 radius-12 border-none font-size-small"
+                                placeholder="Esempio: Mario" required>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
+                                Cognome
+                            </label>
+                            <input type="text" id="addUserLastNameInput" name="userLastName"
+                                class="w-100 p-4 radius-12 border-none font-size-small"
+                                placeholder="Esempio: Rossi" required>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
+                                Mail aziendale
+                            </label>
+                            <input type="email" id="addUserEmailInput" name="userEmail"
+                                class="w-100 p-4 radius-12 border-none font-size-small"
+                                placeholder="nome.cognome@biblioteca.it" required>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
+                                Password
+                            </label>
+                            <input type="text" id="addUserPasswordInput" name="userPassword"
+                                class="w-100 p-4 radius-12 border-none font-size-small"
+                                placeholder="Inserisci Password123!" minlength="4" required>
+                        </div>
+
+                        <div class="input-group">
+                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
+                                Ruolo
+                            </label>
+                            <select id="addUserRoleInput" name="userRole"
+                                class="w-100 p-4 radius-12 border-none font-size-small cursor-pointer" required>
+                                <option value="role_user">Dipendente</option>
+                                <option value="role_admin">Amministratore</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Add User Success Content (Confirmation Style) -->
+            <div id="addUserSuccessContent" class="none animate-fade-in-up text-center py-6">
+                <div class="icon-box-accent radius-circle p-4 inline-flex center mb-5 icon-bg-success">
+                    <i class="fa-solid fa-user-check text-white text-3xl"></i>
+                </div>
+                <h4 class="text-2xl fw-700 mb-3 text-success">Dipendente inserito con successo!</h4>
+                <p class="opacity-70 leading-relaxed mb-6">
+                    Il profilo è stato registrato correttamente nel sistema.
+                </p>
+                <div class="glass radius-16 p-4 text-left shadow-card border-none">
+                    <div class="flex justify-between mb-2"><span class="opacity-60">Nome</span><strong id="addUserSuccessName"></strong></div>
+                    <div class="flex justify-between mb-2"><span class="opacity-60">Email</span><strong id="addUserSuccessEmail"></strong></div>
+                    <div class="flex justify-between"><span class="opacity-60">Ruolo</span><strong id="addUserSuccessRole"></strong></div>
+                </div>
             </div>
 
             <!-- View books edition -->

@@ -61,6 +61,9 @@
                 const bookId      = /*[[${popupBookId}]]*/ null;
                 const bookTitle   = /*[[${popupBookTitle}]]*/ null;
                 const errorMsg    = /*[[${popupErrorMessage}]]*/ null;
+                const userName    = /*[[${popupUserName}]]*/ null;
+                const userEmail   = /*[[${popupUserEmail}]]*/ null;
+                const userRole    = /*[[${popupUserRole}]]*/ null;
 
                 // Nascondi tutti i pannelli del body
                 document.getElementById('editBookContent').classList.add('none');
@@ -68,6 +71,7 @@
                 document.getElementById('addEditionSuccessContent')?.classList.add('none');
                 document.getElementById('deleteBookContent').classList.add('none');
                 document.getElementById('errorContent').classList.add('none');
+                document.getElementById('addUserSuccesContent')?.classList.add('none');
 
                 // Nascondi il footer con "Annulla / Conferma" (non serve per i popup di feedback)
                 const footer = document.querySelector('.popup-footer');
@@ -100,10 +104,18 @@
                     document.getElementById('popupTitle').textContent = 'Errore';
                     document.getElementById('errorMessage').textContent = errorMsg || 'Operazione non riuscita.';
                     document.getElementById('errorContent').classList.remove('none');
-                }
+
+                } else if (popupType === 'addUser') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-user-check text-white font-size-medium';
+                    document.getElementById('popupTitle').textContent = 'Dipendente creato';
+                    document.getElementById('addUserSuccessName').textContent = userName || '';
+                    document.getElementById('addUserSuccessEmail').textContent = userEmail || '';
+                    document.getElementById('addUserSuccessRole').textContent = userRole || '';
+                    document.getElementById('addUserSuccessContent').classList.remove('none');
 
                 // Mostra l'overlay del popup
                 document.getElementById('genericPopup').classList.remove('none');
+                }
             });
         </script>
     </th:block>

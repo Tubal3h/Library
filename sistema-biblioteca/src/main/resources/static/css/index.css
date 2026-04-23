@@ -92,8 +92,9 @@ body.page-ready #right-footer {
    WRAPPER
    ============================================================ */
 #login-wrapper {
-    height: 100vh;
-    background-color: var(--color-bg);
+    height: 80vh;
+    background-image: url('/img/library.png');
+    /*background-color: var(--color-bg);*/
 }
 
 /* ============================================================
@@ -101,11 +102,11 @@ body.page-ready #right-footer {
    ============================================================ */
 #left-panel {
     flex: 1.1;
-    background-image: url('/img/library.jpg');
+    
     background-size: cover;
     background-position: center;
-    margin: 16px;
-    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
+    margin: 5px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
 }
 
 #left-overlay {
@@ -122,7 +123,7 @@ body.page-ready #right-footer {
 #right-panel {
     flex: 1;
     justify-content: space-between;
-    background-color: var(--color-surface);
+    /*background-color: var(--color-surface);*/
     padding: 32px 48px;
 }
 
@@ -281,7 +282,7 @@ body.page-ready #right-footer {
 /* --- Footer --- */
 #right-footer p {
     font-size: 0.78rem;
-    color: var(--color-border);
+    color: var(--color-text-muted);
 }
 
 /* ============================================================

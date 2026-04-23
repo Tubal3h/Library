@@ -64,8 +64,7 @@
             <a th:if="${user.userRole != 'role_admin'}"
                 th:href="@{/api/borrow(email=${user.userEmail}, bookId=${book.bookId})}"
                 class="btn-modern-action pointer transition shadow-soft" style="text-decoration: none;">
-                <span>Prenota</span>
-                <i class="fa-solid fa-bookmark"></i>
+                <span>Richiedi</span>
             </a>
         </div>
     </div>
@@ -112,7 +111,7 @@
                 <div class="flex align-center font-size-small">
                     <i class="fa-solid fa-calendar-check text-sm text-brand pr-1"></i>
                     <span class="font-mono fw-600 pr-2">Pubblicato il:</span>
-                    <span th:text="${edition.publicationDate}" class="fw-600">Data</span>
+                    <span th:text="${#temporals.format(edition.publicationDate, 'dd-MM-yyyy')}" class="fw-600">Data</span>
                 </div>
                 <div class="flex align-center font-size-small">
                     <i class="fa-solid fa-barcode text-sm text-brand pr-1"></i>

@@ -196,6 +196,10 @@ a {
     justify-content: start;
 }
 
+.justify-end {
+    justify-content: end;
+}
+
 /* -------------------------------- Typography ------------------------------ */
 .text-xs {
     font-size: 0.75rem;
