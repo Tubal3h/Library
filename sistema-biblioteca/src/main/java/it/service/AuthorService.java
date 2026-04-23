@@ -37,6 +37,37 @@ public class AuthorService {
     }
 
     /**
+     * Aggiorna i dati di un autore.
+     * 
+     * @param author L'autore da aggiornare
+     */
+
+    public void updateAuthor(AuthorDto author) {
+        Author authorEntity = toAuthorEntity(author);
+    	authorRepository.updateAuthor(authorEntity);
+    }
+
+    /**
+     * Verifica se un autore esiste nel database.
+     * 
+     * @param author L'autore da verificare
+     * @return True se l'autore esiste, false altrimenti
+     */
+    public boolean isAuthorPresent(AuthorDto authorDto) {
+        if (authorDto == null || authorDto.getAuthorName() == null || authorDto.getAuthorLastName() == null) {
+            throw new IllegalArgumentException("L'autore non può essere null");
+        }
+
+        if(authorDto.getAuthorName().isBlank() || authorDto.getAuthorLastName().isBlank()) {
+            throw new IllegalArgumentException("L'autore non può essere vuoto");
+        }
+
+        Author author = toAuthorEntity(authorDto);
+
+        return authorRepository.isAuthorPresent(author.getAuthorName(), author.getAuthorLastName());
+    }
+
+    /**
      * Converte un'entità Author in un DTO AuthorDto.
      * 
      * @param author L'entità da convertire
@@ -48,5 +79,20 @@ public class AuthorService {
         dto.setAuthorName(author.getAuthorName());
         dto.setAuthorLastName(author.getAuthorLastName());
         return dto;
+    }
+
+    /**
+     * Converte un DTO AuthorDto in un'entità Author.
+     * 
+     * @param authorDto Il DTO da convertire
+     * @return L'entità Author corrispondente
+     */
+
+    private Author toAuthorEntity(AuthorDto authorDto) {
+        Author author = new Author();
+        author.setAuthorId(authorDto.getAuthorId());
+        author.setAuthorName(authorDto.getAuthorName());
+        author.setAuthorLastName(authorDto.getAuthorLastName());
+        return author;
     }
 }

@@ -39,6 +39,96 @@ public class PublisherService {
     }
 
     /**
+     * Aggiunge un nuovo publisher al database.
+     * 
+     * @param publisherDto Il publisher da aggiungere
+     */
+    public void addPublisher(PublisherDto publisherDto) {
+        if (publisherDto == null || publisherDto.getPublisherName() == null) {
+            throw new IllegalArgumentException("L'editore non può essere null");
+        }
+
+        if(publisherDto.getPublisherName().isBlank()) {
+            throw new IllegalArgumentException("L'editore non può essere vuoto");
+        }
+
+        Publisher publisher = toPublisherEntity(publisherDto);
+
+        publisherRepository.insertPublisherByPubliserName(publisher.getPublisherName());
+    }
+
+    /**
+     * Elimina un publisher dal database.
+     * 
+     * @param publisherDto Il publisher da eliminare
+     */
+    public void deletePublisher(PublisherDto publisherDto) {
+        if (publisherDto == null || publisherDto.getPublisherName() == null) {
+            throw new IllegalArgumentException("L'editore non può essere null");
+        }
+
+        if(publisherDto.getPublisherName().isBlank()) {
+            throw new IllegalArgumentException("L'editore non può essere vuoto");
+        }
+
+        Publisher publisher = toPublisherEntity(publisherDto);
+
+        publisherRepository.deletePublisher(publisher);
+    }
+
+    /**
+     * Aggiorna un publisher nel database.
+     * 
+     * @param publisherDto Il publisher da aggiornare
+     */
+    public void updatePublisher(PublisherDto publisherDto) {
+        if (publisherDto == null || publisherDto.getPublisherName() == null) {
+            throw new IllegalArgumentException("L'editore non può essere null");
+        }
+
+        if(publisherDto.getPublisherName().isBlank()) {
+            throw new IllegalArgumentException("L'editore non può essere vuoto");
+        }
+
+        Publisher publisher = toPublisherEntity(publisherDto);
+
+        publisherRepository.updatePublisher(publisher);
+    }
+
+    /**
+     * Verifica se un publisher esiste nel database.
+     * 
+     * @param publisherDto Il publisher da verificare
+     * @return True se il publisher esiste, false altrimenti
+     */
+    public boolean isPublisherPresent(PublisherDto publisherDto) {
+        if (publisherDto == null || publisherDto.getPublisherName() == null) {
+            throw new IllegalArgumentException("L'editore non può essere null");
+        }
+
+        if(publisherDto.getPublisherName().isBlank()) {
+            throw new IllegalArgumentException("L'editore non può essere vuoto");
+        }
+
+        Publisher publisher = toPublisherEntity(publisherDto);
+
+        return publisherRepository.isPublisherPresent(publisher);
+    }
+
+    /**
+     * Converte un DTO PublisherDto in un'entità Publisher.
+     * 
+     * @param publisherDto Il DTO da convertire
+     * @return L'entità Publisher corrispondente
+     */
+    private Publisher toPublisherEntity(PublisherDto publisherDto) {
+        Publisher publisher = new Publisher();
+        publisher.setPublisherId(publisherDto.getPublisherId());
+        publisher.setPublisherName(publisherDto.getPublisherName());
+        return publisher;
+    }
+
+    /**
      * Converte un'entità Publisher in un DTO PublisherDto.
      * 
      * @param publisher L'entità da convertire
