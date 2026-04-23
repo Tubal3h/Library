@@ -22,7 +22,7 @@ import it.service.AuthorService;
 import it.service.BookService;
 import it.service.PublisherService;
 import it.service.CategoryService;
-
+import it.service.EditionService;
 
 @Controller
 public class BookController {
@@ -33,6 +33,7 @@ public class BookController {
 	private final AuthorService authorService;
 	private final PublisherService publisherService;
 	private final CategoryService categoryService;
+	private final EditionService editionService;
 
     /**
      * Costruttore per BookController.
@@ -44,12 +45,14 @@ public class BookController {
 							UserSession userSession,
 							AuthorService authorService,
 							PublisherService publisherService,
-							CategoryService categoryService) {
+							CategoryService categoryService,
+							EditionService editionService) {
         this.bookService = bookService;
         this.userSession = userSession;
 		this.authorService = authorService;
 		this.publisherService = publisherService;
 		this.categoryService = categoryService;
+		this.editionService = editionService;
     }
 
     	/**
