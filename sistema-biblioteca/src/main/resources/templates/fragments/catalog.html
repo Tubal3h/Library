@@ -25,8 +25,16 @@
                        onclick="openEditAuthorPopup(this.getAttribute('data-id'), this.getAttribute('data-author'))"
                        title="Modifica Autore"></i>
                 </div>
-                <div class="category-label font-mono italic tracking-widest opacity-80 uppercase"
-                    th:text="${book.categoryName}">CATEGORIA</div>
+                <div class="flex align-center gap-2">
+                    <div class="category-label font-mono italic tracking-widest opacity-80 uppercase"
+                        th:text="${book.categoryName}">CATEGORIA</div>
+                    <i th:if="${user.userRole == 'role_admin'}" 
+                       class="fa-solid fa-tag cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
+                       th:data-id="${book.bookId}"
+                       th:data-category="${book.categoryName}"
+                       onclick="openEditCategoryPopup(this.getAttribute('data-id'), this.getAttribute('data-category'))"
+                       title="Modifica Categoria"></i>
+                </div>
             </div>
 
             <!-- Info book -->
@@ -34,7 +42,13 @@
                 <div class="flex align-center font-size-small" th:title="${book.publisherName}">
                     <i class="fa-solid fa-building-columns text-sm text-brand pr-1"></i>
                     <span class="font-mono fw-600 pr-2">Editore:</span>
-                    <span th:text="${book.publisherName}" class="fw-600">Editore</span>   
+                    <span th:text="${book.publisherName}" class="fw-600">Editore</span>
+                    <i th:if="${user.userRole == 'role_admin'}" 
+                       class="fa-solid fa-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon pl-2"
+                       th:data-id="${book.bookId}"
+                       th:data-publisher="${book.publisherName}"
+                       onclick="openEditPublisherPopup(this.getAttribute('data-id'), this.getAttribute('data-publisher'))"
+                       title="Modifica Editore"></i>
                 </div>
                 <div class="flex align-center font-size-small">
                     <i class="fa-solid fa-calendar-check text-sm text-brand pr-1"></i>
@@ -97,8 +111,16 @@
                        onclick="openEditAuthorPopup(this.getAttribute('data-id'), this.getAttribute('data-author'))"
                        title="Modifica Autore"></i>
                 </div>
-                <div class="category-label font-mono italic tracking-widest opacity-80 uppercase"
-                    th:text="${edition.categoryName}">CATEGORIA</div>
+                <div class="flex align-center gap-2">
+                    <div class="category-label font-mono italic tracking-widest opacity-80 uppercase"
+                        th:text="${edition.categoryName}">CATEGORIA</div>
+                    <i th:if="${user.userRole == 'role_admin'}" 
+                       class="fa-solid fa-tag cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
+                       th:data-id="${edition.editionId}"
+                       th:data-category="${edition.categoryName}"
+                       onclick="openEditCategoryPopup(this.getAttribute('data-id'), this.getAttribute('data-category'))"
+                       title="Modifica Categoria"></i>
+                </div>
             </div>
 
             <!-- Info book -->
@@ -107,6 +129,12 @@
                     <i class="fa-solid fa-building-columns text-sm text-brand pr-1"></i>
                     <span class="font-mono fw-600 pr-2">Editore:</span>
                     <span th:text="${edition.publisherName}" class="fw-600">Editore</span>
+                    <i th:if="${user.userRole == 'role_admin'}" 
+                       class="fa-solid fa-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon pl-2"
+                       th:data-id="${edition.editionId}"
+                       th:data-publisher="${edition.publisherName}"
+                       onclick="openEditPublisherPopup(this.getAttribute('data-id'), this.getAttribute('data-publisher'))"
+                       title="Modifica Editore"></i>
                 </div>
                 <div class="flex align-center font-size-small">
                     <i class="fa-solid fa-calendar-check text-sm text-brand pr-1"></i>

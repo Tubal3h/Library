@@ -17,6 +17,8 @@ const POPUP_PANELS = [
     'viewBooksEditionContent',
     'editTitleOnlyContent',
     'editAuthorOnlyContent',
+    'editPublisherOnlyContent',
+    'editCategoryOnlyContent',
     'addUserContent',
     'addUserSuccessContent'
 ];
@@ -402,6 +404,210 @@ function openAddEditionPopup() {
     };
 
     // Mostra il popup
+    popup.classList.remove('none');
+    document.body.style.overflow = 'hidden';
+}
+
+// ─── FUNZIONI MODIFICA SINGOLO CAMPO ───────────────────────────────────────────
+
+/**
+ * Apre il popup per modificare il solo titolo di un libro/edizione.
+ * @param {string} id - ID del libro/edizione.
+ * @param {string} currentTitle - Titolo corrente.
+ */
+function openEditTitlePopup(id, currentTitle) {
+    const popup = document.getElementById('genericPopup');
+    const title = document.getElementById('popupTitle');
+    const icon = document.getElementById('popupIcon');
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    const panel = document.getElementById('editTitleOnlyContent');
+
+    if (!popup || !title || !icon || !confirmBtn || !panel) return;
+
+    const footer = document.querySelector('.popup-footer');
+    if (footer) footer.classList.remove('none');
+
+    hideAllPanels();
+
+    title.innerText = 'Modifica Titolo';
+    icon.className = 'fa-solid fa-pen-to-square text-white font-size-medium';
+    icon.parentElement.classList.remove('icon-bg-success');
+    icon.parentElement.classList.add('icon-box-accent');
+
+    const currentElem = document.getElementById('editTitleOnlyCurrent');
+    const inputElem = document.getElementById('editTitleOnlyInput');
+    if (currentElem) currentElem.innerText = currentTitle;
+    if (inputElem) inputElem.value = currentTitle;
+
+    panel.classList.remove('none');
+
+    const cancelBtn = document.querySelector('.btn-link-action');
+    if (cancelBtn) cancelBtn.classList.remove('none');
+
+    confirmBtn.innerText = 'Salva Titolo';
+    confirmBtn.style.background = '';
+    confirmBtn.style.borderColor = '';
+    confirmBtn.onclick = () => {
+        const newVal = inputElem ? inputElem.value.trim() : '';
+        if (!newVal) return;
+        console.log(`[Popup] Modifica titolo id=${id} → "${newVal}"`);
+        // TODO: integrazione backend
+        closePopup();
+    };
+
+    popup.classList.remove('none');
+    document.body.style.overflow = 'hidden';
+}
+
+/**
+ * Apre il popup per modificare il solo autore di un libro/edizione.
+ * @param {string} id - ID del libro/edizione.
+ * @param {string} currentAuthor - Autore corrente.
+ */
+function openEditAuthorPopup(id, currentAuthor) {
+    const popup = document.getElementById('genericPopup');
+    const title = document.getElementById('popupTitle');
+    const icon = document.getElementById('popupIcon');
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    const panel = document.getElementById('editAuthorOnlyContent');
+
+    if (!popup || !title || !icon || !confirmBtn || !panel) return;
+
+    const footer = document.querySelector('.popup-footer');
+    if (footer) footer.classList.remove('none');
+
+    hideAllPanels();
+
+    title.innerText = 'Modifica Autore';
+    icon.className = 'fa-solid fa-user-pen text-white font-size-medium';
+    icon.parentElement.classList.remove('icon-bg-success');
+    icon.parentElement.classList.add('icon-box-accent');
+
+    const currentElem = document.getElementById('editAuthorOnlyCurrent');
+    if (currentElem) currentElem.innerText = currentAuthor;
+
+    // Pre-compila nome e cognome separando al primo spazio
+    const parts = currentAuthor ? currentAuthor.split(' ') : [];
+    const firstInput = document.getElementById('editAuthorFirstNameInput');
+    const lastInput = document.getElementById('editAuthorLastNameInput');
+    if (firstInput) firstInput.value = parts[0] || '';
+    if (lastInput) lastInput.value = parts.slice(1).join(' ') || '';
+
+    panel.classList.remove('none');
+
+    const cancelBtn = document.querySelector('.btn-link-action');
+    if (cancelBtn) cancelBtn.classList.remove('none');
+
+    confirmBtn.innerText = 'Salva Autore';
+    confirmBtn.style.background = '';
+    confirmBtn.style.borderColor = '';
+    confirmBtn.onclick = () => {
+        const firstName = firstInput ? firstInput.value.trim() : '';
+        const lastName = lastInput ? lastInput.value.trim() : '';
+        if (!firstName && !lastName) return;
+        console.log(`[Popup] Modifica autore id=${id} → "${firstName} ${lastName}"`);
+        // TODO: integrazione backend
+        closePopup();
+    };
+
+    popup.classList.remove('none');
+    document.body.style.overflow = 'hidden';
+}
+
+/**
+ * Apre il popup per modificare il solo editore di un libro/edizione.
+ * @param {string} id - ID del libro/edizione.
+ * @param {string} currentPublisher - Editore corrente.
+ */
+function openEditPublisherPopup(id, currentPublisher) {
+    const popup = document.getElementById('genericPopup');
+    const title = document.getElementById('popupTitle');
+    const icon = document.getElementById('popupIcon');
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    const panel = document.getElementById('editPublisherOnlyContent');
+
+    if (!popup || !title || !icon || !confirmBtn || !panel) return;
+
+    const footer = document.querySelector('.popup-footer');
+    if (footer) footer.classList.remove('none');
+
+    hideAllPanels();
+
+    title.innerText = 'Modifica Editore';
+    icon.className = 'fa-solid fa-building-columns text-white font-size-medium';
+    icon.parentElement.classList.remove('icon-bg-success');
+    icon.parentElement.classList.add('icon-box-accent');
+
+    const currentElem = document.getElementById('editPublisherOnlyCurrent');
+    const inputElem = document.getElementById('editPublisherOnlyInput');
+    if (currentElem) currentElem.innerText = currentPublisher;
+    if (inputElem) inputElem.value = currentPublisher;
+
+    panel.classList.remove('none');
+
+    const cancelBtn = document.querySelector('.btn-link-action');
+    if (cancelBtn) cancelBtn.classList.remove('none');
+
+    confirmBtn.innerText = 'Salva Editore';
+    confirmBtn.style.background = '';
+    confirmBtn.style.borderColor = '';
+    confirmBtn.onclick = () => {
+        const newVal = inputElem ? inputElem.value.trim() : '';
+        if (!newVal) return;
+        console.log(`[Popup] Modifica editore id=${id} → "${newVal}"`);
+        // TODO: integrazione backend
+        closePopup();
+    };
+
+    popup.classList.remove('none');
+    document.body.style.overflow = 'hidden';
+}
+
+/**
+ * Apre il popup per modificare la sola categoria di un libro/edizione.
+ * @param {string} id - ID del libro/edizione.
+ * @param {string} currentCategory - Categoria corrente.
+ */
+function openEditCategoryPopup(id, currentCategory) {
+    const popup = document.getElementById('genericPopup');
+    const title = document.getElementById('popupTitle');
+    const icon = document.getElementById('popupIcon');
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    const panel = document.getElementById('editCategoryOnlyContent');
+
+    if (!popup || !title || !icon || !confirmBtn || !panel) return;
+
+    const footer = document.querySelector('.popup-footer');
+    if (footer) footer.classList.remove('none');
+
+    hideAllPanels();
+
+    title.innerText = 'Modifica Categoria';
+    icon.className = 'fa-solid fa-tag text-white font-size-medium';
+    icon.parentElement.classList.remove('icon-bg-success');
+    icon.parentElement.classList.add('icon-box-accent');
+
+    const currentElem = document.getElementById('editCategoryOnlyCurrent');
+    const inputElem = document.getElementById('editCategoryOnlyInput');
+    if (currentElem) currentElem.innerText = currentCategory;
+    if (inputElem) inputElem.value = currentCategory;
+
+    panel.classList.remove('none');
+
+    const cancelBtn = document.querySelector('.btn-link-action');
+    if (cancelBtn) cancelBtn.classList.remove('none');
+
+    confirmBtn.innerText = 'Salva Categoria';
+    confirmBtn.style.background = '';
+    confirmBtn.style.borderColor = '';
+    confirmBtn.onclick = () => {
+        const newVal = inputElem ? inputElem.value.trim() : '';
+        if (!newVal) return;
+        console.log(`[Popup] Modifica categoria id=${id} → "${newVal}"`);
+        // TODO: integrazione backend
+        closePopup();
+    };
+
     popup.classList.remove('none');
     document.body.style.overflow = 'hidden';
 }
