@@ -408,6 +408,65 @@ function openAddEditionPopup() {
     document.body.style.overflow = 'hidden';
 }
 
+/**
+ * Apre il popup in modalità "Aggiungi Dipendente/Utente".
+ * Mostra il form con i campi Nome, Cognome, Email, Password, Ruolo.
+ */
+function openAddUserPopup() {
+    const popup = document.getElementById('genericPopup');
+    const title = document.getElementById('popupTitle');
+    const icon = document.getElementById('popupIcon');
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    const addUserContent = document.getElementById('addUserContent');
+
+    if (!popup || !title || !icon || !confirmBtn || !addUserContent) return;
+
+    // Assicura che il footer sia visibile
+    const footer = document.querySelector('.popup-footer');
+    if (footer) footer.classList.remove('none');
+
+    // Nasconde tutti gli altri pannelli
+    hideAllPanels();
+
+    // Intestazione popup
+    title.innerText = 'Aggiungi Dipendente';
+    icon.className = 'fa-solid fa-user-plus text-white font-size-medium';
+    icon.parentElement.classList.remove('icon-bg-success');
+    icon.parentElement.classList.add('icon-box-accent');
+
+    // Reset form e stato visivo
+    const form = document.getElementById('addUserForm');
+    if (form) form.reset();
+
+    // Ripristina anteprima email al default
+    updateAddUserEmailPreview();
+
+    // Ripristina visivamente la radio-card del ruolo
+    updateRoleSelection();
+
+    addUserContent.classList.remove('none');
+
+    // Mostra il pulsante Annulla
+    const cancelBtn = document.querySelector('.btn-link-action');
+    if (cancelBtn) cancelBtn.classList.remove('none');
+
+    confirmBtn.innerText = 'Aggiungi Dipendente';
+    confirmBtn.style.background = '';
+    confirmBtn.style.borderColor = '';
+
+    confirmBtn.onclick = () => {
+        if (form && form.checkValidity()) {
+            form.submit();
+        } else if (form) {
+            form.reportValidity();
+        }
+    };
+
+    // Mostra il popup
+    popup.classList.remove('none');
+    document.body.style.overflow = 'hidden';
+}
+
 // ─── FUNZIONI MODIFICA SINGOLO CAMPO ───────────────────────────────────────────
 
 /**
@@ -872,3 +931,54 @@ function selectPublisherSuggestion(value) {
     if (input)    input.value = value;
     if (dropdown) { dropdown.style.display = 'none'; dropdown.innerHTML = ''; }
 }
+
+// ─── ADD USER POPUP — HELPERS ──────────────────────────────────────────────────
+
+/**
+ * Alterna la visibilità del campo password nel popup "Aggiungi Dipendente".
+ */
+function toggleAddUserPassword() {
+    const input = document.getElementById('addUserPasswordInput');
+    const icon  = document.getElementById('addUserPasswordToggleIcon');
+    if (!input) return;
+    if (input.type === 'password') {
+        input.type = 'text';
+        if (icon) { icon.classList.remove('fa-eye'); icon.classList.add('fa-eye-slash'); }
+    } else {
+        input.type = 'password';
+        if (icon) { icon.classList.remove('fa-eye-slash'); icon.classList.add('fa-eye'); }
+    }
+}
+
+/**
+ * Aggiorna in tempo reale l'anteprima dell'email aziendale
+ * in base a nome e cognome inseriti nel form aggiungi dipendente.
+ */
+function updateAddUserEmailPreview() {
+    const nameInput = document.getElementById('addUserNameInput');
+    const lastInput = document.getElementById('addUserLastNameInput');
+    const preview   = document.getElementById('addUserEmailPreview');
+    if (!preview) return;
+
+    const name = nameInput ? nameInput.value.trim().toLowerCase().replace(/\s+/g, '') : '';
+    const last = lastInput ? lastInput.value.trim().toLowerCase().replace(/\s+/g, '') : '';
+
+    if (name || last) {
+        preview.textContent = `${name || 'nome'}.${last || 'cognome'}@biblioteca.it`;
+    } else {
+        preview.textContent = 'nome.cognome@biblioteca.it';
+    }
+}
+
+function updateRoleSelection() {
+    const userOption  = document.getElementById('roleOptionUser');
+    const adminOption = document.getElementById('roleOptionAdmin');
+    const userRadio   = userOption  ? userOption.querySelector('input[type="radio"]')  : null;
+    const adminRadio  = adminOption ? adminOption.querySelector('input[type="radio"]') : null;
+
+    if (userOption && userRadio)
+        userOption.classList.toggle('role-option--selected', userRadio.checked);
+    if (adminOption && adminRadio)
+        adminOption.classList.toggle('role-option--selected', adminRadio.checked);
+}
+

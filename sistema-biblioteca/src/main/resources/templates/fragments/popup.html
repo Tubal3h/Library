@@ -2,15 +2,12 @@
     <div class="popup-content glass radius-24 shadow-soft animate-scale-in" onclick="event.stopPropagation()">
 
         <!-- Header Section -->
-        <div class="popup-header flex justify-between align-center mb-8">
+        <div class="popup-header flex justify-between align-center mb-6">
             <div class="flex align-center gap-4">
-                <div class="icon-box-accent radius-12 p-3 flex center">
+                <div class="icon-box-accent radius-12 p-3 flex center" style="flex-shrink:0;">
                     <i id="popupIcon" class="fa-solid fa-pen-to-square text-white font-size-medium"></i>
                 </div>
-                <div>
-                    <h3 id="popupTitle" class="text-2xl fw-700 text-brand leading-tight">Modifica Libro</h3>
-                    <p class="text-xs tracking-wider opacity-50 fw-600 mt-1">Aggiornamento libreria</p>
-                </div>
+                <h3 id="popupTitle" class="text-xl fw-700 text-brand leading-tight">Modifica Libro</h3>
             </div>
             <button type="button" class="btn-icon-close cursor-pointer transition shadow-card" onclick="closePopup()"
                 title="Chiudi">
@@ -166,7 +163,7 @@
                     </ul>
                 </div>
             </div>
-            </div>
+
 
             <!-- Edit Category Only -->
             <div id="editCategoryOnlyContent" class="none animate-fade-in-up">
@@ -194,11 +191,10 @@
                     </ul>
                 </div>
             </div>
-            <div id="addCopyContent" class="none animate-fade-in-up text-center py-6">
-                <div class="flex justify-center mb-6">
-                    <div class="radius-circle p-8 flex center shadow-soft"
-                        style="background: rgba(46, 125, 50, 0.1); color: var(--color-success); border-radius: 50%;">
-                        <i class="fa-solid fa-circle-check" style="font-size: 3rem;"></i>
+            <div id="addCopyContent" class="none animate-fade-in-up text-center py-4">
+                <div class="flex justify-center mb-5">
+                    <div class="popup-feedback-icon" style="background: rgba(46,125,50,0.1); color: var(--color-success);">
+                        <i class="fa-solid fa-circle-check"></i>
                     </div>
                 </div>
                 <h3 class="text-2xl fw-700 text-brand mb-2">Copia aggiunta</h3>
@@ -212,11 +208,10 @@
             </div>
 
             <!-- Add Edition Success Content (Confirmation Style) -->
-             <div id="addEditionSuccessContent" class="none animate-fade-in-up text-center py-6">
-                <div class="flex justify-center mb-6">
-                    <div class="radius-circle p-8 flex center shadow-soft"
-                        style="background: rgba(46, 125, 50, 0.1); color: var(--color-success); border-radius: 50%;">
-                        <i class="fa-solid fa-circle-check" style="font-size: 3rem;"></i>
+             <div id="addEditionSuccessContent" class="none animate-fade-in-up text-center py-4">
+                <div class="flex justify-center mb-5">
+                    <div class="popup-feedback-icon" style="background: rgba(46,125,50,0.1); color: var(--color-success);">
+                        <i class="fa-solid fa-circle-check"></i>
                     </div>
                 </div>
                 <h3 class="text-2xl fw-700 text-brand mb-2">Nuovo manuale aggiunto</h3>
@@ -230,11 +225,10 @@
             </div>
 
             <!-- Delete Book Content (Confirmation Style) -->
-            <div id="deleteBookContent" class="none animate-fade-in-up text-center py-6">
-                <div class="flex justify-center mb-6">
-                    <div class="radius-circle p-8 flex center shadow-soft"
-                        style="background: rgba(198, 40, 40, 0.1); color: var(--color-error); border-radius: 50%;">
-                        <i class="fa-solid fa-trash-can" style="font-size: 3rem;"></i>
+            <div id="deleteBookContent" class="none animate-fade-in-up text-center py-4">
+                <div class="flex justify-center mb-5">
+                    <div class="popup-feedback-icon" style="background: rgba(198,40,40,0.1); color: var(--color-error);">
+                        <i class="fa-solid fa-trash-can"></i>
                     </div>
                 </div>
                 <h3 class="text-2xl fw-700 mb-2" style="color: var(--color-error);">Copia eliminata</h3>
@@ -247,11 +241,10 @@
                 </p>
             </div>
 
-            <div id="deliveredRentContent" class="none animate-fade-in-up text-center py-6">
-                <div class="flex justify-center mb-6">
-                    <div class="radius-circle p-8 flex center shadow-soft"
-                        style="background: rgba(198, 40, 40, 0.1); color: var(--color-error); border-radius: 50%;">
-                        <i class="fa-solid fa-trash-can" style="font-size: 3rem;"></i>
+            <div id="deliveredRentContent" class="none animate-fade-in-up text-center py-4">
+                <div class="flex justify-center mb-5">
+                    <div class="popup-feedback-icon" style="background: rgba(198,40,40,0.1); color: var(--color-error);">
+                        <i class="fa-solid fa-box-open"></i>
                     </div>
                 </div>
                 <h3 class="text-2xl fw-700 mb-2" style="color: var(--color-error);">Copia consegnata</h3>
@@ -281,11 +274,10 @@
             </div>
 
             <!-- Error Content -->
-            <div id="errorContent" class="none animate-fade-in-up text-center py-6">
-                <div class="flex justify-center mb-6">
-                    <div class="radius-circle p-8 flex center shadow-soft"
-                        style="background: rgba(198, 40, 40, 0.08); color: var(--color-error); border-radius: 50%;">
-                        <i class="fa-solid fa-circle-exclamation" style="font-size: 3rem;"></i>
+            <div id="errorContent" class="none animate-fade-in-up text-center py-4">
+                <div class="flex justify-center mb-5">
+                    <div class="popup-feedback-icon" style="background: rgba(198,40,40,0.08); color: var(--color-error);">
+                        <i class="fa-solid fa-circle-exclamation"></i>
                     </div>
                 </div>
                 <h3 class="text-2xl fw-700 mb-2" style="color: var(--color-error);">Operazione fallita</h3>
@@ -294,79 +286,66 @@
                 </p>
             </div>
 
-            <!-- Add Edition Content -->
             <div id="addEditionContent" class="none animate-fade-in-up">
-                <p class="mb-6 opacity-70 text-sm leading-relaxed">
-                    Inserire i dati per una nuova edizione.
-                </p>
+                <p class="mb-5 opacity-70 text-sm leading-relaxed">Inserire i dati per una nuova edizione.</p>
 
                 <form id="addEditionForm" th:action="@{/api/addEdition}" method="post">
-                    <!-- Email Hidden Field (for session context) -->
                     <input type="hidden" name="email" th:value="${user != null ? user.userEmail : ''}">
 
                     <div class="flex flex-column gap-5">
                         <!-- Titolo -->
                         <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
-                                Titolo
-                            </label>
+                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Titolo</label>
                             <input type="text" id="addEditionTitleInput" name="title"
                                 class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="Esempio: Programmare in JavaS" required>
+                                placeholder="Esempio: Programmare in Java" required>
                         </div>
-                        <!-- ISBN (13 cifre numeriche) -->
-                        <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">ISBN (13
-                                cifre)</label>
-                            <input type="text" id="addEditionIsbnInput" name="isbn"
-                                class="w-100 p-4 radius-12 border-none font-size-small font-mono"
-                                placeholder="Es: 9788845292613" maxlength="13" pattern="[0-9]{13}" inputmode="numeric"
-                                oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,13)" required>
-                            <span id="addEditionIsbnError" class="text-xs fw-600 mt-1 block"
-                                style="color: var(--color-error); display: none !important;"></span>
+                        <!-- ISBN (13 cifre) + Data: 2 colonne -->
+                        <div class="add-user-row">
+                            <div class="input-group">
+                                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">ISBN (13 cifre)</label>
+                                <input type="text" id="addEditionIsbnInput" name="isbn"
+                                    class="w-100 p-4 radius-12 border-none font-size-small font-mono"
+                                    placeholder="9788845292613" maxlength="13" pattern="[0-9]{13}" inputmode="numeric"
+                                    oninput="this.value=this.value.replace(/[^0-9]/g,'').slice(0,13)" required>
+                                <span id="addEditionIsbnError" class="text-xs fw-600 mt-1 block"
+                                    style="color: var(--color-error); display: none !important;"></span>
+                            </div>
+                            <div class="input-group">
+                                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Data Pubblicazione</label>
+                                <input type="date" id="addEditionDateInput" name="date"
+                                    class="w-100 p-4 radius-12 border-none font-size-small cursor-pointer" required>
+                            </div>
                         </div>
-                        <!-- Data di pubblicazione -->
-                        <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Data di
-                                Pubblicazione</label>
-                            <input type="date" id="addEditionDateInput" name="date"
-                                class="w-100 p-4 radius-12 border-none font-size-small cursor-pointer" required>
+                        <!-- Autore Nome + Cognome: 2 colonne -->
+                        <div class="add-user-row">
+                            <div class="input-group">
+                                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nome Autore</label>
+                                <input type="text" id="addEditionAuthorNameInput" name="authorName"
+                                    class="w-100 p-4 radius-12 border-none font-size-small"
+                                    placeholder="Mario" required>
+                            </div>
+                            <div class="input-group">
+                                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Cognome Autore</label>
+                                <input type="text" id="addEditionAuthorLastNameInput" name="authorLastName"
+                                    class="w-100 p-4 radius-12 border-none font-size-small"
+                                    placeholder="Rossi" required>
+                            </div>
                         </div>
-                        <!-- Autore Nome -->
-                        <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
-                                Autore
-                            </label>
-                            <input type="text" id="addEditionAuthorNameInput" name="authorName"
-                                class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="Esempio: Mario" required>
-                        </div>
-                        <!-- Autore Cognome-->
-                        <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
-                                Autore
-                            </label>
-                            <input type="text" id="addEditionAuthorLastNameInput" name="authorLastName"
-                                class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="Esempio: Rossi" required>
-                        </div>
-                        <!-- Categoria -->
-                        <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
-                                Categoria
-                            </label>
-                            <input type="text" id="addEditionCategoryInput" name="categoryName"
-                                class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="Esempio: Java" required>
-                        </div>
-                        <!-- Editore -->
-                        <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
-                                Editore
-                            </label>
-                            <input type="text" id="addEditionPublisherInput" name="publisherName"
-                                class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="Esempio: Apogeo" required>
+                        <!-- Categoria + Editore: 2 colonne -->
+                        <div class="add-user-row">
+                            <div class="input-group">
+                                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Categoria</label>
+                                <input type="text" id="addEditionCategoryInput" name="categoryName"
+                                    class="w-100 p-4 radius-12 border-none font-size-small"
+                                    placeholder="Esempio: Java" required>
+                            </div>
+                            <div class="input-group">
+                                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Editore</label>
+                                <input type="text" id="addEditionPublisherInput" name="publisherName"
+                                    class="w-100 p-4 radius-12 border-none font-size-small"
+                                    placeholder="Esempio: Apogeo" required>
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -374,60 +353,87 @@
 
             <!-- Add User Content -->
             <div id="addUserContent" class="none animate-fade-in-up">
-                <p class="mb-6 opacity-70 text-sm leading-relaxed">
-                    Inserire i dati per un nuovo utente. <br>
-                    inserire la mail aziendale seguendo il formato <br>
-                    <strong>nome.cognome@biblioteca.it</strong>.
-                </p>
 
-                <form id="addUserForm" th:action="@{/api/addUser}" method="post">
+                <!-- Banner info -->
+                <div class="add-user-banner radius-12 mb-6 flex align-center gap-3">
+                    <i class="fa-solid fa-circle-info add-user-banner-icon"></i>
+                    <p class="text-xs fw-600 leading-relaxed opacity-90">
+                        Usa il formato mail aziendale &nbsp;<span class="font-mono fw-700">nome.cognome@biblioteca.it</span>
+                    </p>
+                </div>
+
+                <form id="addUserForm" th:action="@{/api/addUser}" method="post" novalidate>
                     <div class="flex flex-column gap-5">
-                        <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
-                                Nome
-                            </label>
-                            <input type="text" id="addUserNameInput" name="userName"
-                                class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="Esempio: Mario" required>
+
+                        <!-- Nome + Cognome (2 colonne) -->
+                        <div class="add-user-row">
+                            <div class="input-group">
+                                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nome</label>
+                                <div class="input-icon-wrap">
+                                    <i class="fa-solid fa-user input-prefix-icon"></i>
+                                    <input type="text" id="addUserNameInput" name="userName"
+                                        class="w-100 p-4 radius-12 border-none font-size-small input-with-icon"
+                                        placeholder="Mario" required autocomplete="given-name"
+                                        oninput="updateAddUserEmailPreview()">
+                                </div>
+                            </div>
+                            <div class="input-group">
+                                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Cognome</label>
+                                <div class="input-icon-wrap">
+                                    <i class="fa-solid fa-user input-prefix-icon"></i>
+                                    <input type="text" id="addUserLastNameInput" name="userLastName"
+                                        class="w-100 p-4 radius-12 border-none font-size-small input-with-icon"
+                                        placeholder="Rossi" required autocomplete="family-name"
+                                        oninput="updateAddUserEmailPreview()">
+                                </div>
+                            </div>
                         </div>
 
+                        <!-- Mail aziendale (generata automaticamente) -->
                         <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
-                                Cognome
-                            </label>
-                            <input type="text" id="addUserLastNameInput" name="userLastName"
-                                class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="Esempio: Rossi" required>
+                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Mail Aziendale</label>
+                            <div class="add-user-preview-field radius-12">
+                                <i class="fa-solid fa-envelope add-user-preview-icon"></i>
+                                <span id="addUserEmailPreview" class="add-user-preview-text font-mono">nome.cognome@biblioteca.it</span>
+                                <span class="add-user-preview-badge">Auto</span>
+                            </div>
                         </div>
 
+                        <!-- Password (fissa, mostrata per info) -->
                         <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
-                                Mail aziendale
-                            </label>
-                            <input type="email" id="addUserEmailInput" name="userEmail"
-                                class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="nome.cognome@biblioteca.it" required>
+                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Password iniziale</label>
+                            <div class="add-user-preview-field radius-12">
+                                <i class="fa-solid fa-lock add-user-preview-icon"></i>
+                                <span class="add-user-preview-text font-mono">Password123!</span>
+                                <span class="add-user-preview-badge">Default</span>
+                            </div>
                         </div>
 
+                        <!-- Ruolo con radio-card visivi -->
                         <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
-                                Password
-                            </label>
-                            <input type="text" id="addUserPasswordInput" name="userPassword"
-                                class="w-100 p-4 radius-12 border-none font-size-small"
-                                placeholder="Inserisci Password123!" minlength="4" required>
+                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Ruolo</label>
+                            <div class="add-user-role-grid">
+                                <label class="role-option role-option--selected" id="roleOptionUser">
+                                    <input type="radio" name="userRole" value="role_user" checked
+                                        onchange="updateRoleSelection()">
+                                    <div class="role-card">
+                                        <i class="fa-solid fa-user-tie role-icon"></i>
+                                        <span class="role-label">Dipendente</span>
+                                        <span class="role-desc">Accesso standard</span>
+                                    </div>
+                                </label>
+                                <label class="role-option" id="roleOptionAdmin">
+                                    <input type="radio" name="userRole" value="role_admin"
+                                        onchange="updateRoleSelection()">
+                                    <div class="role-card">
+                                        <i class="fa-solid fa-shield-halved role-icon"></i>
+                                        <span class="role-label">Amministratore</span>
+                                        <span class="role-desc">Accesso completo</span>
+                                    </div>
+                                </label>
+                            </div>
                         </div>
 
-                        <div class="input-group">
-                            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
-                                Ruolo
-                            </label>
-                            <select id="addUserRoleInput" name="userRole"
-                                class="w-100 p-4 radius-12 border-none font-size-small cursor-pointer" required>
-                                <option value="role_user">Dipendente</option>
-                                <option value="role_admin">Amministratore</option>
-                            </select>
-                        </div>
                     </div>
                 </form>
             </div>
@@ -466,21 +472,21 @@
                     </div>   
                 </div>
                 
-                <div class="flex flex-column gap-3 max-h-300 overflow-y-auto pr-2 custom-scrollbar">
+                <!-- Tabella copie con scroll orizzontale su mobile -->
+                <div class="popup-table-wrap">
                     <table class="w-100 border-collapse">
                         <thead>
                             <tr class="text-center border-b opacity-60">
-                                <th class=" text-xs uppercase tracking-widest fw-700">ID Libro</th>
-                                <th class=" text-xs uppercase tracking-widest fw-700">Stato</th>
-                                <th class=" text-xs uppercase tracking-widest fw-700 text-right">Azioni</th>
+                                <th class="text-xs uppercase tracking-widest fw-700">ID Libro</th>
+                                <th class="text-xs uppercase tracking-widest fw-700">Stato</th>
+                                <th class="text-xs uppercase tracking-widest fw-700 text-right">Azioni</th>
                             </tr>
                         </thead>
                         <tbody id="viewBooksListContainer" th:fragment="bookCopiesList" th:with="booksToShow=${popupBooks != null ? popupBooks : books}">
-                            <!-- Righe della tabella generate lato server via Thymeleaf -->
-                            <tr th:each="book : ${booksToShow}" 
+                            <tr th:each="book : ${booksToShow}"
                                 class="text-center border-b hover-bg-light transition"
                                 th:style="${book.status == 'eliminato' ? 'opacity: 0.6' : ''}">
-                                
+
                                 <td class="m-2 font-mono fw-600 text-brand">#[[${book.bookId}]]</td>
                                 <td>
                                     <div th:with="statusClass=${book.status == 'disponibilita' ? 'status-vibrant-active' : (book.status == 'eliminato' ? 'status-vibrant-error' : 'status-vibrant-pending')},
@@ -494,17 +500,15 @@
                                 </td>
                                 <td class="flex center">
                                     <button th:if="${book.status == 'disponibilita'}"
-                                            type="button" 
+                                            type="button"
                                             class="btn-modern-action pointer transition shadow-soft radius-12"
-                                            
-                                            th:data-title="${popupEditionTitle} + ' (Copia #' + ${book.bookId} + ')'" 
+                                            th:data-title="${popupEditionTitle} + ' (Copia #' + ${book.bookId} + ')'"
                                             th:data-url="'/api/deleteBook?bookId=' + ${book.bookId} + '&bookName=' + ${#uris.escapeQueryParam(popupEditionTitle != null ? popupEditionTitle : '')}"
                                             onclick="triggerConfirmDelete(this)"
                                             title="Elimina Copia">
-                                        <!-- <i class="fa-solid fa-trash-can"></i> -->
                                         <span class="text-center">Elimina</span>
                                     </button>
-                                    <span th:unless="${book.status == 'disponibilita'}" 
+                                    <span th:unless="${book.status == 'disponibilita'}"
                                           class="text-xs opacity-50 italic">Impossibile eliminare</span>
                                 </td>
                             </tr>
@@ -523,12 +527,12 @@
         </div>
 
         <!-- Footer Section -->
-        <div class="popup-footer mt-12 pt-8 flex justify-center gap-6" style="border-top: 1px solid var(--color-border);">
+        <div class="popup-footer mt-8 pt-6 flex justify-center gap-4" style="border-top: 1px solid var(--color-border);">
             <button type="button"
-                class="btn-link-action radius-12 px-8 py-4 cursor-pointer transition fw-600 text-lg m-1"
+                class="btn-link-action radius-12 px-8 py-4 cursor-pointer transition fw-600"
                 onclick="closePopup()">Annulla</button>
             <button type="button" id="popupConfirmBtn"
-                class="btn-primary radius-12 px-12 py-4 cursor-pointer transition fw-700 text-lg shadow-soft m-1">
+                class="btn-primary radius-12 px-10 py-4 cursor-pointer transition fw-700 shadow-soft">
                 Conferma Azione
             </button>
         </div>

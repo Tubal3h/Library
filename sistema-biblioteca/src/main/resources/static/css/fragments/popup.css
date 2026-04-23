@@ -33,9 +33,10 @@
 .popup-content {
     width: 92%;
     max-width: 720px;
-    min-height: 75vh;
-    max-height: 90vh;
-    padding: 4rem;
+    /* min-height responsivo: grande su desktop, si riduce progressivamente */
+    min-height: clamp(420px, 72vh, 780px);
+    max-height: min(90dvh, 860px);
+    padding: 3rem 3.5rem;
     border: 1px solid rgba(255, 255, 255, 0.15);
     transform: scale(1) translateY(0);
     transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
@@ -43,6 +44,7 @@
         0 0 0 1px rgba(255, 255, 255, 0.1);
     display: flex;
     flex-direction: column;
+    overflow: hidden;
 }
 
 [data-theme="light"] .popup-content {
@@ -57,30 +59,101 @@
     transform: scale(0.96) translateY(30px);
 }
 
-/* Text-only action button */
+/* Text-only action button → Ghost button premium */
 .btn-link-action {
     background: transparent;
-    border: none;
+    border: 1.5px solid var(--color-border);
     color: var(--color-text);
-    opacity: 0.6;
-    font-size: 1rem;
+    opacity: 0.75;
+    font-size: 0.9rem;
+    font-weight: 600;
     min-width: 120px;
-    /* Standard minimum width */
     text-align: center;
+    letter-spacing: 0.03em;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-link-action::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(var(--color-text-rgb), 0.05);
+    opacity: 0;
+    transition: opacity 0.2s ease;
 }
 
 .btn-link-action:hover {
     opacity: 1;
-    text-decoration: underline;
+    border-color: rgba(var(--color-text-rgb), 0.35);
+    transform: translateY(-1px);
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-/* Primary Button in Popup */
+.btn-link-action:hover::after {
+    opacity: 1;
+}
+
+.btn-link-action:active {
+    transform: translateY(0) scale(0.98);
+}
+
+/* Primary Button in Popup — override premium */
 #popupConfirmBtn {
     min-width: 180px;
-    /* Stronger primary action */
     display: flex;
     justify-content: center;
     align-items: center;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    position: relative;
+    overflow: hidden;
+    /* Glow accent */
+    box-shadow: 0 4px 20px rgba(245, 166, 35, 0.25),
+                0 1px 3px rgba(0, 0, 0, 0.12);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                background-color 0.2s ease;
+}
+
+/* Shimmer sweep su hover */
+#popupConfirmBtn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -75%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+        120deg,
+        transparent 30%,
+        rgba(255, 255, 255, 0.22) 50%,
+        transparent 70%
+    );
+    transform: skewX(-20deg);
+    transition: none;
+    pointer-events: none;
+}
+
+#popupConfirmBtn:hover::before {
+    animation: btnShimmer 0.55s ease forwards;
+}
+
+@keyframes btnShimmer {
+    to { left: 130%; }
+}
+
+#popupConfirmBtn:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow: 0 8px 28px rgba(245, 166, 35, 0.40),
+                0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+#popupConfirmBtn:active {
+    transform: translateY(0) scale(0.97);
+    box-shadow: 0 2px 8px rgba(245, 166, 35, 0.20);
 }
 
 /* Close Button Refinement */
@@ -98,13 +171,26 @@
     position: absolute;
     top: 2rem;
     right: 2rem;
+    opacity: 0.7;
+    transition: background 0.22s ease,
+                color 0.22s ease,
+                border-color 0.22s ease,
+                transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                opacity 0.2s ease,
+                box-shadow 0.22s ease;
 }
 
 .btn-icon-close:hover {
     background: var(--color-error);
     color: white;
     border-color: var(--color-error);
+    opacity: 1;
     transform: rotate(90deg) scale(1.1);
+    box-shadow: 0 6px 20px rgba(198, 40, 40, 0.35);
+}
+
+.btn-icon-close:active {
+    transform: rotate(90deg) scale(0.95);
 }
 
 /* Typography & Layout Spacing */
@@ -112,7 +198,8 @@
     margin-top: 1.25rem;
     overflow-y: auto;
     flex: 1;
-    max-height: 72vh;
+    /* Altezza flessibile: scorre se il contenuto è più lungo del viewport */
+    min-height: 0;
     padding-right: 6px;
 }
 
@@ -187,12 +274,9 @@
 @media (max-width: 900px) {
     .popup-content {
         width: 96%;
-        max-width: 640px;
-        padding: 3rem 2.5rem;
-    }
-
-    .popup-body {
-        max-height: 65vh;
+        max-width: 600px;
+        min-height: clamp(380px, 68vh, 700px);
+        padding: 2.5rem 2.25rem;
     }
 
     .icon-box-accent {
@@ -201,7 +285,7 @@
     }
 }
 
-/* ---- Mobile (≤640px) ---- */
+/* ---- Mobile (≤640px) — Bottom sheet ---- */
 @media (max-width: 640px) {
     .popup-overlay {
         align-items: flex-end;
@@ -210,22 +294,17 @@
     .popup-content {
         width: 100%;
         max-width: 100%;
-        padding: 2rem 1.5rem 1.5rem;
+        /* Su mobile bottom-sheet: nessun min-height, occupa fino al 92% dello schermo */
+        min-height: 55dvh;
+        padding: 1.75rem 1.5rem 1.25rem;
         border-radius: 24px 24px 0 0;
-        max-height: 94dvh;
-        display: flex;
-        flex-direction: column;
-    }
-
-    .popup-body {
-        flex: 1;
-        max-height: none;
-        overflow-y: auto;
+        max-height: 92dvh;
     }
 
     .popup-header {
-        flex-wrap: wrap;
-        gap: 0.5rem;
+        flex-wrap: nowrap;
+        gap: 0.75rem;
+        padding-right: 3rem; /* spazio per la X assoluta */
     }
 
     .btn-icon-close {
@@ -233,13 +312,13 @@
         right: 1.25rem;
         width: 40px;
         height: 40px;
-        font-size: 1rem;
+        font-size: 0.9rem;
     }
 
     .popup-footer {
         flex-direction: column-reverse;
         gap: 0.5rem !important;
-        margin-top: 1rem !important;
+        margin-top: 0.75rem !important;
         padding-top: 0.75rem !important;
     }
 
@@ -259,12 +338,39 @@
         min-width: unset;
         width: 100%;
     }
+
+    /* Add User: 2-col → 1-col su mobile */
+    .add-user-row,
+    .add-user-role-grid {
+        grid-template-columns: 1fr;
+    }
+
+    /* Role card: orizzontale su mobile per risparmiare spazio */
+    .role-card {
+        flex-direction: row;
+        justify-content: flex-start;
+        gap: 0.75rem;
+        padding: 0.75rem 1rem;
+        text-align: left;
+    }
+
+    .role-icon {
+        font-size: 1.1rem;
+        margin-bottom: 0;
+        flex-shrink: 0;
+    }
+
+    .role-label,
+    .role-desc {
+        text-align: left;
+    }
 }
 
 /* ---- Small mobile (≤480px) ---- */
 @media (max-width: 480px) {
     .popup-content {
-        padding: 1.25rem 1rem 1rem;
+        padding: 1.25rem 1.1rem 1rem;
+        max-height: 96dvh;
     }
 
     .icon-box-accent {
@@ -273,16 +379,283 @@
     }
 
     #popupTitle {
-        font-size: 1.15rem;
+        font-size: 1.1rem;
     }
 
     .input-group input,
     .input-group select {
-        font-size: 0.9rem;
-        padding: 0.75rem;
+        font-size: 0.88rem;
+        padding: 0.7rem 0.75rem;
+    }
+
+    .input-with-icon {
+        padding-left: 2.4rem !important;
     }
 
     .flex.flex-column.gap-5 {
-        gap: 1.1rem !important;
+        gap: 1rem !important;
+    }
+
+    .add-user-banner {
+        padding: 0.6rem 0.75rem;
     }
 }
+
+/* ---- Extra small (≤380px) ---- */
+@media (max-width: 380px) {
+    .popup-content {
+        padding: 1rem 0.875rem 0.75rem;
+    }
+
+    .input-group input,
+    .input-group select {
+        font-size: 0.85rem;
+        padding: 0.65rem 0.65rem 0.65rem 2.2rem;
+    }
+
+    .input-with-icon {
+        padding-left: 2.2rem !important;
+    }
+
+    #popupTitle {
+        font-size: 1rem;
+    }
+}
+
+/* ---- Schermi bassi (landscape mobile, altezza ≤500px) ---- */
+@media (max-height: 500px) {
+    .popup-overlay {
+        align-items: center;
+    }
+
+    .popup-content {
+        max-height: 96dvh;
+        border-radius: 16px;
+        padding: 1rem 1.5rem;
+    }
+
+    .popup-body {
+        padding-right: 4px;
+    }
+
+    .popup-footer {
+        margin-top: 0.5rem !important;
+        padding-top: 0.5rem !important;
+    }
+
+    .icon-box-accent {
+        width: 36px;
+        height: 36px;
+    }
+
+    #popupTitle {
+        font-size: 1rem;
+    }
+}
+
+/* ============================================================
+   TABELLA COPIE — Scroll orizzontale su mobile
+   ============================================================ */
+
+.popup-table-wrap {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 260px;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 8px;
+}
+
+.popup-table-wrap table {
+    min-width: 320px; /* evita che la tabella collassi su schermi piccoli */
+}
+
+.popup-table-wrap td,
+.popup-table-wrap th {
+    white-space: nowrap;
+    padding: 0.5rem 0.75rem;
+}
+
+/* ============================================================
+   ICONE FEEDBACK (successo / errore / conferma)
+   ============================================================ */
+
+.popup-feedback-icon {
+    width: clamp(56px, 12vw, 80px);
+    height: clamp(56px, 12vw, 80px);
+    font-size: clamp(1.6rem, 5vw, 3rem);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+/* Preview field (email / password auto-generate) */
+.add-user-preview-field {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    background: var(--color-surface-2);
+    border: 1.5px dashed rgba(245, 166, 35, 0.35);
+    opacity: 0.9;
+}
+
+.add-user-preview-icon {
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    flex-shrink: 0;
+    opacity: 0.75;
+}
+
+.add-user-preview-text {
+    flex: 1;
+    font-size: 0.82rem;
+    color: var(--color-text);
+    opacity: 0.85;
+    word-break: break-all;
+}
+
+.add-user-preview-badge {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(245, 166, 35, 0.15);
+    color: var(--color-accent);
+    border: 1px solid rgba(245, 166, 35, 0.3);
+    border-radius: 6px;
+    padding: 2px 7px;
+    flex-shrink: 0;
+}
+
+/* ============================================================
+   ADD USER POPUP — Design Premium
+   ============================================================ */
+
+/* Banner informativo */
+.add-user-banner {
+    background: rgba(245, 166, 35, 0.08);
+    border: 1px solid rgba(245, 166, 35, 0.25);
+    padding: 0.75rem 1rem;
+    color: var(--color-text);
+}
+
+.add-user-banner-icon {
+    font-size: 1rem;
+    color: var(--color-accent);
+    flex-shrink: 0;
+}
+
+/* Layout a 2 colonne Nome / Cognome (collassa a 1 col sotto i 640px) */
+.add-user-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+/* Input con icona prefisso */
+.input-icon-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-prefix-icon {
+    position: absolute;
+    left: 1rem;
+    font-size: 0.8rem;
+    color: var(--color-accent);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.8;
+}
+
+.input-with-icon {
+    padding-left: 2.6rem !important;
+}
+
+/* Input con bottone suffisso (toggle password) */
+.input-with-suffix {
+    padding-right: 3rem !important;
+}
+
+.input-suffix-btn {
+    position: absolute;
+    right: 0.75rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text);
+    opacity: 0.45;
+    padding: 0.4rem;
+    font-size: 0.85rem;
+    transition: opacity 0.2s ease, color 0.2s ease;
+    z-index: 1;
+}
+
+.input-suffix-btn:hover {
+    opacity: 1;
+    color: var(--color-accent);
+}
+
+/* Radio-card Ruolo (collassa a 1 col sotto i 640px) */
+.add-user-role-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.875rem;
+}
+
+.role-option {
+    cursor: pointer;
+    display: block;
+}
+
+.role-option input[type="radio"] {
+    display: none; /* nascosto — gestito via classe */
+}
+
+.role-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 1rem 0.75rem;
+    border-radius: 14px;
+    border: 1.5px solid var(--color-border);
+    background: var(--color-surface-2);
+    transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.2s ease;
+    text-align: center;
+}
+
+.role-card:hover {
+    border-color: rgba(245, 166, 35, 0.45);
+    background: rgba(245, 166, 35, 0.05);
+    transform: translateY(-1px);
+}
+
+.role-option--selected .role-card {
+    border-color: var(--color-accent);
+    background: rgba(245, 166, 35, 0.1);
+    box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.15);
+}
+
+.role-icon {
+    font-size: 1.4rem;
+    color: var(--color-accent);
+    margin-bottom: 0.1rem;
+}
+
+.role-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    color: var(--color-text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.role-desc {
+    font-size: 0.72rem;
+    opacity: 0.55;
+    font-weight: 500;
+}

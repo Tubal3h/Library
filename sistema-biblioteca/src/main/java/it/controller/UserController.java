@@ -39,7 +39,6 @@ public class UserController {
             @RequestParam("userName") String userName,
             @RequestParam("userLastName") String userLastName,
             @RequestParam("userPassword") String userPassword,
-            @RequestParam("userEmail") String userEmail,
             @RequestParam("userRole") String userRole,
             RedirectAttributes redirectAttributes) {
 
@@ -52,7 +51,8 @@ public class UserController {
             UserDto newUser = new UserDto();
             newUser.setUserName(userName);
             newUser.setUserLastName(userLastName);
-            newUser.setUserPassword(userPassword);
+            newUser.setUserEmail(userName + "." + userLastName + "@biblioteca.it");
+            newUser.setUserPassword("Password123!");
             newUser.setUserRole(userRole);
 
             userService.createUser(newUser);
