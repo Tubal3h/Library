@@ -259,4 +259,9 @@ public class BookService {
             })
             .toList();
     }
+
+    @Transactional
+    public void updateBookTitle(int bookNameId, String editionTitle) { 
+        bookNameRepository.updateBookTitle(bookNameId, editionTitle);
+    }
 }
