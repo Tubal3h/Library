@@ -248,7 +248,7 @@ function triggerConfirmAdd(element) {
 function triggerConfirmDelivered(element) {
     const title = element.getAttribute('data-title');
     const url = element.getAttribute('data-url');
-    openConfirmPopup('delivered', title, 'Il libro verrà dato in carico al richiedente', url);
+    openConfirmPopup('delivered', title, 'Il manuale verrà reso disponibile', url);
 }
 
 /**
@@ -288,7 +288,7 @@ function openConfirmPopup(action, titleTxt, message, confirmUrl) {
     const confirmIconBox = document.getElementById('confirmIconBox');
     const confirmIconInner = document.getElementById('confirmIconInner');
 
-    if (confirmTitleElem) confirmTitleElem.innerText = 'Confermi lU+0027operazione?';
+    if (confirmTitleElem) confirmTitleElem.innerText = 'Confermi l\'operazione?';
     if (confirmMsgElem) confirmMsgElem.innerText = message;
     
     if (confirmDetailsElem) {

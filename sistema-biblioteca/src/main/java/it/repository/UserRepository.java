@@ -88,6 +88,17 @@ public class UserRepository implements UserRepositoryInterface{
         Integer count = jdbcTemplate.queryForObject(sql, Integer.class, email);
         return count != null && count > 0;
     }
+
+    /**
+     * Elimina un utente dal database in base al suo ID.
+     *
+     * @param userId ID dell'utente da eliminare
+     * @return numero di righe eliminate
+     */
+    public int deleteUserById(String userId) {
+        String sql = "DELETE FROM users WHERE users_id = ?";
+        return jdbcTemplate.update(sql, userId);
+    }
 }
 
 

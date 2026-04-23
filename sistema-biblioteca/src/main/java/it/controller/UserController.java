@@ -25,10 +25,10 @@ public class UserController {
 
     /**
      * Inserisce un nuovo dipendente o amministratore.
-     * L'email viene sempre ricostruita lato server nel formato aziendale.
      *
      * @param userName nome del dipendente
      * @param userLastName cognome del dipendente
+     * @param userEmail email del dipendente
      * @param userPassword password iniziale impostata dall'admin
      * @param userRole ruolo selezionato nel popup
      * @param redirectAttributes attributi flash per popup di esito
@@ -73,4 +73,10 @@ public class UserController {
         userSession.setSection("users");
         return "redirect:/dashboard";
     }
+
+    @PostMapping("/api/deleteUser")
+        public String deleteUser(@RequestParam String userId) {
+            userService.deleteUserById(userId);
+            return "redirect:/dashboard";
+        }
 }

@@ -104,7 +104,7 @@
                     document.getElementById('popupTitle').textContent = 'Errore';
                     document.getElementById('errorMessage').textContent = errorMsg || 'Operazione non riuscita.';
                     document.getElementById('errorContent').classList.remove('none');
-                    
+
                 } else if (popupType === 'addUser') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-user-check text-white font-size-medium';
                     document.getElementById('popupTitle').textContent = 'Dipendente creato';
@@ -115,6 +115,7 @@
 
                 // Mostra l'overlay del popup
                 document.getElementById('genericPopup').classList.remove('none');
+                }
             });
         </script>
     </th:block>

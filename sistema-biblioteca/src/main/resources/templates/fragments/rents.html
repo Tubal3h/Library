@@ -8,11 +8,21 @@
 -->
 <th:block th:fragment="rents">
     <!-- Barra dei Filtri -->
-    <div class="rents animate-fade-in-up">
+    <div class="rents animate-fade-in-up flex align-center gap-6 mb-6 opacity-0 delay-1">
+
+        <!-- Filter: Solo Scaduti -->
         <label class="toggle-container shadow-soft">
             <i class="fa-solid fa-clock-rotate-left text-brand"></i>
             <span class="toggle-label">Solo Scaduti</span>
             <input type="checkbox" id="filterExpired" onchange="toggleExpiredFilter(this)">
+            <span class="toggle-switch"></span>
+        </label>
+
+        <!-- Filter: Richieste -->
+        <label class="toggle-container shadow-soft">
+            <i class="fa-solid fa-clock-rotate-left text-brand"></i>
+            <span class="toggle-label">Richieste in sospeso</span>
+            <input type="checkbox" id="filterPending" onchange="togglePendingFilter(this)">
             <span class="toggle-switch"></span>
         </label>
     </div>

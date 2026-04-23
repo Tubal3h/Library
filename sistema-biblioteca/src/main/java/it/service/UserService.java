@@ -1,7 +1,6 @@
 package it.service;
 
 import java.util.ArrayList;
-import java.text.Normalizer;
 
 /* -------------------------------------------------------------------------- */
 /*                                   SERVICE                                  */
@@ -108,82 +107,65 @@ public class UserService {
     }
 
     /**
- * Crea un nuovo utente nel sistema generando automaticamente la mail
- * aziendale nel formato nome.cognome@biblioteca.it.
- *
- * @param userDto dati del nuovo utente
- * @return numero di righe inserite
- */
-public int createUser(UserDto userDto) {
-    validateUser(userDto);
+     * Crea un nuovo utente nel sistema con i dati forniti.
+     *
+     * @param userDto dati del nuovo utente
+     * @return numero di righe inserite
+     */
 
-    String email = buildCorporateEmail(userDto.getUserName(), userDto.getUserLastName());
-    userDto.setUserEmail(email);
+    public int createUser(UserDto userDto) {
+        validateUser(userDto);
 
-    if (userRepository.existsByEmail(email)) {
-        throw new IllegalArgumentException("Esiste già un utente con questa email: " + email);
+        if (userRepository.existsByEmail(userDto.getUserEmail())) {
+            throw new IllegalArgumentException("Esiste già un utente con questa email: " + userDto.getUserEmail());
+        }
+
+        return userRepository.insertUser(
+                userDto.getUserName().trim(),
+                userDto.getUserLastName().trim(),
+                userDto.getUserEmail().trim().toLowerCase(),
+                userDto.getUserPassword().trim(),
+                userDto.getUserRole().trim().toLowerCase());
     }
 
-    return userRepository.insertUser(
-            userDto.getUserName().trim(),
-            userDto.getUserLastName().trim(),
-            email,
-            userDto.getUserPassword().trim(),
-            userDto.getUserRole().trim().toLowerCase());
-}
+    private void validateUser(UserDto userDto) {
+        if (userDto == null) {
+            throw new IllegalArgumentException("Dati utente mancanti.");
+        }
 
-/**
- * Genera l'email aziendale a partire da nome e cognome.
- *
- * @param userName nome dipendente
- * @param userLastName cognome dipendente
- * @return email in formato nome.cognome@biblioteca.it
- */
-public String buildCorporateEmail(String userName, String userLastName) {
-    String normalizedName = normalizeForEmail(userName);
-    String normalizedLastName = normalizeForEmail(userLastName);
-    return normalizedName + "." + normalizedLastName + "@biblioteca.it";
-}
+        if (userDto.getUserName() == null || userDto.getUserName().isBlank()) {
+            throw new IllegalArgumentException("Il nome è obbligatorio.");
+        }
 
-private void validateUser(UserDto userDto) {
-    if (userDto == null) {
-        throw new IllegalArgumentException("Dati utente mancanti.");
+        if (userDto.getUserLastName() == null || userDto.getUserLastName().isBlank()) {
+            throw new IllegalArgumentException("Il cognome è obbligatorio.");
+        }
+
+        if (userDto.getUserPassword() == null || userDto.getUserPassword().isBlank()) {
+            throw new IllegalArgumentException("La password è obbligatoria.");
+        }
+
+        String role = userDto.getUserRole();
+        if (role == null || role.isBlank()) {
+            throw new IllegalArgumentException("Il ruolo è obbligatorio.");
+        }
+
+        String normalizedRole = role.trim().toLowerCase();
+        if (!"role_admin".equals(normalizedRole) && !"role_user".equals(normalizedRole)) {
+            throw new IllegalArgumentException("Ruolo non valido. Usare ROLE_ADMIN o ROLE_USER.");
+        }
     }
 
-    if (userDto.getUserName() == null || userDto.getUserName().isBlank()) {
-        throw new IllegalArgumentException("Il nome è obbligatorio.");
+    /**
+     * Elimina un utente dal sistema tramite il suo ID.
+     *
+     * @param userId ID dell'utente da eliminare
+     * @return numero di righe eliminate
+     */
+    @Transactional
+    public int deleteUserById(String userId) {
+        return userRepository.deleteUserById(userId);
     }
 
-    if (userDto.getUserLastName() == null || userDto.getUserLastName().isBlank()) {
-        throw new IllegalArgumentException("Il cognome è obbligatorio.");
-    }
-
-    if (userDto.getUserPassword() == null || userDto.getUserPassword().isBlank()) {
-        throw new IllegalArgumentException("La password è obbligatoria.");
-    }
-
-    String role = userDto.getUserRole();
-    if (role == null || role.isBlank()) {
-        throw new IllegalArgumentException("Il ruolo è obbligatorio.");
-    }
-
-    String normalizedRole = role.trim().toLowerCase();
-    if (!"role_admin".equals(normalizedRole) && !"role_user".equals(normalizedRole)) {
-        throw new IllegalArgumentException("Ruolo non valido. Usare ROLE_ADMIN o ROLE_USER.");
-    }
-}
-
-private String normalizeForEmail(String value) {
-    String normalized = Normalizer.normalize(value == null ? "" : value, Normalizer.Form.NFD)
-            .replaceAll("\\p{M}+", "")
-            .replaceAll("[^A-Za-z0-9]", "")
-            .toLowerCase();
-
-    if (normalized.isBlank()) {
-        throw new IllegalArgumentException("Nome o cognome non validi per la generazione della mail aziendale.");
-    }
-
-    return normalized;
-    }
 }
 

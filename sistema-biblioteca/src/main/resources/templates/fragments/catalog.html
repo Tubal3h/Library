@@ -50,8 +50,7 @@
             <a th:if="${user.userRole != 'role_admin'}"
                 th:href="@{/api/borrow(email=${user.userEmail}, bookId=${book.bookId})}"
                 class="btn-modern-action pointer transition shadow-soft" style="text-decoration: none;">
-                <span>Prenota</span>
-                <i class="fa-solid fa-bookmark"></i>
+                <span>Richiedi</span>
             </a>
         </div>
     </div>
