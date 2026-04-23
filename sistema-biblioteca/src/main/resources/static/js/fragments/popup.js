@@ -545,6 +545,10 @@ function openEditPublisherPopup(id, currentPublisher) {
 
     panel.classList.remove('none');
 
+    // Reset dropdown suggerimenti
+    const dropdown = document.getElementById('publisherSuggestionsDropdown');
+    if (dropdown) dropdown.style.display = 'none';
+
     const cancelBtn = document.querySelector('.btn-link-action');
     if (cancelBtn) cancelBtn.classList.remove('none');
 
@@ -594,6 +598,10 @@ function openEditCategoryPopup(id, currentCategory) {
 
     panel.classList.remove('none');
 
+    // Reset dropdown suggerimenti
+    const dropdown = document.getElementById('categorySuggestionsDropdown');
+    if (dropdown) dropdown.style.display = 'none';
+
     const cancelBtn = document.querySelector('.btn-link-action');
     if (cancelBtn) cancelBtn.classList.remove('none');
 
@@ -610,4 +618,257 @@ function openEditCategoryPopup(id, currentCategory) {
 
     popup.classList.remove('none');
     document.body.style.overflow = 'hidden';
+}
+
+// ─── AUTOCOMPLETE CATEGORIA ────────────────────────────────────────────────────
+
+/**
+ * Legge le categorie dal DOM (iniettate da Thymeleaf in #categoryDataSource)
+ * e restituisce un array di stringhe.
+ * @returns {string[]}
+ */
+function getCategoryList() {
+    const items = document.querySelectorAll('#categoryDataSource li');
+    return Array.from(items).map(li => li.textContent.trim()).filter(Boolean);
+}
+
+/**
+ * Filtra le categorie esistenti in base al testo digitato e mostra
+ * il dropdown dei suggerimenti. Chiamata sull'evento oninput dell'input.
+ * @param {string} query - Testo corrente nell'input.
+ */
+function filterCategorySuggestions(query) {
+    const dropdown = document.getElementById('categorySuggestionsDropdown');
+    const input    = document.getElementById('editCategoryOnlyInput');
+    if (!dropdown || !input) return;
+
+    const q = query.trim().toLowerCase();
+
+    if (!q) {
+        dropdown.style.display = 'none';
+        dropdown.innerHTML = '';
+        return;
+    }
+
+    const all     = getCategoryList();
+    const matches = all.filter(c => c.toLowerCase().includes(q));
+
+    if (matches.length === 0) {
+        dropdown.style.display = 'none';
+        dropdown.innerHTML = '';
+        return;
+    }
+
+    // Costruisce le voci del dropdown
+    dropdown.innerHTML = matches.map(cat => {
+        // Evidenzia la parte che corrisponde alla query
+        const re      = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+        const highlighted = cat.replace(re, '<mark style="background:rgba(245,166,35,0.3);color:inherit;border-radius:3px;padding:0 2px;">$1</mark>');
+        return `
+            <div class="category-suggestion-item"
+                 style="padding:10px 16px; cursor:pointer; font-size:0.85rem; font-weight:600;
+                        transition:background 0.2s ease; border-bottom:1px solid var(--color-border);"
+                 onmousedown="selectCategorySuggestion('${cat.replace(/'/g, "\\'")}')"
+                 onmouseover="this.style.background='var(--color-surface-2)'"
+                 onmouseout="this.style.background=''">${highlighted}</div>`;
+    }).join('');
+
+    dropdown.style.display = 'block';
+}
+
+/**
+ * Seleziona un suggerimento: riempie l'input e chiude il dropdown.
+ * Usa onmousedown invece di onclick per evitare che il blur dell'input
+ * nasconda il dropdown prima del click.
+ * @param {string} value - Il nome della categoria selezionata.
+ */
+function selectCategorySuggestion(value) {
+    const input    = document.getElementById('editCategoryOnlyInput');
+    const dropdown = document.getElementById('categorySuggestionsDropdown');
+    if (input)    input.value = value;
+    if (dropdown) { dropdown.style.display = 'none'; dropdown.innerHTML = ''; }
+}
+
+// Chiude il dropdown se si clicca fuori dall'input/dropdown
+document.addEventListener('click', (e) => {
+    // Categoria
+    const catDrop  = document.getElementById('categorySuggestionsDropdown');
+    const catInput = document.getElementById('editCategoryOnlyInput');
+    if (catDrop && catInput && !catInput.contains(e.target) && !catDrop.contains(e.target)) {
+        catDrop.style.display = 'none'; catDrop.innerHTML = '';
+    }
+    // Titolo
+    const titleDrop  = document.getElementById('titleSuggestionsDropdown');
+    const titleInput = document.getElementById('editTitleOnlyInput');
+    if (titleDrop && titleInput && !titleInput.contains(e.target) && !titleDrop.contains(e.target)) {
+        titleDrop.style.display = 'none'; titleDrop.innerHTML = '';
+    }
+    // Autore
+    const authDrop  = document.getElementById('authorSuggestionsDropdown');
+    const authInput = document.getElementById('editAuthorSearchInput');
+    if (authDrop && authInput && !authInput.contains(e.target) && !authDrop.contains(e.target)) {
+        authDrop.style.display = 'none'; authDrop.innerHTML = '';
+    }
+    // Editore
+    const pubDrop  = document.getElementById('publisherSuggestionsDropdown');
+    const pubInput = document.getElementById('editPublisherOnlyInput');
+    if (pubDrop && pubInput && !pubInput.contains(e.target) && !pubDrop.contains(e.target)) {
+        pubDrop.style.display = 'none'; pubDrop.innerHTML = '';
+    }
+});
+
+// ─── AUTOCOMPLETE TITOLO ───────────────────────────────────────────────────────
+
+/**
+ * Legge i titoli dal DOM (books + editions iniettati da Thymeleaf).
+ * @returns {string[]}
+ */
+function getTitleList() {
+    const items = document.querySelectorAll('#titleDataSource li');
+    return [...new Set(Array.from(items).map(li => li.textContent.trim()).filter(Boolean))];
+}
+
+/**
+ * Filtra i titoli e mostra il dropdown dei suggerimenti.
+ * @param {string} query
+ */
+function filterTitleSuggestions(query) {
+    const dropdown = document.getElementById('titleSuggestionsDropdown');
+    const input    = document.getElementById('editTitleOnlyInput');
+    if (!dropdown || !input) return;
+
+    const q = query.trim().toLowerCase();
+    if (!q) { dropdown.style.display = 'none'; dropdown.innerHTML = ''; return; }
+
+    const matches = getTitleList().filter(t => t.toLowerCase().includes(q));
+    if (!matches.length) { dropdown.style.display = 'none'; dropdown.innerHTML = ''; return; }
+
+    const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    dropdown.innerHTML = matches.map(t => {
+        const hl = t.replace(re, '<mark style="background:rgba(245,166,35,0.3);color:inherit;border-radius:3px;padding:0 2px;">$1</mark>');
+        return `<div style="padding:10px 16px;cursor:pointer;font-size:0.85rem;font-weight:600;
+                    transition:background 0.2s;border-bottom:1px solid var(--color-border);"
+             onmousedown="selectTitleSuggestion('${t.replace(/'/g, "\\'")}')"
+             onmouseover="this.style.background='var(--color-surface-2)'"
+             onmouseout="this.style.background=''">${hl}</div>`;
+    }).join('');
+    dropdown.style.display = 'block';
+}
+
+/**
+ * Riempie l'input titolo con il valore selezionato e chiude il dropdown.
+ * @param {string} value
+ */
+function selectTitleSuggestion(value) {
+    const input    = document.getElementById('editTitleOnlyInput');
+    const dropdown = document.getElementById('titleSuggestionsDropdown');
+    if (input)    input.value = value;
+    if (dropdown) { dropdown.style.display = 'none'; dropdown.innerHTML = ''; }
+}
+
+// ─── AUTOCOMPLETE AUTORE ───────────────────────────────────────────────────────
+
+/**
+ * Legge gli autori dal DOM (${authors} iniettati da Thymeleaf).
+ * @returns {{first:string, last:string, full:string}[]}
+ */
+function getAuthorList() {
+    const items = document.querySelectorAll('#authorDataSource li');
+    return Array.from(items).map(li => ({
+        first: li.dataset.first || '',
+        last:  li.dataset.last  || '',
+        full:  li.textContent.trim()
+    })).filter(a => a.full);
+}
+
+/**
+ * Filtra gli autori e mostra il dropdown dei suggerimenti.
+ * @param {string} query
+ */
+function filterAuthorSuggestions(query) {
+    const dropdown = document.getElementById('authorSuggestionsDropdown');
+    const input    = document.getElementById('editAuthorSearchInput');
+    if (!dropdown || !input) return;
+
+    const q = query.trim().toLowerCase();
+    if (!q) { dropdown.style.display = 'none'; dropdown.innerHTML = ''; return; }
+
+    const matches = getAuthorList().filter(a => a.full.toLowerCase().includes(q));
+    if (!matches.length) { dropdown.style.display = 'none'; dropdown.innerHTML = ''; return; }
+
+    const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    dropdown.innerHTML = matches.map(a => {
+        const hl = a.full.replace(re, '<mark style="background:rgba(245,166,35,0.3);color:inherit;border-radius:3px;padding:0 2px;">$1</mark>');
+        return `<div style="padding:10px 16px;cursor:pointer;font-size:0.85rem;font-weight:600;
+                    transition:background 0.2s;border-bottom:1px solid var(--color-border);"
+             onmousedown="selectAuthorSuggestion('${a.first.replace(/'/g, "\\'").replace(/"/g, '&quot;')}', '${a.last.replace(/'/g, "\\'").replace(/"/g, '&quot;')}')"
+             onmouseover="this.style.background='var(--color-surface-2)'"
+             onmouseout="this.style.background=''">${hl}</div>`;
+    }).join('');
+    dropdown.style.display = 'block';
+}
+
+/**
+ * Riempie i campi nome e cognome con l'autore selezionato e chiude il dropdown.
+ * @param {string} first - Nome
+ * @param {string} last  - Cognome
+ */
+function selectAuthorSuggestion(first, last) {
+    const firstInput = document.getElementById('editAuthorFirstNameInput');
+    const lastInput  = document.getElementById('editAuthorLastNameInput');
+    const searchInput = document.getElementById('editAuthorSearchInput');
+    const dropdown   = document.getElementById('authorSuggestionsDropdown');
+    if (firstInput)  firstInput.value  = first;
+    if (lastInput)   lastInput.value   = last;
+    if (searchInput) searchInput.value = `${first} ${last}`;
+    if (dropdown)    { dropdown.style.display = 'none'; dropdown.innerHTML = ''; }
+}
+
+// ─── AUTOCOMPLETE EDITORE ──────────────────────────────────────────────────────
+
+/**
+ * Legge gli editori dal DOM (${publishers} iniettati da Thymeleaf).
+ * @returns {string[]}
+ */
+function getPublisherList() {
+    const items = document.querySelectorAll('#publisherDataSource li');
+    return Array.from(items).map(li => li.textContent.trim()).filter(Boolean);
+}
+
+/**
+ * Filtra gli editori esistenti in base al testo digitato e mostra il dropdown.
+ * @param {string} query
+ */
+function filterPublisherSuggestions(query) {
+    const dropdown = document.getElementById('publisherSuggestionsDropdown');
+    const input    = document.getElementById('editPublisherOnlyInput');
+    if (!dropdown || !input) return;
+
+    const q = query.trim().toLowerCase();
+    if (!q) { dropdown.style.display = 'none'; dropdown.innerHTML = ''; return; }
+
+    const matches = getPublisherList().filter(p => p.toLowerCase().includes(q));
+    if (!matches.length) { dropdown.style.display = 'none'; dropdown.innerHTML = ''; return; }
+
+    const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+    dropdown.innerHTML = matches.map(p => {
+        const hl = p.replace(re, '<mark style="background:rgba(245,166,35,0.3);color:inherit;border-radius:3px;padding:0 2px;">$1</mark>');
+        return `<div style="padding:10px 16px;cursor:pointer;font-size:0.85rem;font-weight:600;
+                    transition:background 0.2s;border-bottom:1px solid var(--color-border);"
+             onmousedown="selectPublisherSuggestion('${p.replace(/'/g, "\\'")}')"
+             onmouseover="this.style.background='var(--color-surface-2)'"
+             onmouseout="this.style.background=''">${hl}</div>`;
+    }).join('');
+    dropdown.style.display = 'block';
+}
+
+/**
+ * Riempie l'input editore con il valore selezionato e chiude il dropdown.
+ * @param {string} value
+ */
+function selectPublisherSuggestion(value) {
+    const input    = document.getElementById('editPublisherOnlyInput');
+    const dropdown = document.getElementById('publisherSuggestionsDropdown');
+    if (input)    input.value = value;
+    if (dropdown) { dropdown.style.display = 'none'; dropdown.innerHTML = ''; }
 }

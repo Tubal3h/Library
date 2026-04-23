@@ -76,11 +76,24 @@
                     Stai modificando il titolo dell'opera: <br>
                     <strong id="editTitleOnlyCurrent" class="text-brand text-lg"></strong>
                 </p>
-                <div class="input-group">
+                <div class="input-group" style="position: relative;">
                     <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nuovo Titolo</label>
                     <input type="text" id="editTitleOnlyInput"
                         class="w-100 p-4 radius-12 border-none font-size-small"
-                        placeholder="Esempio: Il Nome della Rosa">
+                        placeholder="Esempio: Il Nome della Rosa"
+                        autocomplete="off"
+                        oninput="filterTitleSuggestions(this.value)">
+                    <div id="titleSuggestionsDropdown"
+                         style="display:none; position:absolute; top:100%; left:0; right:0; z-index:999;
+                                background:var(--color-surface); border:1px solid var(--color-border);
+                                border-radius:12px; margin-top:4px; overflow:hidden;
+                                box-shadow:0 8px 30px rgba(0,0,0,0.12); max-height:200px; overflow-y:auto;">
+                    </div>
+                    <!-- Sorgente titoli da Thymeleaf (books + editions) -->
+                    <ul id="titleDataSource" style="display:none;">
+                        <li th:each="book : ${books}" th:text="${book.title}"></li>
+                        <li th:each="edition : ${editions}" th:text="${edition.bookName}"></li>
+                    </ul>
                 </div>
             </div>
 
@@ -91,6 +104,28 @@
                     <strong id="editAuthorOnlyCurrent" class="text-brand text-lg"></strong>
                 </p>
                 <div class="flex flex-column gap-5">
+                    <!-- Campo ricerca rapida autore con autocomplete -->
+                    <div class="input-group" style="position: relative;">
+                        <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Cerca Autore</label>
+                        <input type="text" id="editAuthorSearchInput"
+                            class="w-100 p-4 radius-12 border-none font-size-small"
+                            placeholder="Digita nome o cognome..."
+                            autocomplete="off"
+                            oninput="filterAuthorSuggestions(this.value)">
+                        <div id="authorSuggestionsDropdown"
+                             style="display:none; position:absolute; top:100%; left:0; right:0; z-index:999;
+                                    background:var(--color-surface); border:1px solid var(--color-border);
+                                    border-radius:12px; margin-top:4px; overflow:hidden;
+                                    box-shadow:0 8px 30px rgba(0,0,0,0.12); max-height:200px; overflow-y:auto;">
+                        </div>
+                        <!-- Sorgente autori da Thymeleaf -->
+                        <ul id="authorDataSource" style="display:none;">
+                            <li th:each="author : ${authors}"
+                                th:data-first="${author.authorName}"
+                                th:data-last="${author.authorLastName}"
+                                th:text="${author.authorName} + ' ' + ${author.authorLastName}"></li>
+                        </ul>
+                    </div>
                     <div class="input-group">
                         <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nome Autore</label>
                         <input type="text" id="editAuthorFirstNameInput"
@@ -112,12 +147,25 @@
                     Stai modificando l'editore per: <br>
                     <strong id="editPublisherOnlyCurrent" class="text-brand text-lg"></strong>
                 </p>
-                <div class="input-group">
+                <div class="input-group" style="position: relative;">
                     <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nuovo Editore</label>
                     <input type="text" id="editPublisherOnlyInput"
                         class="w-100 p-4 radius-12 border-none font-size-small"
-                        placeholder="Esempio: Mondadori">
+                        placeholder="Esempio: Mondadori"
+                        autocomplete="off"
+                        oninput="filterPublisherSuggestions(this.value)">
+                    <div id="publisherSuggestionsDropdown"
+                         style="display:none; position:absolute; top:100%; left:0; right:0; z-index:999;
+                                background:var(--color-surface); border:1px solid var(--color-border);
+                                border-radius:12px; margin-top:4px; overflow:hidden;
+                                box-shadow:0 8px 30px rgba(0,0,0,0.12); max-height:200px; overflow-y:auto;">
+                    </div>
+                    <!-- Sorgente editori da Thymeleaf -->
+                    <ul id="publisherDataSource" style="display:none;">
+                        <li th:each="publisher : ${publishers}" th:text="${publisher.publisherName}"></li>
+                    </ul>
                 </div>
+            </div>
             </div>
 
             <!-- Edit Category Only -->
@@ -126,11 +174,24 @@
                     Stai modificando la categoria per: <br>
                     <strong id="editCategoryOnlyCurrent" class="text-brand text-lg"></strong>
                 </p>
-                <div class="input-group">
+                <div class="input-group" style="position: relative;">
                     <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nuova Categoria</label>
                     <input type="text" id="editCategoryOnlyInput"
                         class="w-100 p-4 radius-12 border-none font-size-small"
-                        placeholder="Esempio: Informatica">
+                        placeholder="Esempio: Informatica"
+                        autocomplete="off"
+                        oninput="filterCategorySuggestions(this.value)">
+                    <!-- Dropdown suggerimenti -->
+                    <div id="categorySuggestionsDropdown"
+                         style="display:none; position:absolute; top:100%; left:0; right:0; z-index:999;
+                                background:var(--color-surface); border:1px solid var(--color-border);
+                                border-radius:12px; margin-top:4px; overflow:hidden;
+                                box-shadow:0 8px 30px rgba(0,0,0,0.12); max-height:200px; overflow-y:auto;">
+                    </div>
+                    <!-- Lista categorie nascosta, letta da Thymeleaf -->
+                    <ul id="categoryDataSource" style="display:none;">
+                        <li th:each="category : ${categories}" th:text="${category.categoryName}"></li>
+                    </ul>
                 </div>
             </div>
             <div id="addCopyContent" class="none animate-fade-in-up text-center py-6">
