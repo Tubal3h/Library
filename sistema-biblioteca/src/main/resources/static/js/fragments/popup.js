@@ -21,7 +21,10 @@ const POPUP_PANELS = [
     'editCategoryOnlyContent',
     'addUserContent',
     'addUserSuccessContent',
-    'updateTitleContent'
+    'updateTitleContent',
+    'updateAuthorContent',
+    'updatePublisherContent',
+    'updateCategoryContent'
 ];
 
 /**
@@ -565,8 +568,7 @@ function openEditAuthorPopup(id, currentAuthor) {
         const lastName = lastInput ? lastInput.value.trim() : '';
         if (!firstName && !lastName) return;
         console.log(`[Popup] Modifica autore id=${id} → "${firstName} ${lastName}"`);
-        // TODO: integrazione backend
-        closePopup();
+        window.location.href = `/api/updateAuthor?authorId=${id}&authorName=${encodeURIComponent(firstName)}&authorLastName=${encodeURIComponent(lastName)}`;
     };
 
     popup.classList.remove('none');
@@ -618,8 +620,7 @@ function openEditPublisherPopup(id, currentPublisher) {
         const newVal = inputElem ? inputElem.value.trim() : '';
         if (!newVal) return;
         console.log(`[Popup] Modifica editore id=${id} → "${newVal}"`);
-        // TODO: integrazione backend
-        closePopup();
+        window.location.href = `/api/updatePublisher?publisherId=${id}&publisherName=${encodeURIComponent(newVal)}`;
     };
 
     popup.classList.remove('none');
@@ -671,8 +672,7 @@ function openEditCategoryPopup(id, currentCategory) {
         const newVal = inputElem ? inputElem.value.trim() : '';
         if (!newVal) return;
         console.log(`[Popup] Modifica categoria id=${id} → "${newVal}"`);
-        // TODO: integrazione backend
-        closePopup();
+        window.location.href = `/api/updateCategory?categoryId=${id}&categoryName=${encodeURIComponent(newVal)}`;
     };
 
     popup.classList.remove('none');

@@ -1,11 +1,11 @@
-package it.entity;
+package it.dto;
 
 import java.time.LocalDate;
 
 /**
  * Classe che rappresenta un'edizione di un libro con i dati delle tabelle collegate.
  */
-public class EditionJoin {
+public class EditionJoinDto {
     private int editionId;
     private int bookId;
     private String bookName;
@@ -13,42 +13,31 @@ public class EditionJoin {
     private String publisherName;
     private String categoryName;
     private LocalDate publishingDate;
-    private String isbn;
+    private String isbnCode;
     private int quantity;
     private String status;
-    
-    /**
-     * Costruttore vuoto per EditionJoin.
+        /**
+     * Costruttore vuoto per EditionDto.
      */
-    public EditionJoin() {
+    public EditionJoinDto() {
     }
-    
+
     /**
-     * Costruttore completo per EditionJoin.
+     * Costruttore completo per EditionDto.
      * 
-     * @param edition_id ID dell'edizione
-     * @param book_id ID del libro
-     * @param book_name Nome del libro
-     * @param author_name Nome dell'autore
-     * @param publisher_name Nome dell'editore
-     * @param category_name Nome della categoria
-     * @param publishing_date Data di pubblicazione
-     * @param isbn Codice ISBN
+     * @param editionId ID dell'edizione
+     * @param bookId ID del libro
+     * @param bookName Nome del libro
+     * @param authorId ID dell'autore
+     * @param authorName Nome dell'autore
+     * @param publisherName Nome dell'editore
+     * @param categoryName Nome della categoria
+     * @param publishingDate Data di pubblicazione
+     * @param isbnCode Codice ISBN
      * @param quantity Quantità di copie disponibili
      */
-    public EditionJoin(int editionId, int bookId, String bookName, String authorName, String publisherName, String categoryName, LocalDate publishingDate, String isbn, int quantity, String status) {
-        this.editionId = editionId;
-        this.bookId = bookId;
-        this.bookName = bookName;
-        this.authorName = authorName;
-        this.publisherName = publisherName;
-        this.categoryName = categoryName;
-        this.publishingDate = publishingDate;
-        this.isbn = isbn;
-        this.quantity = quantity;
-        this.status = status;
-    }
-    
+
+
     /**
      * Ottiene l'ID dell'edizione.
      * 
@@ -57,33 +46,7 @@ public class EditionJoin {
     public int getEditionId() {
         return editionId;
     }
-    
-    /**
-     * Imposta l'ID dell'edizione.
-     * 
-     * @param edition_id ID dell'edizione
-     */
-    public void setEditionId(int editionId) {
-        this.editionId = editionId;
-    }
-    
-    /**
-     * Ottiene l'ID del libro.
-     * 
-     * @return ID del libro
-     */
-    public int getBookId() {
-        return bookId;
-    }
-    
-    /**
-     * Imposta l'ID del libro.
-     * 
-     * @param book_id ID del libro
-     */
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
-    }
+
     
     public String getStatus() {
 		return status;
@@ -93,7 +56,49 @@ public class EditionJoin {
 		this.status = status;
 	}
 
+	public EditionJoinDto(int editionId, int bookId, String bookName, String authorName, String publisherName,
+			String categoryName, LocalDate publishingDate, String isbnCode, int quantity, String status) {
+		super();
+		this.editionId = editionId;
+		this.bookId = bookId;
+		this.bookName = bookName;
+		this.authorName = authorName;
+		this.publisherName = publisherName;
+		this.categoryName = categoryName;
+		this.publishingDate = publishingDate;
+		this.isbnCode = isbnCode;
+		this.quantity = quantity;
+		this.status = status;
+	}
+
 	/**
+     * Imposta l'ID dell'edizione.
+     * 
+     * @param editionId ID dell'edizione
+     */
+    public void setEditionId(int editionId) {
+        this.editionId = editionId;
+    }
+
+    /**
+     * Ottiene l'ID del libro.
+     * 
+     * @return ID del libro
+     */
+    public int getBookId() {
+        return bookId;
+    }
+
+    /**
+     * Imposta l'ID del libro.
+     * 
+     * @param bookId ID del libro
+     */
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
+    }
+
+    /**
      * Ottiene il nome del libro.
      * 
      * @return Nome del libro
@@ -101,70 +106,70 @@ public class EditionJoin {
     public String getBookName() {
         return bookName;
     }
-    
+
     /**
      * Imposta il nome del libro.
      * 
-     * @param book_name Nome del libro
+     * @param bookName Nome del libro
      */
     public void setBookName(String bookName) {
         this.bookName = bookName;
     }
-    
+
     /**
      * Ottiene il nome dell'autore.
      * 
      * @return Nome dell'autore
      */
-    public String getAuthor() {
+    public String getAuthorName() {
         return authorName;
     }
-    
+
     /**
      * Imposta il nome dell'autore.
      * 
-     * @param author_name Nome dell'autore
+     * @param authorName Nome dell'autore
      */
-    public void setAuthor(String authorName) {
+    public void setAuthorName(String authorName) {
         this.authorName = authorName;
     }
-    
+
     /**
      * Ottiene il nome dell'editore.
      * 
      * @return Nome dell'editore
      */
-    public String getPublisher() {
+    public String getPublisherName() {
         return publisherName;
     }
-    
+
     /**
      * Imposta il nome dell'editore.
      * 
-     * @param publisher_name Nome dell'editore
+     * @param publisherName Nome dell'editore
      */
-    public void setPublisher(String publisherName) {
+    public void setPublisherName(String publisherName) {
         this.publisherName = publisherName;
     }
-    
+
     /**
      * Ottiene il nome della categoria.
      * 
      * @return Nome della categoria
      */
-    public String getCategory() {
+    public String getCategoryName() {
         return categoryName;
     }
-    
+
     /**
      * Imposta il nome della categoria.
      * 
-     * @param category_name Nome della categoria
+     * @param categoryName Nome della categoria
      */
-    public void setCategory(String categoryName) {
+    public void setCategoryName(String categoryName) {
         this.categoryName = categoryName;
     }
-    
+
     /**
      * Ottiene la data di pubblicazione.
      * 
@@ -173,37 +178,35 @@ public class EditionJoin {
     public LocalDate getPublishingDate() {
         return publishingDate;
     }
-    
+
     /**
      * Imposta la data di pubblicazione.
      * 
-     * @param publishing_date Data di pubblicazione
+     * @param publishingDate Data di pubblicazione
      */
     public void setPublishingDate(LocalDate publishingDate) {
         this.publishingDate = publishingDate;
     }
-    
+
     /**
      * Ottiene il codice ISBN.
      * 
      * @return Codice ISBN
      */
     public String getIsbn() {
-        return isbn;
-    }
-    
-    /**
-     * Imposta il codice ISBN.
-     * 
-     * @param isbn Codice ISBN
-     */
-    public void setIsbn(String isbn) {
-        this.isbn = isbn;
+        return isbnCode;
     }
 
     /**
-     * Ottiene la quantità di copie disponibili.
+     * Imposta il codice ISBN.
      * 
+     * @param isbnCode Codice ISBN
+     */
+    public void setIsbn(String isbnCode) {
+        this.isbnCode = isbnCode;
+    }
+
+    /**
      * @return Quantità di copie disponibili
      */
     public int getQuantity() {
@@ -211,23 +214,20 @@ public class EditionJoin {
     }
 
     /**
-     * Imposta la quantità di copie disponibili.
-     * 
      * @param quantity Quantità di copie disponibili
      */
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
-    
+
     /**
-     * Converte l'oggetto EditionJoin in una stringa.
+     * Converte l'oggetto EditionDto in una stringa.
      * 
-     * @return Stringa che rappresenta l'oggetto EditionJoin
+     * @return Stringa che rappresenta l'oggetto EditionDto
      */
     @Override
     public String toString() {
-        return "EditionJoin [editionId=" + editionId + ", bookName=" + bookName + ", author=" + authorName
-                + ", publisher=" + publisherName + ", category=" + categoryName + ", publishingDate="
-                + publishingDate + ", isbn=" + isbn + ", quantity=" + quantity + "]";
+        return "EditionDto [editionId=" + editionId + ", bookId=" + bookId + ", bookName=" + bookName + ", authorName=" + authorName + ", publisherName=" + publisherName + ", categoryName="
+                + categoryName + ", publicationDate=" + publishingDate + ", isbnCode=" + isbnCode + ", quantity=" + quantity + "]";
     }
 }

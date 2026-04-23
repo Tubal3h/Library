@@ -64,6 +64,16 @@
                 const userName    = /*[[${popupUserName}]]*/ null;
                 const userEmail   = /*[[${popupUserEmail}]]*/ null;
                 const userRole    = /*[[${popupUserRole}]]*/ null;
+                
+                const authorId      = /*[[${popupAuthorId}]]*/ null;
+                const authorName    = /*[[${popupAuthorName}]]*/ null;
+                const authorLastName= /*[[${popupAuthorLastName}]]*/ null;
+                
+                const publisherId   = /*[[${popupPublisherId}]]*/ null;
+                const publisherName = /*[[${popupPublisherName}]]*/ null;
+                
+                const categoryId    = /*[[${popupCategoryId}]]*/ null;
+                const categoryName  = /*[[${popupCategoryName}]]*/ null;
 
                 // Nascondi tutti i pannelli del body
                 document.getElementById('editBookContent').classList.add('none');
@@ -75,6 +85,9 @@
                 document.getElementById('deliveredRentContent')?.classList.add('none');
                 document.getElementById('bookedRentContent')?.classList.add('none');
                 document.getElementById('updateTitleContent')?.classList.add('none');
+                document.getElementById('updateAuthorContent')?.classList.add('none');
+                document.getElementById('updatePublisherContent')?.classList.add('none');
+                document.getElementById('updateCategoryContent')?.classList.add('none');
 
                 // Nascondi il footer con "Annulla / Conferma" (non serve per i popup di feedback)
                 const footer = document.querySelector('.popup-footer');
@@ -141,6 +154,25 @@
                     setTextIfExists('updateTitleBookId', bookId || '');
                     setTextIfExists('updateTitleBookName', bookTitle || '');
                     document.getElementById('updateTitleContent').classList.remove('none');
+                } else if (popupType === 'updateAuthor') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-user-pen text-white font-size-medium';
+                    setTextIfExists('popupTitle', 'Autore aggiornato');
+                    setTextIfExists('updateAuthorId', authorId || '');
+                    setTextIfExists('updateAuthorName', authorName || '');
+                    setTextIfExists('updateAuthorLastName', authorLastName || '');
+                    document.getElementById('updateAuthorContent').classList.remove('none');
+                } else if (popupType === 'updatePublisher') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-building-columns text-white font-size-medium';
+                    setTextIfExists('popupTitle', 'Editore aggiornato');
+                    setTextIfExists('updatePublisherId', publisherId || '');
+                    setTextIfExists('updatePublisherName', publisherName || '');
+                    document.getElementById('updatePublisherContent').classList.remove('none');
+                } else if (popupType === 'updateCategory') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-tag text-white font-size-medium';
+                    setTextIfExists('popupTitle', 'Categoria aggiornata');
+                    setTextIfExists('updateCategoryId', categoryId || '');
+                    setTextIfExists('updateCategoryName', categoryName || '');
+                    document.getElementById('updateCategoryContent').classList.remove('none');
                 }
 
                 // Mostra l'overlay del popup

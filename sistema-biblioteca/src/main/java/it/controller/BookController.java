@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import it.dto.AuthorDto;
 import it.dto.BookDto;
 import it.dto.PublisherDto;
+import it.dto.CategoryDto;
 import it.dto.UserDto;
 import it.component.UserSession;
 import it.exception.InsertBookServiceException;
@@ -20,6 +21,7 @@ import it.exception.NoIsbnFoundException;
 import it.service.AuthorService;
 import it.service.BookService;
 import it.service.PublisherService;
+import it.service.CategoryService;
 
 
 @Controller
@@ -30,6 +32,7 @@ public class BookController {
     private final UserSession userSession;
 	private final AuthorService authorService;
 	private final PublisherService publisherService;
+	private final CategoryService categoryService;
 
     /**
      * Costruttore per BookController.
@@ -37,11 +40,16 @@ public class BookController {
      * @param bookService Servizio per la gestione dei libri
      * @param userSession Componente per la gestione della sessione utente
      */
-    public BookController(BookService bookService, UserSession userSession, AuthorService authorService, PublisherService publisherService) {
+    public BookController(	BookService bookService,
+							UserSession userSession,
+							AuthorService authorService,
+							PublisherService publisherService,
+							CategoryService categoryService) {
         this.bookService = bookService;
         this.userSession = userSession;
 		this.authorService = authorService;
 		this.publisherService = publisherService;
+		this.categoryService = categoryService;
     }
 
     	/**
@@ -169,6 +177,7 @@ public class BookController {
 
 	@GetMapping("/api/updateBookTitle")
 	public String updateBookTitle(
+		@RequestParam(value = "editionId", required = false) Integer editionId,
 		@RequestParam(value = "bookNameId", required = false) Integer bookNameId, 
 		@RequestParam(value = "title", required = false) String title,
 		RedirectAttributes redirectAttributes) {
@@ -183,6 +192,7 @@ public class BookController {
 
 		try {
 			bookService.updateBookTitle(bookNameId, title);
+			editionService.updateTitleId(editionId, bookNameId);
 			redirectAttributes.addFlashAttribute("popupType", "updateTitle");
 			redirectAttributes.addFlashAttribute("popupBookId", bookNameId);
 			redirectAttributes.addFlashAttribute("popupBookTitle", title);
@@ -288,6 +298,46 @@ public class BookController {
 			redirectAttributes.addFlashAttribute("popupType", "updatePublisher");
 			redirectAttributes.addFlashAttribute("popupPublisherId", publisherId);
 			redirectAttributes.addFlashAttribute("popupPublisherName", publisherName);
+		} catch (Exception ex) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
+		}
+		return "redirect:/dashboard";
+	}
+
+	@GetMapping("/api/updateCategory")
+	public String updateCategory(
+		@RequestParam(value = "categoryId", required = false) Integer categoryId,
+		@RequestParam(value = "categoryName", required = false) String categoryName,
+		RedirectAttributes redirectAttributes) {
+		UserDto user = userSession.getUser();
+		if (user == null) {
+			return "redirect:/";
+		}
+
+		
+		CategoryDto categoryDto = new CategoryDto(categoryId, categoryName);
+		try {
+
+		if(!user.getUserRole().equals("role_admin")) {
+			userSession.setSection("home");
+			return "redirect:/dashboard";
+		}
+		if(hasNullOrBlankParameters(categoryDto.getCategoryName())) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
+			return "redirect:/dashboard";
+		}
+
+		if (categoryService.isCategoryPresent(categoryDto)) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
+			return "redirect:/dashboard";
+		}
+			categoryService.updateCategory(categoryDto);
+			redirectAttributes.addFlashAttribute("popupType", "updateCategory");
+			redirectAttributes.addFlashAttribute("popupCategoryId", categoryId);
+			redirectAttributes.addFlashAttribute("popupCategoryName", categoryName);
 		} catch (Exception ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());

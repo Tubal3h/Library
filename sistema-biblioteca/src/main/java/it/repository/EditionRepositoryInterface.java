@@ -8,7 +8,7 @@ import it.entity.EditionJoin;
 
 public interface EditionRepositoryInterface {
 	public List<EditionJoin> getAllEditions();
-	public Edition getEditionById(int editionId);
+	public Edition findById(int editionId);
 	public int insertEdition(String title, 
 							 String authorName,
 							 String authotLastName,
@@ -17,4 +17,8 @@ public interface EditionRepositoryInterface {
 							 String category, 
 							 String isbn);
 	
+	public void updateBookTitleId(int editionId, int bookNameId);
+	public void updateAuthorId(int editionId, int authorId);
+	public void updatePublisherId(int editionId, int publisherId);
+	public void updateCategoryId(int editionId, int categoryId);
 }
