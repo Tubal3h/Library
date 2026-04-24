@@ -26,7 +26,11 @@ const POPUP_PANELS = [
     'updateAuthorContent',
     'updatePublisherContent',
     'updateCategoryContent',
-    'deleteUserContent'
+    'deleteUserContent',
+    'addTitleContent',
+    'addAuthorContent',
+    'addPublisherContent',
+    'addCategoryContent'
 ];
 
 /**
@@ -520,9 +524,17 @@ function openEditTitlePopup(id, currentTitle) {
     icon.parentElement.classList.add('icon-box-accent');
 
     const currentElem = document.getElementById('editTitleOnlyCurrent');
-    const inputElem = document.getElementById('editTitleOnlyInput');
+    const selectElem = document.getElementById('editTitleOnlySelect');
     if (currentElem) currentElem.innerText = currentTitle;
-    if (inputElem) inputElem.value = currentTitle;
+    
+    if (selectElem && currentTitle) {
+        for (let i = 0; i < selectElem.options.length; i++) {
+            if (selectElem.options[i].text === currentTitle) {
+                selectElem.selectedIndex = i;
+                break;
+            }
+        }
+    }
 
     panel.classList.remove('none');
 
@@ -533,10 +545,14 @@ function openEditTitlePopup(id, currentTitle) {
     confirmBtn.style.background = '';
     confirmBtn.style.borderColor = '';
     confirmBtn.onclick = () => {
-        const newVal = inputElem ? inputElem.value.trim() : '';
-        if (!newVal) return;
-        console.log(`[Popup] Modifica titolo id=${id} → "${newVal}"`);
-        window.location.href = `/api/updateBookTitle?editionId=${id}&title=${encodeURIComponent(newVal)}`;
+        const selectedId = selectElem ? selectElem.value : '';
+        const selectedText = selectElem ? selectElem.options[selectElem.selectedIndex].text : '';
+        if (!selectedId) return;
+
+        const message = `Stai cambiando il titolo attuale ("${currentTitle}") con quello selezionato ("${selectedText}").`;
+        const url = `/api/updateBookTitle?editionId=${id}&bookNameId=${selectedId}`;
+        
+        openConfirmPopup('edit', 'Cambio Titolo', message, url);
     };
 
     popup.classList.remove('none');
@@ -568,14 +584,17 @@ function openEditAuthorPopup(id, currentAuthor) {
     icon.parentElement.classList.add('icon-box-accent');
 
     const currentElem = document.getElementById('editAuthorOnlyCurrent');
+    const selectElem = document.getElementById('editAuthorOnlySelect');
     if (currentElem) currentElem.innerText = currentAuthor;
 
-    // Pre-compila nome e cognome separando al primo spazio
-    const parts = currentAuthor ? currentAuthor.split(' ') : [];
-    const firstInput = document.getElementById('editAuthorFirstNameInput');
-    const lastInput = document.getElementById('editAuthorLastNameInput');
-    if (firstInput) firstInput.value = parts[0] || '';
-    if (lastInput) lastInput.value = parts.slice(1).join(' ') || '';
+    if (selectElem && currentAuthor) {
+        for (let i = 0; i < selectElem.options.length; i++) {
+            if (selectElem.options[i].text === currentAuthor) {
+                selectElem.selectedIndex = i;
+                break;
+            }
+        }
+    }
 
     panel.classList.remove('none');
 
@@ -586,11 +605,14 @@ function openEditAuthorPopup(id, currentAuthor) {
     confirmBtn.style.background = '';
     confirmBtn.style.borderColor = '';
     confirmBtn.onclick = () => {
-        const firstName = firstInput ? firstInput.value.trim() : '';
-        const lastName = lastInput ? lastInput.value.trim() : '';
-        if (!firstName && !lastName) return;
-        console.log(`[Popup] Modifica autore id=${id} → "${firstName} ${lastName}"`);
-        window.location.href = `/api/updateAuthor?editionId=${id}&authorName=${encodeURIComponent(firstName)}&authorLastName=${encodeURIComponent(lastName)}`;
+        const selectedId = selectElem ? selectElem.value : '';
+        const selectedText = selectElem ? selectElem.options[selectElem.selectedIndex].text : '';
+        if (!selectedId) return;
+
+        const message = `Stai cambiando l'autore attuale ("${currentAuthor}") con quello selezionato ("${selectedText}").`;
+        const url = `/api/updateAuthor?editionId=${id}&authorId=${selectedId}`;
+        
+        openConfirmPopup('edit', 'Cambio Autore', message, url);
     };
 
     popup.classList.remove('none');
@@ -622,15 +644,19 @@ function openEditPublisherPopup(id, currentPublisher) {
     icon.parentElement.classList.add('icon-box-accent');
 
     const currentElem = document.getElementById('editPublisherOnlyCurrent');
-    const inputElem = document.getElementById('editPublisherOnlyInput');
+    const selectElem = document.getElementById('editPublisherOnlySelect');
     if (currentElem) currentElem.innerText = currentPublisher;
-    if (inputElem) inputElem.value = currentPublisher;
+    
+    if (selectElem && currentPublisher) {
+        for (let i = 0; i < selectElem.options.length; i++) {
+            if (selectElem.options[i].text === currentPublisher) {
+                selectElem.selectedIndex = i;
+                break;
+            }
+        }
+    }
 
     panel.classList.remove('none');
-
-    // Reset dropdown suggerimenti
-    const dropdown = document.getElementById('publisherSuggestionsDropdown');
-    if (dropdown) dropdown.style.display = 'none';
 
     const cancelBtn = document.querySelector('.btn-link-action');
     if (cancelBtn) cancelBtn.classList.remove('none');
@@ -639,10 +665,14 @@ function openEditPublisherPopup(id, currentPublisher) {
     confirmBtn.style.background = '';
     confirmBtn.style.borderColor = '';
     confirmBtn.onclick = () => {
-        const newVal = inputElem ? inputElem.value.trim() : '';
-        if (!newVal) return;
-        console.log(`[Popup] Modifica editore id=${id} → "${newVal}"`);
-        window.location.href = `/api/updatePublisher?editionId=${id}&publisherName=${encodeURIComponent(newVal)}`;
+        const selectedId = selectElem ? selectElem.value : '';
+        const selectedText = selectElem ? selectElem.options[selectElem.selectedIndex].text : '';
+        if (!selectedId) return;
+
+        const message = `Stai cambiando l'editore attuale ("${currentPublisher}") con quello selezionato ("${selectedText}").`;
+        const url = `/api/updatePublisher?editionId=${id}&publisherId=${selectedId}`;
+        
+        openConfirmPopup('edit', 'Cambio Editore', message, url);
     };
 
     popup.classList.remove('none');
@@ -674,15 +704,19 @@ function openEditCategoryPopup(id, currentCategory) {
     icon.parentElement.classList.add('icon-box-accent');
 
     const currentElem = document.getElementById('editCategoryOnlyCurrent');
-    const inputElem = document.getElementById('editCategoryOnlyInput');
+    const selectElem = document.getElementById('editCategoryOnlySelect');
     if (currentElem) currentElem.innerText = currentCategory;
-    if (inputElem) inputElem.value = currentCategory;
+
+    if (selectElem && currentCategory) {
+        for (let i = 0; i < selectElem.options.length; i++) {
+            if (selectElem.options[i].text === currentCategory) {
+                selectElem.selectedIndex = i;
+                break;
+            }
+        }
+    }
 
     panel.classList.remove('none');
-
-    // Reset dropdown suggerimenti
-    const dropdown = document.getElementById('categorySuggestionsDropdown');
-    if (dropdown) dropdown.style.display = 'none';
 
     const cancelBtn = document.querySelector('.btn-link-action');
     if (cancelBtn) cancelBtn.classList.remove('none');
@@ -691,14 +725,227 @@ function openEditCategoryPopup(id, currentCategory) {
     confirmBtn.style.background = '';
     confirmBtn.style.borderColor = '';
     confirmBtn.onclick = () => {
-        const newVal = inputElem ? inputElem.value.trim() : '';
-        if (!newVal) return;
-        console.log(`[Popup] Modifica categoria id=${id} → "${newVal}"`);
-        window.location.href = `/api/updateCategory?editionId=${id}&categoryName=${encodeURIComponent(newVal)}`;
+        const selectedId = selectElem ? selectElem.value : '';
+        const selectedText = selectElem ? selectElem.options[selectElem.selectedIndex].text : '';
+        if (!selectedId) return;
+
+        const message = `Stai cambiando la categoria attuale ("${currentCategory}") con quella selezionata ("${selectedText}").`;
+        const url = `/api/updateCategory?editionId=${id}&categoryId=${selectedId}`;
+        
+        openConfirmPopup('edit', 'Cambio Categoria', message, url);
     };
 
     popup.classList.remove('none');
     document.body.style.overflow = 'hidden';
+}
+
+// ─── FUNZIONI AGGIUNTA ENTITÀ (SETTINGS) ───────────────────────────────────────
+
+/**
+ * Apre il popup per aggiungere un nuovo Titolo Opera (BookName).
+ */
+function openAddTitlePopup() {
+    const popup = document.getElementById('genericPopup');
+    const title = document.getElementById('popupTitle');
+    const icon = document.getElementById('popupIcon');
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    const panel = document.getElementById('addTitleContent');
+
+    if (!popup || !title || !icon || !confirmBtn || !panel) return;
+    const footer = document.querySelector('.popup-footer');
+    if (footer) footer.classList.remove('none');
+    hideAllPanels();
+
+    title.innerText = 'Nuovo Titolo';
+    icon.className = 'fa-solid fa-plus text-white font-size-medium';
+    icon.parentElement.className = 'icon-box-accent radius-12 p-3 flex center';
+    panel.classList.remove('none');
+
+    confirmBtn.innerText = 'Aggiungi';
+    confirmBtn.onclick = () => {
+        const form = document.getElementById('addTitleForm');
+        if (form && form.checkValidity()) form.submit();
+        else if (form) form.reportValidity();
+    };
+
+    popup.classList.remove('none');
+    document.body.style.overflow = 'hidden';
+}
+
+/**
+ * Apre il popup per aggiungere un nuovo Autore.
+ */
+function openAddAuthorPopup() {
+    const popup = document.getElementById('genericPopup');
+    const title = document.getElementById('popupTitle');
+    const icon = document.getElementById('popupIcon');
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    const panel = document.getElementById('addAuthorContent');
+
+    if (!popup || !title || !icon || !confirmBtn || !panel) return;
+    const footer = document.querySelector('.popup-footer');
+    if (footer) footer.classList.remove('none');
+    hideAllPanels();
+
+    title.innerText = 'Nuovo Autore';
+    icon.className = 'fa-solid fa-user-plus text-white font-size-medium';
+    icon.parentElement.className = 'icon-box-accent radius-12 p-3 flex center';
+    panel.classList.remove('none');
+
+    confirmBtn.innerText = 'Aggiungi';
+    confirmBtn.onclick = () => {
+        const form = document.getElementById('addAuthorForm');
+        if (form && form.checkValidity()) form.submit();
+        else if (form) form.reportValidity();
+    };
+
+    popup.classList.remove('none');
+    document.body.style.overflow = 'hidden';
+}
+
+/**
+ * Apre il popup per aggiungere un nuovo Editore.
+ */
+function openAddPublisherPopup() {
+    const popup = document.getElementById('genericPopup');
+    const title = document.getElementById('popupTitle');
+    const icon = document.getElementById('popupIcon');
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    const panel = document.getElementById('addPublisherContent');
+
+    if (!popup || !title || !icon || !confirmBtn || !panel) return;
+    const footer = document.querySelector('.popup-footer');
+    if (footer) footer.classList.remove('none');
+    hideAllPanels();
+
+    title.innerText = 'Nuovo Editore';
+    icon.className = 'fa-solid fa-building-columns text-white font-size-medium';
+    icon.parentElement.className = 'icon-box-accent radius-12 p-3 flex center';
+    panel.classList.remove('none');
+
+    confirmBtn.innerText = 'Aggiungi';
+    confirmBtn.onclick = () => {
+        const form = document.getElementById('addPublisherForm');
+        if (form && form.checkValidity()) form.submit();
+        else if (form) form.reportValidity();
+    };
+
+    popup.classList.remove('none');
+    document.body.style.overflow = 'hidden';
+}
+
+/**
+ * Apre il popup per aggiungere una nuova Categoria.
+ */
+function openAddCategoryPopup() {
+    const popup = document.getElementById('genericPopup');
+    const title = document.getElementById('popupTitle');
+    const icon = document.getElementById('popupIcon');
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    const panel = document.getElementById('addCategoryContent');
+
+    if (!popup || !title || !icon || !confirmBtn || !panel) return;
+    const footer = document.querySelector('.popup-footer');
+    if (footer) footer.classList.remove('none');
+    hideAllPanels();
+
+    title.innerText = 'Nuova Categoria';
+    icon.className = 'fa-solid fa-tag text-white font-size-medium';
+    icon.parentElement.className = 'icon-box-accent radius-12 p-3 flex center';
+    panel.classList.remove('none');
+
+    confirmBtn.innerText = 'Aggiungi';
+    confirmBtn.onclick = () => {
+        const form = document.getElementById('addCategoryForm');
+        if (form && form.checkValidity()) form.submit();
+        else if (form) form.reportValidity();
+    };
+
+    popup.classList.remove('none');
+    document.body.style.overflow = 'hidden';
+}
+
+// ─── FUNZIONI MODIFICA ENTITÀ (SETTINGS - INTEGRALI) ───────────────────────────
+
+/**
+ * Apre il popup per modificare un BookName (Titolo).
+ */
+function openEditBookNamePopup(id, currentTitle) {
+    // Possiamo riutilizzare l'interfaccia di openEditTitlePopup ma l'endpoint sarà diverso
+    // o semplicemente reindirizzare a un endpoint che gestisce il BookName specificamente.
+    openEditTitlePopup(id, currentTitle);
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    confirmBtn.onclick = () => {
+        const newVal = document.getElementById('editTitleOnlyInput').value.trim();
+        if (!newVal) return;
+        window.location.href = `/api/updateBookNameEntity?bookNameId=${id}&title=${encodeURIComponent(newVal)}`;
+    };
+}
+
+/**
+ * Apre il popup per modificare un Autore (Entity level).
+ */
+function openEditAuthorFullPopup(id, name, lastName) {
+    openEditAuthorPopup(id, `${name} ${lastName}`);
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    confirmBtn.onclick = () => {
+        const n = document.getElementById('editAuthorFirstNameInput').value.trim();
+        const ln = document.getElementById('editAuthorLastNameInput').value.trim();
+        if (!n || !ln) return;
+        window.location.href = `/api/updateAuthorEntity?authorId=${id}&authorName=${encodeURIComponent(n)}&authorLastName=${encodeURIComponent(ln)}`;
+    };
+}
+
+/**
+ * Apre il popup per modificare un Editore (Entity level).
+ */
+function openEditPublisherFullPopup(id, name) {
+    openEditPublisherPopup(id, name);
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    confirmBtn.onclick = () => {
+        const newVal = document.getElementById('editPublisherOnlyInput').value.trim();
+        if (!newVal) return;
+        window.location.href = `/api/updatePublisherEntity?publisherId=${id}&publisherName=${encodeURIComponent(newVal)}`;
+    };
+}
+
+/**
+ * Apre il popup per modificare una Categoria (Entity level).
+ */
+function openEditCategoryFullPopup(id, name) {
+    openEditCategoryPopup(id, name);
+    const confirmBtn = document.getElementById('popupConfirmBtn');
+    confirmBtn.onclick = () => {
+        const newVal = document.getElementById('editCategoryOnlyInput').value.trim();
+        if (!newVal) return;
+        window.location.href = `/api/updateCategoryEntity?categoryId=${id}&categoryName=${encodeURIComponent(newVal)}`;
+    };
+}
+
+// ─── FUNZIONI ELIMINAZIONE ENTITÀ (SETTINGS) ───────────────────────────────────
+
+function triggerConfirmDeleteBookName(el) {
+    const title = el.getAttribute('data-title');
+    const id = el.getAttribute('data-id');
+    openConfirmPopup('delete', `Titolo: ${title}`, 'Attenzione: eliminando questo titolo potresti influenzare le edizioni collegate.', `/api/deleteBookNameEntity?bookNameId=${id}`);
+}
+
+function triggerConfirmDeleteAuthor(el) {
+    const title = el.getAttribute('data-title');
+    const id = el.getAttribute('data-id');
+    openConfirmPopup('delete', `Autore: ${title}`, 'Attenzione: l\'eliminazione fallirà se ci sono libri collegati.', `/api/deleteAuthorEntity?authorId=${id}`);
+}
+
+function triggerConfirmDeletePublisher(el) {
+    const title = el.getAttribute('data-title');
+    const id = el.getAttribute('data-id');
+    openConfirmPopup('delete', `Editore: ${title}`, 'Attenzione: l\'eliminazione fallirà se ci sono libri collegati.', `/api/deletePublisherEntity?publisherId=${id}`);
+}
+
+function triggerConfirmDeleteCategory(el) {
+    const title = el.getAttribute('data-title');
+    const id = el.getAttribute('data-id');
+    openConfirmPopup('delete', `Categoria: ${title}`, 'Attenzione: l\'eliminazione fallirà se ci sono libri collegati.', `/api/deleteCategoryEntity?categoryId=${id}`);
 }
 
 // ─── AUTOCOMPLETE CATEGORIA ────────────────────────────────────────────────────

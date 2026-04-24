@@ -48,6 +48,19 @@ public class AuthorRepository implements AuthorRepositoryInterface{
     }
 
     /**
+     * Recupera un autore tramite il suo ID.
+     * 
+     * @param authorId ID dell'autore
+     * @return Autore con l'ID specificato
+     */
+
+    public Author getAuthorById(int authorId) {
+        String sql = "SELECT * FROM author WHERE author_id = :authorId";
+        SqlParameterSource parameterSource  = new MapSqlParameterSource().addValue("authorId", authorId);
+        return namedParameterJdbcTemplate.queryForObject(sql, parameterSource, authorRowMapper);
+    }
+
+    /**
      * Insere un autore nel database.
      * 
      * @param name     Nome dell'autore
@@ -78,7 +91,7 @@ public class AuthorRepository implements AuthorRepositoryInterface{
     	SqlParameterSource parameterSource  = new MapSqlParameterSource().addValue("name", author.getAuthorName())
     																	 .addValue("lastName", author.getAuthorLastName())
     																	 .addValue("authorId", author.getAuthorId());
-    	jdbcTemplate.update(update, parameterSource);
+    	namedParameterJdbcTemplate.update(update, parameterSource);
     }
 
     /**

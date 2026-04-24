@@ -9,16 +9,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import it.dto.AuthorDto;
 import it.dto.BookDto;
-import it.dto.BookNameDto;
-import it.dto.PublisherDto;
 import it.dto.CategoryDto;
+import it.dto.EditionDto;
 import it.dto.UserDto;
-import it.entity.Edition;
 import it.component.UserSession;
-import it.exception.InsertBookServiceException;
 import it.exception.NoBookIdFoundException;
+import it.exception.InsertBookServiceException;
 import it.exception.NoIsbnFoundException;
 import it.service.AuthorService;
 import it.service.BookService;
@@ -180,10 +177,10 @@ public class BookController {
      * @return Redirect alla sezione delle edizioni con i parametri necessari
      */
 
-	@GetMapping("/api/updateBookTitle")
+	@PostMapping("/api/updateBookTitle")
 	public String updateBookTitle(
-		@RequestParam(value = "editionId") Integer editionId,
-		@RequestParam(value = "title", required = false) String title,
+		@RequestParam(value = "editionId") int editionId,
+		@RequestParam(value = "bookNameId") int bookNameId,
 		RedirectAttributes redirectAttributes) {
 		UserDto user = userSession.getUser();
 		if (user == null) {
@@ -192,33 +189,17 @@ public class BookController {
 		if(!user.getUserRole().equals("role_admin")) {
 			userSession.setSection("home");
 			return "redirect:/dashboard";
-		}
-
-		if(hasNullOrBlankParameters(title)) {
-			redirectAttributes.addFlashAttribute("popupType", "error");
-			redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
-			return "redirect:/dashboard";
-		}
-		
-
+		}	
 
 		try {
-			it.entity.Edition edition = editionService.getEditionById(editionId);
-			int bookNameId = edition.getBookNameId();
-
-			BookNameDto bookNameDto = new BookNameDto();
-			bookNameDto.setBookNameId(bookNameId);
-			bookNameDto.setTitle(title);
-			if(bookService.isBookNamePresent(bookNameDto)) {
-				int newBookNameId = bookService.getBookNameId(title);
-				editionService.updateTitleId(editionId, newBookNameId);
-			}else {
-				int newBookNameId = bookService.insertAndGetBookNameId(title);
-				editionService.updateTitleId(editionId, newBookNameId);
-			}
+			EditionDto editionDto = new EditionDto();
+			editionDto.setEditionId(editionId);
+			editionDto.setBookNameId(bookNameId);
+			editionService.updateTitleId(editionDto);
+			
 			redirectAttributes.addFlashAttribute("popupType", "updateTitle");
 			redirectAttributes.addFlashAttribute("popupBookId", bookNameId);
-			redirectAttributes.addFlashAttribute("popupBookTitle", title);
+			redirectAttributes.addFlashAttribute("popupBookTitle", bookService.getBookNameById(bookNameId));
 		} catch (Exception ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
@@ -237,11 +218,10 @@ public class BookController {
      * @return Redirect alla sezione delle edizioni con i parametri necessari
      */
 
-	@GetMapping("/api/updateAuthor")
+	@PostMapping("/api/updateAuthor")
 	public String updateAuthor(
-		@RequestParam(value = "editionId") Integer editionId,
-		@RequestParam(value = "authorName", required = false) String authorName,
-		@RequestParam(value = "authorLastName", required = false) String authorLastName,
+		@RequestParam(value = "editionId") int editionId,
+		@RequestParam(value = "authorId") int authorId,
 		RedirectAttributes redirectAttributes) {
 		UserDto user = userSession.getUser();
 		if (user == null) {
@@ -250,31 +230,17 @@ public class BookController {
 
 		
 		try {
-			Edition edition = editionService.getEditionById(editionId);
-			int authorId = edition.getAuthorId();
-			AuthorDto authorDto = new AuthorDto(authorId, authorName, authorLastName);
-
+			
 		if(!user.getUserRole().equals("role_admin")) {
 			userSession.setSection("home");
 			return "redirect:/dashboard";
 		}
-		if(hasNullOrBlankParameters(authorDto.getAuthorName(), authorDto.getAuthorLastName())) {
-			redirectAttributes.addFlashAttribute("popupType", "error");
-			redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
-			return "redirect:/dashboard";
-		}
+			editionService.updateAuthorId(editionId, authorId);
 
-		if (authorService.isAuthorPresent(authorDto)) {
-			int newAuthorId = authorService.getAuthorId(authorDto.getAuthorName(), authorDto.getAuthorLastName());
-			editionService.updateAuthorId(editionId, newAuthorId);
-		} else {
-			int newAuthorId = authorService.insertAndGetAuthorId(authorDto.getAuthorName(), authorDto.getAuthorLastName());
-			editionService.updateAuthorId(editionId, newAuthorId);
-		}
 			redirectAttributes.addFlashAttribute("popupType", "updateAuthor");
 			redirectAttributes.addFlashAttribute("popupAuthorId", authorId);
-			redirectAttributes.addFlashAttribute("popupAuthorName", authorName);
-			redirectAttributes.addFlashAttribute("popupAuthorLastName", authorLastName);
+			redirectAttributes.addFlashAttribute("popupAuthorName", authorService.getAuthorById(authorId).getAuthorName());
+			redirectAttributes.addFlashAttribute("popupAuthorLastName", authorService.getAuthorById(authorId).getAuthorLastName());
 		} catch (Exception ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
@@ -291,10 +257,10 @@ public class BookController {
 	 * @return Redirect alla sezione delle edizioni con i parametri necessari
 	 */
 
-	@GetMapping("/api/updatePublisher")
+	@PostMapping("/api/updatePublisher")
 	public String updatePublisher(
 		@RequestParam(value = "editionId") Integer editionId,
-		@RequestParam(value = "publisherName", required = false) String publisherName,
+		@RequestParam(value = "publisherNameId") int publisherNameId,
 		RedirectAttributes redirectAttributes) {
 		UserDto user = userSession.getUser();
 		if (user == null) {
@@ -303,30 +269,17 @@ public class BookController {
 
 		
 		try {
-			it.entity.Edition edition = editionService.getEditionById(editionId);
-			int publisherId = edition.getPublisherId();
-			PublisherDto publisherDto = new PublisherDto(publisherId, publisherName);
 
 		if(!user.getUserRole().equals("role_admin")) {
 			userSession.setSection("home");
 			return "redirect:/dashboard";
 		}
-		if(hasNullOrBlankParameters(publisherDto.getPublisherName())) {
-			redirectAttributes.addFlashAttribute("popupType", "error");
-			redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
-			return "redirect:/dashboard";
-		}
 
-		if (publisherService.isPublisherPresent(publisherDto)) {
-			int newPublisherId = publisherService.getPublisherId(publisherDto.getPublisherName());
-			editionService.updatePublisherId(editionId, newPublisherId);
-		} else {
-			int newPublisherId = publisherService.insertAndGetPublisherId(publisherDto.getPublisherName());
-			editionService.updatePublisherId(editionId, newPublisherId);
-		}
+
+			editionService.updatePublisherId(editionId, publisherNameId);
 			redirectAttributes.addFlashAttribute("popupType", "updatePublisher");
-			redirectAttributes.addFlashAttribute("popupPublisherId", publisherId);
-			redirectAttributes.addFlashAttribute("popupPublisherName", publisherName);
+			redirectAttributes.addFlashAttribute("popupPublisherId", publisherNameId);
+			redirectAttributes.addFlashAttribute("popupPublisherName", publisherService.getPublisherById(publisherNameId).getPublisherName());
 		} catch (Exception ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
@@ -334,7 +287,7 @@ public class BookController {
 		return "redirect:/dashboard";
 	}
 
-	@GetMapping("/api/updateCategory")
+	@PostMapping("/api/updateCategory")
 	public String updateCategory(
 		@RequestParam(value = "editionId") Integer editionId,
 		@RequestParam(value = "categoryName", required = false) String categoryName,

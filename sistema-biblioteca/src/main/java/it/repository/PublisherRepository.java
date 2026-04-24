@@ -48,6 +48,18 @@ public class PublisherRepository implements PublisherRepositoryInterface{
     }
 
     /**
+     * Recupera un publisher tramite il suo ID.
+     * 
+     * @param id L'ID del publisher da recuperare
+     * @return Il publisher corrispondente
+     */
+    public Publisher getPublisherById(int id) {
+        String sql = "SELECT * FROM publisher WHERE publisher_id = :publisherId";
+        SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("publisherId", id);
+        return namedParameterJdbcTemplate.queryForObject(sql, parameterSource, publisherRowMapper);
+    }
+
+    /**
      * Aggiunge un nuovo publisher al database.
      * 
      * @param publisherName Il nome del publisher da aggiungere

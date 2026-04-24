@@ -90,6 +90,14 @@
                 <i class="fa-solid fa-clock-rotate-left"></i>
                 <span class="fw-600">Prestiti</span>
             </a>
+
+            <a th:if="${user.userRole == 'role_admin'}"
+                th:href="@{/api/navigation/settings}"
+                class="sidebar-link flex align-center gap-2 p-2 radius-12"
+                th:classappend="${section == 'settings' ? 'active' : ''}">
+                <i class="fa-solid fa-gear"></i>
+                <span class="fw-600">Gestisci</span>
+            </a>
         </div>
     </div>
 
