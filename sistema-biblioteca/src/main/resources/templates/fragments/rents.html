@@ -19,12 +19,12 @@
         </label>
 
         <!-- Filter: Richieste -->
-        <label class="toggle-container shadow-soft">
+        <!-- <label class="toggle-container shadow-soft">
             <i class="fa-solid fa-clock-rotate-left text-brand"></i>
             <span class="toggle-label">Richieste in sospeso</span>
             <input type="checkbox" id="filterPending" onchange="togglePendingFilter(this)">
             <span class="toggle-switch"></span>
-        </label>
+        </label> -->
     </div>
 
     <!-- Contenitore delle Card dei Prestiti -->
@@ -54,15 +54,22 @@
 
             <!-- Righe Metadati: Date, ISBN e User ID -->
             <div class="card-meta mt-auto flex align-center gap-4 opacity-70">
+                <!-- Data Prenotazione -->
+                <div th:if="${rent.book.status == 'prenotato'}" class="flex align-center font-size-small">
+                    <i class="fa-solid fa-calendar-arrow-up text-sm text-brand pr-1"></i>
+                    <span class="font-mono fw-600 pr-2">Prenotato il:</span>
+                    <span th:text="${#temporals.format(rent.bookingDate, 'dd-MM-yyyy')}" class="fw-600">Data Prenotazione</span>
+                </div>
+                
                 <!-- Data di Inizio Noleggio -->
-                <div class="flex align-center font-size-small">
+                <div  th:if="${rent.book.status != 'prenotato'}" class="flex align-center font-size-small">
                     <i class="fa-solid fa-calendar-arrow-up text-sm text-brand pr-1"></i>
                     <span class="font-mono fw-600 pr-2">Preso il:</span>
                     <span th:text="${#temporals.format(rent.rentalDate, 'dd-MM-yyyy')}" class="fw-600">Inizio</span>
                 </div>
 
                 <!-- Data di Scadenza -->
-                <div class="flex align-center font-size-small">
+                <div th:if="${rent.book.status != 'prenotato'}" class="flex align-center font-size-small">
                     <i class="fa-solid fa-calendar-arrow-down text-sm text-brand pr-1"></i>
                     <span class="font-mono fw-600 pr-2">Scadenza:</span>
                     <span th:text="${#temporals.format(rent.rentalExpired, 'dd-MM-yyyy')}"
@@ -90,7 +97,7 @@
         <div class="card-action-column p-4 flex flex-column justify-center align-center border-l">
 
             <!-- Sezione visibile solo agli Amministratori -->
-            <div th:if="${user.userRole == 'role_admin'}" class="w-100 flex flex-column align-center">
+            <div  class="w-100 flex flex-column align-center">
 
                 <!-- Indicatore di Stato Dinamico (Restituito, Da Restituire, Scaduto) -->
                 <div class="mb-3 status-context"
@@ -106,13 +113,13 @@
                 </div>
 
                 <!-- Pulsante per confermare la restituzione (Consegnato) con Popup -->
-                <button type="button" th:if="${rent.book != null && rent.book.status == 'prenotato'}" th:data-title="${rent.book.title}"
+                <button  type="button" th:if="${rent.book != null && rent.book.status == 'prenotato' && user.userRole == 'role_admin'}" th:data-title="${rent.book.title}"
                     th:data-url="@{/api/delivered(bookID=${rent.bookId}, rentID=${rent.rentId})}"
                     onclick="triggerConfirmDelivered(this)"
                     class="w-100 btn-modern-action pointer transition shadow-soft">
                     <span>Consegnato</span>
                 </button>
-                <button type="button" th:if="${rent.book != null && rent.book.status == 'in prestito'}" th:data-title="${rent.book.title}"
+                <button type="button" th:if="${rent.book != null && rent.book.status == 'in prestito' && user.userRole == 'role_admin'}" th:data-title="${rent.book.title}"
                     th:data-url="@{/api/returned(bookID=${rent.bookId}, rentID=${rent.rentId})}"
                     onclick="triggerConfirmReturned(this)"
                     class="w-100 btn-modern-action pointer transition shadow-soft">

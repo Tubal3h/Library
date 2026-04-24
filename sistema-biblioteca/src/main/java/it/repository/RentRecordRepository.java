@@ -88,7 +88,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
         String sql = """
                 SELECT
                     r.rental_id, r.users_id, r.book_id,
-                    r.rental_date, r.rental_expired, r.rental_ended,
+                    r.rental_date, r.rental_expired, r.rental_ended, r.booking_date,
                     bn.title,
                     CONCAT(a.author_name, ' ', a.author_last_name) AS author_full_name,
                     u.user_name, 
@@ -123,7 +123,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
         String sql = """
                 SELECT
                     r.rental_id, r.users_id, r.book_id,
-                    r.rental_date, r.rental_expired, r.rental_ended,
+                    r.rental_date, r.rental_expired, r.rental_ended, r.booking_date,
                     bn.title,
                     CONCAT(a.author_name, ' ', a.author_last_name) AS author_full_name,
                     u.user_name, 
