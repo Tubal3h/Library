@@ -29,7 +29,8 @@ public class BookNameRowMapper implements RowMapper<BookName> {
     @Override
     public BookName mapRow(ResultSet rs, int rowNum) throws SQLException {
         BookName bookName = new BookName();
-        bookName.setTitle(rs.getString("book_name"));
+        bookName.setBookNameId(rs.getInt("book_name_id"));
+        bookName.setTitle(rs.getString("title"));
         return bookName;
     }
 }

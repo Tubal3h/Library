@@ -105,5 +105,92 @@ public class UserService {
         int users = userRepository.countUsers();
         return users;
     }
+
+    /**
+     * Crea un nuovo utente nel sistema con i dati forniti.
+     *
+     * @param userDto dati del nuovo utente
+     * @return numero di righe inserite
+     */
+
+    public int createUser(UserDto userDto) {
+        validateUser(userDto);
+
+        if (userRepository.existsByEmail(userDto.getUserEmail())) {
+            throw new IllegalArgumentException("Esiste già un utente con questa email: " + userDto.getUserEmail());
+        }
+
+        return userRepository.insertUser(
+                userDto.getUserName().trim(),
+                userDto.getUserLastName().trim(),
+                userDto.getUserEmail().trim().toLowerCase(),
+                userDto.getUserPassword().trim(),
+                userDto.getUserRole().trim().toLowerCase());
+    }
+
+    private void validateUser(UserDto userDto) {
+        if (userDto == null) {
+            throw new IllegalArgumentException("Dati utente mancanti.");
+        }
+
+        if (userDto.getUserName() == null || userDto.getUserName().isBlank()) {
+            throw new IllegalArgumentException("Il nome è obbligatorio.");
+        }
+
+        if (userDto.getUserLastName() == null || userDto.getUserLastName().isBlank()) {
+            throw new IllegalArgumentException("Il cognome è obbligatorio.");
+        }
+
+        if (userDto.getUserPassword() == null || userDto.getUserPassword().isBlank()) {
+            throw new IllegalArgumentException("La password è obbligatoria.");
+        }
+
+        String role = userDto.getUserRole();
+        if (role == null || role.isBlank()) {
+            throw new IllegalArgumentException("Il ruolo è obbligatorio.");
+        }
+
+        String normalizedRole = role.trim().toLowerCase();
+        if (!"role_admin".equals(normalizedRole) && !"role_user".equals(normalizedRole)) {
+            throw new IllegalArgumentException("Ruolo non valido. Usare ROLE_ADMIN o ROLE_USER.");
+        }
+    }
+
+    /**
+     * Elimina un utente dal sistema tramite il suo ID.
+     *
+     * @param userId ID dell'utente da eliminare
+     * @return numero di righe eliminate
+     */
+    @Transactional
+    public int deleteUserById(String userId) {
+        return userRepository.deleteUserById(userId);
+    }
+
+    /**
+     * Aggiorna la password dell'utente verificando la password attuale.
+     *
+     * @param email Email dell'utente
+     * @param oldPassword Password attuale
+     * @param newPassword Nuova password
+     * @param confirmPassword Conferma della nuova password
+     */
+    @Transactional
+    public void updatePassword(String email, String oldPassword, String newPassword, String confirmPassword) {
+        if (newPassword == null || confirmPassword == null || !newPassword.equals(confirmPassword)) {
+            throw new IllegalArgumentException("La nuova password e la conferma non coincidono.");
+        }
+        
+        UserDto user = getUserByEmail(email);
+        if (user == null) {
+            throw new IllegalArgumentException("Utente non trovato.");
+        }
+        
+        if (!user.getUserPassword().equals(oldPassword)) {
+            throw new IllegalArgumentException("La password attuale non è corretta.");
+        }
+        
+        userRepository.updatePassword(email, newPassword);
+    }
 }
 

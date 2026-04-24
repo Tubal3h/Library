@@ -11,19 +11,20 @@ import java.time.LocalDate;
  */
 public class RentalRecord {
 
-    private int rental_id;
-    private int user_id;
-    private int book_id;
-    private LocalDate rental_date;
-    private LocalDate rental_expired;
-    private LocalDate rental_ended;
+    private int rentalId;
+    private int userId;
+    private int bookId;
+    private LocalDate bookingDate;
+    private LocalDate rentalDate;
+    private LocalDate rentalExpired;
+    private LocalDate rentalEnded;
 
     /**
      * Costruttore di default.
      */
     public RentalRecord() {
     }
-
+    
     /**
      * Costruttore con parametri.
      * 
@@ -34,98 +35,77 @@ public class RentalRecord {
      * @param rental_expired Data di scadenza noleggio
      * @param rental_ended Data di fine noleggio
      */
-    public RentalRecord(int rental_id, int user_id, int book_id,
-        LocalDate rental_date, LocalDate rental_expired, LocalDate rental_ended) {
-        this.rental_id = rental_id;
-        this.user_id = user_id;
-        this.book_id = book_id;
-        this.rental_date = rental_date;
-        this.rental_expired = rental_expired;
-        this.rental_ended = rental_ended;
-    }
+    
+    
 
-    /**
-     * @return ID del noleggio
-     */
-    public int getRentalId() {
-        return rental_id;
-    }
 
-    /**
-     * @param rental_id ID del noleggio
-     */
-    public void setRentalId(int rental_id) {
-        this.rental_id = rental_id;
-    }
+	public int getRentalId() {
+		return rentalId;
+	}
 
-    /**
-     * @return ID dell'utente
-     */
-    public int getUserId() {
-        return user_id;
-    }
+	public RentalRecord(int rentalId, int userId, int bookId, LocalDate bookingDate, LocalDate rentalDate,
+			LocalDate rentalExpired, LocalDate rentalEnded) {
+		this.rentalId = rentalId;
+		this.userId = userId;
+		this.bookId = bookId;
+		this.bookingDate = bookingDate;
+		this.rentalDate = rentalDate;
+		this.rentalExpired = rentalExpired;
+		this.rentalEnded = rentalEnded;
+	}
 
-    /**
-     * @param user_id ID dell'utente
-     */
-    public void setUserId(int user_id) {
-        this.user_id = user_id;
-    }
+	public void setRentalId(int rentalId) {
+		this.rentalId = rentalId;
+	}
 
-    /**
-     * @return ID del libro
-     */
-    public int getBookId() {
-        return book_id;
-    }
+	public int getUserId() {
+		return userId;
+	}
 
-    /**
-     * @param book_id ID del libro
-     */
-    public void setBookId(int book_id) {
-        this.book_id = book_id;
-    }
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 
-    /**
-     * @return Data di inizio noleggio
-     */
-    public LocalDate getRentalDate() {
-        return rental_date;
-    }
+	public int getBookId() {
+		return bookId;
+	}
 
-    /**
-     * @param rental_date Data di inizio noleggio
-     */
-    public void setRentalDate(LocalDate rental_date) {
-        this.rental_date = rental_date;
-    }
+	public void setBookId(int bookId) {
+		this.bookId = bookId;
+	}
 
-    /**
-     * @return Data di scadenza noleggio
-     */
-    public LocalDate getRentalExpired() {
-        return rental_expired;
-    }
+	public LocalDate getBookingDate() {
+		return bookingDate;
+	}
 
-    /**
-     * @param rental_expired Data di scadenza noleggio
-     */
-    public void setRentalExpired(LocalDate rental_expired) {
-        this.rental_expired = rental_expired;
-    }
+	public void setBookingDate(LocalDate bookingDate) {
+		this.bookingDate = bookingDate;
+	}
 
-    /**
-     * @return Data di fine noleggio (effettiva restituzione)
-     */
-    public LocalDate getRentalEnded() {
-        return rental_ended;
-    }
+	public LocalDate getRentalDate() {
+		return rentalDate;
+	}
 
-    /**
-     * @param rental_ended Data di fine noleggio
-     */
-    public void setRentalEnded(LocalDate rental_ended) {
-        this.rental_ended = rental_ended;
-    }
+	public void setRentalDate(LocalDate rentalDate) {
+		this.rentalDate = rentalDate;
+	}
+
+	public LocalDate getRentalExpired() {
+		return rentalExpired;
+	}
+
+	public void setRentalExpired(LocalDate rentalExpired) {
+		this.rentalExpired = rentalExpired;
+	}
+
+	public LocalDate getRentalEnded() {
+		return rentalEnded;
+	}
+
+	public void setRentalEnded(LocalDate rentalEnded) {
+		this.rentalEnded = rentalEnded;
+	}
+
+
 }
 

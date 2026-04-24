@@ -43,7 +43,13 @@
 
         <!-- Colonna Destra: Azioni Administrative (Eliminazione) -->
         <div class="card-action-column p-2 flex flex-column justify-center border-l">
-            <button th:if="${user.userRole != 'role_admin'}"class="btn-modern-action pointer transition shadow-soft flex align-center gap-2">
+            <button th:if="${user.userRole != 'role_admin'}"
+                    type="button"
+                    class="w-100 btn-modern-action pointer transition shadow-soft flex align-center gap-2"
+                    th:data-title="${user.userName} + ' ' + ${user.userLastName}"
+                    th:data-url="'/api/deleteUser?userId=' + ${user.userId} + '&userName=' + ${#uris.escapeQueryParam(user.userName + ' ' + user.userLastName)}"
+                    onclick="triggerConfirmDeleteUser(this)"
+                    title="Elimina profilo">
                 <span>Elimina profilo</span>
             </button>
         </div>

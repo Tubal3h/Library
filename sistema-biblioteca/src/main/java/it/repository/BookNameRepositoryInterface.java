@@ -9,5 +9,8 @@ public interface BookNameRepositoryInterface {
 	
 	public List<BookName> getAllBookNames();
 	public String getBookNameById(int titleId);
-	public int insertBookByTitle(String title) throws InsertBookNameException;
+	public Boolean isTitleOnDb(String title);
+	public void insertBookByTitle(String title) throws InsertBookNameException;
+	public void updateBookTitle(int editionId, String editionTitle); 
+	public List<BookName> getBookNamesByTitle(String title);
 }

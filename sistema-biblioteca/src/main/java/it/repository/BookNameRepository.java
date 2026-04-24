@@ -66,16 +66,48 @@ public class BookNameRepository implements BookNameRepositoryInterface {
      * @param title Il titolo del libro da inserire
      * @return Numero di record inseriti
      */
-    public int insertBookByTitle(String title) throws InsertBookNameException{
+    public void insertBookByTitle(String title) throws InsertBookNameException{
 		
     	String insertBook = "INSERT INTO books_names(title)\r\n"
 				  		  + "VALUES(:title)";
 		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("title", title);
 		try {
-			int res = namedParameterJdbcTemplate.update(insertBook, sqlParameters);
-			return res;
+			namedParameterJdbcTemplate.update(insertBook, sqlParameters);	
 		}catch(DataAccessException ex) {
 			throw new InsertBookNameException("errore nell'inserimento del titolo del libro");
 		}    
     }
+
+    /**
+     * Aggiorna il titolo di un libro.
+     *
+     * @param bookNameId ID del libro
+     * @param title Titolo del libro
+     */
+
+    public void updateBookTitle(int bookNameId, String title) {
+        String updateBook = "UPDATE books_names SET title = :title WHERE book_name_id = :book_name_id";
+        SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("title", title).addValue("book_name_id", bookNameId);
+        namedParameterJdbcTemplate.update(updateBook, sqlParameters);
+    }
+
+    /**
+     * Recupera i titoli dei libri tramite il loro nome.
+     *
+     * @param title Nome del libro
+     * @return Lista dei titoli dei libri corrispondenti al nome
+     */
+    public List<BookName> getBookNamesByTitle(String title) {
+        String sql = "SELECT * FROM books_names WHERE title = ?";
+        return jdbcTemplate.query(sql, bookNameRowMapper, title);
+    }
+	
+    @Override
+	public Boolean isTitleOnDb(String title) {
+		String selectBookByTitle = "SELECT COUNT(*) FROM books_names WHERE title =:title";
+		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("title", title);
+		Integer counter = namedParameterJdbcTemplate.queryForObject(selectBookByTitle, sqlParameters, Integer.class);
+		return counter != null && counter > 0;
+		
+	}
 }

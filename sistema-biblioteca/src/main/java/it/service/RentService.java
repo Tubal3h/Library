@@ -86,7 +86,8 @@ public class RentService {
         book.setPublisherName(rent.getPublisherName());
         book.setPublishingDate(rent.getPublicationDate());
         book.setCategoryName(rent.getCategoryName());
-        book.setIsbnCode(rent.getIsbnCode());
+        book.setIsbn(rent.getIsbnCode());
+        book.setStatus(rent.getStatus());
 
         RentDto dto = new RentDto();
         dto.setRentId(rent.getRentalId());
@@ -97,6 +98,7 @@ public class RentService {
         dto.setRentalDate(rent.getRentalDate());
         dto.setRentalExpired(rent.getRentalExpired());
         dto.setRentalEnded(rent.getRentalEnded());
+        dto.setBookingDate(rent.getBookingDate());
         return dto;
     }
 
@@ -133,20 +135,49 @@ public class RentService {
     
 
     @Transactional
-    public void createPendingRental(RentDto rentDto) throws RuntimeException {
+    public void createBookedDate(RentDto rentDto) throws RuntimeException {
         try {
             RentalRecord rental = new RentalRecord();
             rental.setUserId(rentDto.getUserId());
             rental.setBookId(rentDto.getBookId());
-            rental.setRentalDate(LocalDate.now());
-            rental.setRentalExpired(null);
-            rental.setRentalEnded(null);
-            rentRepository.createRental(rental);
-            rentRepository.updateStatus(rentDto.getBookId());
+            rental.setBookingDate(LocalDate.now());
+            rentRepository.createABookedDate(rental);
+            rentRepository.updateStatusToLend(rentDto.getBookId());
+        
         } catch (Exception e) {
             System.out.println("Eccezione nella repository: " + e.getMessage());
-            throw new RuntimeException("Impossibile creare il noleggio in questo momento.");
+            throw new RuntimeException("impossibile effettuare la prenotazione.");
         }
+    }
+    
+    @Transactional
+    public void createRental(RentDto rentDto, Boolean confirmed) throws RuntimeException {
+    	if(rentDto != null) {
+    		if(confirmed) {
+    			try {
+    				RentalRecord rental = new RentalRecord();
+    				rental.setRentalId(rentDto.getRentId());
+    				rental.setRentalDate(LocalDate.now());
+    				rental.setRentalExpired(LocalDate.now().plusDays(14));;
+    				rentRepository.createRental(rental);
+    				rentRepository.updateRentalStatusOk(rental.getBookId());
+    				
+    			}catch(Exception e) {
+    				System.out.println("eccezione aggiunta rentalRecord");
+    				throw new RuntimeException("impossibile effettuare la prenotazione");
+    			}
+    		}else {
+    			try {
+    				RentalRecord rental = new RentalRecord();
+    				rental.setRentalId(rentDto.getRentId());
+    				rental.setBookId(rentDto.getBookId());
+    				rentRepository.deleteRentalById(rental.getRentalId());
+    				rentRepository.updateRentalStatusNotOk(rental.getBookId());
+    			}catch(Exception e) {
+    				System.out.println("eccezione aggiunta delete");
+    			}
+    		}
+    	}
     }
     
     /**

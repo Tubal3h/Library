@@ -38,6 +38,49 @@ public class CategoryService {
             .toList();
     }
 
+    public int getCategoryId(String name) {
+        return categoryRepository.getAllCategories().stream()
+                .filter(c -> c.getCategoryName().equalsIgnoreCase(name))
+                .findFirst()
+                .get()
+                .getCategoryId();
+    }
+
+    @Transactional
+    public int insertAndGetCategoryId(String name) {
+        try {
+            categoryRepository.insertCategoryByNameCategory(name);
+        } catch (Exception e) {}
+        return getCategoryId(name);
+    }
+
+    /**
+     * Verifica se una categoria è presente nel database.
+     * 
+     * @param categoryDto Il nome della categoria da verificare
+     * @return true se la categoria è presente, false altrimenti
+     */
+    @Transactional(readOnly = true)
+    public boolean isCategoryPresent(CategoryDto categoryDto) {
+        if(categoryDto == null) {
+            return false;
+        }
+        Category category = toCategory(categoryDto);
+        return categoryRepository.isCategoryPresent(category);
+    }
+
+    /**
+     * Aggiorna una categoria nel database.
+     * 
+     * @param categoryDto Il DTO con i dati della categoria da aggiornare
+     * @return Il numero di righe interessate
+     */
+    @Transactional
+    public int updateCategory(CategoryDto categoryDto) {
+        Category category = toCategory(categoryDto);
+        return categoryRepository.updateCategory(category);
+    }
+
     /**
      * Converte un'entità Category in un DTO CategoryDto.
      * 
@@ -49,5 +92,18 @@ public class CategoryService {
         dto.setCategoryId(category.getCategoryId());
         dto.setCategoryName(category.getCategoryName());
         return dto;
+    }
+
+    /**
+     * Converte un DTO CategoryDto in un'entità Category.
+     * 
+     * @param dto Il DTO da convertire
+     * @return L'entità corrispondente
+     */
+    private Category toCategory(CategoryDto dto) {
+        Category category = new Category();
+        category.setCategoryId(dto.getCategoryId());
+        category.setCategoryName(dto.getCategoryName());
+        return category;
     }
 }

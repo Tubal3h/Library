@@ -61,50 +61,138 @@
                 const bookId      = /*[[${popupBookId}]]*/ null;
                 const bookTitle   = /*[[${popupBookTitle}]]*/ null;
                 const errorMsg    = /*[[${popupErrorMessage}]]*/ null;
+                const userName    = /*[[${popupUserName}]]*/ null;
+                const userEmail   = /*[[${popupUserEmail}]]*/ null;
+                const userRole    = /*[[${popupUserRole}]]*/ null;
+                const popupUserId = /*[[${popupUserId}]]*/ null;
+                
+                const authorId      = /*[[${popupAuthorId}]]*/ null;
+                const authorName    = /*[[${popupAuthorName}]]*/ null;
+                const authorLastName= /*[[${popupAuthorLastName}]]*/ null;
+                
+                const publisherId   = /*[[${popupPublisherId}]]*/ null;
+                const publisherName = /*[[${popupPublisherName}]]*/ null;
+                
+                const categoryId    = /*[[${popupCategoryId}]]*/ null;
+                const categoryName  = /*[[${popupCategoryName}]]*/ null;
 
                 // Nascondi tutti i pannelli del body
                 document.getElementById('editBookContent').classList.add('none');
                 document.getElementById('addCopyContent').classList.add('none');
                 document.getElementById('addEditionSuccessContent')?.classList.add('none');
                 document.getElementById('deleteBookContent').classList.add('none');
+                document.getElementById('deleteUserContent')?.classList.add('none');
                 document.getElementById('errorContent').classList.add('none');
+                document.getElementById('addUserSuccessContent')?.classList.add('none');
+                document.getElementById('deliveredRentContent')?.classList.add('none');
+                document.getElementById('bookedRentContent')?.classList.add('none');
+                document.getElementById('updateTitleContent')?.classList.add('none');
+                document.getElementById('updateAuthorContent')?.classList.add('none');
+                document.getElementById('updatePublisherContent')?.classList.add('none');
+                document.getElementById('updateCategoryContent')?.classList.add('none');
+                document.getElementById('changePasswordContent')?.classList.add('none');
 
                 // Nascondi il footer con "Annulla / Conferma" (non serve per i popup di feedback)
                 const footer = document.querySelector('.popup-footer');
                 if (footer) footer.classList.add('none');
 
+                // Helper per assegnare in sicurezza il testo
+                const setTextIfExists = (id, text) => {
+                    const el = document.getElementById(id);
+                    if (el) el.textContent = text;
+                };
+
                 if (popupType === 'addCopy') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-circle-check text-white font-size-medium';
-                    document.getElementById('popupTitle').textContent = 'Copia aggiunta';
-                    document.getElementById('addCopyBookTitle').textContent = bookTitle || '';
-                    document.getElementById('addCopyBookId').textContent = bookId || '';
-                    document.getElementById('addCopyBookName').textContent = bookIsbn || '';
+                    setTextIfExists('popupTitle', 'Copia aggiunta');
+                    setTextIfExists('addCopyBookTitle', bookTitle || '');
+                    setTextIfExists('addCopyBookId', bookId || '');
+                    setTextIfExists('addCopyBookName', bookIsbn || '');
                     document.getElementById('addCopyContent').classList.remove('none');
 
                 } else if (popupType === 'addEdition') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-circle-check text-white font-size-medium';
-                    document.getElementById('popupTitle').textContent = 'Edizione aggiunta';
-                    document.getElementById('addEditionSuccessBookTitle').textContent = bookTitle || '';
-                    document.getElementById('addEditionSuccessBookIsbn').textContent = bookIsbn || '';
+                    setTextIfExists('popupTitle', 'Edizione aggiunta');
+                    setTextIfExists('addEditionSuccessBookTitle', bookTitle || '');
+                    setTextIfExists('addEditionSuccessBookIsbn', bookIsbn || '');
                     document.getElementById('addEditionSuccessContent').classList.remove('none');
 
                 } else if (popupType === 'deleteBook') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-trash-can text-white font-size-medium';
-                    document.getElementById('popupTitle').textContent = 'Copia eliminata';
-                    document.getElementById('deleteBookTitle').textContent = bookTitle || '';
-                    document.getElementById('deleteBookId').textContent = bookId || '';
+                    setTextIfExists('popupTitle', 'Copia eliminata');
+                    setTextIfExists('deleteBookTitle', bookTitle || '');
+                    setTextIfExists('deleteBookId', bookId || '');
                     document.getElementById('deleteBookContent').classList.remove('none');
+
+                } else if (popupType === 'deleteUser') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-trash-can text-white font-size-medium';
+                    setTextIfExists('popupTitle', 'Dipendente eliminato');
+                    setTextIfExists('deleteUserTitle', userName || '');
+                    setTextIfExists('deleteUserId', popupUserId || '');
+                    document.getElementById('deleteUserContent').classList.remove('none');
 
                 } else if (popupType === 'error') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-circle-exclamation text-white font-size-medium';
-                    document.getElementById('popupTitle').textContent = 'Errore';
-                    document.getElementById('errorMessage').textContent = errorMsg || 'Operazione non riuscita.';
+                    setTextIfExists('popupTitle', 'Errore');
+                    setTextIfExists('errorMessage', errorMsg || 'Operazione non riuscita.');
                     document.getElementById('errorContent').classList.remove('none');
+
+                } else if (popupType === 'addUser') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-user-check text-white font-size-medium';
+                    setTextIfExists('popupTitle', 'Dipendente creato');
+                    setTextIfExists('addUserSuccessName', userName || '');
+                    setTextIfExists('addUserSuccessEmail', userEmail || '');
+                    setTextIfExists('addUserSuccessRole', userRole || '');
+                    document.getElementById('addUserSuccessContent').classList.remove('none');
+
+                } else if (popupType === 'delivered') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-box-open text-white font-size-medium';
+                    setTextIfExists('popupTitle', 'Restituita');
+                    setTextIfExists('deliveredBookTitle', bookTitle || '');
+                    setTextIfExists('deliveredBookId', bookId || '');
+                    document.getElementById('deliveredRentContent').classList.remove('none');
+                    
+                } else if (popupType === 'booked') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-bookmark text-white font-size-medium';
+                    setTextIfExists('popupTitle', 'Prenotata');
+                    setTextIfExists('bookedBookId', bookId || '');
+                    document.getElementById('bookedRentContent').classList.remove('none');
+                    
+                } else if (popupType === 'updateTitle') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-pen-to-square text-white font-size-medium';
+                    setTextIfExists('popupTitle', 'Titolo aggiornato');
+                    setTextIfExists('updateTitleBookId', bookId || '');
+                    setTextIfExists('updateTitleBookName', bookTitle || '');
+                    document.getElementById('updateTitleContent').classList.remove('none');
+                } else if (popupType === 'updateAuthor') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-user-pen text-white font-size-medium';
+                    setTextIfExists('popupTitle', 'Autore aggiornato');
+                    setTextIfExists('updateAuthorId', authorId || '');
+                    setTextIfExists('updateAuthorName', authorName || '');
+                    setTextIfExists('updateAuthorLastName', authorLastName || '');
+                    document.getElementById('updateAuthorContent').classList.remove('none');
+                } else if (popupType === 'updatePublisher') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-building-columns text-white font-size-medium';
+                    setTextIfExists('popupTitle', 'Editore aggiornato');
+                    setTextIfExists('updatePublisherId', publisherId || '');
+                    setTextIfExists('updatePublisherName', publisherName || '');
+                    document.getElementById('updatePublisherContent').classList.remove('none');
+                } else if (popupType === 'updateCategory') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-tag text-white font-size-medium';
+                    setTextIfExists('popupTitle', 'Categoria aggiornata');
+                    setTextIfExists('updateCategoryId', categoryId || '');
+                    setTextIfExists('updateCategoryName', categoryName || '');
+                    document.getElementById('updateCategoryContent').classList.remove('none');
+                } else if (popupType === 'changePassword') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-lock text-white font-size-medium';
+                    setTextIfExists('popupTitle', 'Password aggiornata');
+                    document.getElementById('changePasswordContent').classList.remove('none');
                 }
 
                 // Mostra l'overlay del popup
                 document.getElementById('genericPopup').classList.remove('none');
             });
+
         </script>
     </th:block>
 </body>

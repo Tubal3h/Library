@@ -88,7 +88,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
         String sql = """
                 SELECT
                     r.rental_id, r.users_id, r.book_id,
-                    r.rental_date, r.rental_expired, r.rental_ended,
+                    r.rental_date, r.rental_expired, r.rental_ended, r.booking_date,
                     bn.title,
                     CONCAT(a.author_name, ' ', a.author_last_name) AS author_full_name,
                     u.user_name, 
@@ -96,7 +96,8 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                     p.publisher_name,
                     e.publishing_date,
                     c.category_name,
-                    e.isbn
+                    e.isbn,
+                    b.status
                 FROM rental_record r
                 JOIN books b        ON r.book_id       = b.book_id
                 JOIN edition e      ON b.edition_id    = e.edition_id
@@ -106,7 +107,11 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                 JOIN category c     ON e.category_id   = c.category_id
                 JOIN users u		ON r.users_id      = u.users_id
                 WHERE r.rental_ended IS NULL
+<<<<<<< HEAD
                 AND r.rental_expired IS NULL
+=======
+                ORDER BY r.rental_date DESC
+>>>>>>> 5088af4f7c092c17706c09e9dbd8f35149c5cbbb
                 """;
         return jdbcTemplate.query(sql, rentalRecordJoinRowMapper);
     }
@@ -122,7 +127,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
         String sql = """
                 SELECT
                     r.rental_id, r.users_id, r.book_id,
-                    r.rental_date, r.rental_expired, r.rental_ended,
+                    r.rental_date, r.rental_expired, r.rental_ended, r.booking_date,
                     bn.title,
                     CONCAT(a.author_name, ' ', a.author_last_name) AS author_full_name,
                     u.user_name, 
@@ -130,7 +135,8 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                     p.publisher_name,
                     e.publishing_date,
                     c.category_name,
-                    e.isbn
+                    e.isbn,
+                    b.status
                 FROM rental_record r
                 JOIN books b        ON r.book_id       = b.book_id
                 JOIN edition e      ON b.edition_id    = e.edition_id
@@ -142,6 +148,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                 WHERE r.rental_ended IS NULL
                   AND r.rental_expired IS NULL
                   AND r.users_id = ?
+                ORDER BY r.rental_date DESC
                 """;
         return jdbcTemplate.query(sql, rentalRecordJoinRowMapper, userId);
     }
@@ -153,15 +160,19 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
      */
     public void createRental(RentalRecord rental) {
         String sql = """
-            INSERT INTO
-                rental_record
-                (users_id, book_id, rental_date, rental_expired, rental_ended)
-            VALUES
-                (?, ?, ?, ?, ?)
-        """;
-        updateRentalStatus(rental.getBookId());
-        jdbcTemplate.update(sql, rental.getUserId(), rental.getBookId(), rental.getRentalDate(),
-                rental.getRentalExpired(), rental.getRentalEnded());
+                UPDATE rental_record
+                SET rental_date = ?, rental_expired = ?
+                WHERE rental_id = ?
+            """;
+        jdbcTemplate.update(sql, rental.getRentalDate(), rental.getRentalEnded(), rental.getRentalId());
+    }
+    
+    public void createABookedDate(RentalRecord rental) {
+    	String sql = """
+    		INSERT INTO rental_record (users_id, book_id, booking_date)
+    		VALUES (?, ?, ?)
+    		""";
+    	jdbcTemplate.update(sql, rental.getUserId(), rental.getBookId(), rental.getBookingDate());
     }
     
 
@@ -173,7 +184,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
      */
     public void endRental(int bookId, int rentId) {
         updateRentalEnded(rentId);
-        updateRentalStatus(bookId);
+        updateRentalStatusOk(bookId);
     }
 
     /**
@@ -181,17 +192,30 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
      *
      * @param bookId ID del libro di cui aggiornare lo stato
      */
-    private void updateRentalStatus(int bookId) {
+    public void updateRentalStatusOk(int bookId) {
         String sql = """
                 UPDATE books
                 SET status = CASE
-                    WHEN status = 'disponibilita' THEN 'in prestito'
+                    WHEN status = 'disponibilita' THEN 'prenotato'
+                    WHEN status = 'prenotato' THEN 'in prestito'
                     WHEN status = 'in prestito' THEN 'disponibilita'
                 END
                 WHERE book_id = ?
                 """;
         jdbcTemplate.update(sql, bookId);
     }
+    
+    public void updateRentalStatusNotOk(int bookId) {
+    	String sql = """
+        		UPDATE books
+        		SET status = CASE
+        		WHEN status = 'prenotato' THEN 'disponibilita'
+        		END
+        		WHERE book_id = ?
+        				""";
+    	jdbcTemplate.update(sql, bookId);
+    }
+  
 
     /**
      * Registra la data di restituzione effettiva per il noleggio specificato.
@@ -209,7 +233,11 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
     }
 
 	@Override
+<<<<<<< HEAD
 	public void updateStatus(int bookId) {
+=======
+	public void updateStatusToLend(int bookId) {
+>>>>>>> 5088af4f7c092c17706c09e9dbd8f35149c5cbbb
 		String sql = """
 				UPDATE books
 				SET status = 'prenotato'
@@ -218,6 +246,17 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 				""";
 		
 		jdbcTemplate.update(sql, bookId);
+	}
+
+
+	
+	@Override
+	public void deleteRentalById(int rentId) {
+		String sql = """
+				DELETE FROM books
+				WHERE rent_id = ?
+				""";
+		jdbcTemplate.update(sql, rentId);
 	}
     
 }

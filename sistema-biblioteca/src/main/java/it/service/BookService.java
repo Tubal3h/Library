@@ -18,7 +18,10 @@ import org.springframework.transaction.annotation.Transactional;
 import it.exception.NoBookIdFoundException;
 
 import it.dto.BookDto;
+import it.dto.BookNameDto;
 import it.entity.BookJoin;
+import it.entity.Category;
+import it.entity.Publisher;
 import it.exception.BookNotFoundException;
 import it.exception.InsertBookServiceException;
 import it.repository.AuthorRepository;
@@ -60,6 +63,10 @@ public class BookService {
 		this.publisherRepository = publisherRepository;
     }
 
+    public List<it.entity.BookName> getAllBookNames() {
+        return bookNameRepository.getAllBookNames();
+    }
+
     /**
      * Recupera tutti i libri visibili per l'utente in base al suo ruolo.
      * Gli utenti con ruolo {@code role_user} vedono solo i libri disponibili;
@@ -82,7 +89,7 @@ public class BookService {
                 dto.setAuthorFullName(book.getAuthorFullName());
                 dto.setPublisherName(book.getPublisherName());
                 dto.setPublishingDate(book.getPublicationDate());
-                dto.setIsbnCode(book.getIsbnCode());
+                dto.setIsbn(book.getIsbnCode());
                 dto.setCategoryName(book.getCategoryName());
                 dto.setStatus(book.getStatus());
                 return dto;
@@ -111,7 +118,7 @@ public class BookService {
         dto.setAuthorFullName(book.getAuthorFullName());
         dto.setPublisherName(book.getPublisherName());
         dto.setPublishingDate(book.getPublicationDate());
-        dto.setIsbnCode(book.getIsbnCode());
+        dto.setIsbn(book.getIsbnCode());
         dto.setCategoryName(book.getCategoryName());
         dto.setStatus(book.getStatus());
         return dto;
@@ -139,7 +146,7 @@ public class BookService {
      * @return Il numero di righe inserite (1 se successo)
      * @throws NoIsbnFoundException se l'ISBN non viene fornito o non è valido
      */
-	@SuppressWarnings("null")
+	// @SuppressWarnings("null")
 	@Transactional
 	public int addBook(String isbn) throws NoIsbnFoundException {
 		int res = 0;
@@ -214,7 +221,7 @@ public class BookService {
      */
 	
 	@Transactional
-	public int insertBook(String title, String authorName, String authorLastName, LocalDate date, String category, String publisher, String isbn) throws InsertBookServiceException {
+	public void insertBook(String title, String authorName, String authorLastName, LocalDate date, String category, String publisher, String isbn) throws InsertBookServiceException {
 		String authorFullName = authorName.concat(" ").concat(authorLastName);
 		System.out.println("author full name: " + authorFullName);
 		System.out.println("title: " + title);
@@ -224,14 +231,32 @@ public class BookService {
 		System.out.println("date: " + date);
 		System.out.println("category: " + category);
 		System.out.println("isbn: " + isbn);
+		
+		
 		try {
-			int firstRes = bookNameRepository.insertBookByTitle(title);
-			int authorResult = authorRepository.insertAuthorByNameAndLastName(authorName, authorLastName);
-			int categoryResult = categoryRepository.insertCategoryByNameCategory(category);
-			int publisherResult = publisherRepository.insertPublisherByPubliserName(publisher);
-			int secondRes = editionRepository.insertEdition(title, authorName, authorLastName, publisher, date, category, isbn);
-			int thirdRes = bookRepository.insertBookByTitle(title);
-			return firstRes + authorResult + categoryResult + publisherResult + secondRes + thirdRes;
+			if(!bookNameRepository.isTitleOnDb(title)) {
+				bookNameRepository.insertBookByTitle(title);
+				System.out.println("titolo insert fatta");
+			}
+			
+			if(!authorRepository.isAuthorPresent(authorName, authorLastName)) {
+				authorRepository.insertAuthorByNameAndLastName(authorName, authorLastName);	
+				System.out.println("autore insert fatta");
+			}
+			 
+			Category categoryBis = new Category(category);
+			if(!categoryRepository.isCategoryPresentByName(categoryBis)) {
+				categoryRepository.insertCategoryByNameCategory(category);
+				System.out.println("caegoria insert fatta");
+			}
+			
+			Publisher publisherBis = new Publisher(publisher);
+			if(!publisherRepository.isPublisherPresent(publisherBis)) {
+				publisherRepository.insertPublisherByPubliserName(publisher);
+				System.out.println("publisher insert fatta");
+			}
+			editionRepository.insertEdition(title, authorName, authorLastName, publisher, date, category, isbn);
+			bookRepository.insertBookByTitle(title);
 		}catch(RuntimeException ex) {
 			System.out.println(ex.toString());
 			throw new InsertBookServiceException("errore nell'inserimento di un libro");	
@@ -256,11 +281,38 @@ public class BookService {
                 dto.setAuthorFullName(book.getAuthorFullName());
                 dto.setPublisherName(book.getPublisherName());
                 dto.setPublishingDate(book.getPublicationDate());
-                dto.setIsbnCode(book.getIsbnCode());
+                dto.setIsbn(book.getIsbnCode());
                 dto.setCategoryName(book.getCategoryName());
                 dto.setStatus(book.getStatus());
                 return dto;
             })
             .toList();
+    }
+
+
+    @Transactional
+    public void updateBookTitle(int bookNameId, String editionTitle) { 
+        bookNameRepository.updateBookTitle(bookNameId, editionTitle);
+    }
+
+    @Transactional
+    public int insertAndGetBookNameId(String title) throws it.exception.InsertBookNameException {
+        bookNameRepository.insertBookByTitle(title);
+        return getBookNameId(title);
+    }
+
+    @Transactional
+    public boolean isBookNamePresent(BookNameDto bookNameDto) {
+        return bookNameRepository.getBookNamesByTitle(bookNameDto.getTitle()).stream()
+                .filter(b -> b.getBookNameId() != bookNameDto.getBookNameId())
+                .findFirst()
+                .isPresent();
+    }
+    
+    @Transactional
+    public int getBookNameId(String title) {
+        return bookNameRepository.getBookNamesByTitle(title).stream()
+                .findFirst()
+                .get().getBookNameId();
     }
 }
