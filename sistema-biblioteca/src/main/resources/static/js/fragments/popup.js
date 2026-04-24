@@ -21,6 +21,7 @@ const POPUP_PANELS = [
     'editCategoryOnlyContent',
     'addUserContent',
     'addUserSuccessContent',
+    'returnedRentContent',
     'updateTitleContent',
     'updateAuthorContent',
     'updatePublisherContent',
@@ -268,6 +269,16 @@ function triggerConfirmDelivered(element) {
     const title = element.getAttribute('data-title');
     const url = element.getAttribute('data-url');
     openConfirmPopup('delivered', title, 'Il manuale verrà reso disponibile', url);
+}
+
+/**
+ * Helper per avviare la conferma restituzione leggendo i dati dall'elemento HTML.
+ * @param {HTMLElement} element - Il bottone cliccato.
+ */
+function triggerConfirmReturned(element) {
+    const title = element.getAttribute('data-title');
+    const url = element.getAttribute('data-url');
+    openConfirmPopup('returned', title, 'Il manuale verrà segnato come restituito', url);
 }
 
 /**

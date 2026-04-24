@@ -110,13 +110,13 @@
 
                 <!-- Pulsante per confermare la restituzione (Consegnato) con Popup -->
                 <button  type="button" th:if="${rent.book != null && rent.book.status == 'prenotato' && user.userRole == 'role_admin'}" th:data-title="${rent.book.title}"
-                    th:data-url="@{/api/delivered(bookID=${rent.bookId}, rentID=${rent.rentId})}"
+                    th:data-url="@{/api/delivered(bookID=${rent.bookId}, rentID=${rent.rentId}, bookTitle=${rent.book.title})}"
                     onclick="triggerConfirmDelivered(this)"
                     class="w-100 btn-modern-action pointer transition shadow-soft">
                     <span>Consegnato</span>
                 </button>
                 <button type="button" th:if="${rent.book != null && rent.book.status == 'in prestito' && user.userRole == 'role_admin'}" th:data-title="${rent.book.title}"
-                    th:data-url="@{/api/returned(bookID=${rent.bookId}, rentID=${rent.rentId})}"
+                    th:data-url="@{/api/returned(bookID=${rent.bookId}, rentID=${rent.rentId}, bookTitle=${rent.book.title})}"
                     onclick="triggerConfirmReturned(this)"
                     class="w-100 btn-modern-action pointer transition shadow-soft">
                     <span>Restituito</span>

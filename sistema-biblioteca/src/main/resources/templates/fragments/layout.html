@@ -147,10 +147,17 @@
 
                 } else if (popupType === 'delivered') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-box-open text-white font-size-medium';
-                    setTextIfExists('popupTitle', 'Restituita');
+                    setTextIfExists('popupTitle', 'Consegnata');
                     setTextIfExists('deliveredBookTitle', bookTitle || '');
                     setTextIfExists('deliveredBookId', bookId || '');
                     document.getElementById('deliveredRentContent').classList.remove('none');
+                    
+                } else if (popupType === 'returned') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-circle-check text-white font-size-medium';
+                    setTextIfExists('popupTitle', 'Restituita');
+                    setTextIfExists('returnedBookTitle', bookTitle || '');
+                    setTextIfExists('returnedBookId', bookId || '');
+                    document.getElementById('returnedRentContent').classList.remove('none');
                     
                 } else if (popupType === 'booked') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-bookmark text-white font-size-medium';
