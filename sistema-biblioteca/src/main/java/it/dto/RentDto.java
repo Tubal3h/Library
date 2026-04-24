@@ -15,6 +15,7 @@ public class RentDto {
     private int bookId;
     private BookDto book;
     private UserDto user;
+    private LocalDate bookingDate;
     private LocalDate rentalDate;
     private LocalDate rentalExpired;
     private LocalDate rentalEnded;
@@ -83,6 +84,17 @@ public class RentDto {
         this.book = book;
     }
     
+    /**
+     * @return Data di inizio noleggio
+     */
+    public LocalDate getBookingDate() {
+        return bookingDate;
+    }
+
+    public void setBookingDate(LocalDate bookingDate) {
+        this.bookingDate = bookingDate;
+    }
+
     /**
      * @return Data di inizio noleggio
      */

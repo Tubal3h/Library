@@ -88,7 +88,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
         String sql = """
                 SELECT
                     r.rental_id, r.users_id, r.book_id,
-                    r.rental_date, r.rental_expired, r.rental_ended,
+                    r.rental_date, r.rental_expired, r.rental_ended, r.booking_date,
                     bn.title,
                     CONCAT(a.author_name, ' ', a.author_last_name) AS author_full_name,
                     u.user_name, 
@@ -96,7 +96,8 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                     p.publisher_name,
                     e.publishing_date,
                     c.category_name,
-                    e.isbn
+                    e.isbn,
+                    b.status
                 FROM rental_record r
                 JOIN books b        ON r.book_id       = b.book_id
                 JOIN edition e      ON b.edition_id    = e.edition_id
@@ -122,7 +123,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
         String sql = """
                 SELECT
                     r.rental_id, r.users_id, r.book_id,
-                    r.rental_date, r.rental_expired, r.rental_ended,
+                    r.rental_date, r.rental_expired, r.rental_ended, r.booking_date,
                     bn.title,
                     CONCAT(a.author_name, ' ', a.author_last_name) AS author_full_name,
                     u.user_name, 
@@ -130,7 +131,8 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                     p.publisher_name,
                     e.publishing_date,
                     c.category_name,
-                    e.isbn
+                    e.isbn,
+                    b.status
                 FROM rental_record r
                 JOIN books b        ON r.book_id       = b.book_id
                 JOIN edition e      ON b.edition_id    = e.edition_id

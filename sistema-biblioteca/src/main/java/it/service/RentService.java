@@ -87,6 +87,7 @@ public class RentService {
         book.setPublishingDate(rent.getPublicationDate());
         book.setCategoryName(rent.getCategoryName());
         book.setIsbn(rent.getIsbnCode());
+        book.setStatus(rent.getStatus());
 
         RentDto dto = new RentDto();
         dto.setRentId(rent.getRentalId());
@@ -97,6 +98,7 @@ public class RentService {
         dto.setRentalDate(rent.getRentalDate());
         dto.setRentalExpired(rent.getRentalExpired());
         dto.setRentalEnded(rent.getRentalEnded());
+        dto.setBookingDate(rent.getBookingDate());
         return dto;
     }
 
@@ -137,6 +139,7 @@ public class RentService {
             RentalRecord rental = new RentalRecord();
             rental.setUserId(rentDto.getUserId());
             rental.setBookId(rentDto.getBookId());
+            rental.setBookingDate(LocalDate.now());
             rentRepository.createABookedDate(rental);
             rentRepository.updateStatusToLend(rentDto.getBookId());
         } catch (Exception e) {

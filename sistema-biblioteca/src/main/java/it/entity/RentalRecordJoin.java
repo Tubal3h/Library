@@ -22,9 +22,11 @@ public class RentalRecordJoin {
     private LocalDate publicationDate;
     private String categoryName;
     private String isbnCode;
+    private LocalDate bookingDate;
     private LocalDate rentalDate;
     private LocalDate rentalExpired;
     private LocalDate rentalEnded;
+	private String status;
 	
     public RentalRecordJoin(int rentalId, int bookId, int userId, String bookName, String authorFullName,
 			String userName, String userLastName, String publisherName, LocalDate publicationDate, String categoryName, String isbnCode,
@@ -113,6 +115,15 @@ public class RentalRecordJoin {
 	public void setIsbn(String isbnCode) {
 		this.isbnCode = isbnCode;
 	}
+
+	public LocalDate getBookingDate() {
+		return bookingDate;
+	}
+
+	public void setBookingDate(LocalDate bookingDate) {
+		this.bookingDate = bookingDate;
+	}
+
 	public LocalDate getRentalDate() {
 		return rentalDate;
 	}
@@ -131,7 +142,21 @@ public class RentalRecordJoin {
 	public void setRentalEnded(LocalDate rentalEnded) {
 		this.rentalEnded = rentalEnded;
 	}
-
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	@Override
+	public String toString() {
+		return "RentalRecordJoin [rentalId=" + rentalId + ", bookId=" + bookId + ", userId=" + userId
+				+ ", bookName=" + bookName + ", authorFullName=" + authorFullName + ", userName=" + userName
+				+ ", userLastName=" + userLastName + ", publisherName=" + publisherName + ", publicationDate="
+				+ publicationDate + ", categoryName=" + categoryName + ", isbnCode=" + isbnCode + ", bookingDate="
+				+ bookingDate + ", rentalDate=" + rentalDate + ", rentalExpired=" + rentalExpired + ", rentalEnded="
+				+ rentalEnded + ", status=" + status + "]";
+	}
 	
 }
 

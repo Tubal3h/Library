@@ -55,7 +55,7 @@
                 </div>
                 <div class="flex align-center font-size-small">
                     <i class="fa-solid fa-barcode text-sm text-brand pr-1"></i>
-                    <label class="font-mono fw-600" title="ISBN" th:text="${book.isbnCode}">ISBN</label>
+                    <label class="font-mono fw-600" title="ISBN" th:text="${book.isbn}">ISBN</label>
                 </div>
             </div>
         </div>
@@ -73,7 +73,7 @@
             </div>
 
             <a th:if="${user.userRole != 'role_admin'}"
-                th:href="@{/api/borrow(email=${user.userEmail}, bookId=${book.bookId})}"
+                th:href="@{/api/booked(bookId=${book.bookId})}"
                 class="btn-modern-action pointer transition shadow-soft" style="text-decoration: none;">
                 <span>Richiedi</span>
             </a>
