@@ -93,8 +93,8 @@ public class BookRepository implements BookRepositoryInterface{
      *
      * @return Numero totale di libri presenti nella tabella books
      */
-    public int countBooks() {
-        String sql = "SELECT COUNT(*) FROM books";
+    public int countAllBooks() {
+        String sql = "SELECT COUNT(*) FROM books ";
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
@@ -213,4 +213,10 @@ public class BookRepository implements BookRepositoryInterface{
                 """ + filter;
         return jdbcTemplate.query(sql, bookJoinMapper, editionId);
     }
+
+	@Override
+	public int countAllNotEliminatedBooks() {
+		String query = "SELECT COUNT(*) FROM books WHERE status != 'eliminato'";
+		return jdbcTemplate.queryForObject(query, Integer.class);
+	}
 }

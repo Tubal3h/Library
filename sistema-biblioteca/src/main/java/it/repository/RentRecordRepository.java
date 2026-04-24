@@ -106,6 +106,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                 JOIN category c     ON e.category_id   = c.category_id
                 JOIN users u		ON r.users_id      = u.users_id
                 WHERE r.rental_ended IS NULL
+                AND r.rental_expired IS NULL
                 """;
         return jdbcTemplate.query(sql, rentalRecordJoinRowMapper);
     }
@@ -139,6 +140,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                 JOIN category c     ON e.category_id   = c.category_id
                 JOIN users u        ON r.users_id      = u.users_id
                 WHERE r.rental_ended IS NULL
+                  AND r.rental_expired IS NULL
                   AND r.users_id = ?
                 """;
         return jdbcTemplate.query(sql, rentalRecordJoinRowMapper, userId);
@@ -161,6 +163,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
         jdbcTemplate.update(sql, rental.getUserId(), rental.getBookId(), rental.getRentalDate(),
                 rental.getRentalExpired(), rental.getRentalEnded());
     }
+    
 
     /**
      * Chiude un noleggio attivo registrando la data di restituzione e aggiornando lo stato del libro.
@@ -204,4 +207,17 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                 """;
         jdbcTemplate.update(sql, date, rentId);
     }
+
+	@Override
+	public void updateStatus(int bookId) {
+		String sql = """
+				UPDATE books
+				SET status = 'prenotato'
+				WHERE status = 'disponibilita'
+				AND book_id = ?
+				""";
+		
+		jdbcTemplate.update(sql, bookId);
+	}
+    
 }

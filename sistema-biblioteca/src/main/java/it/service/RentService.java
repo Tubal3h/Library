@@ -131,22 +131,24 @@ public class RentService {
      * @throws RuntimeException se si verifica un errore durante la creazione del noleggio
      */
     
+
     @Transactional
-    public void createRental(RentDto rentDto) throws RuntimeException {
+    public void createPendingRental(RentDto rentDto) throws RuntimeException {
         try {
             RentalRecord rental = new RentalRecord();
             rental.setUserId(rentDto.getUserId());
             rental.setBookId(rentDto.getBookId());
             rental.setRentalDate(LocalDate.now());
-            rental.setRentalExpired(LocalDate.now().plusDays(14));
+            rental.setRentalExpired(null);
             rental.setRentalEnded(null);
             rentRepository.createRental(rental);
+            rentRepository.updateStatus(rentDto.getBookId());
         } catch (Exception e) {
             System.out.println("Eccezione nella repository: " + e.getMessage());
             throw new RuntimeException("Impossibile creare il noleggio in questo momento.");
         }
     }
-
+    
     /**
      * Aggiorna lo stato di un noleggio registrando la restituzione del libro.
      *

@@ -10,7 +10,8 @@ public interface BookRepositoryInterface {
 	public String getPublisherNameByID(int publisherId);
 	public String getIsbnCodeByID(int isbnId);
 	public String getCategoryNameByID(int categoryId);
-	public int countBooks();
+	public int countAllBooks();
+	public int countAllNotEliminatedBooks();
 	public List<BookJoin> getAllBooks();
 	public int insertBookByIsbn(String isbn);
 	public int deleteBookById(int id);

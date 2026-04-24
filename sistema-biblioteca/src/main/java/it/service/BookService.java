@@ -124,9 +124,13 @@ public class BookService {
      */
     @Transactional(readOnly = true)
     public int getTotalCountBooks() {
-        return bookRepository.countBooks();
+        return bookRepository.countAllBooks();
     }
     
+    @Transactional(readOnly = true)
+    public int getTotalNotElimatedBooks() {
+    	return bookRepository.countAllNotEliminatedBooks();
+    }
     /**
      * Aggiunge una nuova copia fisica di un libro al sistema tramite il suo ISBN.
      * Recupera l'edizione corrispondente e inserisce un nuovo record nella tabella books.

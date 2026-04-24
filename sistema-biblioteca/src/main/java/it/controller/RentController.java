@@ -43,6 +43,29 @@ public class RentController {
      * @param bookId ID del libro da noleggiare (stringa numerica)
      * @return Redirect alla sezione noleggi in caso di successo, o redirect al catalogo con errore
      */
+    
+    @GetMapping("/api/acceptLending")
+    public String acceptLengindByAdmin(@RequestParam(value = "bookId", required = false) String bookId) {
+    	UserDto user = userSession.getUser();
+    	int parsedInteger = 0;
+    	userSession.setSection("rents");
+    	if(user == null) {
+    		return "redirect:/";
+    	}
+    	
+    	if(bookId == null || bookId.isEmpty()) {
+    		return "redirect:/dashboard";
+    	}
+    	
+    	try {
+    		parsedInteger = Integer.parseInt(bookId);
+    	}catch(NumberFormatException ex) {
+    		System.out.println("Errore: bookId non valido - " + bookId);
+            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog&error=invalid_id";
+    	}
+    	return null;
+    }
+    
     @GetMapping("/api/borrow")
     public String borrowBook(
             @RequestParam(value = "bookId", required = false) String bookId
@@ -64,19 +87,20 @@ public class RentController {
             System.out.println("Errore: bookId non valido - " + bookId);
             return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog&error=invalid_id";
         }
-
         RentDto rental = new RentDto();
         rental.setUserId(user.getUserId());
         rental.setBookId(parsedBookId);
 
+
         try {
-            rentService.createRental(rental);
+            rentService.createPendingRental(rental);
         } catch (Exception e) {
             System.out.println("Errore: impossibile noleggiare il libro - " + bookId);
             userSession.setSection("404");
             return "redirect:/dashboard";
         }
 
+        
         return "redirect:/dashboard";
     }
     /**
