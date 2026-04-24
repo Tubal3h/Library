@@ -98,18 +98,25 @@
 
                     <div
                         class="glass-indicator radius-10 font-size-xs tracking-widest flex align-center gap-1 p-2 px-8">
-                        <span th:if="${rent.rentalEnded != null}" th:text="'Restituito'">STATO</span>
-                        <span th:if="${rent.rentalEnded == null && !isExpired}" th:text="'In Corso'">STATO</span>
-                        <span th:if="${rent.rentalEnded == null && isExpired}" th:text="'Scaduto'">STATO</span>
+                        <span th:if="${rent.rentalEnded == null && rent.book.status == 'prenotato'}" th:text="'Prenotato'">STATO</span>
+                        <span th:if="${rent.rentalEnded == null && rent.book.status == 'in prestito' && !isExpired}" th:text="'In Prestito'">STATO</span>
+                        <span th:if="${rent.rentalEnded == null && rent.book.status == 'in prestito' && isExpired}" th:text="'Scaduto'">STATO</span>
+                        
                     </div>
                 </div>
 
                 <!-- Pulsante per confermare la restituzione (Consegnato) con Popup -->
-                <button type="button" th:if="${rent.book != null}" th:data-title="${rent.book.title}"
-                    th:data-url="@{/api/delivered(email=${user.userEmail}, bookID=${rent.bookId}, rentID=${rent.rentId})}"
+                <button type="button" th:if="${rent.book != null && rent.book.status == 'prenotato'}" th:data-title="${rent.book.title}"
+                    th:data-url="@{/api/delivered(bookID=${rent.bookId}, rentID=${rent.rentId})}"
                     onclick="triggerConfirmDelivered(this)"
                     class="w-100 btn-modern-action pointer transition shadow-soft">
                     <span>Consegnato</span>
+                </button>
+                <button type="button" th:if="${rent.book != null && rent.book.status == 'in prestito'}" th:data-title="${rent.book.title}"
+                    th:data-url="@{/api/returned(bookID=${rent.bookId}, rentID=${rent.rentId})}"
+                    onclick="triggerConfirmReturned(this)"
+                    class="w-100 btn-modern-action pointer transition shadow-soft">
+                    <span>Restituito</span>
                 </button>
             </div>
         </div>

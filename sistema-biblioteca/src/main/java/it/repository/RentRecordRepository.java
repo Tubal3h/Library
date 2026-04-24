@@ -96,7 +96,8 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                     p.publisher_name,
                     e.publishing_date,
                     c.category_name,
-                    e.isbn
+                    e.isbn,
+                    b.status
                 FROM rental_record r
                 JOIN books b        ON r.book_id       = b.book_id
                 JOIN edition e      ON b.edition_id    = e.edition_id
@@ -130,7 +131,8 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                     p.publisher_name,
                     e.publishing_date,
                     c.category_name,
-                    e.isbn
+                    e.isbn,
+                    b.status
                 FROM rental_record r
                 JOIN books b        ON r.book_id       = b.book_id
                 JOIN edition e      ON b.edition_id    = e.edition_id

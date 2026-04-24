@@ -50,10 +50,7 @@ public class RentController {
     						 @RequestParam(value = "userId", required = false) String userId,
     						 Boolean confirmed, 
     						 RedirectAttributes redirectAttributes) {
-    
-    	if(userId == null) {
-    		return "redirect:/";	
-    	}
+                
     	int parsedBookId;
     	int parsedUserId;
     	UserDto user = userSession.getUser();
@@ -71,7 +68,7 @@ public class RentController {
         }
         
         try {
-            parsedUserId = Integer.parseInt(bookId);
+            parsedUserId = Integer.parseInt(userId);
         } catch (NumberFormatException e) {
             System.out.println("Errore: user non valido - " + userId);
             redirectAttributes.addFlashAttribute("popupType", "error");

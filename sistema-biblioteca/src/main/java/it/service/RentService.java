@@ -87,6 +87,7 @@ public class RentService {
         book.setPublishingDate(rent.getPublicationDate());
         book.setCategoryName(rent.getCategoryName());
         book.setIsbn(rent.getIsbnCode());
+        book.setStatus(rent.getStatus());
 
         RentDto dto = new RentDto();
         dto.setRentId(rent.getRentalId());

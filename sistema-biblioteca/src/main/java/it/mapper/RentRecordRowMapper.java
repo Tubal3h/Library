@@ -32,8 +32,8 @@ public class RentRecordRowMapper implements RowMapper<RentalRecord> {
         rentalRecord.setRentalId(rs.getInt("rental_id"));
         rentalRecord.setBookId(rs.getInt("book_id"));
         rentalRecord.setUserId(rs.getInt("users_id"));
-        rentalRecord.setRentalDate(rs.getDate("rental_date").toLocalDate());
-        rentalRecord.setRentalExpired(rs.getDate("rental_expired").toLocalDate());
+        rentalRecord.setRentalDate(rs.getDate("rental_date") != null ? rs.getDate("rental_date").toLocalDate() : null);
+        rentalRecord.setRentalExpired(rs.getDate("rental_expired") != null ? rs.getDate("rental_expired").toLocalDate() : null);
         rentalRecord.setRentalEnded(rs.getDate("rental_ended") != null ? rs.getDate("rental_ended").toLocalDate() : null);
         return rentalRecord;
     }
