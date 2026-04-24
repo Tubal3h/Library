@@ -38,57 +38,53 @@
         <div class="card-info-main flex-1 p-5 flex flex-column justify-center">
 
             <!-- Titolo e Autore del Libro -->
-            <div class="mb-4">
-                <div class="flex self-center gap-1">
+            <div class="mb-2">
+                <div class="flex align-center gap-2">
                     <h3 class="text-2xl italic fw-700 text-brand mb-1"
                         th:text="${rent.book != null ? rent.book.title : 'N/A'}"></h3>
+                </div>
+                <div class="flex align-center gap-2">
                     <p class="text-2xl fw-400 opacity-60 mb-3"
                         th:text="${rent.book != null ? rent.book.authorFullName : 'N/A'}"></p>
                 </div>
-
-                <!-- Label Categoria -->
-                <div th:if="${user.userRole == 'role_admin'}"
-                    class="category-label font-mono text-sm italic tracking-widest opacity-80 uppercase"
-                    th:text="${rent.book != null ? rent.book.categoryName : 'ALTRO'}">CATEGORIA</div>
+                <div class="flex align-center gap-2">
+                    <div th:if="${user.userRole == 'role_admin'}"
+                        class="category-label font-mono italic tracking-widest opacity-80 uppercase"
+                        th:text="${rent.book != null ? rent.book.categoryName : 'ALTRO'}">CATEGORIA</div>
+                </div>
             </div>
 
             <!-- Righe Metadati: Date, ISBN e User ID -->
-            <div class="card-meta mt-auto flex align-center gap-4 opacity-70">
+            <div class="card-meta mt-auto flex align-center gap-3 opacity-70">
                 <!-- Data Prenotazione -->
                 <div th:if="${rent.book.status == 'prenotato'}" class="flex align-center font-size-small">
-                    <i class="fa-solid fa-calendar-arrow-up text-sm text-brand pr-1"></i>
-                    <span class="font-mono fw-600 pr-2">Prenotato il:</span>
-                    <span th:text="${#temporals.format(rent.bookingDate, 'dd-MM-yyyy')}" class="fw-600">Data Prenotazione</span>
+                    <i class="fa-solid fa-calendar-plus text-sm text-brand pr-1"></i>
+                    <label class="fw-600" title="Prenotato il" th:text="${#temporals.format(rent.bookingDate, 'dd-MM-yyyy')}">Data Prenotazione</label>
                 </div>
                 
                 <!-- Data di Inizio Noleggio -->
-                <div  th:if="${rent.book.status != 'prenotato'}" class="flex align-center font-size-small">
-                    <i class="fa-solid fa-calendar-arrow-up text-sm text-brand pr-1"></i>
-                    <span class="font-mono fw-600 pr-2">Preso il:</span>
-                    <span th:text="${#temporals.format(rent.rentalDate, 'dd-MM-yyyy')}" class="fw-600">Inizio</span>
+                <div th:if="${rent.book.status != 'prenotato'}" class="flex align-center font-size-small">
+                    <i class="fa-solid fa-calendar-check text-sm text-brand pr-1"></i>
+                    <label class="fw-600" title="Preso il" th:text="${#temporals.format(rent.rentalDate, 'dd-MM-yyyy')}">Inizio</label>
                 </div>
 
                 <!-- Data di Scadenza -->
                 <div th:if="${rent.book.status != 'prenotato'}" class="flex align-center font-size-small">
-                    <i class="fa-solid fa-calendar-arrow-down text-sm text-brand pr-1"></i>
-                    <span class="font-mono fw-600 pr-2">Scadenza:</span>
-                    <span th:text="${#temporals.format(rent.rentalExpired, 'dd-MM-yyyy')}"
-                        class="fw-600">Scadenza</span>
+                    <i class="fa-regular fa-clock text-sm text-brand pr-1"></i>
+                    <label class="fw-600" title="Scadenza" th:text="${#temporals.format(rent.rentalExpired, 'dd-MM-yyyy')}">Scadenza</label>
                 </div>
 
                 <!-- Codice ISBN -->
                 <div th:if="${user.userRole == 'role_admin' and rent.book != null}"
                     class="flex align-center font-size-small">
                     <i class="fa-solid fa-barcode text-sm text-brand pr-1"></i>
-                    <span class="font-mono fw-600 pr-2">ISBN:</span>
-                    <span th:text="${rent.book.isbn}" class="font-mono fw-600">ISBN</span>
+                    <label class="font-mono fw-600" title="ISBN" th:text="${rent.book.isbn}">ISBN</label>
                 </div>
 
                 <!-- ID Utente (Utile per gli Admin) -->
                 <div th:if="${user.userRole == 'role_admin'}" class="flex align-center font-size-small">
                     <i class="fa-solid fa-user text-sm text-brand pr-1"></i>
-                    <span th:text="'Utente: ' + ${rent.user.userName + ' ' + rent.user.userLastName}"
-                        class="font-mono fw-600">USER</span>
+                    <label class="fw-600" title="Utente" th:text="${rent.user.userName + ' ' + rent.user.userLastName}">USER</label>
                 </div>
             </div>
         </div>
