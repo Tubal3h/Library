@@ -97,7 +97,11 @@ public class UserRepository implements UserRepositoryInterface{
      */
     public int deleteUserById(String userId) {
         String sql = "DELETE FROM users WHERE users_id = ?";
-        return jdbcTemplate.update(sql, userId);
+        try {
+            return jdbcTemplate.update(sql, Integer.parseInt(userId));
+        } catch (NumberFormatException e) {
+            return 0;
+        }
     }
 }
 
