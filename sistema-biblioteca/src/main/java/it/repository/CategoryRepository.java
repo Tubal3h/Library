@@ -99,7 +99,7 @@ public class CategoryRepository implements CategoryRepositoryInterface{
     }
    
     public Boolean isCategoryPresentByName(Category category) {
-        String sql = "SELECT COUNT(*) FROM category WHERE categoryName = :categoryName";
+        String sql = "SELECT COUNT(*) FROM category WHERE category_name = :categoryName";
         SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("categoryName", category.getCategoryName());
         Integer count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);
         return count != null && count > 0;

@@ -127,6 +127,7 @@ public class EditionRepository implements EditionRepositoryInterface {
 		try {
 			namedParameterJdbcTemplate.update(insertEdition, sqlParameter);
 		}catch(DataAccessException ex) {
+			System.out.println(ex.getMessage());
 			throw new InsertEditionException("errore nell'inserimento dell'edizione del libro");
 		}
 	} 

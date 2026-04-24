@@ -70,7 +70,7 @@ public class BookNameRepository implements BookNameRepositoryInterface {
 		
     	String insertBook = "INSERT INTO books_names(title)\r\n"
 				  		  + "VALUES(:title)";
-		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("title", title.toLowerCase().trim());
+		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("title", title);
 		try {
 			namedParameterJdbcTemplate.update(insertBook, sqlParameters);	
 		}catch(DataAccessException ex) {
@@ -104,7 +104,7 @@ public class BookNameRepository implements BookNameRepositoryInterface {
 	
     @Override
 	public Boolean isTitleOnDb(String title) {
-		String selectBookByTitle = "SELECT COUNT(*) FROM books_names WHERE title = :title";
+		String selectBookByTitle = "SELECT COUNT(*) FROM books_names WHERE title =:title";
 		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("title", title);
 		Integer counter = namedParameterJdbcTemplate.queryForObject(selectBookByTitle, sqlParameters, Integer.class);
 		return counter != null && counter > 0;

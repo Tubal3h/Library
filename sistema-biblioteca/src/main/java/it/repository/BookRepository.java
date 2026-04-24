@@ -99,7 +99,7 @@ public class BookRepository implements BookRepositoryInterface{
      */
     @Override
     public int countBooks() {
-        String sql = "SELECT COUNT(*) FROM books";
+        String sql = "SELECT COUNT(*) FROM books WHERE status != 'eliminato'";
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 

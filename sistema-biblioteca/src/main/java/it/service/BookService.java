@@ -230,22 +230,27 @@ public class BookService {
 		
 		
 		try {
-			if(!bookNameRepository.isTitleOnDb(title.toLowerCase().trim())) {
-				bookNameRepository.insertBookByTitle(title.toLowerCase().trim());
+			if(!bookNameRepository.isTitleOnDb(title)) {
+				bookNameRepository.insertBookByTitle(title);
+				System.out.println("titolo insert fatta");
 			}
+			
 			if(!authorRepository.isAuthorPresent(authorName, authorLastName)) {
-				authorRepository.insertAuthorByNameAndLastName(authorName, authorLastName);				
+				authorRepository.insertAuthorByNameAndLastName(authorName, authorLastName);	
+				System.out.println("autore insert fatta");
 			}
 			 
 			Category categoryBis = new Category(category);
 			if(!categoryRepository.isCategoryPresentByName(categoryBis)) {
 				categoryRepository.insertCategoryByNameCategory(category);
+				System.out.println("caegoria insert fatta");
 			}
 			
 			Publisher publisherBis = new Publisher(publisher);
 			if(!publisherRepository.isPublisherPresent(publisherBis)) {
 				publisherRepository.insertPublisherByPubliserName(publisher);
-			} 
+				System.out.println("publisher insert fatta");
+			}
 			editionRepository.insertEdition(title, authorName, authorLastName, publisher, date, category, isbn);
 			bookRepository.insertBookByTitle(title);
 		}catch(RuntimeException ex) {
