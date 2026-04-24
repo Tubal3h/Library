@@ -99,4 +99,32 @@ public class UserController {
         userSession.setSection("users");
         return "redirect:/dashboard";
     }
+
+    @PostMapping("/api/changePassword")
+    public String changePassword(
+            @RequestParam("email") String email,
+            @RequestParam("oldPassword") String oldPassword,
+            @RequestParam("newPassword") String newPassword,
+            @RequestParam("confirmPassword") String confirmPassword,
+            RedirectAttributes redirectAttributes) {
+        
+        UserDto currentUser = userSession.getUser();
+        if (currentUser == null || !currentUser.getUserEmail().equals(email)) {
+            return "redirect:/";
+        }
+
+        try {
+            userService.updatePassword(email, oldPassword, newPassword, confirmPassword);
+            redirectAttributes.addFlashAttribute("popupType", "changePassword");
+        } catch (IllegalArgumentException ex) {
+            redirectAttributes.addFlashAttribute("popupType", "error");
+            redirectAttributes.addFlashAttribute("popupErrorMessage", ex.getMessage());
+        } catch (Exception ex) {
+            redirectAttributes.addFlashAttribute("popupType", "error");
+            redirectAttributes.addFlashAttribute("popupErrorMessage", "Impossibile cambiare la password.");
+        }
+        
+        userSession.setSection("profile");
+        return "redirect:/dashboard";
+    }
 }

@@ -167,5 +167,30 @@ public class UserService {
         return userRepository.deleteUserById(userId);
     }
 
+    /**
+     * Aggiorna la password dell'utente verificando la password attuale.
+     *
+     * @param email Email dell'utente
+     * @param oldPassword Password attuale
+     * @param newPassword Nuova password
+     * @param confirmPassword Conferma della nuova password
+     */
+    @Transactional
+    public void updatePassword(String email, String oldPassword, String newPassword, String confirmPassword) {
+        if (newPassword == null || confirmPassword == null || !newPassword.equals(confirmPassword)) {
+            throw new IllegalArgumentException("La nuova password e la conferma non coincidono.");
+        }
+        
+        UserDto user = getUserByEmail(email);
+        if (user == null) {
+            throw new IllegalArgumentException("Utente non trovato.");
+        }
+        
+        if (!user.getUserPassword().equals(oldPassword)) {
+            throw new IllegalArgumentException("La password attuale non è corretta.");
+        }
+        
+        userRepository.updatePassword(email, newPassword);
+    }
 }
 
