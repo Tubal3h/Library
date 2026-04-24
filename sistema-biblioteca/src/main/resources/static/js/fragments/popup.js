@@ -288,12 +288,10 @@ function triggerConfirmReturned(element) {
 /**
  * Apre il popup in modalità di conferma ("Sei sicuro?").
  * 
- * @param {string} action - 'delete', 'add', 'delivered' o altro tipo di azione.
- * @param {string} titleTxt - Titolo dell'operazione (es. il nome del libro).
- * @param {string} message - Messaggio di conferma.
  * @param {string} confirmUrl - URL a cui reindirizzare dopo la conferma.
+ * @param {string} [method='GET'] - Metodo HTTP da utilizzare ('GET' o 'POST').
  */
-function openConfirmPopup(action, titleTxt, message, confirmUrl) {
+function openConfirmPopup(action, titleTxt, message, confirmUrl, method = 'GET') {
     const popup = document.getElementById('genericPopup');
     const title = document.getElementById('popupTitle');
     const icon = document.getElementById('popupIcon');
@@ -359,7 +357,19 @@ function openConfirmPopup(action, titleTxt, message, confirmUrl) {
 
     // Handler conferma
     confirmBtn.onclick = () => {
-        window.location.href = confirmUrl;
+        if (method.toUpperCase() === 'POST') {
+            // Per eseguire una POST con redirect, creiamo un form al volo
+            const form = document.createElement('form');
+            form.method = 'POST';
+            
+            // Separiamo action e parametri se presenti (Spring accetta @RequestParam anche in query string per POST)
+            form.action = confirmUrl;
+            
+            document.body.appendChild(form);
+            form.submit();
+        } else {
+            window.location.href = confirmUrl;
+        }
     };
 
     // Mostra il popup
@@ -552,7 +562,7 @@ function openEditTitlePopup(id, currentTitle) {
         const message = `Stai cambiando il titolo attuale ("${currentTitle}") con quello selezionato ("${selectedText}").`;
         const url = `/api/updateBookTitle?editionId=${id}&bookNameId=${selectedId}`;
         
-        openConfirmPopup('edit', 'Cambio Titolo', message, url);
+        openConfirmPopup('edit', 'Cambio Titolo', message, url, 'POST');
     };
 
     popup.classList.remove('none');
@@ -612,7 +622,7 @@ function openEditAuthorPopup(id, currentAuthor) {
         const message = `Stai cambiando l'autore attuale ("${currentAuthor}") con quello selezionato ("${selectedText}").`;
         const url = `/api/updateAuthor?editionId=${id}&authorId=${selectedId}`;
         
-        openConfirmPopup('edit', 'Cambio Autore', message, url);
+        openConfirmPopup('edit', 'Cambio Autore', message, url, 'POST');
     };
 
     popup.classList.remove('none');
@@ -670,9 +680,9 @@ function openEditPublisherPopup(id, currentPublisher) {
         if (!selectedId) return;
 
         const message = `Stai cambiando l'editore attuale ("${currentPublisher}") con quello selezionato ("${selectedText}").`;
-        const url = `/api/updatePublisher?editionId=${id}&publisherId=${selectedId}`;
+        const url = `/api/updatePublisher?editionId=${id}&publisherNameId=${selectedId}`;
         
-        openConfirmPopup('edit', 'Cambio Editore', message, url);
+        openConfirmPopup('edit', 'Cambio Editore', message, url, 'POST');
     };
 
     popup.classList.remove('none');
@@ -729,10 +739,10 @@ function openEditCategoryPopup(id, currentCategory) {
         const selectedText = selectElem ? selectElem.options[selectElem.selectedIndex].text : '';
         if (!selectedId) return;
 
-        const message = `Stai cambiando la categoria attuale ("${currentCategory}") con quella selezionata ("${selectedText}").`;
-        const url = `/api/updateCategory?editionId=${id}&categoryId=${selectedId}`;
+        const message = `Stai cambiando la categoria attuale ("${currentCategory}") con quello selezionato ("${selectedText}").`;
+        const url = `/api/updateCategory?editionId=${id}&categoryNameId=${selectedId}`;
         
-        openConfirmPopup('edit', 'Cambio Categoria', message, url);
+        openConfirmPopup('edit', 'Cambio Categoria', message, url, 'POST');
     };
 
     popup.classList.remove('none');

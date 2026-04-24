@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.dto.BookDto;
-import it.dto.CategoryDto;
 import it.dto.EditionDto;
 import it.dto.UserDto;
 import it.component.UserSession;
@@ -270,11 +269,10 @@ public class BookController {
 		
 		try {
 
-		if(!user.getUserRole().equals("role_admin")) {
-			userSession.setSection("home");
-			return "redirect:/dashboard";
-		}
-
+			if(!user.getUserRole().equals("role_admin")) {
+				userSession.setSection("home");
+				return "redirect:/dashboard";
+			}
 
 			editionService.updatePublisherId(editionId, publisherNameId);
 			redirectAttributes.addFlashAttribute("popupType", "updatePublisher");
@@ -289,8 +287,8 @@ public class BookController {
 
 	@PostMapping("/api/updateCategory")
 	public String updateCategory(
-		@RequestParam(value = "editionId") Integer editionId,
-		@RequestParam(value = "categoryName", required = false) String categoryName,
+		@RequestParam(value = "editionId") int editionId,
+		@RequestParam(value = "categoryNameId") int categoryNameId,
 		RedirectAttributes redirectAttributes) {
 		UserDto user = userSession.getUser();
 		if (user == null) {
@@ -299,30 +297,16 @@ public class BookController {
 
 		
 		try {
-			it.entity.Edition edition = editionService.getEditionById(editionId);
-			int categoryId = edition.getCategoryId();
-			CategoryDto categoryDto = new CategoryDto(categoryId, categoryName);
 
-		if(!user.getUserRole().equals("role_admin")) {
-			userSession.setSection("home");
-			return "redirect:/dashboard";
-		}
-		if(hasNullOrBlankParameters(categoryDto.getCategoryName())) {
-			redirectAttributes.addFlashAttribute("popupType", "error");
-			redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
-			return "redirect:/dashboard";
-		}
+			if(!user.getUserRole().equals("role_admin")) {
+				userSession.setSection("home");
+				return "redirect:/dashboard";
+			}
 
-		if (categoryService.isCategoryPresent(categoryDto)) {
-			int newCategoryId = categoryService.getCategoryId(categoryDto.getCategoryName());
-			editionService.updateCategoryId(editionId, newCategoryId);
-		} else {
-			int newCategoryId = categoryService.insertAndGetCategoryId(categoryDto.getCategoryName());
-			editionService.updateCategoryId(editionId, newCategoryId);
-		}
+			editionService.updateCategoryId(editionId, categoryNameId);
 			redirectAttributes.addFlashAttribute("popupType", "updateCategory");
-			redirectAttributes.addFlashAttribute("popupCategoryId", categoryId);
-			redirectAttributes.addFlashAttribute("popupCategoryName", categoryName);
+			redirectAttributes.addFlashAttribute("popupCategoryId", categoryNameId);
+			redirectAttributes.addFlashAttribute("popupCategoryName", categoryService.getCategoryById(categoryNameId).getCategoryName());
 		} catch (Exception ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
