@@ -9,7 +9,7 @@ import it.entity.EditionJoin;
 public interface EditionRepositoryInterface {
 	public List<EditionJoin> getAllEditions();
 	public Edition findById(int editionId);
-	public int insertEdition(String title, 
+	public void insertEdition(String title, 
 							 String authorName,
 							 String authotLastName,
 							 String publisher, 

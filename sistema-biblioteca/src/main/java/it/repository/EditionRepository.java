@@ -107,7 +107,7 @@ public class EditionRepository implements EditionRepositoryInterface {
      * @return Numero di righe inserite
      */
 	@Override
-	public int insertEdition(String title, String authorName, String authorLastName, String publisher, LocalDate publishingDate, String category,
+	public void insertEdition(String title, String authorName, String authorLastName, String publisher, LocalDate publishingDate, String category,
 			String isbn) throws InsertEditionException {
 		String insertEdition = "INSERT INTO edition (book_name_id, author_id, publisher_id, publishing_date, category_id, isbn)\r\n"
 							 + "VALUES((SELECT book_name_id FROM books_names WHERE title = :title),\r\n"
@@ -125,8 +125,7 @@ public class EditionRepository implements EditionRepositoryInterface {
 																	 .addValue("category", category) 
 																	 .addValue("isbn", isbn);
 		try {
-			int res = namedParameterJdbcTemplate.update(insertEdition, sqlParameter);
-			return res;
+			namedParameterJdbcTemplate.update(insertEdition, sqlParameter);
 		}catch(DataAccessException ex) {
 			throw new InsertEditionException("errore nell'inserimento dell'edizione del libro");
 		}

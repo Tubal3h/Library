@@ -178,15 +178,14 @@ public class BookRepository implements BookRepositoryInterface{
      * @return Numero di record inseriti
      */
 	@Override
-	public int insertBookByTitle(String title) throws InsertBookException {
+	public void insertBookByTitle(String title) throws InsertBookException {
 		String insertBook = "INSERT INTO books (edition_id, status)\r\n"
 						  + "VALUES((SELECT edition_id FROM edition INNER JOIN books_names ON edition.book_name_id = books_names.book_name_id WHERE title = :title),\r\n"
 						  + "('disponibilita'))";
 		
 		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("title", title);
 		try {
-			int res = namedParameterJdbcTemplate.update(insertBook, sqlParameter);
-			return res;
+			namedParameterJdbcTemplate.update(insertBook, sqlParameter);	
 		}catch(DataAccessException ex) {
 			throw new InsertBookException("errore nell'inserimento della copia");
 		}

@@ -66,14 +66,13 @@ public class BookNameRepository implements BookNameRepositoryInterface {
      * @param title Il titolo del libro da inserire
      * @return Numero di record inseriti
      */
-    public int insertBookByTitle(String title) throws InsertBookNameException{
+    public void insertBookByTitle(String title) throws InsertBookNameException{
 		
     	String insertBook = "INSERT INTO books_names(title)\r\n"
 				  		  + "VALUES(:title)";
 		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("title", title);
 		try {
-			int res = namedParameterJdbcTemplate.update(insertBook, sqlParameters);
-			return res;
+			namedParameterJdbcTemplate.update(insertBook, sqlParameters);	
 		}catch(DataAccessException ex) {
 			throw new InsertBookNameException("errore nell'inserimento del titolo del libro");
 		}    
@@ -102,4 +101,13 @@ public class BookNameRepository implements BookNameRepositoryInterface {
         String sql = "SELECT * FROM books_names WHERE title = ?";
         return jdbcTemplate.query(sql, bookNameRowMapper, title);
     }
+	
+    @Override
+	public Boolean isTitleOnDb(String title) {
+		String selectBookByTitle = "SELECT COUNT(*) FROM books_names WHERE title = :title";
+		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("title", title);
+		Integer counter = namedParameterJdbcTemplate.queryForObject(selectBookByTitle, sqlParameters, Integer.class);
+		return counter != null && counter > 0;
+		
+	}
 }
