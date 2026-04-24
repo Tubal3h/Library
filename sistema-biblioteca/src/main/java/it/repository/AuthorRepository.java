@@ -108,6 +108,17 @@ public class AuthorRepository implements AuthorRepositoryInterface{
     	Integer count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);
     	return count != null && count > 0;
     }
+
+    public void insertAuthor(String authorName, String authorLastName) throws InsertAuthorException {
+        String insert = "INSERT INTO author (author_name, author_last_name) VALUES (:authorName, :authorLastName)";
+        SqlParameterSource parameterSource  = new MapSqlParameterSource().addValue("authorName", authorName)
+                                                                         .addValue("authorLastName", authorLastName);
+        try {
+            namedParameterJdbcTemplate.update(insert, parameterSource);
+        }catch(DataAccessException ex) {
+            throw new InsertAuthorException("errore nell'inserimento dell'autore");
+        }
+    }
 }
 
 

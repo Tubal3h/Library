@@ -314,6 +314,109 @@ public class BookController {
 		return "redirect:/dashboard";
 	}
 
+	@PostMapping("/api/addBookName")
+	public String addBookName(
+		@RequestParam(value = "title") String title,
+		RedirectAttributes redirectAttributes) {
+		UserDto user = userSession.getUser();
+		if (user == null) {
+			return "redirect:/";
+		}
+		if(!user.getUserRole().equals("role_admin")) {
+			userSession.setSection("home");
+			return "redirect:/dashboard";
+		}	
+		try {
+			bookService.insertAndGetBookNameId(title);
+			redirectAttributes.addFlashAttribute("popupType", "addBookName");
+			redirectAttributes.addFlashAttribute("popupBookTitle", title);
+		} catch (InsertBookServiceException ex) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
+		}
+
+		return "redirect:/dashboard";
+	}
+	
+	@PostMapping("/api/addAuthor")
+	public String addAuthor(
+		@RequestParam(value = "authorName") String authorName,
+		@RequestParam(value = "authorLastName") String authorLastName,
+		RedirectAttributes redirectAttributes) {
+		UserDto user = userSession.getUser();
+		if (user == null) {
+			return "redirect:/";
+		}
+		if(!user.getUserRole().equals("role_admin")) {
+			userSession.setSection("home");
+			return "redirect:/dashboard";
+		}	
+		try {
+			bookService.insertAuthor(authorName, authorLastName);
+			redirectAttributes.addFlashAttribute("popupType", "addAuthor");
+			redirectAttributes.addFlashAttribute("popupAuthorName", authorName);
+			redirectAttributes.addFlashAttribute("popupAuthorLastName", authorLastName);
+		} catch (InsertBookServiceException ex) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
+		}
+
+		return "redirect:/dashboard";
+	}
+	
+
+	@PostMapping("/api/addPublisher")
+	public String addPublisher(
+		@RequestParam(value = "publisherName") String publisherName,
+		RedirectAttributes redirectAttributes) {
+		UserDto user = userSession.getUser();
+		if (user == null) {
+			return "redirect:/";
+		}
+		if(!user.getUserRole().equals("role_admin")) {
+			userSession.setSection("home");
+			return "redirect:/dashboard";
+		}	
+		try {
+			bookService.insertPublisher(publisherName);
+			redirectAttributes.addFlashAttribute("popupType", "addPublisher");
+			redirectAttributes.addFlashAttribute("popupPublisherName", publisherName);
+		} catch (InsertBookServiceException ex) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
+		}
+
+		return "redirect:/dashboard";
+	}
+	
+	@PostMapping("/api/addCategory")
+	public String addCategory(
+		@RequestParam(value = "categoryName") String categoryName,
+		RedirectAttributes redirectAttributes) {
+		UserDto user = userSession.getUser();
+		if (user == null) {
+			return "redirect:/";
+		}
+		if(!user.getUserRole().equals("role_admin")) {
+			userSession.setSection("home");
+			return "redirect:/dashboard";
+		}	
+		try {
+			bookService.insertCategory(categoryName);
+			redirectAttributes.addFlashAttribute("popupType", "addCategory");
+			redirectAttributes.addFlashAttribute("popupCategoryName", categoryName);
+		} catch (InsertBookServiceException ex) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
+		}
+
+		return "redirect:/dashboard";
+	}
+	
+	
+	
+	
+	
 	/**
 	 * Restituisce il frammento HTML per la lista delle copie di un'edizione.
 	 * Utilizzato per il caricamento dinamico nel popup tramite Thymeleaf Fragments.

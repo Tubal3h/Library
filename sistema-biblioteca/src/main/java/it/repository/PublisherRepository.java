@@ -119,7 +119,15 @@ public class PublisherRepository implements PublisherRepositoryInterface{
         return namedParameterJdbcTemplate.update(sql, parameterSource);
     }
 
-
+    public void insertPublisher(String publisherName) throws InsertPublisherException {
+        String insert = "INSERT INTO publisher (publisher_name) VALUES (:publisherName)";
+        SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("publisherName", publisherName);
+        try {
+            namedParameterJdbcTemplate.update(insert, parameterSource);
+        }catch(DataAccessException ex) {
+            throw new InsertPublisherException("errore nell'inserimento del publisher");
+        }
+    }
 }
 
 

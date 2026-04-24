@@ -73,46 +73,65 @@
                     Stai modificando il titolo dell'opera: <br>
                     <strong id="editTitleOnlyCurrent" class="text-brand text-lg"></strong>
                 </p>
-                <div class="input-group">
-                    <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Seleziona Nuovo Titolo</label>
-                    <select id="editTitleOnlySelect" class="w-100 p-4 radius-12 border-none font-size-small w-100 cursor-pointer">
+                <div class="input-group relative">
+                    <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nuovo Titolo</label>
+                    <input type="text" id="editTitleOnlyInput" 
+                           class="w-100 p-4 radius-12 border-none font-size-small bg-darkgrey"
+                           placeholder="Inizia a scrivere il titolo..."
+                           oninput="filterTitleSuggestions(this.value)">
+                    <select id="editTitleOnlySelect" class="w-100 p-4 radius-12 border-none font-size-small bg-darkgrey none">
                         <option value="">Seleziona un titolo...</option>
                         <option th:each="bn : ${bookNames}" th:value="${bn.bookNameId}" th:text="${bn.title}"></option>
                     </select>
+                    <div id="titleSuggestionsDropdown" class="suggestions-dropdown none"></div>
                 </div>
             </div>
 
             <!-- Edit Author Only -->
             <div id="editAuthorOnlyContent" class="none animate-fade-in-up">
                 <p class="mb-6 opacity-70 text-sm leading-relaxed">
-                    Stai modificando l'autore per: <br>
+                    Stai cambiando l'autore dell'edizione: <br>
                     <strong id="editAuthorOnlyCurrent" class="text-brand text-lg"></strong>
                 </p>
-                <div class="input-group">
-                    <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Seleziona Nuovo Autore</label>
-                    <select id="editAuthorOnlySelect" class="w-100 p-4 radius-12 border-none font-size-small w-100 cursor-pointer">
+                <div class="input-group relative">
+                    <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Cerca e Seleziona Autore</label>
+                    <input type="text" id="editAuthorSearchInput" 
+                           class="w-100 p-4 radius-12 border-none font-size-small bg-darkgrey"
+                           placeholder="Cerca autore per nome o cognome..."
+                           oninput="filterAuthorSuggestions(this.value)">
+                    <select id="editAuthorOnlySelect" class="w-100 p-4 radius-12 border-none font-size-small bg-darkgrey none">
                         <option value="">Seleziona un autore...</option>
                         <option th:each="author : ${authors}" th:value="${author.authorId}"
-                            th:text="${author.authorName} + ' ' + ${author.authorLastName}">
+                                th:text="${author.authorName} + ' ' + ${author.authorLastName}">
                         </option>
                     </select>
+                    <div id="authorSuggestionsDropdown" class="suggestions-dropdown none"></div>
+                    
+                    <!-- Campi nascosti per memorizzare i valori separati se necessario -->
+                    <input type="hidden" id="editAuthorFirstNameInput">
+                    <input type="hidden" id="editAuthorLastNameInput">
                 </div>
             </div>
 
             <!-- Edit Publisher Only -->
             <div id="editPublisherOnlyContent" class="none animate-fade-in-up">
                 <p class="mb-6 opacity-70 text-sm leading-relaxed">
-                    Stai modificando l'editore per: <br>
+                    Modifica editore dell'edizione: <br>
                     <strong id="editPublisherOnlyCurrent" class="text-brand text-lg"></strong>
                 </p>
-                <div class="input-group">
-                    <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Seleziona Nuovo Editore</label>
-                    <select id="editPublisherOnlySelect" class="w-100 p-4 radius-12 border-none font-size-small w-100 cursor-pointer">
+                <div class="input-group relative">
+                    <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nuovo Editore</label>
+                    <input type="text" id="editPublisherOnlyInput" 
+                           class="w-100 p-4 radius-12 border-none font-size-small bg-darkgrey"
+                           placeholder="Inserisci il nome dell'editore..."
+                           oninput="filterPublisherSuggestions(this.value)">
+                    <select id="editPublisherOnlySelect" class="w-100 p-4 radius-12 border-none font-size-small bg-darkgrey none">
                         <option value="">Seleziona un editore...</option>
                         <option th:each="publisher : ${publishers}" th:value="${publisher.publisherId}"
-                            th:text="${publisher.publisherName}">
+                                th:text="${publisher.publisherName}">
                         </option>
                     </select>
+                    <div id="publisherSuggestionsDropdown" class="suggestions-dropdown none"></div>
                 </div>
             </div>
 
@@ -120,17 +139,22 @@
             <!-- Edit Category Only -->
             <div id="editCategoryOnlyContent" class="none animate-fade-in-up">
                 <p class="mb-6 opacity-70 text-sm leading-relaxed">
-                    Stai modificando la categoria per: <br>
+                    Modifica categoria dell'edizione: <br>
                     <strong id="editCategoryOnlyCurrent" class="text-brand text-lg"></strong>
                 </p>
-                <div class="input-group">
-                    <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Seleziona Nuova Categoria</label>
-                    <select id="editCategoryOnlySelect" class="w-100 p-4 radius-12 border-none font-size-small w-100 cursor-pointer">
+                <div class="input-group relative">
+                    <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nuova Categoria</label>
+                    <input type="text" id="editCategoryOnlyInput" 
+                           class="w-100 p-4 radius-12 border-none font-size-small bg-darkgrey"
+                           placeholder="Inserisci la categoria..."
+                           oninput="filterCategorySuggestions(this.value)">
+                    <select id="editCategoryOnlySelect" class="w-100 p-4 radius-12 border-none font-size-small bg-darkgrey none">
                         <option value="">Seleziona una categoria...</option>
                         <option th:each="category : ${categories}" th:value="${category.categoryId}"
-                            th:text="${category.categoryName}">
+                                th:text="${category.categoryName}">
                         </option>
                     </select>
+                    <div id="categorySuggestionsDropdown" class="suggestions-dropdown none"></div>
                 </div>
             </div>
 
@@ -148,7 +172,7 @@
             <!-- Add Author -->
             <div id="addAuthorContent" class="none animate-fade-in-up">
                 <p class="mb-6 opacity-70 text-sm leading-relaxed">Inserisci i dati per un nuovo autore.</p>
-                <form id="addAuthorForm" th:action="@{/api/addAuthorEntity}" method="post">
+                <form id="addAuthorForm" th:action="@{/api/addAuthor}" method="post">
                     <div class="flex flex-column gap-5">
                         <div class="input-group">
                             <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nome</label>
@@ -165,7 +189,7 @@
             <!-- Add Publisher -->
             <div id="addPublisherContent" class="none animate-fade-in-up">
                 <p class="mb-6 opacity-70 text-sm leading-relaxed">Inserisci il nome del nuovo editore.</p>
-                <form id="addPublisherForm" th:action="@{/api/addPublisherEntity}" method="post">
+                <form id="addPublisherForm" th:action="@{/api/addPublisher}" method="post">
                     <div class="input-group">
                         <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nome Editore</label>
                         <input type="text" name="publisherName" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Mondadori" required>
@@ -176,7 +200,7 @@
             <!-- Add Category -->
             <div id="addCategoryContent" class="none animate-fade-in-up">
                 <p class="mb-6 opacity-70 text-sm leading-relaxed">Inserisci il nome della nuova categoria.</p>
-                <form id="addCategoryForm" th:action="@{/api/addCategoryEntity}" method="post">
+                <form id="addCategoryForm" th:action="@{/api/addCategory}" method="post">
                     <div class="input-group">
                         <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nome Categoria</label>
                         <input type="text" name="categoryName" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Informatica" required>
@@ -199,7 +223,7 @@
                 </p>
             </div>
 
-            <!-- Add Edition Success Content (Confirmation Style) -->
+            <!-- Add Edition Success Content -->
              <div id="addEditionSuccessContent" class="none animate-fade-in-up text-center py-4">
                 <div class="flex justify-center mb-5">
                     <div class="popup-feedback-icon" style="background: rgba(46,125,50,0.1); color: var(--color-success);">
@@ -213,6 +237,66 @@
                     <span class="opacity-60 font-size-small">con ISBN: "<span id="addEditionSuccessBookIsbn"
                             class="font-mono"></span></span>"<br>
                     è stato inserito in libreria.
+                </p>
+            </div>
+
+            <!-- Add Title Success -->
+            <div id="addTitleSuccessContent" class="none animate-fade-in-up text-center py-4">
+                <div class="flex justify-center mb-5">
+                    <div class="popup-feedback-icon" style="background: rgba(46,125,50,0.1); color: var(--color-success);">
+                        <i class="fa-solid fa-circle-check"></i>
+                    </div>
+                </div>
+                <h3 class="text-2xl fw-700 text-brand mb-2">Titolo aggiunto</h3>
+                <p class="opacity-70 text-sm leading-relaxed">
+                    Il titolo <br>
+                    "<strong id="addTitleSuccessName" class="text-brand text-lg"></strong>"<br>
+                    è stato registrato correttamente nel sistema.
+                </p>
+            </div>
+
+            <!-- Add Author Success -->
+            <div id="addAuthorSuccessContent" class="none animate-fade-in-up text-center py-4">
+                <div class="flex justify-center mb-5">
+                    <div class="popup-feedback-icon" style="background: rgba(46,125,50,0.1); color: var(--color-success);">
+                        <i class="fa-solid fa-user-check"></i>
+                    </div>
+                </div>
+                <h3 class="text-2xl fw-700 text-brand mb-2">Autore aggiunto</h3>
+                <p class="opacity-70 text-sm leading-relaxed">
+                    L'autore <br>
+                    "<strong id="addAuthorSuccessName" class="text-brand text-lg"></strong> <strong id="addAuthorSuccessLastName" class="text-brand text-lg"></strong>"<br>
+                    è stato registrato correttamente nel sistema.
+                </p>
+            </div>
+
+            <!-- Add Publisher Success -->
+            <div id="addPublisherSuccessContent" class="none animate-fade-in-up text-center py-4">
+                <div class="flex justify-center mb-5">
+                    <div class="popup-feedback-icon" style="background: rgba(46,125,50,0.1); color: var(--color-success);">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+                </div>
+                <h3 class="text-2xl fw-700 text-brand mb-2">Editore aggiunto</h3>
+                <p class="opacity-70 text-sm leading-relaxed">
+                    L'editore <br>
+                    "<strong id="addPublisherSuccessName" class="text-brand text-lg"></strong>"<br>
+                    è stato registrato correttamente nel sistema.
+                </p>
+            </div>
+
+            <!-- Add Category Success -->
+            <div id="addCategorySuccessContent" class="none animate-fade-in-up text-center py-4">
+                <div class="flex justify-center mb-5">
+                    <div class="popup-feedback-icon" style="background: rgba(46,125,50,0.1); color: var(--color-success);">
+                        <i class="fa-solid fa-tags"></i>
+                    </div>
+                </div>
+                <h3 class="text-2xl fw-700 text-brand mb-2">Categoria aggiunta</h3>
+                <p class="opacity-70 text-sm leading-relaxed">
+                    La categoria <br>
+                    "<strong id="addCategorySuccessName" class="text-brand text-lg"></strong>"<br>
+                    è stata registrata correttamente nel sistema.
                 </p>
             </div>
 
@@ -656,12 +740,46 @@
             </button>
         </div>
     <!-- Bridge Script per aprire il popup automaticamente se il server ha caricato i dati -->
-    <script th:if="${showCopiesPopup}">
+    <script th:inline="javascript">
         document.addEventListener('DOMContentLoaded', () => {
-            if (typeof initServerSidePopup === 'function') {
+            /* Handle view copies popup */
+            const showCopies = /*[[${showCopiesPopup}]]*/ false;
+            if (showCopies && typeof initServerSidePopup === 'function') {
                 initServerSidePopup();
+                return; 
+            }
+
+            /* Handle generic popup types from flash attributes */
+            const popupType = /*[[${popupType}]]*/ null;
+            if (popupType && typeof initSuccessPopup === 'function') {
+                const data = {
+                    title: /*[[${popupBookTitle}]]*/ null,
+                    isbn: /*[[${popupBookIsbn}]]*/ null,
+                    authorName: /*[[${popupAuthorName}]]*/ null,
+                    authorLastName: /*[[${popupAuthorLastName}]]*/ null,
+                    publisherName: /*[[${popupPublisherName}]]*/ null,
+                    categoryName: /*[[${popupCategoryName}]]*/ null,
+                    errorMessage: /*[[${popupErrorMessage}]]*/ null
+                };
+                initSuccessPopup(popupType, data);
             }
         });
     </script>
+
+    <!-- Data sources for autocomplete -->
+    <th:block th:if="${(section == 'catalog' || section == 'edition' || section == 'settings')}">
+        <ul id="categoryDataSource" style="display:none">
+            <li th:each="c : ${categories}" th:text="${c.categoryName}" th:data-id="${c.categoryId}"></li>
+        </ul>
+        <ul id="titleDataSource" style="display:none">
+            <li th:each="bn : ${bookNames}" th:text="${bn.title}" th:data-id="${bn.bookNameId}"></li>
+        </ul>
+        <ul id="publisherDataSource" style="display:none">
+            <li th:each="p : ${publishers}" th:text="${p.publisherName}" th:data-id="${p.publisherId}"></li>
+        </ul>
+        <ul id="authorDataSource" style="display:none">
+            <li th:each="a : ${authors}" th:data-first="${a.authorName}" th:data-last="${a.authorLastName}" th:data-id="${a.authorId}" th:text="${a.authorName + ' ' + a.authorLastName}"></li>
+        </ul>
+    </th:block>
 </div>
 </div>
