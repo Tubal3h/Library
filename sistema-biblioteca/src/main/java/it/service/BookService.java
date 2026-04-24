@@ -19,6 +19,8 @@ import it.exception.NoBookIdFoundException;
 
 import it.dto.BookDto;
 import it.entity.BookJoin;
+import it.entity.Category;
+import it.entity.Publisher;
 import it.exception.BookNotFoundException;
 import it.exception.InsertBookServiceException;
 import it.repository.AuthorRepository;
@@ -210,7 +212,7 @@ public class BookService {
      */
 	
 	@Transactional
-	public int insertBook(String title, String authorName, String authorLastName, LocalDate date, String category, String publisher, String isbn) throws InsertBookServiceException {
+	public void insertBook(String title, String authorName, String authorLastName, LocalDate date, String category, String publisher, String isbn) throws InsertBookServiceException {
 		String authorFullName = authorName.concat(" ").concat(authorLastName);
 		System.out.println("author full name: " + authorFullName);
 		System.out.println("title: " + title);
@@ -221,14 +223,26 @@ public class BookService {
 		System.out.println("category: " + category);
 		System.out.println("isbn: " + isbn);
 		
+		
 		try {
-			int firstRes = bookNameRepository.insertBookByTitle(title);
-			int authorResult = authorRepository.insertAuthorByNameAndLastName(authorName, authorLastName);
-			int categoryResult = categoryRepository.insertCategoryByNameCategory(category);
-			int publisherResult = publisherRepository.insertPublisherByPubliserName(publisher);
-			int secondRes = editionRepository.insertEdition(title, authorName, authorLastName, publisher, date, category, isbn);
-			int thirdRes = bookRepository.insertBookByTitle(title);
-			return firstRes + authorResult + categoryResult + publisherResult + secondRes + thirdRes;
+			if(!bookNameRepository.isTitleOnDb(title)) {
+				bookNameRepository.insertBookByTitle(title);
+			}
+			if(!authorRepository.isAuthorPresent(authorName, authorLastName)) {
+				authorRepository.insertAuthorByNameAndLastName(authorName, authorLastName);				
+			}
+			 
+			Category categoryBis = new Category(category);
+			if(!categoryRepository.isCategoryPresentByName(categoryBis)) {
+				categoryRepository.insertCategoryByNameCategory(category);
+			}
+			
+			Publisher publisherBis = new Publisher(publisher);
+			if(!publisherRepository.isPublisherPresent(publisherBis)) {
+				publisherRepository.insertPublisherByPubliserName(publisher);
+			} 
+			editionRepository.insertEdition(title, authorName, authorLastName, publisher, date, category, isbn);
+			bookRepository.insertBookByTitle(title);
 		}catch(RuntimeException ex) {
 			System.out.println(ex.toString());
 			throw new InsertBookServiceException("errore nell'inserimento di un libro");	

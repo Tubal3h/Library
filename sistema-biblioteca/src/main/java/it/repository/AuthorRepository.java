@@ -56,13 +56,12 @@ public class AuthorRepository implements AuthorRepositoryInterface{
      * @throws InsertAuthorException Se si verifica un errore durante l'inserimento
      */
     
-    public int insertAuthorByNameAndLastName(String name, String lastName) throws InsertAuthorException {
+    public void insertAuthorByNameAndLastName(String name, String lastName) throws InsertAuthorException {
     	String insert = "INSERT INTO author (author_name, author_last_name) VALUES (:name, :lastName)";
     	SqlParameterSource parameterSource  = new MapSqlParameterSource().addValue("name", name)
     																	 .addValue("lastName", lastName);
     	try {
-    		int res = namedParameterJdbcTemplate.update(insert, parameterSource);
-    		return res;
+    		namedParameterJdbcTemplate.update(insert, parameterSource);		
     	}catch(DataAccessException ex) {
     		throw new InsertAuthorException("errore nell'inserimento dell'autore");
     	}
@@ -89,12 +88,12 @@ public class AuthorRepository implements AuthorRepositoryInterface{
      * @param lastName Cognome dell'autore
      * @return True se l'autore esiste, false altrimenti
      */
-    public boolean isAuthorPresent(String name, String lastName) throws InsertAuthorException{
+    public Boolean isAuthorPresent(String name, String lastName) throws InsertAuthorException{
     	String sql = "SELECT COUNT(*) FROM author WHERE author_name = :name AND author_last_name = :lastName";
     	SqlParameterSource parameterSource  = new MapSqlParameterSource().addValue("name", name)
     								 .addValue("lastName", lastName);
-    	int count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);
-    	return count > 0;
+    	Integer count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);
+    	return count != null && count > 0;
     }
 }
 

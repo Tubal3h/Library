@@ -54,12 +54,11 @@ public class PublisherRepository implements PublisherRepositoryInterface{
      * @return Il numero di publisher aggiunti
      * @throws InsertPublisherException Se si verifica un errore nell'inserimento
      */
-    public int insertPublisherByPubliserName(String publisherName) throws InsertPublisherException {
+    public void insertPublisherByPubliserName(String publisherName) throws InsertPublisherException {
     	String insert = "INSERT INTO publisher (publisher_name) VALUES (:publisherName)";
     	SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("publisherName", publisherName);
     	try {
-    		int res = namedParameterJdbcTemplate.update(insert, parameterSource);
-    		return res;
+    		namedParameterJdbcTemplate.update(insert, parameterSource);		
     	}catch(DataAccessException ex) {
     		throw new InsertPublisherException("errore nell'inserimento del publisher");
     	}
@@ -71,13 +70,14 @@ public class PublisherRepository implements PublisherRepositoryInterface{
      * @param publisherName Il nome del publisher da verificare
      * @return True se il publisher esiste, false altrimenti
      */
-    public boolean isPublisherPresent(Publisher publisher) {
+    public Boolean isPublisherPresent(Publisher publisher) {
         if(publisher.getPublisherName() == null || publisher.getPublisherName().isEmpty()) {
             throw new IllegalArgumentException("Il nome del publisher non può essere vuoto");
         }
         String sql = "SELECT COUNT(*) FROM publisher WHERE publisher_name = :publisherName";
         SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("publisherName", publisher.getPublisherName());
-        return namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class) > 0;
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);
+        return count != null && count > 0;
     }
 
     /**

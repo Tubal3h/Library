@@ -57,12 +57,11 @@ public class CategoryRepository implements CategoryRepositoryInterface{
      */
 
 	@Override
-	public int insertCategoryByNameCategory(String categoryName) throws InsertCategoryException{
+	public void insertCategoryByNameCategory(String categoryName) throws InsertCategoryException{
 		String insert = "INSERT INTO category (category_name) VALUES (:categoryName)";
 		SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("categoryName", categoryName);
 		try {
-			int res = namedParameterJdbcTemplate.update(insert, parameterSource);
-			return res;	
+			namedParameterJdbcTemplate.update(insert, parameterSource);				
 		}catch(DataAccessException ex){
 			throw new InsertCategoryException("errore nell'inserimento della categoria");
 		}
@@ -91,11 +90,19 @@ public class CategoryRepository implements CategoryRepositoryInterface{
      * @return true se la categoria è presente, false altrimenti
      */
     @Override
-    public boolean isCategoryPresent(Category category) {
+   
+    public Boolean isCategoryPresent(Category category) {
         String sql = "SELECT COUNT(*) FROM category WHERE category_id = :categoryId";
         SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("categoryId", category.getCategoryId());
-        int count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);
-        return count > 0;
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);
+        return count != null && count > 0;
+    }
+   
+    public Boolean isCategoryPresentByName(Category category) {
+        String sql = "SELECT COUNT(*) FROM category WHERE categoryName = :categoryName";
+        SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("categoryName", category.getCategoryName());
+        Integer count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);
+        return count != null && count > 0;
     }
 }
 
