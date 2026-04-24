@@ -90,6 +90,7 @@
                 document.getElementById('updateAuthorContent')?.classList.add('none');
                 document.getElementById('updatePublisherContent')?.classList.add('none');
                 document.getElementById('updateCategoryContent')?.classList.add('none');
+                document.getElementById('changePasswordContent')?.classList.add('none');
 
                 // Nascondi il footer con "Annulla / Conferma" (non serve per i popup di feedback)
                 const footer = document.querySelector('.popup-footer');
@@ -182,6 +183,10 @@
                     setTextIfExists('updateCategoryId', categoryId || '');
                     setTextIfExists('updateCategoryName', categoryName || '');
                     document.getElementById('updateCategoryContent').classList.remove('none');
+                } else if (popupType === 'changePassword') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-lock text-white font-size-medium';
+                    setTextIfExists('popupTitle', 'Password aggiornata');
+                    document.getElementById('changePasswordContent').classList.remove('none');
                 }
 
                 // Mostra l'overlay del popup

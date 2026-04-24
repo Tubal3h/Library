@@ -37,6 +37,14 @@
                 <span class="fw-600">Dashboard</span>
             </a>
 
+            <!-- Link Profilo (Comune a tutti) -->
+            <a th:href="@{/api/navigation/profile}"
+                class="sidebar-link flex align-center gap-2 p-2 radius-12"
+                th:classappend="${section == 'profile' ? 'active' : ''}">
+                <i class="fa-solid fa-user-gear"></i>
+                <span class="fw-600">Profilo</span>
+            </a>
+
 
             <!-- Link Catalogo (Comune a tutti) -->
             <a th:if="${user.userRole == 'role_user'}"
@@ -176,6 +184,16 @@
             <i class="fa-solid fa-clock-rotate-left"></i>
         </span>
         <span class="mobile-nav-label">Prestiti</span>
+    </a>
+
+    <!-- Voce Profilo (comune) -->
+    <a th:href="@{/dashboard(email=${user.userEmail}, section='profile')}"
+       class="mobile-nav-item"
+       th:classappend="${section == 'profile' ? ' mobile-nav-item--active' : ''}">
+        <span class="mobile-nav-icon">
+            <i class="fa-solid fa-user-gear"></i>
+        </span>
+        <span class="mobile-nav-label">Profilo</span>
     </a>
 
     <!-- Voce 5: Logout (comune) -->

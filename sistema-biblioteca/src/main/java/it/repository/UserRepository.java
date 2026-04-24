@@ -103,6 +103,16 @@ public class UserRepository implements UserRepositoryInterface{
             return 0;
         }
     }
+
+    /**
+     * Aggiorna la password di un utente.
+     *
+     * @param email Email dell'utente
+     * @param newPassword Nuova password
+     * @return numero di righe modificate
+     */
+    public int updatePassword(String email, String newPassword) {
+        String sql = "UPDATE users SET pass = ? WHERE email = ?";
+        return jdbcTemplate.update(sql, newPassword, email);
+    }
 }
-
-
