@@ -230,8 +230,8 @@ public class BookService {
 		
 		
 		try {
-			if(!bookNameRepository.isTitleOnDb(title)) {
-				bookNameRepository.insertBookByTitle(title);
+			if(!bookNameRepository.isTitleOnDb(title.toLowerCase().trim())) {
+				bookNameRepository.insertBookByTitle(title.toLowerCase().trim());
 			}
 			if(!authorRepository.isAuthorPresent(authorName, authorLastName)) {
 				authorRepository.insertAuthorByNameAndLastName(authorName, authorLastName);				

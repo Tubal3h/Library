@@ -70,7 +70,7 @@ public class BookNameRepository implements BookNameRepositoryInterface {
 		
     	String insertBook = "INSERT INTO books_names(title)\r\n"
 				  		  + "VALUES(:title)";
-		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("title", title);
+		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("title", title.toLowerCase().trim());
 		try {
 			namedParameterJdbcTemplate.update(insertBook, sqlParameters);	
 		}catch(DataAccessException ex) {
