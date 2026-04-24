@@ -11,9 +11,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.dto.AuthorDto;
 import it.dto.BookDto;
+import it.dto.BookNameDto;
 import it.dto.PublisherDto;
 import it.dto.CategoryDto;
 import it.dto.UserDto;
+import it.entity.Edition;
 import it.component.UserSession;
 import it.exception.InsertBookServiceException;
 import it.exception.NoBookIdFoundException;
@@ -180,8 +182,7 @@ public class BookController {
 
 	@GetMapping("/api/updateBookTitle")
 	public String updateBookTitle(
-		@RequestParam(value = "editionId", required = false) Integer editionId,
-		@RequestParam(value = "bookNameId", required = false) Integer bookNameId, 
+		@RequestParam(value = "editionId") Integer editionId,
 		@RequestParam(value = "title", required = false) String title,
 		RedirectAttributes redirectAttributes) {
 		UserDto user = userSession.getUser();
@@ -193,9 +194,28 @@ public class BookController {
 			return "redirect:/dashboard";
 		}
 
+		if(hasNullOrBlankParameters(title)) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
+			return "redirect:/dashboard";
+		}
+		
+
+
 		try {
-			bookService.updateBookTitle(bookNameId, title);
-			editionService.updateTitleId(editionId, bookNameId);
+			it.entity.Edition edition = editionService.getEditionById(editionId);
+			int bookNameId = edition.getBookNameId();
+
+			BookNameDto bookNameDto = new BookNameDto();
+			bookNameDto.setBookNameId(bookNameId);
+			bookNameDto.setTitle(title);
+			if(bookService.isBookNamePresent(bookNameDto)) {
+				int newBookNameId = bookService.getBookNameId(title);
+				editionService.updateTitleId(editionId, newBookNameId);
+			}else {
+				int newBookNameId = bookService.insertAndGetBookNameId(title);
+				editionService.updateTitleId(editionId, newBookNameId);
+			}
 			redirectAttributes.addFlashAttribute("popupType", "updateTitle");
 			redirectAttributes.addFlashAttribute("popupBookId", bookNameId);
 			redirectAttributes.addFlashAttribute("popupBookTitle", title);
@@ -219,7 +239,7 @@ public class BookController {
 
 	@GetMapping("/api/updateAuthor")
 	public String updateAuthor(
-		@RequestParam(value = "authorId", required = false) Integer authorId,
+		@RequestParam(value = "editionId") Integer editionId,
 		@RequestParam(value = "authorName", required = false) String authorName,
 		@RequestParam(value = "authorLastName", required = false) String authorLastName,
 		RedirectAttributes redirectAttributes) {
@@ -229,8 +249,10 @@ public class BookController {
 		}
 
 		
-		AuthorDto authorDto = new AuthorDto(authorId, authorName, authorLastName);
 		try {
+			Edition edition = editionService.getEditionById(editionId);
+			int authorId = edition.getAuthorId();
+			AuthorDto authorDto = new AuthorDto(authorId, authorName, authorLastName);
 
 		if(!user.getUserRole().equals("role_admin")) {
 			userSession.setSection("home");
@@ -243,11 +265,12 @@ public class BookController {
 		}
 
 		if (authorService.isAuthorPresent(authorDto)) {
-			redirectAttributes.addFlashAttribute("popupType", "error");
-			redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
-			return "redirect:/dashboard";
+			int newAuthorId = authorService.getAuthorId(authorDto.getAuthorName(), authorDto.getAuthorLastName());
+			editionService.updateAuthorId(editionId, newAuthorId);
+		} else {
+			int newAuthorId = authorService.insertAndGetAuthorId(authorDto.getAuthorName(), authorDto.getAuthorLastName());
+			editionService.updateAuthorId(editionId, newAuthorId);
 		}
-			authorService.updateAuthor(authorDto);
 			redirectAttributes.addFlashAttribute("popupType", "updateAuthor");
 			redirectAttributes.addFlashAttribute("popupAuthorId", authorId);
 			redirectAttributes.addFlashAttribute("popupAuthorName", authorName);
@@ -270,7 +293,7 @@ public class BookController {
 
 	@GetMapping("/api/updatePublisher")
 	public String updatePublisher(
-		@RequestParam(value = "publisherId", required = false) Integer publisherId,
+		@RequestParam(value = "editionId") Integer editionId,
 		@RequestParam(value = "publisherName", required = false) String publisherName,
 		RedirectAttributes redirectAttributes) {
 		UserDto user = userSession.getUser();
@@ -279,8 +302,10 @@ public class BookController {
 		}
 
 		
-		PublisherDto publisherDto = new PublisherDto(publisherId, publisherName);
 		try {
+			it.entity.Edition edition = editionService.getEditionById(editionId);
+			int publisherId = edition.getPublisherId();
+			PublisherDto publisherDto = new PublisherDto(publisherId, publisherName);
 
 		if(!user.getUserRole().equals("role_admin")) {
 			userSession.setSection("home");
@@ -293,11 +318,12 @@ public class BookController {
 		}
 
 		if (publisherService.isPublisherPresent(publisherDto)) {
-			redirectAttributes.addFlashAttribute("popupType", "error");
-			redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
-			return "redirect:/dashboard";
+			int newPublisherId = publisherService.getPublisherId(publisherDto.getPublisherName());
+			editionService.updatePublisherId(editionId, newPublisherId);
+		} else {
+			int newPublisherId = publisherService.insertAndGetPublisherId(publisherDto.getPublisherName());
+			editionService.updatePublisherId(editionId, newPublisherId);
 		}
-			publisherService.updatePublisher(publisherDto);
 			redirectAttributes.addFlashAttribute("popupType", "updatePublisher");
 			redirectAttributes.addFlashAttribute("popupPublisherId", publisherId);
 			redirectAttributes.addFlashAttribute("popupPublisherName", publisherName);
@@ -310,7 +336,7 @@ public class BookController {
 
 	@GetMapping("/api/updateCategory")
 	public String updateCategory(
-		@RequestParam(value = "categoryId", required = false) Integer categoryId,
+		@RequestParam(value = "editionId") Integer editionId,
 		@RequestParam(value = "categoryName", required = false) String categoryName,
 		RedirectAttributes redirectAttributes) {
 		UserDto user = userSession.getUser();
@@ -319,8 +345,10 @@ public class BookController {
 		}
 
 		
-		CategoryDto categoryDto = new CategoryDto(categoryId, categoryName);
 		try {
+			it.entity.Edition edition = editionService.getEditionById(editionId);
+			int categoryId = edition.getCategoryId();
+			CategoryDto categoryDto = new CategoryDto(categoryId, categoryName);
 
 		if(!user.getUserRole().equals("role_admin")) {
 			userSession.setSection("home");
@@ -333,11 +361,12 @@ public class BookController {
 		}
 
 		if (categoryService.isCategoryPresent(categoryDto)) {
-			redirectAttributes.addFlashAttribute("popupType", "error");
-			redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
-			return "redirect:/dashboard";
+			int newCategoryId = categoryService.getCategoryId(categoryDto.getCategoryName());
+			editionService.updateCategoryId(editionId, newCategoryId);
+		} else {
+			int newCategoryId = categoryService.insertAndGetCategoryId(categoryDto.getCategoryName());
+			editionService.updateCategoryId(editionId, newCategoryId);
 		}
-			categoryService.updateCategory(categoryDto);
 			redirectAttributes.addFlashAttribute("popupType", "updateCategory");
 			redirectAttributes.addFlashAttribute("popupCategoryId", categoryId);
 			redirectAttributes.addFlashAttribute("popupCategoryName", categoryName);

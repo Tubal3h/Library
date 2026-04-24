@@ -29,6 +29,8 @@ public class BookDto {
     /**
      * Costruttore con parametri.
      */
+
+    
     public BookDto(int editionId, int bookId, String title, String authorFullName, LocalDate publishingDate, String publisherName, String isbnCode, String categoryName, String status) {
         this.editionId = editionId;
         this.bookId = bookId;
@@ -41,10 +43,7 @@ public class BookDto {
         this.status = status;
     }
     
-    public BookDto(String isbnCode) {
-    	this.isbnCode = isbnCode;
-    }
-    
+
     public BookDto(int bookId) {
     	this.bookId = bookId;
     }
@@ -136,14 +135,14 @@ public class BookDto {
     /**
      * @return Codice ISBN
      */
-    public String getIsbnCode() {
+    public String getIsbn() {
         return isbnCode;
     }
 
     /**
      * @param isbnCode Codice ISBN
      */
-    public void setIsbnCode(String isbnCode) {
+    public void setIsbn(String isbnCode) {
         this.isbnCode = isbnCode;
     }
 

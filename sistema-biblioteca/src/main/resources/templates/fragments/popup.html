@@ -86,10 +86,9 @@
                                 border-radius:12px; margin-top:4px; overflow:hidden;
                                 box-shadow:0 8px 30px rgba(0,0,0,0.12); max-height:200px; overflow-y:auto;">
                     </div>
-                    <!-- Sorgente titoli da Thymeleaf (books + editions) -->
+                    <!-- Sorgente titoli da Thymeleaf (tutti i titoli dal db) -->
                     <ul id="titleDataSource" style="display:none;">
-                        <li th:each="book : ${books}" th:text="${book.title}"></li>
-                        <li th:each="edition : ${editions}" th:text="${edition.bookName}"></li>
+                        <li th:each="bookName : ${bookNames}" th:text="${bookName.title}"></li>
                     </ul>
                 </div>
             </div>

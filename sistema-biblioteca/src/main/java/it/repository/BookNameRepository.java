@@ -91,4 +91,15 @@ public class BookNameRepository implements BookNameRepositoryInterface {
         SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("title", title).addValue("book_name_id", bookNameId);
         namedParameterJdbcTemplate.update(updateBook, sqlParameters);
     }
+
+    /**
+     * Recupera i titoli dei libri tramite il loro nome.
+     *
+     * @param title Nome del libro
+     * @return Lista dei titoli dei libri corrispondenti al nome
+     */
+    public List<BookName> getBookNamesByTitle(String title) {
+        String sql = "SELECT * FROM books_names WHERE title = ?";
+        return jdbcTemplate.query(sql, bookNameRowMapper, title);
+    }
 }

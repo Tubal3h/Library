@@ -36,6 +36,22 @@ public class AuthorService {
             .toList();
     }
 
+    public int getAuthorId(String name, String lastName) {
+        return authorRepository.getAllAuthors().stream()
+                .filter(a -> a.getAuthorName().equalsIgnoreCase(name) && a.getAuthorLastName().equalsIgnoreCase(lastName))
+                .findFirst()
+                .get()
+                .getAuthorId();
+    }
+
+    @org.springframework.transaction.annotation.Transactional
+    public int insertAndGetAuthorId(String name, String lastName) {
+        try {
+            authorRepository.insertAuthorByNameAndLastName(name, lastName);
+        } catch (Exception e) {}
+        return getAuthorId(name, lastName);
+    }
+
     /**
      * Aggiorna i dati di un autore.
      * 

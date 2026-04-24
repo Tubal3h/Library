@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import it.exception.NoBookIdFoundException;
 
 import it.dto.BookDto;
+import it.dto.BookNameDto;
 import it.entity.BookJoin;
 import it.exception.BookNotFoundException;
 import it.exception.InsertBookServiceException;
@@ -60,6 +61,10 @@ public class BookService {
 		this.publisherRepository = publisherRepository;
     }
 
+    public List<it.entity.BookName> getAllBookNames() {
+        return bookNameRepository.getAllBookNames();
+    }
+
     /**
      * Recupera tutti i libri visibili per l'utente in base al suo ruolo.
      * Gli utenti con ruolo {@code role_user} vedono solo i libri disponibili;
@@ -82,7 +87,7 @@ public class BookService {
                 dto.setAuthorFullName(book.getAuthorFullName());
                 dto.setPublisherName(book.getPublisherName());
                 dto.setPublishingDate(book.getPublicationDate());
-                dto.setIsbnCode(book.getIsbnCode());
+                dto.setIsbn(book.getIsbnCode());
                 dto.setCategoryName(book.getCategoryName());
                 dto.setStatus(book.getStatus());
                 return dto;
@@ -111,7 +116,7 @@ public class BookService {
         dto.setAuthorFullName(book.getAuthorFullName());
         dto.setPublisherName(book.getPublisherName());
         dto.setPublishingDate(book.getPublicationDate());
-        dto.setIsbnCode(book.getIsbnCode());
+        dto.setIsbn(book.getIsbnCode());
         dto.setCategoryName(book.getCategoryName());
         dto.setStatus(book.getStatus());
         return dto;
@@ -252,7 +257,7 @@ public class BookService {
                 dto.setAuthorFullName(book.getAuthorFullName());
                 dto.setPublisherName(book.getPublisherName());
                 dto.setPublishingDate(book.getPublicationDate());
-                dto.setIsbnCode(book.getIsbnCode());
+                dto.setIsbn(book.getIsbnCode());
                 dto.setCategoryName(book.getCategoryName());
                 dto.setStatus(book.getStatus());
                 return dto;
@@ -260,10 +265,30 @@ public class BookService {
             .toList();
     }
 
-    
 
     @Transactional
     public void updateBookTitle(int bookNameId, String editionTitle) { 
         bookNameRepository.updateBookTitle(bookNameId, editionTitle);
+    }
+
+    @Transactional
+    public int insertAndGetBookNameId(String title) throws it.exception.InsertBookNameException {
+        bookNameRepository.insertBookByTitle(title);
+        return getBookNameId(title);
+    }
+
+    @Transactional
+    public boolean isBookNamePresent(BookNameDto bookNameDto) {
+        return bookNameRepository.getBookNamesByTitle(bookNameDto.getTitle()).stream()
+                .filter(b -> b.getBookNameId() != bookNameDto.getBookNameId())
+                .findFirst()
+                .isPresent();
+    }
+    
+    @Transactional
+    public int getBookNameId(String title) {
+        return bookNameRepository.getBookNamesByTitle(title).stream()
+                .findFirst()
+                .get().getBookNameId();
     }
 }

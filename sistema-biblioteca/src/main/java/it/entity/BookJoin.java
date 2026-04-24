@@ -163,7 +163,7 @@ public class BookJoin {
     /**
      * @param isbn_code Codice ISBN
      */
-    public void setIsbnCode(String isbn_code) {
+    public void setIsbn(String isbn_code) {
         this.isbn_code = isbn_code;
     }
 

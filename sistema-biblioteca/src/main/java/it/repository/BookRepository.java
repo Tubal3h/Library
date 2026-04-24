@@ -128,6 +128,7 @@ public class BookRepository implements BookRepositoryInterface{
                 JOIN author a ON e.author_id = a.author_id
                 JOIN publisher p ON e.publisher_id = p.publisher_id
                 JOIN category c ON e.category_id = c.category_id
+                ORDER BY bn.title ASC
                 """;
         return jdbcTemplate.query(sql, bookJoinMapper);
     }

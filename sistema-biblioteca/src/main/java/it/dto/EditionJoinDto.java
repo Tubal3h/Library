@@ -175,7 +175,7 @@ public class EditionJoinDto {
      * 
      * @return Data di pubblicazione
      */
-    public LocalDate getPublishingDate() {
+    public LocalDate getPublicationDate() {
         return publishingDate;
     }
 
@@ -184,7 +184,7 @@ public class EditionJoinDto {
      * 
      * @param publishingDate Data di pubblicazione
      */
-    public void setPublishingDate(LocalDate publishingDate) {
+    public void setPublicationDate(LocalDate publishingDate) {
         this.publishingDate = publishingDate;
     }
 
@@ -193,7 +193,7 @@ public class EditionJoinDto {
      * 
      * @return Codice ISBN
      */
-    public String getIsbn() {
+    public String getIsbnCode() {
         return isbnCode;
     }
 
@@ -202,7 +202,7 @@ public class EditionJoinDto {
      * 
      * @param isbnCode Codice ISBN
      */
-    public void setIsbn(String isbnCode) {
+    public void setIsbnCode(String isbnCode) {
         this.isbnCode = isbnCode;
     }
 

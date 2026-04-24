@@ -42,8 +42,8 @@ public class EditionService {
             dto.setAuthorName(edition.getAuthor());
             dto.setPublisherName(edition.getPublisher());
             dto.setCategoryName(edition.getCategory());
-            dto.setPublishingDate(edition.getPublishingDate());
-            dto.setIsbn(edition.getIsbn());
+            dto.setPublicationDate(edition.getPublishingDate());
+            dto.setIsbnCode(edition.getIsbn());
             dto.setQuantity(edition.getQuantity());
             return dto;
         }).toList();
@@ -66,7 +66,7 @@ public class EditionService {
 				String author = edition.getAuthorName();
 				String category = edition.getCategoryName();
 				String myEdition = edition.getPublisherName();
-				String isbn = edition.getIsbn();
+				String isbn = edition.getIsbnCode();
 				String finalBook = (title + " " + author + " " + myEdition + " " + category + " " + isbn).toLowerCase();
 				boolean allMatch = true;
 				for(String s : strings) {
@@ -92,6 +92,10 @@ public class EditionService {
 
     public void updateTitleId(int editionId, int bookNameId) {
         editionRepository.updateBookTitleId(editionId, bookNameId);
+    }
+
+    public Edition getEditionById(int editionId) {
+        return editionRepository.findById(editionId);
     }
 
     public void updateAuthorId(int editionId, int authorId) {
@@ -120,7 +124,7 @@ public class EditionService {
         dto.setPublisherId(edition.getPublisherId());
         dto.setCategoryId(edition.getCategoryId());
         dto.setPublishingDate(edition.getPublishingDate());
-        dto.setIsbnCode(edition.getIsbn());
+        dto.setIsbn(edition.getIsbn());
         return dto;
     }
 
@@ -132,8 +136,8 @@ public class EditionService {
         dto.setAuthorName(edition.getAuthor());
         dto.setPublisherName(edition.getPublisher());
         dto.setCategoryName(edition.getCategory());
-        dto.setPublishingDate(edition.getPublishingDate());
-        dto.setIsbn(edition.getIsbn());
+        dto.setPublicationDate(edition.getPublishingDate());
+        dto.setIsbnCode(edition.getIsbn());
         dto.setQuantity(edition.getQuantity());
         return dto;
     }
@@ -158,8 +162,8 @@ public class EditionService {
         editionJoin.setAuthor(editionJoinDto.getAuthorName());
         editionJoin.setPublisher(editionJoinDto.getPublisherName());
         editionJoin.setCategory(editionJoinDto.getCategoryName());
-        editionJoin.setPublishingDate(editionJoinDto.getPublishingDate());
-        editionJoin.setIsbn(editionJoinDto.getIsbn());
+        editionJoin.setPublishingDate(editionJoinDto.getPublicationDate());
+        editionJoin.setIsbn(editionJoinDto.getIsbnCode());
         editionJoin.setStatus(editionJoinDto.getStatus());
         return editionJoin;
     }

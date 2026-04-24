@@ -116,9 +116,13 @@ public class DashboardController {
 
             if ("edition".equals(section) && "role_admin".equals(user.getUserRole())) {
                 model.addAttribute("editions", editionService.getEditionListByName(search));
+            }
+            
+            if (("catalog".equals(section) || "edition".equals(section)) && "role_admin".equals(user.getUserRole())) {
                 model.addAttribute("authors", authorService.getAllAuthors());
                 model.addAttribute("categories", categoryService.getAllCategories());
                 model.addAttribute("publishers", publisherService.getAllPublishers());
+                model.addAttribute("bookNames", bookService.getAllBookNames());
             }
 
             // Gestione Popup Visualizzazione Copie (Server-Side)

@@ -11,4 +11,5 @@ public interface BookNameRepositoryInterface {
 	public String getBookNameById(int titleId);
 	public int insertBookByTitle(String title) throws InsertBookNameException;
 	public void updateBookTitle(int editionId, String editionTitle); 
+	public List<BookName> getBookNamesByTitle(String title);
 }

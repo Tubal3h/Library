@@ -110,7 +110,7 @@ public class RentalRecordJoin {
 	public String getIsbnCode() {
 		return isbnCode;
 	}
-	public void setIsbnCode(String isbnCode) {
+	public void setIsbn(String isbnCode) {
 		this.isbnCode = isbnCode;
 	}
 	public LocalDate getRentalDate() {

@@ -21,7 +21,7 @@ public class EditionDto {
         this.publisherId = publisherId;
         this.categoryId = categoryId;
         this.publishingDate = publishingDate;
-        this.isbn = isbn;
+        this.isbn = isbn.toLowerCase();
     }
 
     public int getEditionId() {
@@ -49,11 +49,11 @@ public class EditionDto {
     }
 
     public String getIsbn() {
-        return isbn;
+        return isbn.toLowerCase();
     }
 
-    public void setIsbnCode(String isbn) {
-        this.isbn = isbn;
+    public void setIsbn(String isbn) {
+        this.isbn = isbn.toLowerCase();
     }
 
     public int getAuthorId() {

@@ -38,6 +38,22 @@ public class CategoryService {
             .toList();
     }
 
+    public int getCategoryId(String name) {
+        return categoryRepository.getAllCategories().stream()
+                .filter(c -> c.getCategoryName().equalsIgnoreCase(name))
+                .findFirst()
+                .get()
+                .getCategoryId();
+    }
+
+    @Transactional
+    public int insertAndGetCategoryId(String name) {
+        try {
+            categoryRepository.insertCategoryByNameCategory(name);
+        } catch (Exception e) {}
+        return getCategoryId(name);
+    }
+
     /**
      * Verifica se una categoria è presente nel database.
      * 

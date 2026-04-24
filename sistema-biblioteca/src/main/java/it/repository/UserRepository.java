@@ -47,7 +47,7 @@ public class UserRepository implements UserRepositoryInterface{
      * @return Lista di tutti gli utenti registrati nel sistema
      */
     public List<User> getAllUsers() {
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT * FROM users ORDER BY user_name ASC";
         return jdbcTemplate.query(sql, userRowMapper);
     }
 

@@ -11,7 +11,7 @@
                     <h3 class="text-2xl italicfw-700 text-brand mb-1" th:text="${book.title}"></h3>
                     <i th:if="${user.userRole == 'role_admin'}" 
                        class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
-                       th:data-id="${book.bookId}"
+                       th:data-id="${book.editionId}"
                        th:data-title="${book.title}"
                        onclick="openEditTitlePopup(this.getAttribute('data-id'), this.getAttribute('data-title'))"
                        title="Modifica Titolo"></i>
@@ -20,7 +20,7 @@
                     <p class="text-2xl fw-400 opacity-60 mb-3" th:text="${book.authorFullName}"></p>
                     <i th:if="${user.userRole == 'role_admin'}" 
                        class="fa-solid fa-user-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
-                       th:data-id="${book.bookId}"
+                       th:data-id="${book.editionId}"
                        th:data-author="${book.authorFullName}"
                        onclick="openEditAuthorPopup(this.getAttribute('data-id'), this.getAttribute('data-author'))"
                        title="Modifica Autore"></i>
@@ -30,7 +30,7 @@
                         th:text="${book.categoryName}">CATEGORIA</div>
                     <i th:if="${user.userRole == 'role_admin'}" 
                        class="fa-solid fa-tag cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
-                       th:data-id="${book.bookId}"
+                       th:data-id="${book.editionId}"
                        th:data-category="${book.categoryName}"
                        onclick="openEditCategoryPopup(this.getAttribute('data-id'), this.getAttribute('data-category'))"
                        title="Modifica Categoria"></i>
@@ -44,7 +44,7 @@
                     <label class="fw-600" title="Editore" th:text="${book.publisherName}">Editore</label>
                     <i th:if="${user.userRole == 'role_admin'}" 
                        class="fa-solid fa-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon pl-2"
-                       th:data-id="${book.bookId}"
+                       th:data-id="${book.editionId}"
                        th:data-publisher="${book.publisherName}"
                        onclick="openEditPublisherPopup(this.getAttribute('data-id'), this.getAttribute('data-publisher'))"
                        title="Modifica Editore"></i>

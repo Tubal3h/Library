@@ -42,7 +42,7 @@ public class RentalRecordJoinRowMapper implements RowMapper<RentalRecordJoin> {
         record.setPublisherName(rs.getString("publisher_name"));
         record.setPublicationDate(rs.getDate("publishing_date").toLocalDate());
         record.setCategoryName(rs.getString("category_name"));
-        record.setIsbnCode(rs.getString("isbn"));
+        record.setIsbn(rs.getString("isbn"));
         record.setRentalDate(rs.getDate("rental_date").toLocalDate());
         record.setRentalExpired(rs.getDate("rental_expired").toLocalDate());
         record.setRentalEnded(rs.getDate("rental_ended") != null

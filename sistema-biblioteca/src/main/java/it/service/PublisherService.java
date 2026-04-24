@@ -38,6 +38,22 @@ public class PublisherService {
             .toList();
     }
 
+    public int getPublisherId(String name) {
+        return publisherRepository.getAllPublishers().stream()
+                .filter(p -> p.getPublisherName().equalsIgnoreCase(name))
+                .findFirst()
+                .get()
+                .getPublisherId();
+    }
+
+    @Transactional
+    public int insertAndGetPublisherId(String name) {
+        try {
+            publisherRepository.insertPublisherByPubliserName(name);
+        } catch (Exception e) {}
+        return getPublisherId(name);
+    }
+
     /**
      * Aggiunge un nuovo publisher al database.
      * 

@@ -514,7 +514,7 @@ function openEditTitlePopup(id, currentTitle) {
         const newVal = inputElem ? inputElem.value.trim() : '';
         if (!newVal) return;
         console.log(`[Popup] Modifica titolo id=${id} → "${newVal}"`);
-        window.location.href = `/api/updateBookTitle?bookNameId=${id}&title=${encodeURIComponent(newVal)}`;
+        window.location.href = `/api/updateBookTitle?editionId=${id}&title=${encodeURIComponent(newVal)}`;
     };
 
     popup.classList.remove('none');
@@ -568,7 +568,7 @@ function openEditAuthorPopup(id, currentAuthor) {
         const lastName = lastInput ? lastInput.value.trim() : '';
         if (!firstName && !lastName) return;
         console.log(`[Popup] Modifica autore id=${id} → "${firstName} ${lastName}"`);
-        window.location.href = `/api/updateAuthor?authorId=${id}&authorName=${encodeURIComponent(firstName)}&authorLastName=${encodeURIComponent(lastName)}`;
+        window.location.href = `/api/updateAuthor?editionId=${id}&authorName=${encodeURIComponent(firstName)}&authorLastName=${encodeURIComponent(lastName)}`;
     };
 
     popup.classList.remove('none');
@@ -620,7 +620,7 @@ function openEditPublisherPopup(id, currentPublisher) {
         const newVal = inputElem ? inputElem.value.trim() : '';
         if (!newVal) return;
         console.log(`[Popup] Modifica editore id=${id} → "${newVal}"`);
-        window.location.href = `/api/updatePublisher?publisherId=${id}&publisherName=${encodeURIComponent(newVal)}`;
+        window.location.href = `/api/updatePublisher?editionId=${id}&publisherName=${encodeURIComponent(newVal)}`;
     };
 
     popup.classList.remove('none');
@@ -672,7 +672,7 @@ function openEditCategoryPopup(id, currentCategory) {
         const newVal = inputElem ? inputElem.value.trim() : '';
         if (!newVal) return;
         console.log(`[Popup] Modifica categoria id=${id} → "${newVal}"`);
-        window.location.href = `/api/updateCategory?categoryId=${id}&categoryName=${encodeURIComponent(newVal)}`;
+        window.location.href = `/api/updateCategory?editionId=${id}&categoryName=${encodeURIComponent(newVal)}`;
     };
 
     popup.classList.remove('none');
