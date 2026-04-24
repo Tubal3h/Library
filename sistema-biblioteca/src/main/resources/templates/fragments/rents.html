@@ -74,13 +74,13 @@
                     class="flex align-center font-size-small">
                     <i class="fa-solid fa-barcode text-sm text-brand pr-1"></i>
                     <span class="font-mono fw-600 pr-2">ISBN:</span>
-                    <span th:text="${rent.book.isbnCode}" class="font-mono fw-600">ISBN</span>
+                    <span th:text="${rent.book.isbn}" class="font-mono fw-600">ISBN</span>
                 </div>
 
                 <!-- ID Utente (Utile per gli Admin) -->
                 <div th:if="${user.userRole == 'role_admin'}" class="flex align-center font-size-small">
                     <i class="fa-solid fa-user text-sm text-brand pr-1"></i>
-                    <span th:text="'Utente: ' + ${rent.user.getUserName + ' ' + rent.user.getUserLastName}"
+                    <span th:text="'Utente: ' + ${rent.user.userName + ' ' + rent.user.userLastName}"
                         class="font-mono fw-600">USER</span>
                 </div>
             </div>
