@@ -24,7 +24,8 @@ const POPUP_PANELS = [
     'updateTitleContent',
     'updateAuthorContent',
     'updatePublisherContent',
-    'updateCategoryContent'
+    'updateCategoryContent',
+    'deleteUserContent'
 ];
 
 /**
@@ -237,6 +238,16 @@ function triggerConfirmDelete(element) {
     const title = element.getAttribute('data-title');
     const url = element.getAttribute('data-url');
     openConfirmPopup('delete', title, 'Verrà eliminata questa copia dalla libreria', url);
+}
+
+/**
+ * Helper per avviare la conferma eliminazione utente leggendo i dati dall'elemento HTML.
+ * @param {HTMLElement} element - Il bottone cliccato.
+ */
+function triggerConfirmDeleteUser(element) {
+    const title = element.getAttribute('data-title');
+    const url = element.getAttribute('data-url');
+    openConfirmPopup('delete', title, 'Verrà eliminato definitivamente questo dipendente dal sistema', url);
 }
 
 /**

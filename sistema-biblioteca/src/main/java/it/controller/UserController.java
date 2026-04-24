@@ -1,6 +1,7 @@
 package it.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -38,7 +39,6 @@ public class UserController {
     public String addUser(
             @RequestParam("userName") String userName,
             @RequestParam("userLastName") String userLastName,
-            @RequestParam("userPassword") String userPassword,
             @RequestParam("userRole") String userRole,
             RedirectAttributes redirectAttributes) {
 
@@ -74,9 +74,29 @@ public class UserController {
         return "redirect:/dashboard";
     }
 
-    @PostMapping("/api/deleteUser")
-        public String deleteUser(@RequestParam String userId) {
-            userService.deleteUserById(userId);
-            return "redirect:/dashboard";
+    @GetMapping("/api/deleteUser")
+    public String deleteUser(
+            @RequestParam("userId") String userId,
+            @RequestParam(value = "userName", required = false) String userName,
+            RedirectAttributes redirectAttributes) {
+        
+        UserDto currentUser = userSession.getUser();
+        if (currentUser == null || !"role_admin".equals(currentUser.getUserRole())) {
+            return "redirect:/";
         }
+
+        try {
+            userService.deleteUserById(userId);
+            
+            redirectAttributes.addFlashAttribute("popupType", "deleteUser");
+            redirectAttributes.addFlashAttribute("popupUserId", userId);
+            redirectAttributes.addFlashAttribute("popupUserName", userName);
+        } catch (Exception ex) {
+            redirectAttributes.addFlashAttribute("popupType", "error");
+            redirectAttributes.addFlashAttribute("popupErrorMessage", "Impossibile eliminare il dipendente.");
+        }
+        
+        userSession.setSection("users");
+        return "redirect:/dashboard";
+    }
 }

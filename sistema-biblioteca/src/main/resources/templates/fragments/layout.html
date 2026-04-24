@@ -64,6 +64,7 @@
                 const userName    = /*[[${popupUserName}]]*/ null;
                 const userEmail   = /*[[${popupUserEmail}]]*/ null;
                 const userRole    = /*[[${popupUserRole}]]*/ null;
+                const popupUserId = /*[[${popupUserId}]]*/ null;
                 
                 const authorId      = /*[[${popupAuthorId}]]*/ null;
                 const authorName    = /*[[${popupAuthorName}]]*/ null;
@@ -80,6 +81,7 @@
                 document.getElementById('addCopyContent').classList.add('none');
                 document.getElementById('addEditionSuccessContent')?.classList.add('none');
                 document.getElementById('deleteBookContent').classList.add('none');
+                document.getElementById('deleteUserContent')?.classList.add('none');
                 document.getElementById('errorContent').classList.add('none');
                 document.getElementById('addUserSuccessContent')?.classList.add('none');
                 document.getElementById('deliveredRentContent')?.classList.add('none');
@@ -120,6 +122,13 @@
                     setTextIfExists('deleteBookTitle', bookTitle || '');
                     setTextIfExists('deleteBookId', bookId || '');
                     document.getElementById('deleteBookContent').classList.remove('none');
+
+                } else if (popupType === 'deleteUser') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-trash-can text-white font-size-medium';
+                    setTextIfExists('popupTitle', 'Dipendente eliminato');
+                    setTextIfExists('deleteUserTitle', userName || '');
+                    setTextIfExists('deleteUserId', popupUserId || '');
+                    document.getElementById('deleteUserContent').classList.remove('none');
 
                 } else if (popupType === 'error') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-circle-exclamation text-white font-size-medium';
