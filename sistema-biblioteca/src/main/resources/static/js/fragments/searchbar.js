@@ -23,7 +23,7 @@ function openSearchPopup(section) {
     if (section === 'catalog') {
         title.innerText = 'Ricerca Catalogo';
         subtitle.innerText = 'Cerca tra i libri e le edizioni';
-        inputLabel.innerText = 'Cerca per titolo, autore, isbn, editore o categoria';
+        inputLabel.innerText = 'Cerca per titolo, autore, isbn, editore, categoria';
         inputField.placeholder = 'Es: C++ Primer o John Doe...';
     } else if (section === 'users') {
         title.innerText = 'Ricerca Utenti';
@@ -33,7 +33,7 @@ function openSearchPopup(section) {
     } else if (section === 'edition') {
         title.innerText = 'Ricerca Edizioni';
         subtitle.innerText = 'Cerca tra le edizioni disponibili';
-        inputLabel.innerText = 'Cerca per titolo, editore, categoria';
+        inputLabel.innerText = 'Cerca per titolo, autore, isbn, editore, categoria';
         inputField.placeholder = 'Es: Mondadori, 2023...';
     } else if (section === 'rents') {
         title.innerText = 'Ricerca Prestiti';

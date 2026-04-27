@@ -60,6 +60,7 @@ public class UserService {
 		List<UserDto> myList = getAllUsers();
 		List<UserDto> filteredList = new ArrayList<>();
 		if(search != null && !search.isBlank()) {
+			String [] searchString = search.split("\\s+");
 			for(UserDto user : myList) {
 				if(user.getUserName().replaceAll("\\s+","").toLowerCase().equals(search.replaceAll("\\s+","").toLowerCase())) {
 					filteredList.add(user);
