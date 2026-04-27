@@ -108,9 +108,19 @@ public class RentService {
      * @return Numero totale di prestiti non ancora conclusi
      */
     
-    @Transactional
+    @Transactional(readOnly = true)
     public int getTotalRents() {
         return rentRepository.countRents();
+    }
+
+    /**
+     * Recupera il numero totale di copie prenotate.
+     *
+     * @return Numero totale di copie prenotate
+     */
+    @Transactional(readOnly = true)
+    public int getTotalBooksBooked() {
+        return rentRepository.countBorrowedBooks();
     }
 
     /**

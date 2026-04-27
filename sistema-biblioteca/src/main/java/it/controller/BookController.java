@@ -412,33 +412,7 @@ public class BookController {
 
 		return "redirect:/dashboard";
 	}
-	
-	
-	
-	
-	
-	/**
-	 * Restituisce il frammento HTML per la lista delle copie di un'edizione.
-	 * Utilizzato per il caricamento dinamico nel popup tramite Thymeleaf Fragments.
-	 *
-	 * @param editionId      ID dell'edizione
-	 * @param includeDeleted Flag per includere le copie eliminate
-	 * @param editionTitle   Titolo dell'edizione (opzionale)
-	 * @param model          Modello Thymeleaf
-	 * @return Il frammento "bookCopiesList" all'interno di popup.html
-	 */
-	// @GetMapping("/fragments/book-copies")
-	// public String getBookCopiesFragment(
-	// 		@RequestParam("editionId") int editionId,
-	// 		@RequestParam(value = "includeDeleted", defaultValue = "false") boolean includeDeleted,
-	// 		@RequestParam(value = "editionTitle", required = false) String editionTitle,
-	// 		Model model) {
-	// 	model.addAttribute("books", bookService.getBooksByEditionId(editionId, includeDeleted));
-	// 	model.addAttribute("includeDeleted", includeDeleted);
-	// 	model.addAttribute("editionTitle", editionTitle);
-	// 	return "fragments/popup :: bookCopiesList";
-	// }
-	
+
 	private boolean hasNullOrBlankParameters(String... params) {
 		for(String s : params) {
 			if(s == null || s.isBlank()) {

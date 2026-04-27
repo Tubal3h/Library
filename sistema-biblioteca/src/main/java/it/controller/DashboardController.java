@@ -96,6 +96,7 @@ public class DashboardController {
                     model.addAttribute("totalUsers", userService.getTotalUsers());
                     model.addAttribute("totalBooks", bookService.getTotalCountBooks());
                     model.addAttribute("totalRents", rentService.getTotalRents());
+                    model.addAttribute("totalBooksBooked", rentService.getTotalBooksBooked());
                 }
             }
 
