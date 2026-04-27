@@ -236,9 +236,21 @@
     animation: neonPulse 2s infinite ease-in-out;
 }
 
+.status-vibrant-booked .glass-indicator {
+    color: var(--color-warning);
+    border-color: rgba(75, 35, 253, 0.3) !important;
+    background: rgba(42, 0, 230, 0.05);
+}
+
+.status-vibrant-booked .dot {
+    background: var(--color-warning);
+    box-shadow: 0 0 10px rgba(27, 0, 230, 0.5);
+    color: var(--color-warning);
+    animation: neonPulse 2s infinite ease-in-out;
+}
 .status-vibrant-pending .glass-indicator {
     color: var(--color-warning);
-    border-color: rgba(230, 81, 0, 0.3) !important;
+    border-color: rgba(248, 113, 40, 0.3) !important;
     background: rgba(230, 81, 0, 0.05);
 }
 

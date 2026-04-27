@@ -39,14 +39,16 @@
 
             <!-- Titolo e Autore del Libro -->
             <div class="mb-2">
-                <div class="flex align-center gap-2">
+                <div class="flex justify-row gap-2">
                     <h3 class="text-2xl italic fw-700 text-brand mb-1"
                         th:text="${rent.book != null ? rent.book.title : 'N/A'}"></h3>
-                </div>
-                <div class="flex align-center gap-2">
                     <p class="text-2xl fw-400 opacity-60 mb-3"
                         th:text="${rent.book != null ? rent.book.authorFullName : 'N/A'}"></p>
                 </div>
+                <!-- <div class="flex align-center gap-2">
+                    <p class="text-2xl fw-400 opacity-60 mb-3"
+                        th:text="${rent.book != null ? rent.book.authorFullName : 'N/A'}"></p>
+                </div> -->
                 <div class="flex align-center gap-2">
                     <div th:if="${user.userRole == 'role_admin'}"
                         class="category-label font-mono italic tracking-widest opacity-80 uppercase"
@@ -59,32 +61,32 @@
                 <!-- Data Prenotazione -->
                 <div th:if="${rent.book.status == 'prenotato'}" class="flex align-center font-size-small">
                     <i class="fa-solid fa-calendar-plus text-sm text-brand pr-1"></i>
-                    <label class="fw-600" title="Prenotato il" th:text="${#temporals.format(rent.bookingDate, 'dd-MM-yyyy')}">Data Prenotazione</label>
+                    <label class="fw-600" title="Data Prenotazione" th:text="${#temporals.format(rent.bookingDate, 'dd-MM-yyyy')}">Data Prenotazione</label>
                 </div>
                 
                 <!-- Data di Inizio Noleggio -->
                 <div th:if="${rent.book.status != 'prenotato'}" class="flex align-center font-size-small">
                     <i class="fa-solid fa-calendar-check text-sm text-brand pr-1"></i>
-                    <label class="fw-600" title="Preso il" th:text="${#temporals.format(rent.rentalDate, 'dd-MM-yyyy')}">Inizio</label>
+                    <label class="fw-600" title="Data inizio prestito" th:text="${#temporals.format(rent.rentalDate, 'dd-MM-yyyy')}">Inizio</label>
                 </div>
 
                 <!-- Data di Scadenza -->
                 <div th:if="${rent.book.status != 'prenotato'}" class="flex align-center font-size-small">
                     <i class="fa-regular fa-clock text-sm text-brand pr-1"></i>
-                    <label class="fw-600" title="Scadenza" th:text="${#temporals.format(rent.rentalExpired, 'dd-MM-yyyy')}">Scadenza</label>
+                    <label class="fw-600" title="Data scadenza prestito" th:text="${#temporals.format(rent.rentalExpired, 'dd-MM-yyyy')}">Scadenza</label>
                 </div>
 
                 <!-- Codice ISBN -->
                 <div th:if="${user.userRole == 'role_admin' and rent.book != null}"
                     class="flex align-center font-size-small">
                     <i class="fa-solid fa-barcode text-sm text-brand pr-1"></i>
-                    <label class="font-mono fw-600" title="ISBN" th:text="${rent.book.isbn}">ISBN</label>
+                    <label class="font-mono fw-600" title="Codice ISBN" th:text="${rent.book.isbn}">ISBN</label>
                 </div>
 
                 <!-- ID Utente (Utile per gli Admin) -->
                 <div th:if="${user.userRole == 'role_admin'}" class="flex align-center font-size-small">
                     <i class="fa-solid fa-user text-sm text-brand pr-1"></i>
-                    <label class="fw-600" title="Utente" th:text="${rent.user.userName + ' ' + rent.user.userLastName}">USER</label>
+                    <label class="fw-600" title="Dipendente" th:text="${rent.user.userName + ' ' + rent.user.userLastName}">USER</label>
                 </div>
             </div>
         </div>
@@ -113,13 +115,13 @@
                     th:data-url="@{/api/delivered(bookID=${rent.bookId}, rentID=${rent.rentId})}"
                     onclick="triggerConfirmDelivered(this)"
                     class="w-100 btn-modern-action pointer transition shadow-soft">
-                    <span>Consegnato</span>
+                    <span>Conferma richiesta</span>
                 </button>
                 <button type="button" th:if="${rent.book != null && rent.book.status == 'in prestito' && user.userRole == 'role_admin'}" th:data-title="${rent.book.title}"
                     th:data-url="@{/api/returned(bookID=${rent.bookId}, rentID=${rent.rentId})}"
                     onclick="triggerConfirmReturned(this)"
                     class="w-100 btn-modern-action pointer transition shadow-soft">
-                    <span>Restituito</span>
+                    <span>Rientrato</span>
                 </button>
             </div>
         </div>

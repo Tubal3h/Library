@@ -45,59 +45,59 @@
 
         <!-- Sezione Home per admin-->
         <div th:if="${section == 'home' && user.userRole == 'role_admin'}"
-            class="dashboard-grid grid flex nowrap gap-3 animate-fade-in-up opacity-0 delay-1">
+            class="dashboard-grid grid flex justify-between nowrap gap-1 animate-fade-in-up opacity-0 delay-1">
 
             <!-- Card 1: Users totali -->
-            <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
+            <div class="card glass radius-12 p-2 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
                     <span class="opacity-70 font-size-small uppercase fw-700">Dipendenti Registrati</span>
                     <i class="fa-solid fa-users text-brand"></i>
                 </div>
-                <div class="flex align-end gap-2">
+                <div class="flex align-end gap-1">
                     <span class="text-3xl fw-700" th:text="${totalUsers}">totalUsers</span>
                 </div>
             </div>
 
             <!-- Card 2: Books totali -->
-            <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
+            <div class="card glass radius-12 p-2 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
                     <span class="opacity-70 font-size-small uppercase fw-700">Totale manuali</span>
                     <i class="fa-solid fa-book text-brand"></i>
                 </div>
-                <div class="flex align-end gap-2">
+                <div class="flex align-end gap-1">
                     <span class="text-3xl fw-700" th:text="${totalBooks}">totalBooks</span>
                 </div>
             </div>
 
             <!-- Card 3: Books disponibili -->
-            <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
+            <div class="card glass radius-12 p-2 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
                     <span class="opacity-70 font-size-small uppercase fw-700">Manuali disponibili</span>
                     <i class="fa-solid fa-check-to-slot text-success"></i>
                 </div>
-                <div class="flex align-end gap-2">
+                <div class="flex align-end gap-1">
                     <span class="text-3xl fw-700" th:text="${totalBooks - totalRents}">availableBooks</span>
                 </div>
             </div>
 
             <!-- Card 4: Books prenotati/prestati -->
-            <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
+            <div class="card glass radius-12 p-2 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
                     <span class="opacity-70 font-size-small uppercase fw-700">Manuali in prestito</span>
                     <i class="fa-solid fa-hand-holding-hand text-warning"></i>
                 </div>
-                <div class="flex align-end gap-2">
+                <div class="flex align-end gap-1">
                     <span class="text-3xl fw-700" th:text="${totalRents}">borrowedBooks</span>
                 </div>
             </div>
 
             <!-- Card 5: Books in attesa SOSTITUIRE TOTALRENTS CON TOTALPENDINGS-->
-            <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
+            <div class="card glass radius-12 p-2 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
                     <span class="opacity-70 font-size-small uppercase fw-700">Manuali in attesa</span>
                     <i class="fa-solid fa-clock text-info"></i>
                 </div>
-                <div class="flex align-end gap-2">
+                <div class="flex align-end gap-1">
                     <span class="text-3xl fw-700" th:text="${totalRents}">borrowedBooks</span>
                 </div>
             </div>
