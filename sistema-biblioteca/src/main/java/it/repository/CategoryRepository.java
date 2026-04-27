@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import it.entity.Category;
 import it.exception.InsertCategoryException;
 import it.mapper.CategoryRowMapper;
+import it.repository.interfaces.CategoryRepositoryInterface;
 
 /**
  * Repository per la gestione delle categorie dei libri nel database.

@@ -10,10 +10,12 @@ import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import it.dto.response.BookRecordsJoinDtoResponse;
 import it.entity.RentalRecord;
 import it.entity.RentalRecordJoin;
 import it.mapper.RentRecordRowMapper;
 import it.mapper.RentalRecordJoinRowMapper;
+import it.repository.interfaces.RentRecordRepositoryInterface;
 
 /**
  * Repository per la gestione dei record di noleggio (prestiti) nel database.
@@ -263,6 +265,21 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 				WHERE rent_id = ?
 				""";
 		jdbcTemplate.update(sql, rentId);
+	}
+
+	@Override
+	public List<BookRecordsJoinDtoResponse> getBookRecords(int bookId) {
+	    String sql = """
+	    		SELECT books.book_id, rental_record.rental_id, users.user_name, users.user_last_name, rental_record.rental_date, rental_record.rental_expired, rental_record.rental_ended
+	    		FROM rental_record
+	    		INNER JOIN users
+	    		ON rental_record.users_id = users.users_id
+	    		INNER JOIN books
+	    		ON books.book_id = rental_record.book_id
+	    		WHERE books.book_id = ?
+	    """;
+	    
+		return null;
 	}
     
 }

@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import it.entity.Author;
 import it.exception.InsertAuthorException;
 import it.mapper.AuthorRowMapper;
+import it.repository.interfaces.AuthorRepositoryInterface;
 
 /**
  * Repository per la gestione dei dati degli autori nel database.

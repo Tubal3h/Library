@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import it.entity.BookJoin;
 import it.exception.InsertBookException;
 import it.mapper.BookJoinRowMapper;
+import it.repository.interfaces.BookRepositoryInterface;
 
 /**
  * Repository per la gestione dei dati dei libri nel database.

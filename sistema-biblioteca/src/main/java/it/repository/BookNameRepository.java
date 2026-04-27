@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import it.entity.BookName;
 import it.exception.InsertBookNameException;
 import it.mapper.BookNameRowMapper;
+import it.repository.interfaces.BookNameRepositoryInterface;
 
 /**
  * Repository per la gestione dei nomi/titoli dei libri nel database.

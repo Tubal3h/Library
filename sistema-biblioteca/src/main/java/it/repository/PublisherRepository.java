@@ -16,6 +16,7 @@ import org.springframework.stereotype.Repository;
 import it.entity.Publisher;
 import it.exception.InsertPublisherException;
 import it.mapper.PublisherRowMapper;
+import it.repository.interfaces.PublisherRepositoryInterface;
 
 /**
  * Repository per la gestione delle case editrici nel database.
