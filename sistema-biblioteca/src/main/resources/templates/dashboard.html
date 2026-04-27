@@ -45,15 +45,15 @@
 
         <!-- Sezione Home per admin-->
         <div th:if="${section == 'home' && user.userRole == 'role_admin'}"
-            class="dashboard-grid flex flex-wrap gap-3 animate-fade-in-up opacity-0 delay-1">
+            class="dashboard-grid grid flex nowrap gap-3 animate-fade-in-up opacity-0 delay-1">
 
             <!-- Card 1: Users totali -->
             <a th:href="@{/api/navigation/users}" class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
-                    <span class="opacity-70 font-size-small uppercase fw-700">Dipendenti Registrati</span>
+                    <span class="opacity-70 font-size-small uppercase fw-700">Dipendenti</span>
                     <i class="fa-solid fa-users text-brand"></i>
                 </div>
-                <div class="flex align-end gap-2">
+                <div class="flex align-end gap-1">
                     <span class="text-3xl fw-700" th:text="${totalUsers}">totalUsers</span>
                 </div>
             </a>
@@ -64,7 +64,7 @@
                     <span class="opacity-70 font-size-small uppercase fw-700">Totale manuali</span>
                     <i class="fa-solid fa-book text-brand"></i>
                 </div>
-                <div class="flex align-end gap-2">
+                <div class="flex align-end gap-1">
                     <span class="text-3xl fw-700" th:text="${totalBooks}">totalBooks</span>
                 </div>
             </a>
@@ -75,7 +75,7 @@
                     <span class="opacity-70 font-size-small uppercase fw-700">Manuali disponibili</span>
                     <i class="fa-solid fa-check-to-slot text-success"></i>
                 </div>
-                <div class="flex align-end gap-2">
+                <div class="flex align-end gap-1">
                     <span class="text-3xl fw-700" th:text="${totalBooks - totalRents}">availableBooks</span>
                 </div>
             </a>
