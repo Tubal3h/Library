@@ -68,17 +68,14 @@
         document.addEventListener("DOMContentLoaded", function () {
             if (typeof initSuccessPopup === 'function') {
                 initSuccessPopup(/*[[${popupType}]]*/ null, {
-                    title: /*[[${popupBookTitle}]]*/ null,
+                    title: /*[[${popupBookTitle != null ? popupBookTitle : (popupTitle != null ? popupTitle : popupBookName)}]]*/ null,
                     isbn: /*[[${popupBookIsbn}]]*/ null,
+                    id: /*[[${popupBookId}]]*/ null,
                     authorName: /*[[${popupAuthorName}]]*/ null,
                     authorLastName: /*[[${popupAuthorLastName}]]*/ null,
                     publisherName: /*[[${popupPublisherName}]]*/ null,
                     categoryName: /*[[${popupCategoryName}]]*/ null,
-                    errorMessage: /*[[${popupErrorMessage}]]*/ null,
-                    // Campi legacy per compatibilità
-                    userName: /*[[${popupUserName}]]*/ null,
-                    userEmail: /*[[${popupUserEmail}]]*/ null,
-                    userRole: /*[[${popupUserRole}]]*/ null
+                    errorMessage: /*[[${errorMessage != null ? errorMessage : popupErrorMessage}]]*/ null
                 });
             }
         });
