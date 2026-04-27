@@ -1,8 +1,8 @@
 <div th:fragment="successPanels">
     <!-- Success: Add Copy -->
-    <div id="addCopyContent" class="none animate-fade-in-up text-center py-4">
-        <div class="flex justify-center mb-5">
-            <div class="popup-feedback-icon" style="background: rgba(46,125,50,0.1); color: var(--color-success);">
+    <div id="addCopyContent" class="none animate-fade-in-up text-center">
+        <div class="flex justify-center">
+            <div class="popup-feedback-icon success">
                 <i class="fa-solid fa-circle-check"></i>
             </div>
         </div>
@@ -17,9 +17,9 @@
     </div>
 
     <!-- Success: Add Edition -->
-    <div id="addEditionSuccessContent" class="none animate-fade-in-up text-center py-4">
-        <div class="flex justify-center mb-5">
-            <div class="popup-feedback-icon" style="background: rgba(46,125,50,0.1); color: var(--color-success);">
+    <div id="addEditionSuccessContent" class="none animate-fade-in-up text-center">
+        <div class="flex justify-center">
+            <div class="popup-feedback-icon success">
                 <i class="fa-solid fa-circle-check"></i>
             </div>
         </div>
@@ -33,84 +33,84 @@
     </div>
 
     <!-- Success: Generic Entity (Settings) -->
-    <div id="addTitleSuccessContent" class="none animate-fade-in-up text-center py-4">
-        <div class="flex justify-center mb-5">
-            <div class="popup-feedback-icon" style="background: rgba(46,125,50,0.1); color: var(--color-success);"><i class="fa-solid fa-circle-check"></i></div>
+    <div id="addTitleSuccessContent" class="none animate-fade-in-up text-center">
+        <div class="flex justify-center">
+            <div class="popup-feedback-icon success"><i class="fa-solid fa-circle-check"></i></div>
         </div>
         <h3 class="text-2xl fw-700 text-brand mb-2">Titolo aggiunto</h3>
         <p class="opacity-70 text-sm leading-relaxed">Il titolo "<strong id="addTitleSuccessName" class="text-brand text-lg"></strong>" è stato registrato.</p>
     </div>
 
-    <div id="addAuthorSuccessContent" class="none animate-fade-in-up text-center py-4">
-        <div class="flex justify-center mb-5">
-            <div class="popup-feedback-icon" style="background: rgba(46,125,50,0.1); color: var(--color-success);"><i class="fa-solid fa-user-check"></i></div>
+    <div id="addAuthorSuccessContent" class="none animate-fade-in-up text-center">
+        <div class="flex justify-center">
+            <div class="popup-feedback-icon success"><i class="fa-solid fa-user-check"></i></div>
         </div>
         <h3 class="text-2xl fw-700 text-brand mb-2">Autore aggiunto</h3>
         <p class="opacity-70 text-sm leading-relaxed">L'autore "<strong id="addAuthorSuccessName" class="text-brand text-lg"></strong> <strong id="addAuthorSuccessLastName" class="text-brand text-lg"></strong>" è stato registrato.</p>
     </div>
 
-    <div id="addPublisherSuccessContent" class="none animate-fade-in-up text-center py-4">
-        <div class="flex justify-center mb-5">
-            <div class="popup-feedback-icon" style="background: rgba(46,125,50,0.1); color: var(--color-success);"><i class="fa-solid fa-building-columns"></i></div>
+    <div id="addPublisherSuccessContent" class="none animate-fade-in-up text-center">
+        <div class="flex justify-center">
+            <div class="popup-feedback-icon success"><i class="fa-solid fa-building-columns"></i></div>
         </div>
         <h3 class="text-2xl fw-700 text-brand mb-2">Editore aggiunto</h3>
         <p class="opacity-70 text-sm leading-relaxed">L'editore "<strong id="addPublisherSuccessName" class="text-brand text-lg"></strong>" è stato registrato.</p>
     </div>
 
-    <div id="addCategorySuccessContent" class="none animate-fade-in-up text-center py-4">
-        <div class="flex justify-center mb-5">
-            <div class="popup-feedback-icon" style="background: rgba(46,125,50,0.1); color: var(--color-success);"><i class="fa-solid fa-tags"></i></div>
+    <div id="addCategorySuccessContent" class="none animate-fade-in-up text-center">
+        <div class="flex justify-center">
+            <div class="popup-feedback-icon success"><i class="fa-solid fa-tags"></i></div>
         </div>
         <h3 class="text-2xl fw-700 text-brand mb-2">Categoria aggiunta</h3>
         <p class="opacity-70 text-sm leading-relaxed">La categoria "<strong id="addCategorySuccessName" class="text-brand text-lg"></strong>" è stata registrata.</p>
     </div>
 
     <!-- Delete Confirmation Style -->
-    <div id="deleteBookContent" class="none animate-fade-in-up text-center py-4">
-        <div class="flex justify-center mb-5">
-            <div class="popup-feedback-icon" style="background: rgba(198,40,40,0.1); color: var(--color-error);"><i class="fa-solid fa-trash-can"></i></div>
+    <div id="deleteBookContent" class="none animate-fade-in-up text-center">
+        <div class="flex justify-center">
+            <div class="popup-feedback-icon error"><i class="fa-solid fa-trash-can"></i></div>
         </div>
-        <h3 class="text-2xl fw-700 mb-2" style="color: var(--color-error);">Copia eliminata</h3>
+        <h3 class="text-2xl fw-700 mb-2 text-error">Copia eliminata</h3>
         <p class="opacity-70 text-sm leading-relaxed">La copia "<strong id="deleteBookTitle" class="text-brand text-lg"></strong>" (ID #<span id="deleteBookId"></span>) è stata rimossa.</p>
     </div>
 
     <!-- Rent Updates -->
-    <div id="deliveredRentContent" class="none animate-fade-in-up text-center py-4">
-        <div class="flex justify-center mb-5">
-            <div class="popup-feedback-icon" style="background: rgba(46,125,50,0.1); color: var(--color-success);"><i class="fa-solid fa-box-open"></i></div>
+    <div id="deliveredRentContent" class="none animate-fade-in-up text-center">
+        <div class="flex justify-center">
+            <div class="popup-feedback-icon success"><i class="fa-solid fa-box-open"></i></div>
         </div>
-        <h3 class="text-2xl fw-700 mb-2" style="color: var(--color-success);">Copia consegnata</h3>
+        <h3 class="text-2xl fw-700 mb-2 text-success">Copia consegnata</h3>
         <p class="opacity-70 text-sm leading-relaxed">La copia "<strong id="deliveredBookTitle" class="text-brand text-lg"></strong>" è stata consegnata.</p>
     </div>
 
     <!-- Update Confirmation Success Panels -->
-    <div id="updateTitleSuccessContent" class="none animate-fade-in-up text-center py-4">
-        <div class="flex justify-center mb-5">
-            <div class="popup-feedback-icon" style="background: rgba(46,125,50,0.1); color: var(--color-success);"><i class="fa-solid fa-circle-check"></i></div>
+    <div id="updateTitleSuccessContent" class="none animate-fade-in-up text-center">
+        <div class="flex justify-center">
+            <div class="popup-feedback-icon success"><i class="fa-solid fa-circle-check"></i></div>
         </div>
         <h3 class="text-2xl fw-700 text-brand mb-2">Titolo aggiornato</h3>
         <p class="opacity-70 text-sm leading-relaxed">Il titolo è stato aggiornato in "<strong id="updateTitleBookName" class="text-brand text-lg"></strong>".</p>
     </div>
 
-    <div id="updateAuthorSuccessContent" class="none animate-fade-in-up text-center py-4">
-        <div class="flex justify-center mb-5">
-            <div class="popup-feedback-icon" style="background: rgba(46,125,50,0.1); color: var(--color-success);"><i class="fa-solid fa-user-pen"></i></div>
+    <div id="updateAuthorSuccessContent" class="none animate-fade-in-up text-center">
+        <div class="flex justify-center">
+            <div class="popup-feedback-icon success"><i class="fa-solid fa-user-pen"></i></div>
         </div>
         <h3 class="text-2xl fw-700 text-brand mb-2">Autore aggiornato</h3>
         <p class="opacity-70 text-sm leading-relaxed">L'autore è stato aggiornato in "<strong id="updateAuthorName" class="text-brand text-lg"></strong> <strong id="updateAuthorLastName" class="text-brand text-lg"></strong>".</p>
     </div>
 
-    <div id="updatePublisherSuccessContent" class="none animate-fade-in-up text-center py-4">
-        <div class="flex justify-center mb-5">
-            <div class="popup-feedback-icon" style="background: rgba(46,125,50,0.1); color: var(--color-success);"><i class="fa-solid fa-building-columns"></i></div>
+    <div id="updatePublisherSuccessContent" class="none animate-fade-in-up text-center">
+        <div class="flex justify-center">
+            <div class="popup-feedback-icon success"><i class="fa-solid fa-building-columns"></i></div>
         </div>
         <h3 class="text-2xl fw-700 text-brand mb-2">Editore aggiornato</h3>
         <p class="opacity-70 text-sm leading-relaxed">L'editore è stato aggiornato in "<strong id="updatePublisherName" class="text-brand text-lg"></strong>".</p>
     </div>
 
-    <div id="updateCategorySuccessContent" class="none animate-fade-in-up text-center py-4">
-        <div class="flex justify-center mb-5">
-            <div class="popup-feedback-icon" style="background: rgba(46,125,50,0.1); color: var(--color-success);"><i class="fa-solid fa-tag"></i></div>
+    <div id="updateCategorySuccessContent" class="none animate-fade-in-up text-center">
+        <div class="flex justify-center">
+            <div class="popup-feedback-icon success"><i class="fa-solid fa-tag"></i></div>
         </div>
         <h3 class="text-2xl fw-700 text-brand mb-2">Categoria aggiornata</h3>
         <p class="opacity-70 text-sm leading-relaxed">La categoria è stata aggiornata in "<strong id="updateCategoryName" class="text-brand text-lg"></strong>".</p>
