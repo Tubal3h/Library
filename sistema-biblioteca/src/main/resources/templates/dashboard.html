@@ -48,7 +48,7 @@
             class="dashboard-grid flex flex-wrap gap-3 animate-fade-in-up opacity-0 delay-1">
 
             <!-- Card 1: Users totali -->
-            <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
+            <a th:href="@{/api/navigation/users}" class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
                     <span class="opacity-70 font-size-small uppercase fw-700">Dipendenti Registrati</span>
                     <i class="fa-solid fa-users text-brand"></i>
@@ -56,10 +56,10 @@
                 <div class="flex align-end gap-2">
                     <span class="text-3xl fw-700" th:text="${totalUsers}">totalUsers</span>
                 </div>
-            </div>
+            </a>
 
             <!-- Card 2: Books totali -->
-            <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
+            <a th:href="@{/api/navigation/catalog}" class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
                     <span class="opacity-70 font-size-small uppercase fw-700">Totale manuali</span>
                     <i class="fa-solid fa-book text-brand"></i>
@@ -67,10 +67,10 @@
                 <div class="flex align-end gap-2">
                     <span class="text-3xl fw-700" th:text="${totalBooks}">totalBooks</span>
                 </div>
-            </div>
+            </a>
 
             <!-- Card 3: Books disponibili -->
-            <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
+            <a th:href="@{/api/navigation/catalog}" class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
                     <span class="opacity-70 font-size-small uppercase fw-700">Manuali disponibili</span>
                     <i class="fa-solid fa-check-to-slot text-success"></i>
@@ -78,29 +78,29 @@
                 <div class="flex align-end gap-2">
                     <span class="text-3xl fw-700" th:text="${totalBooks - totalRents}">availableBooks</span>
                 </div>
-            </div>
+            </a>
 
-            <!-- Card 4: Books prenotati/prestati -->
-            <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
+            <!-- Card 4: Books prestati -->
+            <a th:href="@{/api/navigation/rents}" class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
                     <span class="opacity-70 font-size-small uppercase fw-700">Manuali in prestito</span>
                     <i class="fa-solid fa-hand-holding-hand text-warning"></i>
                 </div>
                 <div class="flex align-end gap-2">
-                    <span class="text-3xl fw-700" th:text="${totalRents}">borrowedBooks</span>
+                    <span class="text-3xl fw-700" th:text="${totalRents}">totalRents</span>
                 </div>
-            </div>
+            </a>
 
-            <!-- Card 5: Books in attesa SOSTITUIRE TOTALRENTS CON TOTALPENDINGS-->
-            <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
+            <!-- Card 5: Books prenotati-->
+            <a th:href="@{/api/navigation/rents}" class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
-                    <span class="opacity-70 font-size-small uppercase fw-700">Manuali in attesa</span>
+                    <span class="opacity-70 font-size-small uppercase fw-700">Manuali Prenotati</span>
                     <i class="fa-solid fa-clock text-info"></i>
                 </div>
                 <div class="flex align-end gap-2">
-                    <span class="text-3xl fw-700" th:text="${totalRents}">borrowedBooks</span>
+                    <span class="text-3xl fw-700" th:text="${totalBooksBooked}">totalBooksBooked</span>
                 </div>
-            </div>
+            </a>
 
         </div>
 
@@ -109,7 +109,7 @@
             class="dashboard-grid flex flex-wrap gap-3 animate-fade-in-up opacity-0 delay-1">
 
             <!-- Card 1: Borrowed Books -->
-            <div class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
+            <a th:href="@{/api/navigation/rents}" class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
                     <span class="opacity-70 font-size-small uppercase fw-700">Libri Prestati</span>
                     <i class="fa-solid fa-hand-holding-hand text-warning"></i>
@@ -118,7 +118,7 @@
                     <span class="text-3xl fw-700" th:text="${totalRents}"></span>
                     <span class="opacity-50 font-size-small mb-1">In prestito</span>
                 </div>
-            </div>
+            </a>
 
         </div>
 
