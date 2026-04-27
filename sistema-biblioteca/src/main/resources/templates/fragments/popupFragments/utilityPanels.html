@@ -67,7 +67,8 @@
                 </thead>
                 <tbody id="viewBooksListContainer" th:fragment="bookCopiesList">
                     <tr th:each="book : ${popupBooks != null ? popupBooks : books}" class="text-center border-b hover-bg-light transition">
-                        <td class="p-3 font-mono fw-600 text-brand">#[[${book.bookId}]]</td>
+                        <td class="p-3 font-mono fw-600 text-brand">
+                            <a th:href="@{/api/navigation/bookRecords(bookId=${book.bookId})}">#[[${book.bookId}]]</a></td>
                         <td>
                             <div class="glass-indicator radius-4 p-1 font-size-xs fw-700 uppercase" th:text="${book.status}">STATO</div>
                         </td>

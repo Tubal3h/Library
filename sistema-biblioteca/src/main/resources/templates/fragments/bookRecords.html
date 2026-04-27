@@ -1,0 +1,13 @@
+<div class="dashboard-grid" th:fragment="bookRecords">
+    <header class="dashboard-header flex justify-between align-center mb-2 animate-fade-in-up opacity-0">
+            <div class="header-actions flex align-center gap-2">
+
+                <!-- Aggiungi nuova edizione -->
+                <a th:if="${user.userRole == 'role_admin'}" th:href="@{/api/navigation/catalog}"
+                    class="btn-create btn-sm shadow-soft" title="Manuali">
+                    <i class="fa-solid fa-book"></i>
+                    <span class="btn-label">Manuali</span>
+                </a>
+            </div>
+        </header>
+</div>
