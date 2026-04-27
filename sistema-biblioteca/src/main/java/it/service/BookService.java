@@ -193,7 +193,7 @@ public class BookService {
 		List<BookDto> filteredList = new ArrayList<>();
 		if(search != null && !search.isBlank()) {
 			for(BookDto book : myList) {
-				if(book.getTitle().replaceAll("\\s+","").toLowerCase().equals(search.replaceAll("\\s+","").toLowerCase())) {
+				if(book.getTitle().replaceAll("\\s+","").toLowerCase().contains(search.replaceAll("\\s+","").toLowerCase())) {
 					filteredList.add(book);
 				}
 			}	
@@ -223,42 +223,42 @@ public class BookService {
      */
 	
 	@Transactional
-	public void insertBook(InsertBookDto insertbookDto, LocalDate date) throws InsertBookServiceException {
-		String authorFullName = insertbookDto.getAuthorName().concat(" ").concat(insertbookDto.getAuthorLastName());
+	public void insertBook(InsertBookDto insertBookDto) throws InsertBookServiceException {
+		String authorFullName = insertBookDto.getAuthorName().concat(" ").concat(insertBookDto.getAuthorLastName());
 		System.out.println("author full name: " + authorFullName);
-		System.out.println("title: " + insertbookDto.getTitle());
-		System.out.println("authorName: " + insertbookDto.getAuthorName());
-		System.out.println("authorLastName " + insertbookDto.getAuthorLastName());
-		System.out.println("publisher: " + insertbookDto.getPublisherName());
-		System.out.println("date: " + date);
-		System.out.println("category: " + insertbookDto.getCategoryName());
-		System.out.println("isbn: " + insertbookDto.getIsbn());
+		System.out.println("title: " + insertBookDto.getTitle());
+		System.out.println("authorName: " + insertBookDto.getAuthorName());
+		System.out.println("authorLastName " + insertBookDto.getAuthorLastName());
+		System.out.println("publisher: " + insertBookDto.getPublisherName());
+		System.out.println("date: " + insertBookDto.getLocalDate());
+		System.out.println("category: " + insertBookDto.getCategoryName());
+		System.out.println("isbn: " + insertBookDto.getIsbn());
 		
 		
 		try {
-			if(!bookNameRepository.isTitleOnDb(insertbookDto.getTitle())) {
-				bookNameRepository.insertBookByTitle(insertbookDto.getTitle());
+			if(!bookNameRepository.isTitleOnDb(insertBookDto.getTitle())) {
+				bookNameRepository.insertBookByTitle(insertBookDto.getTitle());
 				System.out.println("titolo insert fatta");
 			}
 			
-			if(!authorRepository.isAuthorPresent(insertbookDto.getAuthorName(), insertbookDto.getAuthorLastName())) {
-				authorRepository.insertAuthorByNameAndLastName(insertbookDto.getAuthorName(), insertbookDto.getAuthorLastName());	
+			if(!authorRepository.isAuthorPresent(insertBookDto.getAuthorName(), insertBookDto.getAuthorLastName())) {
+				authorRepository.insertAuthorByNameAndLastName(insertBookDto.getAuthorName(), insertBookDto.getAuthorLastName());	
 				System.out.println("autore insert fatta");
 			}
 			 
-			Category categoryBis = new Category(insertbookDto.getCategoryName());
+			Category categoryBis = new Category(insertBookDto.getCategoryName());
 			if(!categoryRepository.isCategoryPresentByName(categoryBis)) {
-				categoryRepository.insertCategoryByNameCategory(insertbookDto.getCategoryName());
+				categoryRepository.insertCategoryByNameCategory(insertBookDto.getCategoryName());
 				System.out.println("caegoria insert fatta");
 			}
 			
-			Publisher publisherBis = new Publisher(insertbookDto.getPublisherName());
+			Publisher publisherBis = new Publisher(insertBookDto.getPublisherName());
 			if(!publisherRepository.isPublisherPresent(publisherBis)) {
-				publisherRepository.insertPublisherByPubliserName(insertbookDto.getPublisherName());
+				publisherRepository.insertPublisherByPubliserName(insertBookDto.getPublisherName());
 				System.out.println("publisher insert fatta");
 			}
-			editionRepository.insertEdition(insertbookDto.getTitle(), insertbookDto.getAuthorName(), insertbookDto.getAuthorLastName(), insertbookDto.getPublisherName(), date, insertbookDto.getCategoryName(), insertbookDto.getIsbn());
-			bookRepository.insertBookByTitle(insertbookDto.getTitle());
+			editionRepository.insertEdition(insertBookDto.getTitle(), insertBookDto.getAuthorName(), insertBookDto.getAuthorLastName(), insertBookDto.getPublisherName(), insertBookDto.getLocalDate(), insertBookDto.getCategoryName(), insertBookDto.getIsbn());
+			bookRepository.insertBookByTitle(insertBookDto.getTitle());
 		}catch(RuntimeException ex) {
 			System.out.println(ex.toString());
 			throw new InsertBookServiceException("errore nell'inserimento di un libro");	

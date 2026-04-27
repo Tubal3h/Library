@@ -23,7 +23,7 @@ function openSearchPopup(section) {
     if (section === 'catalog') {
         title.innerText = 'Ricerca Catalogo';
         subtitle.innerText = 'Cerca tra i libri e le edizioni';
-        inputLabel.innerText = 'Cerca per titolo, autore, o ISBN';
+        inputLabel.innerText = 'Cerca per titolo, autore, isbn, editore o categoria';
         inputField.placeholder = 'Es: C++ Primer o John Doe...';
     } else if (section === 'users') {
         title.innerText = 'Ricerca Utenti';

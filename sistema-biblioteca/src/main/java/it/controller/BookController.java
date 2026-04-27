@@ -138,7 +138,6 @@ public class BookController {
 	 */
 	@PostMapping("/api/addEdition")
 	public String addEdition(
-	        @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
 	        @ModelAttribute InsertBookDto insertBookDto,
 	        BindingResult bindingResult,
 	        RedirectAttributes redirectAttributes) {
@@ -154,7 +153,7 @@ public class BookController {
 			return "redirect:/";
 		}
 		try {
-			bookService.insertBook(insertBookDto, date);
+			bookService.insertBook(insertBookDto);
 			redirectAttributes.addFlashAttribute("popupType", "addEdition");
 			redirectAttributes.addFlashAttribute("popupBookTitle", insertBookDto.getTitle());
 			redirectAttributes.addFlashAttribute("popupBookIsbn", insertBookDto.getIsbn());
