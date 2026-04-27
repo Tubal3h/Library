@@ -35,7 +35,7 @@ const Popup = {
         if (DOM.title()) DOM.title().innerText = title || 'Messaggio';
         if (DOM.icon()) {
             DOM.icon().className = `fa-solid ${icon || 'fa-info-circle'} text-white`;
-            if (DOM.iconBox()) DOM.iconBox().className = `icon-box-accent radius-12 p-3 flex center ${iconClass || ''}`;
+            if (DOM.iconBox()) DOM.iconBox().className = `icon-box-accent ${iconClass || ''}`;
         }
 
         const panel = document.getElementById(panelId);

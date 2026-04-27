@@ -18,6 +18,10 @@ function initSuccessPopup(type, data) {
             document.getElementById('addEditionSuccessBookTitle').innerText = data.title || "";
             document.getElementById('addEditionSuccessBookIsbn').innerText = data.isbn || "";
         }},
+        addCopy: { id: 'addCopyContent', fn: () => {
+            document.getElementById('addCopyBookTitle').innerText = data.title || "";
+            document.getElementById('addCopyBookId').innerText = data.id || "";
+        }},
         addAuthor: { id: 'addAuthorSuccessContent', fn: () => {
             document.getElementById('addAuthorSuccessName').innerText = data.authorName || "";
             document.getElementById('addAuthorSuccessLastName').innerText = data.authorLastName || "";
@@ -32,6 +36,11 @@ function initSuccessPopup(type, data) {
         }},
         updatePublisher: { id: 'updatePublisherSuccessContent', idField: 'updatePublisherName', dataField: 'publisherName' },
         updateCategory: { id: 'updateCategorySuccessContent', idField: 'updateCategoryName', dataField: 'categoryName' },
+        deleteBook: { id: 'deleteBookContent', fn: () => {
+            document.getElementById('deleteBookTitle').innerText = data.title || "";
+            document.getElementById('deleteBookId').innerText = data.id || "";
+        }},
+        deliveredRent: { id: 'deliveredRentContent', idField: 'deliveredBookTitle', dataField: 'title' },
         error: { id: 'errorContent', fn: () => document.getElementById('errorMessage').innerText = data.errorMessage || "Errore sconosciuto." }
     };
 
