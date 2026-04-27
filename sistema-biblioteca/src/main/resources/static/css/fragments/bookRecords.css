@@ -1,0 +1,180 @@
+/* -------------------------------------------------------------------------- */
+/*                                BOOK RECORDS                                */
+/* -------------------------------------------------------------------------- */
+
+.records-container {
+    padding-bottom: 2rem;
+}
+
+/* Header della Lista (Desktop) */
+.records-header {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    display: grid;
+    grid-template-columns: 80px 2fr 120px 1.2fr 1.2fr 1.2fr;
+    gap: 1.5rem;
+    align-items: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.header-cell {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text-muted);
+}
+
+/* Elemento della Lista (Card) */
+.record-item {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: default;
+}
+
+.record-item:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    border-color: var(--color-accent);
+}
+
+.record-row-grid {
+    display: grid;
+    grid-template-columns: 80px 2fr 120px 1.2fr 1.2fr 1.2fr;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+/* Celle Specifiche */
+.record-cell {
+    font-size: 0.95rem;
+    color: var(--color-text);
+}
+
+.badge-id {
+    display: inline-block;
+    padding: 0.35rem 0.6rem;
+    background: var(--color-surface-2);
+    border-radius: 8px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+}
+
+.rental-id-text {
+    font-weight: 700;
+    color: var(--color-accent);
+}
+
+.user-name-text {
+    font-weight: 600;
+    font-size: 1.05rem;
+}
+
+.date-text {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--color-text);
+}
+
+.date-text i {
+    color: var(--color-accent);
+    opacity: 0.7;
+    width: 16px;
+}
+
+/* Pulsante Indietro */
+.btn-back {
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-back:hover {
+    background: var(--color-accent);
+    color: white;
+    border-color: var(--color-accent);
+    transform: translateX(-4px);
+}
+
+/* Empty State */
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    background: var(--color-surface);
+    border: 2px dashed var(--color-border);
+    border-radius: 16px;
+    margin-top: 1rem;
+}
+
+/* Animazioni */
+.animate-card {
+    animation: slideUp 0.5s ease forwards;
+    opacity: 0;
+    animation-delay: var(--delay);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 1024px) {
+    .record-row-grid, .records-header {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+    .records-header {
+        display: none;
+    }
+    .record-item {
+        padding: 1.5rem !important;
+    }
+    .record-cell {
+        margin-bottom: 1rem;
+    }
+    .record-cell::before {
+        content: attr(data-label);
+        display: block;
+        font-size: 0.7rem;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--color-text-muted);
+        margin-bottom: 0.25rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .record-row-grid {
+        grid-template-columns: 1fr;
+        gap: 0.75rem;
+    }
+    .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 1rem;
+    }
+}
