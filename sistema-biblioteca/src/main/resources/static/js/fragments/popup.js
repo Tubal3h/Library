@@ -5,6 +5,7 @@
 
 const DOM = {
     overlay: () => document.getElementById('genericPopup'),
+    content: () => document.querySelector('.popup-content'),
     title: () => document.getElementById('popupTitle'),
     icon: () => document.getElementById('popupIcon'),
     iconBox: () => document.getElementById('popupIcon')?.parentElement,
@@ -28,10 +29,16 @@ const PANELS = [
 
 const Popup = {
     open(config) {
-        const { title, icon, iconClass, panelId, confirmText, onConfirm, showCancel = true, footerVisible = true } = config;
+        const { title, icon, iconClass, panelId, confirmText, onConfirm, showCancel = true, footerVisible = true, size = 'medium' } = config;
 
         this.hideAllPanels();
         
+        // Reset and set size
+        if (DOM.content()) {
+            DOM.content().classList.remove('large', 'medium', 'small');
+            if (size !== 'medium') DOM.content().classList.add(size);
+        }
+
         if (DOM.title()) DOM.title().innerText = title || 'Messaggio';
         if (DOM.icon()) {
             DOM.icon().className = `fa-solid ${icon || 'fa-info-circle'} text-white`;
