@@ -1,30 +1,54 @@
 package it.dto;
 
+import java.time.LocalDate;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.annotation.Nonnull;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public class InsertBookDto {
-	@Nonnull
+	@NotNull
+	@NotBlank
 	private String title;
-	@Nonnull
+	
+	@NotNull
+	@NotBlank
 	private String isbn;
-	@Nonnull
+	
+	@NotNull
+	@NotBlank
 	private String authorName;
-	@Nonnull
+	
+	@NotNull
+	@NotBlank
 	private String authorLastName;
-	@Nonnull
+	
+	@NotNull
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+	LocalDate localDate;
+	
+	@NotNull
+	@NotBlank
 	private String categoryName;
-	@Nonnull
+	
+	@NotNull
+	@NotBlank
 	private String publisherName;
-	@Nonnull
+	
+	@NotNull
+	@NotBlank
 	private String email;
 	
-	public InsertBookDto(String title, String isbn, String authorName, String authorLastName, String categoryName,
+	public InsertBookDto(String title, String isbn, String authorName, String authorLastName, LocalDate localDate,String categoryName,
 			String publisherName, String email) {
 		
 		this.title = title;
 		this.isbn = isbn;
 		this.authorName = authorName;
 		this.authorLastName = authorLastName;
+		this.localDate = localDate;
 		this.categoryName = categoryName;
 		this.publisherName = publisherName;
 		this.email = email;
@@ -45,6 +69,13 @@ public class InsertBookDto {
 	}
 	public void setIsbn(String isbn) {
 		this.isbn = isbn;
+	}
+	public LocalDate getLocalDate() {
+		return localDate;
+	}
+	
+	public void setLocalDate(LocalDate localDate) {
+		this.localDate = localDate;
 	}
 	public String getAuthorName() {
 		return authorName;

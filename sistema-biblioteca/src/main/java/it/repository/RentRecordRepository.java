@@ -58,12 +58,21 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
     }
 
     /**
-     * Conta il numero totale di noleggi attivi (non ancora conclusi) nel sistema.
+     * Conta il numero totale di copie prese in prestito.
      *
-     * @return Numero di noleggi con {@code rental_ended} nullo
+     * @return Numero di copie in prestito
      */
     public int countRents() {
-        String sql = "SELECT COUNT(*) FROM rental_record where rental_ended is null";
+        String sql = "SELECT COUNT(*) FROM books where status = 'in prestito'";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    /**
+     * Conta il numero totale di copie prese in prestito dagli utenti
+     * @return Numero di copie prese in prestito
+     */
+    public int countBorrowedBooks() {
+        String sql = "SELECT COUNT(*) FROM books where status = 'prenotato'";
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
@@ -161,10 +170,11 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
     public void createRental(RentalRecord rental) {
         String sql = """
                 UPDATE rental_record
-                SET rental_date = ?, rental_expired = ?
+                SET rental_date = ?,
+                    rental_expired = ?
                 WHERE rental_id = ?
-            """;
-        jdbcTemplate.update(sql, rental.getRentalDate(), rental.getRentalEnded(), rental.getRentalId());
+                """;
+        jdbcTemplate.update(sql, rental.getRentalDate(), rental.getRentalExpired(), rental.getRentalId());
     }
     
     public void createABookedDate(RentalRecord rental) {

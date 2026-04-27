@@ -38,6 +38,23 @@ public class PublisherService {
             .toList();
     }
 
+    /**
+     * Recupera un publisher tramite il suo ID.
+     * 
+     * @param id L'ID del publisher da recuperare
+     * @return Il publisher corrispondente
+     */
+    @Transactional(readOnly = true)
+    public PublisherDto getPublisherById(int id) {
+        return toPublisherDto(publisherRepository.getPublisherById(id));
+    }
+
+    /**
+     * Recupera l'ID di un publisher tramite il suo nome.
+     * 
+     * @param name Il nome del publisher da recuperare
+     * @return L'ID del publisher corrispondente
+     */
     public int getPublisherId(String name) {
         return publisherRepository.getAllPublishers().stream()
                 .filter(p -> p.getPublisherName().equalsIgnoreCase(name))

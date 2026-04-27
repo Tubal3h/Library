@@ -48,6 +48,19 @@ public class AuthorRepository implements AuthorRepositoryInterface{
     }
 
     /**
+     * Recupera un autore tramite il suo ID.
+     * 
+     * @param authorId ID dell'autore
+     * @return Autore con l'ID specificato
+     */
+
+    public Author getAuthorById(int authorId) {
+        String sql = "SELECT * FROM author WHERE author_id = :authorId";
+        SqlParameterSource parameterSource  = new MapSqlParameterSource().addValue("authorId", authorId);
+        return namedParameterJdbcTemplate.queryForObject(sql, parameterSource, authorRowMapper);
+    }
+
+    /**
      * Insere un autore nel database.
      * 
      * @param name     Nome dell'autore
@@ -78,7 +91,7 @@ public class AuthorRepository implements AuthorRepositoryInterface{
     	SqlParameterSource parameterSource  = new MapSqlParameterSource().addValue("name", author.getAuthorName())
     																	 .addValue("lastName", author.getAuthorLastName())
     																	 .addValue("authorId", author.getAuthorId());
-    	jdbcTemplate.update(update, parameterSource);
+    	namedParameterJdbcTemplate.update(update, parameterSource);
     }
 
     /**
@@ -94,6 +107,17 @@ public class AuthorRepository implements AuthorRepositoryInterface{
     								 .addValue("lastName", lastName);
     	Integer count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);
     	return count != null && count > 0;
+    }
+
+    public void insertAuthor(String authorName, String authorLastName) throws InsertAuthorException {
+        String insert = "INSERT INTO author (author_name, author_last_name) VALUES (:authorName, :authorLastName)";
+        SqlParameterSource parameterSource  = new MapSqlParameterSource().addValue("authorName", authorName)
+                                                                         .addValue("authorLastName", authorLastName);
+        try {
+            namedParameterJdbcTemplate.update(insert, parameterSource);
+        }catch(DataAccessException ex) {
+            throw new InsertAuthorException("errore nell'inserimento dell'autore");
+        }
     }
 }
 

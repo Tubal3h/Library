@@ -104,6 +104,17 @@ public class CategoryRepository implements CategoryRepositoryInterface{
         Integer count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);
         return count != null && count > 0;
     }
+
+    @Override
+	public void insertCategory(String categoryName) throws InsertCategoryException {
+		String insert = "INSERT INTO category (category_name) VALUES (:categoryName)";
+		SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("categoryName", categoryName);
+		try {
+			namedParameterJdbcTemplate.update(insert, parameterSource);				
+		}catch(DataAccessException ex){
+			throw new InsertCategoryException("errore nell'inserimento della categoria");
+		}
+	}
 }
 
 

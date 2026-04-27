@@ -61,7 +61,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute("popupUserName", userName + " " + userLastName);
             redirectAttributes.addFlashAttribute("popupUserEmail", newUser.getUserEmail());
             redirectAttributes.addFlashAttribute("popupUserRole",
-                    "role_admin".equalsIgnoreCase(userRole) ? "ROLE_ADMIN" : "ROLE_USER");
+                    "role_admin".equalsIgnoreCase(userRole) ? "Amministratore" : "Dipendente");
         } catch (IllegalArgumentException ex) {
             redirectAttributes.addFlashAttribute("popupType", "error");
             redirectAttributes.addFlashAttribute("popupErrorMessage", ex.getMessage());

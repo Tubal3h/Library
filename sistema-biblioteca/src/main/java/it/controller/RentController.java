@@ -193,7 +193,7 @@ public class RentController {
         }
 
         try {
-            rentService.updateStatus(Integer.parseInt(bookID), Integer.parseInt(rentID));
+            rentService.deliveredRental(Integer.parseInt(bookID), Integer.parseInt(rentID));
             redirectAttributes.addFlashAttribute("popupType", "delivered");
             redirectAttributes.addFlashAttribute("popupBookId", bookID);
             redirectAttributes.addFlashAttribute("popupBookTitle", bookTitle != null ? bookTitle : "");

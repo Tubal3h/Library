@@ -11,4 +11,5 @@ public interface CategoryRepositoryInterface {
 	public int updateCategory(Category category);
 	public Boolean isCategoryPresent(Category category);
 	public Boolean isCategoryPresentByName(Category category);
+	public void insertCategory(String categoryName) throws InsertCategoryException;
 }

@@ -22,6 +22,7 @@ import it.dto.BookNameDto;
 import it.dto.InsertBookDto;
 import it.entity.BookJoin;
 import it.entity.Category;
+import it.entity.BookName;
 import it.entity.Publisher;
 import it.exception.BookNotFoundException;
 import it.exception.InsertBookServiceException;
@@ -303,6 +304,22 @@ public class BookService {
     }
 
     @Transactional
+    public void insertAuthor(String authorName, String authorLastName) throws it.exception.InsertAuthorException {
+        authorRepository.insertAuthor(authorName, authorLastName);
+    }
+
+    @Transactional
+    public void insertPublisher(String publisherName) throws it.exception.InsertPublisherException {
+        publisherRepository.insertPublisher(publisherName);
+    }
+
+    @Transactional
+    public void insertCategory(String categoryName) throws it.exception.InsertCategoryException {
+        categoryRepository.insertCategory(categoryName);
+    }
+
+
+    @Transactional
     public boolean isBookNamePresent(BookNameDto bookNameDto) {
         return bookNameRepository.getBookNamesByTitle(bookNameDto.getTitle()).stream()
                 .filter(b -> b.getBookNameId() != bookNameDto.getBookNameId())
@@ -315,5 +332,15 @@ public class BookService {
         return bookNameRepository.getBookNamesByTitle(title).stream()
                 .findFirst()
                 .get().getBookNameId();
+    }
+
+
+    @Transactional(readOnly = true)
+    public BookNameDto getBookNameById(int bookNameId) {
+        BookName bookName = bookNameRepository.getBookNameById(bookNameId);
+        BookNameDto BookNameDto = new BookNameDto();
+        BookNameDto.setBookNameId(bookName.getBookNameId());
+        BookNameDto.setTitle(bookName.getTitle());
+        return BookNameDto;
     }
 }
