@@ -55,9 +55,10 @@ public class BookNameRepository implements BookNameRepositoryInterface {
      * @param titleId ID del titolo
      * @return Titolo del libro corrispondente all'ID
      */
-    public String getBookNameById(int titleId) {
-        String sql = "SELECT title FROM books_names WHERE book_name_id = ?";
-        return jdbcTemplate.queryForObject(sql, String.class, titleId);
+    public BookName getBookNameById(int titleId) {
+        String sql = "SELECT * FROM books_names WHERE book_name_id = ?";
+        
+        return jdbcTemplate.queryForObject(sql, bookNameRowMapper, titleId);
     }
     
     /**

@@ -13,7 +13,7 @@
                        class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
                        th:data-id="${book.editionId}"
                        th:data-title="${book.title}"
-                       onclick="openEditTitlePopup(this.getAttribute('data-id'), this.getAttribute('data-title'))"
+                       onclick="openEditTitlePopup(this.getAttribute('data-id'), this.getAttribute('data-title'), true)"
                        title="Modifica Titolo"></i>
                 </div>
                 <div class="flex align-center gap-2">
@@ -22,7 +22,7 @@
                        class="fa-solid fa-user-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
                        th:data-id="${book.editionId}"
                        th:data-author="${book.authorFullName}"
-                       onclick="openEditAuthorPopup(this.getAttribute('data-id'), this.getAttribute('data-author'))"
+                       onclick="openEditAuthorPopup(this.getAttribute('data-id'), this.getAttribute('data-author'), true)"
                        title="Modifica Autore"></i>
                 </div>
                 <div class="flex align-center gap-2">
@@ -32,7 +32,7 @@
                        class="fa-solid fa-tag cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
                        th:data-id="${book.editionId}"
                        th:data-category="${book.categoryName}"
-                       onclick="openEditCategoryPopup(this.getAttribute('data-id'), this.getAttribute('data-category'))"
+                       onclick="openEditCategoryPopup(this.getAttribute('data-id'), this.getAttribute('data-category'), true)"
                        title="Modifica Categoria"></i>
                 </div>
             </div>
@@ -46,7 +46,7 @@
                        class="fa-solid fa-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon pl-2"
                        th:data-id="${book.editionId}"
                        th:data-publisher="${book.publisherName}"
-                       onclick="openEditPublisherPopup(this.getAttribute('data-id'), this.getAttribute('data-publisher'))"
+                       onclick="openEditPublisherPopup(this.getAttribute('data-id'), this.getAttribute('data-publisher'), true)"
                        title="Modifica Editore"></i>
                 </div>
                 <div class="flex align-center font-size-small">
@@ -96,7 +96,7 @@
                        class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
                        th:data-id="${edition.editionId}"
                        th:data-title="${edition.bookName}"
-                       onclick="openEditTitlePopup(this.getAttribute('data-id'), this.getAttribute('data-title'))"
+                       onclick="openEditTitlePopup(this.getAttribute('data-id'), this.getAttribute('data-title'), true)"
                        title="Modifica Titolo"></i>
                 </div>
                 <div class="flex align-center gap-2">
@@ -105,7 +105,7 @@
                        class="fa-solid fa-user-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
                        th:data-id="${edition.editionId}"
                        th:data-author="${edition.authorName}"
-                       onclick="openEditAuthorPopup(this.getAttribute('data-id'), this.getAttribute('data-author'))"
+                       onclick="openEditAuthorPopup(this.getAttribute('data-id'), this.getAttribute('data-author'), true)"
                        title="Modifica Autore"></i>
                 </div>
                 <div class="flex align-center gap-2">
@@ -115,7 +115,7 @@
                        class="fa-solid fa-tag cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
                        th:data-id="${edition.editionId}"
                        th:data-category="${edition.categoryName}"
-                       onclick="openEditCategoryPopup(this.getAttribute('data-id'), this.getAttribute('data-category'))"
+                       onclick="openEditCategoryPopup(this.getAttribute('data-id'), this.getAttribute('data-category'), true)"
                        title="Modifica Categoria"></i>
                 </div>
             </div>
@@ -129,7 +129,7 @@
                        class="fa-solid fa-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon pl-2"
                        th:data-id="${edition.editionId}"
                        th:data-publisher="${edition.publisherName}"
-                       onclick="openEditPublisherPopup(this.getAttribute('data-id'), this.getAttribute('data-publisher'))"
+                       onclick="openEditPublisherPopup(this.getAttribute('data-id'), this.getAttribute('data-publisher'), true)"
                        title="Modifica Editore"></i>
                 </div>
                 <div class="flex align-center font-size-small">

@@ -15,6 +15,7 @@
     <!-- Stili Frammenti (Layout, Navbar, Footer) -->
     <link rel="stylesheet" th:href="@{/css/fragments/navbar.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/catalog.css}">
+    <link rel="stylesheet" th:href="@{/css/fragments/settings.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/popup.css}">
     <link rel="stylesheet" th:href="@{/css/fragments/searchbar.css}">
     
@@ -50,6 +51,7 @@
     <script th:src="@{/js/fragments/navbar.js}"></script>
     <script th:src="@{/js/fragments/catalog.js}"></script>
     <script th:src="@{/js/fragments/popup.js}"></script>
+    <script th:src="@{/js/fragments/settings.js}"></script>
     <script th:src="@{/js/fragments/searchbar.js}"></script>
 
     <!--/* Script auto-popup da Flash Attributes (RedirectAttributes) */-->
@@ -96,39 +98,49 @@
                 const footer = document.querySelector('.popup-footer');
                 if (footer) footer.classList.add('none');
 
-                // Helper per assegnare in sicurezza il testo
-                const setTextIfExists = (id, text) => {
+                // Helper per assegnare in sicurezza il testo (gestisce anche oggetti/DTO)
+                const setTextIfExists = (id, val) => {
                     const el = document.getElementById(id);
-                    if (el) el.textContent = text;
+                    if (!el) return;
+                    
+                    if (val && typeof val === 'object') {
+                        // Se è un oggetto, prova a estrarre un campo testuale comune
+                        el.textContent = val.title || val.name || val.authorName || val.publisherName || val.categoryName || JSON.stringify(val);
+                    } else {
+                        el.textContent = val || '';
+                    }
                 };
+
+                // Debug logging per i parametri del popup
+                console.log("[Popup Debug]", { popupType, bookId, bookTitle, authorName, publisherName, categoryName });
 
                 if (popupType === 'addCopy') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-circle-check text-white font-size-medium';
                     setTextIfExists('popupTitle', 'Copia aggiunta');
-                    setTextIfExists('addCopyBookTitle', bookTitle || '');
-                    setTextIfExists('addCopyBookId', bookId || '');
-                    setTextIfExists('addCopyBookName', bookIsbn || '');
+                    setTextIfExists('addCopyBookTitle', bookTitle);
+                    setTextIfExists('addCopyBookId', bookId);
+                    setTextIfExists('addCopyBookName', bookIsbn);
                     document.getElementById('addCopyContent').classList.remove('none');
 
                 } else if (popupType === 'addEdition') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-circle-check text-white font-size-medium';
                     setTextIfExists('popupTitle', 'Edizione aggiunta');
-                    setTextIfExists('addEditionSuccessBookTitle', bookTitle || '');
-                    setTextIfExists('addEditionSuccessBookIsbn', bookIsbn || '');
+                    setTextIfExists('addEditionSuccessBookTitle', bookTitle);
+                    setTextIfExists('addEditionSuccessBookIsbn', bookIsbn);
                     document.getElementById('addEditionSuccessContent').classList.remove('none');
 
                 } else if (popupType === 'deleteBook') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-trash-can text-white font-size-medium';
                     setTextIfExists('popupTitle', 'Copia eliminata');
-                    setTextIfExists('deleteBookTitle', bookTitle || '');
-                    setTextIfExists('deleteBookId', bookId || '');
+                    setTextIfExists('deleteBookTitle', bookTitle);
+                    setTextIfExists('deleteBookId', bookId);
                     document.getElementById('deleteBookContent').classList.remove('none');
 
                 } else if (popupType === 'deleteUser') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-trash-can text-white font-size-medium';
                     setTextIfExists('popupTitle', 'Dipendente eliminato');
-                    setTextIfExists('deleteUserTitle', userName || '');
-                    setTextIfExists('deleteUserId', popupUserId || '');
+                    setTextIfExists('deleteUserTitle', userName);
+                    setTextIfExists('deleteUserId', popupUserId);
                     document.getElementById('deleteUserContent').classList.remove('none');
 
                 } else if (popupType === 'error') {
@@ -140,48 +152,55 @@
                 } else if (popupType === 'addUser') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-user-check text-white font-size-medium';
                     setTextIfExists('popupTitle', 'Dipendente creato');
-                    setTextIfExists('addUserSuccessName', userName || '');
-                    setTextIfExists('addUserSuccessEmail', userEmail || '');
-                    setTextIfExists('addUserSuccessRole', userRole || '');
+                    setTextIfExists('addUserSuccessName', userName);
+                    setTextIfExists('addUserSuccessEmail', userEmail);
+                    setTextIfExists('addUserSuccessRole', userRole);
                     document.getElementById('addUserSuccessContent').classList.remove('none');
 
                 } else if (popupType === 'delivered') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-box-open text-white font-size-medium';
-                    setTextIfExists('popupTitle', 'Restituita');
-                    setTextIfExists('deliveredBookTitle', bookTitle || '');
-                    setTextIfExists('deliveredBookId', bookId || '');
+                    setTextIfExists('popupTitle', 'Consegnata');
+                    setTextIfExists('deliveredBookTitle', bookTitle);
+                    setTextIfExists('deliveredBookId', bookId);
                     document.getElementById('deliveredRentContent').classList.remove('none');
+                    
+                } else if (popupType === 'returned') {
+                    document.getElementById('popupIcon').className = 'fa-solid fa-circle-check text-white font-size-medium';
+                    setTextIfExists('popupTitle', 'Restituita');
+                    setTextIfExists('returnedBookTitle', bookTitle);
+                    setTextIfExists('returnedBookId', bookId);
+                    document.getElementById('returnedRentContent').classList.remove('none');
                     
                 } else if (popupType === 'booked') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-bookmark text-white font-size-medium';
                     setTextIfExists('popupTitle', 'Prenotata');
-                    setTextIfExists('bookedBookId', bookId || '');
+                    setTextIfExists('bookedBookId', bookId);
                     document.getElementById('bookedRentContent').classList.remove('none');
                     
                 } else if (popupType === 'updateTitle') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-pen-to-square text-white font-size-medium';
                     setTextIfExists('popupTitle', 'Titolo aggiornato');
-                    setTextIfExists('updateTitleBookId', bookId || '');
-                    setTextIfExists('updateTitleBookName', bookTitle || '');
+                    setTextIfExists('updateTitleBookId', bookId);
+                    setTextIfExists('updateTitleBookName', bookTitle);
                     document.getElementById('updateTitleContent').classList.remove('none');
                 } else if (popupType === 'updateAuthor') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-user-pen text-white font-size-medium';
                     setTextIfExists('popupTitle', 'Autore aggiornato');
-                    setTextIfExists('updateAuthorId', authorId || '');
-                    setTextIfExists('updateAuthorName', authorName || '');
-                    setTextIfExists('updateAuthorLastName', authorLastName || '');
+                    setTextIfExists('updateAuthorId', authorId);
+                    setTextIfExists('updateAuthorName', authorName);
+                    setTextIfExists('updateAuthorLastName', authorLastName);
                     document.getElementById('updateAuthorContent').classList.remove('none');
                 } else if (popupType === 'updatePublisher') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-building-columns text-white font-size-medium';
                     setTextIfExists('popupTitle', 'Editore aggiornato');
-                    setTextIfExists('updatePublisherId', publisherId || '');
-                    setTextIfExists('updatePublisherName', publisherName || '');
+                    setTextIfExists('updatePublisherId', publisherId);
+                    setTextIfExists('updatePublisherName', publisherName);
                     document.getElementById('updatePublisherContent').classList.remove('none');
                 } else if (popupType === 'updateCategory') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-tag text-white font-size-medium';
                     setTextIfExists('popupTitle', 'Categoria aggiornata');
-                    setTextIfExists('updateCategoryId', categoryId || '');
-                    setTextIfExists('updateCategoryName', categoryName || '');
+                    setTextIfExists('updateCategoryId', categoryId);
+                    setTextIfExists('updateCategoryName', categoryName);
                     document.getElementById('updateCategoryContent').classList.remove('none');
                 } else if (popupType === 'changePassword') {
                     document.getElementById('popupIcon').className = 'fa-solid fa-lock text-white font-size-medium';

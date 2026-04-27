@@ -46,6 +46,14 @@ public class CategoryService {
                 .getCategoryId();
     }
 
+    public CategoryDto getCategoryById(int id) {
+        return categoryRepository.getAllCategories().stream()
+                .filter(c -> c.getCategoryId() == id)
+                .findFirst()
+                .map(this::toCategoryDto)
+                .get();
+    }
+
     @Transactional
     public int insertAndGetCategoryId(String name) {
         try {

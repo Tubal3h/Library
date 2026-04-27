@@ -118,7 +118,7 @@ public class DashboardController {
                 model.addAttribute("editions", editionService.getEditionListByName(search));
             }
             
-            if (("catalog".equals(section) || "edition".equals(section)) && "role_admin".equals(user.getUserRole())) {
+            if (("catalog".equals(section) || "edition".equals(section) || "settings".equals(section)) && "role_admin".equals(user.getUserRole())) {
                 model.addAttribute("authors", authorService.getAllAuthors());
                 model.addAttribute("categories", categoryService.getAllCategories());
                 model.addAttribute("publishers", publisherService.getAllPublishers());
