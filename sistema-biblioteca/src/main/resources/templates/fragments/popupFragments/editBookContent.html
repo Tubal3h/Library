@@ -1,0 +1,34 @@
+<div th:fragment="editBookContent" id="editBookContent" class="none animate-fade-in-up">
+    <p class="mb-6 opacity-70 text-sm leading-relaxed">
+        Stai aggiornando i metadati per: <br>
+        <strong id="editBookName" class="text-brand text-lg"></strong>
+    </p>
+
+    <div class="flex flex-column gap-5">
+        <div class="input-group">
+            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Titolo Manuale</label>
+            <input type="text" id="editTitleInput" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Esempio: Il Nome della Rosa">
+        </div>
+        <div class="input-group">
+            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Autore Principale</label>
+            <select id="editAuthorInput" class="w-100 p-4 radius-12 border-none font-size-small cursor-pointer">
+                <option value="">Seleziona un autore...</option>
+                <option th:each="author : ${authors}" th:value="${author.authorId}" th:text="${author.authorName} + ' ' + ${author.authorLastName}"></option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Categoria</label>
+            <select id="editCategoryInput" class="w-100 p-4 radius-12 border-none font-size-small cursor-pointer">
+                <option value="">Seleziona una categoria...</option>
+                <option th:each="category : ${categories}" th:value="${category.categoryId}" th:text="${category.categoryName}"></option>
+            </select>
+        </div>
+        <div class="input-group">
+            <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Editore</label>
+            <select id="editPublisherInput" class="w-100 p-4 radius-12 border-none font-size-small cursor-pointer">
+                <option value="">Seleziona un editore...</option>
+                <option th:each="publisher : ${publishers}" th:value="${publisher.publisherId}" th:text="${publisher.publisherName}"></option>
+            </select>
+        </div>
+    </div>
+</div>
