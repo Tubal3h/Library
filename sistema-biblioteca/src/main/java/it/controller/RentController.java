@@ -168,8 +168,57 @@ public class RentController {
         }
 
         try {
-            rentService.updateStatus(Integer.parseInt(bookID), Integer.parseInt(rentID));
+            rentService.deliveredRental(Integer.parseInt(bookID), Integer.parseInt(rentID));
             redirectAttributes.addFlashAttribute("popupType", "delivered");
+            redirectAttributes.addFlashAttribute("popupBookId", bookID);
+            redirectAttributes.addFlashAttribute("popupBookTitle", bookTitle != null ? bookTitle : "");
+        } catch (NumberFormatException e) {
+            System.out.println("Errore: bookId non valido - " + bookID);
+            redirectAttributes.addFlashAttribute("popupType", "error");
+            redirectAttributes.addFlashAttribute("popupErrorMessage", "ID non valido.");
+            userSession.setSection("404");
+            return "redirect:/dashboard";
+        } catch (Exception e) {
+            System.out.println("Errore: impossibile registrare la restituzione del libro - " + bookID);
+            redirectAttributes.addFlashAttribute("popupType", "error");
+            redirectAttributes.addFlashAttribute("popupErrorMessage", "Errore restituzione.");
+            userSession.setSection("404");
+            return "redirect:/dashboard";
+        }
+
+        return "redirect:/dashboard";
+    }
+
+    /**
+     * Gestisce la restituzione effettiva del libro (in prestito -> disponibile).
+     *
+     * @param bookID ID del libro restituito
+     * @param rentID ID del record di noleggio da chiudere
+     * @param bookTitle Titolo del libro
+     * @param redirectAttributes Attributi per il redirect
+     * @return Redirect alla dashboard
+     */
+    @GetMapping("/api/returned")
+    public String returnedBook(
+            @RequestParam(value = "bookID", required = false) String bookID,
+            @RequestParam(value = "rentID", required = false) String rentID,
+            @RequestParam(value = "bookTitle", required = false) String bookTitle,
+            RedirectAttributes redirectAttributes
+        ) {
+        UserDto user = userSession.getUser();
+        userSession.setSection("rents");
+
+        if (user == null) {
+            return "redirect:/";
+        }
+
+        if (bookID == null || bookID.isEmpty() || rentID == null || rentID.isEmpty()) {
+            return "redirect:/dashboard";
+        }
+
+        try {
+            rentService.updateStatus(Integer.parseInt(bookID), Integer.parseInt(rentID));
+            redirectAttributes.addFlashAttribute("popupType", "returned");
             redirectAttributes.addFlashAttribute("popupBookId", bookID);
             redirectAttributes.addFlashAttribute("popupBookTitle", bookTitle != null ? bookTitle : "");
         } catch (NumberFormatException e) {

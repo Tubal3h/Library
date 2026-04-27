@@ -156,10 +156,11 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
     public void createRental(RentalRecord rental) {
         String sql = """
                 UPDATE rental_record
-                SET rental_date = ?, rental_expired = ?
+                SET rental_date = ?,
+                    rental_expired = ?
                 WHERE rental_id = ?
-            """;
-        jdbcTemplate.update(sql, rental.getRentalDate(), rental.getRentalEnded(), rental.getRentalId());
+                """;
+        jdbcTemplate.update(sql, rental.getRentalDate(), rental.getRentalExpired(), rental.getRentalId());
     }
     
     public void createABookedDate(RentalRecord rental) {

@@ -111,4 +111,8 @@ public class AuthorService {
         author.setAuthorLastName(authorDto.getAuthorLastName());
         return author;
     }
+
+    public AuthorDto getAuthorById(int authorId) {
+        return toAuthorDto(authorRepository.getAuthorById(authorId));
+    }
 }

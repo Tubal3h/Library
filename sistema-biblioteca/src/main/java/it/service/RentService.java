@@ -158,7 +158,7 @@ public class RentService {
     				rental.setRentalDate(LocalDate.now());
     				rental.setRentalExpired(LocalDate.now().plusDays(14));;
     				rentRepository.createRental(rental);
-    				rentRepository.updateRentalStatusOk(rental.getBookId());
+    				rentRepository.updateRentalStatusOk(rentDto.getBookId());
     				
     			}catch(Exception e) {
     				System.out.println("eccezione aggiunta rentalRecord");
@@ -176,6 +176,21 @@ public class RentService {
     			}
     		}
     	}
+    }
+    
+    /**
+     * Segna il libro come consegnato (inizia il prestito).
+     * @param bookId ID del libro
+     * @param rentId ID del noleggio
+     */
+    @Transactional
+    public void deliveredRental(int bookId, int rentId) {
+        RentalRecord rental = new RentalRecord();
+        rental.setRentalId(rentId);
+        rental.setRentalDate(LocalDate.now());
+        rental.setRentalExpired(LocalDate.now().plusDays(14));
+        rentRepository.createRental(rental);
+        rentRepository.updateRentalStatusOk(bookId);
     }
     
     /**

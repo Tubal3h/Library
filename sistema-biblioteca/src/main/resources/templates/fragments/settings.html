@@ -1,0 +1,171 @@
+<div th:fragment="settings" class="animate-fade-in">
+    <div class="mb-8 pl-2">
+        <h2 class="text-4xl fw-700 text-brand mb-2">Impostazioni</h2>
+        <p class="opacity-60 text-sm">Gestisci le entità principali della biblioteca: titoli, autori, editori e categorie.</p>
+    </div>
+
+    <div class="settings-grid">
+        
+        <!-- Sezione Titoli (Book Names) -->
+        <div class="settings-card glass radius-24 shadow-soft">
+            <div class="settings-header flex justify-between align-center">
+                <div>
+                    <h3 class="settings-card-title">
+                        <i class="fa-solid fa-book-bookmark opacity-50"></i>
+                        Titoli Opere
+                    </h3>
+                    <p class="settings-card-subtitle" th:text="${bookNames.size() + ' titoli registrati'}"></p>
+                </div>
+                <button class="btn-modern-action px-4 py-2 radius-12 pointer" 
+                        onclick="openAddTitlePopup()">
+                    <i class="fa-solid fa-plus mr-1"></i> Nuovo
+                </button>
+            </div>
+            <div class="settings-list">
+                <div th:each="bn : ${bookNames}" class="settings-item">
+                    <div class="settings-item-info">
+                        <span class="settings-item-name" th:text="${bn.title}">Titolo</span>
+                        <span class="settings-item-id" th:text="'ID: #' + ${bn.bookNameId}">ID</span>
+                    </div>
+                    <div class="settings-actions">
+                        <button class="btn-icon-settings" th:data-id="${bn.bookNameId}" th:data-title="${bn.title}"
+                                onclick="openEditBookNamePopup(this.getAttribute('data-id'), this.getAttribute('data-title'))"
+                                title="Modifica">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button class="btn-icon-settings delete" th:data-id="${bn.bookNameId}" th:data-title="${bn.title}"
+                                onclick="triggerConfirmDeleteBookName(this)"
+                                title="Elimina">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div th:if="${bookNames.isEmpty()}" class="settings-empty">
+                    Nessun titolo registrato.
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione Autori -->
+        <div class="settings-card glass radius-24 shadow-soft">
+            <div class="settings-header flex justify-between align-center">
+                <div>
+                    <h3 class="settings-card-title">
+                        <i class="fa-solid fa-user-pen opacity-50"></i>
+                        Autori
+                    </h3>
+                    <p class="settings-card-subtitle" th:text="${authors.size() + ' autori registrati'}"></p>
+                </div>
+                <button class="btn-modern-action px-4 py-2 radius-12 pointer" 
+                        onclick="openAddAuthorPopup()">
+                    <i class="fa-solid fa-plus mr-1"></i> Nuovo
+                </button>
+            </div>
+            <div class="settings-list">
+                <div th:each="author : ${authors}" class="settings-item">
+                    <div class="settings-item-info">
+                        <span class="settings-item-name" th:text="${author.authorName + ' ' + author.authorLastName}">Autore</span>
+                        <span class="settings-item-id" th:text="'ID: #' + ${author.authorId}">ID</span>
+                    </div>
+                    <div class="settings-actions">
+                        <button class="btn-icon-settings" th:data-id="${author.authorId}" 
+                                th:data-name="${author.authorName}" th:data-lastname="${author.authorLastName}"
+                                onclick="openEditAuthorFullPopup(this.getAttribute('data-id'), this.getAttribute('data-name'), this.getAttribute('data-lastname'))"
+                                title="Modifica">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button class="btn-icon-settings delete" th:data-id="${author.authorId}" th:data-title="${author.authorName + ' ' + author.authorLastName}"
+                                onclick="triggerConfirmDeleteAuthor(this)"
+                                title="Elimina">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div th:if="${authors.isEmpty()}" class="settings-empty">
+                    Nessun autore registrato.
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione Editori -->
+        <div class="settings-card glass radius-24 shadow-soft">
+            <div class="settings-header flex justify-between align-center">
+                <div>
+                    <h3 class="settings-card-title">
+                        <i class="fa-solid fa-building-columns opacity-50"></i>
+                        Editori
+                    </h3>
+                    <p class="settings-card-subtitle" th:text="${publishers.size() + ' editori registrati'}"></p>
+                </div>
+                <button class="btn-modern-action px-4 py-2 radius-12 pointer" 
+                        onclick="openAddPublisherPopup()">
+                    <i class="fa-solid fa-plus mr-1"></i> Nuovo
+                </button>
+            </div>
+            <div class="settings-list">
+                <div th:each="pub : ${publishers}" class="settings-item">
+                    <div class="settings-item-info">
+                        <span class="settings-item-name" th:text="${pub.publisherName}">Editore</span>
+                        <span class="settings-item-id" th:text="'ID: #' + ${pub.publisherId}">ID</span>
+                    </div>
+                    <div class="settings-actions">
+                        <button class="btn-icon-settings" th:data-id="${pub.publisherId}" th:data-name="${pub.publisherName}"
+                                onclick="openEditPublisherFullPopup(this.getAttribute('data-id'), this.getAttribute('data-name'))"
+                                title="Modifica">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button class="btn-icon-settings delete" th:data-id="${pub.publisherId}" th:data-title="${pub.publisherName}"
+                                onclick="triggerConfirmDeletePublisher(this)"
+                                title="Elimina">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div th:if="${publishers.isEmpty()}" class="settings-empty">
+                    Nessun editore registrato.
+                </div>
+            </div>
+        </div>
+
+        <!-- Sezione Categorie -->
+        <div class="settings-card glass radius-24 shadow-soft">
+            <div class="settings-header flex justify-between align-center">
+                <div>
+                    <h3 class="settings-card-title">
+                        <i class="fa-solid fa-tags opacity-50"></i>
+                        Categorie
+                    </h3>
+                    <p class="settings-card-subtitle" th:text="${categories.size() + ' categorie registrate'}"></p>
+                </div>
+                <button class="btn-modern-action px-4 py-2 radius-12 pointer" 
+                        onclick="openAddCategoryPopup()">
+                    <i class="fa-solid fa-plus mr-1"></i> Nuovo
+                </button>
+            </div>
+            <div class="settings-list">
+                <div th:each="cat : ${categories}" class="settings-item">
+                    <div class="settings-item-info">
+                        <span class="settings-item-name" th:text="${cat.categoryName}">Categoria</span>
+                        <span class="settings-item-id" th:text="'ID: #' + ${cat.categoryId}">ID</span>
+                    </div>
+                    <div class="settings-actions">
+                        <button class="btn-icon-settings" th:data-id="${cat.categoryId}" th:data-name="${cat.categoryName}"
+                                onclick="openEditCategoryFullPopup(this.getAttribute('data-id'), this.getAttribute('data-name'))"
+                                title="Modifica">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </button>
+                        <button class="btn-icon-settings delete" th:data-id="${cat.categoryId}" th:data-title="${cat.categoryName}"
+                                onclick="triggerConfirmDeleteCategory(this)"
+                                title="Elimina">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <div th:if="${categories.isEmpty()}" class="settings-empty">
+                    Nessun categoria registrata.
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
