@@ -233,11 +233,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
     }
 
 	@Override
-<<<<<<< HEAD
-	public void updateStatus(int bookId) {
-=======
 	public void updateStatusToLend(int bookId) {
->>>>>>> 5088af4f7c092c17706c09e9dbd8f35149c5cbbb
 		String sql = """
 				UPDATE books
 				SET status = 'prenotato'

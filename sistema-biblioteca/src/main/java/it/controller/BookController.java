@@ -1,10 +1,13 @@
 package it.controller;
 
+import java.lang.reflect.Field;
 import java.time.LocalDate;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -14,6 +17,7 @@ import it.dto.BookDto;
 import it.dto.BookNameDto;
 import it.dto.PublisherDto;
 import it.dto.CategoryDto;
+import it.dto.InsertBookDto;
 import it.dto.UserDto;
 import it.entity.Edition;
 import it.component.UserSession;
@@ -138,17 +142,11 @@ public class BookController {
 	 * @return Redirect alla sezione delle edizioni con i parametri necessari
 	 */
 	@PostMapping("/api/addEdition")
-	public String addEdition(
-	        @RequestParam(value = "title", required = false) String title,
-	        @RequestParam(value = "isbn", required = false) String isbn,
+	public String addEdition(@ModelAttribute InsertBookDto insertBookDto,
 	        @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-	        @RequestParam(value = "authorName", required = false) String authorName,
-	        @RequestParam(value = "authorLastName", required = false) String authorLastName,
-	        @RequestParam(value = "categoryName", required = false) String categoryName,
-	        @RequestParam(value = "publisherName", required = false) String publisherName,
-	        @RequestParam(value = "email", required = false) String email,
 	        RedirectAttributes redirectAttributes) {
-			if(hasNullOrBlankParameters(title, isbn, authorName, authorLastName, categoryName, publisherName, email) && date == null) {
+			
+			if(hasNullOrBlankParameters(insertBookDto) && date == null) {
 				redirectAttributes.addFlashAttribute("popupType", "error");
 				redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
 				return "redirect:/dashboard";
@@ -159,10 +157,10 @@ public class BookController {
 			return "redirect:/";
 		}
 		try {
-			bookService.insertBook(title, authorName, authorLastName, date, categoryName, publisherName, isbn);
+			bookService.insertBook(insertBookDto, date);
 			redirectAttributes.addFlashAttribute("popupType", "addEdition");
-			redirectAttributes.addFlashAttribute("popupBookTitle", title);
-			redirectAttributes.addFlashAttribute("popupBookIsbn", isbn);
+			redirectAttributes.addFlashAttribute("popupBookTitle", insertBookDto.getTitle());
+			redirectAttributes.addFlashAttribute("popupBookIsbn", insertBookDto.getIsbn());
 		} catch (InsertBookServiceException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
@@ -189,6 +187,7 @@ public class BookController {
 		if (user == null) {
 			return "redirect:/";
 		}
+		
 		if(!user.getUserRole().equals("role_admin")) {
 			userSession.setSection("home");
 			return "redirect:/dashboard";
@@ -196,14 +195,12 @@ public class BookController {
 
 		if(hasNullOrBlankParameters(title)) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
-			redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", "non hai inserito il titolo");
 			return "redirect:/dashboard";
 		}
-		
-
 
 		try {
-			it.entity.Edition edition = editionService.getEditionById(editionId);
+			Edition edition = editionService.getEditionById(editionId);
 			int bookNameId = edition.getBookNameId();
 
 			BookNameDto bookNameDto = new BookNameDto();
@@ -232,7 +229,7 @@ public class BookController {
      *
      * @param authorId ID dell'autore
      * @param authorName Nuovo nome dell'autore
-     * @param authorLastName Nuova cognome dell'autore
+     * @param authorLastName Nuovo cognome dell'autore
      * @param redirectAttributes Attributi di redirect per passare messaggi alla vista
      * @return Redirect alla sezione delle edizioni con i parametri necessari
      */
@@ -260,7 +257,7 @@ public class BookController {
 		}
 		if(hasNullOrBlankParameters(authorDto.getAuthorName(), authorDto.getAuthorLastName())) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
-			redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", "i campi inseriti sono vuoti");
 			return "redirect:/dashboard";
 		}
 
@@ -303,7 +300,7 @@ public class BookController {
 
 		
 		try {
-			it.entity.Edition edition = editionService.getEditionById(editionId);
+			Edition edition = editionService.getEditionById(editionId);
 			int publisherId = edition.getPublisherId();
 			PublisherDto publisherDto = new PublisherDto(publisherId, publisherName);
 
@@ -313,7 +310,7 @@ public class BookController {
 		}
 		if(hasNullOrBlankParameters(publisherDto.getPublisherName())) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
-			redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", "il publisher non è stato inserito");
 			return "redirect:/dashboard";
 		}
 
@@ -346,7 +343,7 @@ public class BookController {
 
 		
 		try {
-			it.entity.Edition edition = editionService.getEditionById(editionId);
+			Edition edition = editionService.getEditionById(editionId);
 			int categoryId = edition.getCategoryId();
 			CategoryDto categoryDto = new CategoryDto(categoryId, categoryName);
 
@@ -399,12 +396,17 @@ public class BookController {
 	// 	return "fragments/popup :: bookCopiesList";
 	// }
 	
-	private boolean hasNullOrBlankParameters(String... params) {
-		for(String s : params) {
-			if(s == null || s.isBlank()) {
+	private boolean hasNullOrBlankParameters(String...parameters) {
+		for(String s : parameters) {
+			if(s == null || s.isBlank()){
 				return true;
 			}
 		}
+		return false;
+	}
+	
+	private boolean hasNullOrBlankParameters(InsertBookDto insertBookDto) {
+		
 		return false;
 	}
 }

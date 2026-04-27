@@ -11,11 +11,7 @@ public interface RentRecordRepositoryInterface {
 	public int countRentsByUserId(int userId);
 	public List<RentalRecordJoin> getActiveRents();
 	public List<RentalRecordJoin> getActiveRentsByUserId(int userId);
-<<<<<<< HEAD
-	public void updateStatus(int bookId);
-=======
 	public void updateStatusToLend(int bookId);
->>>>>>> 5088af4f7c092c17706c09e9dbd8f35149c5cbbb
 	public void createRental(RentalRecord rental);
 	public void endRental(int bookId, int rentId);
 	public void updateRentalStatusOk(int bookId);
