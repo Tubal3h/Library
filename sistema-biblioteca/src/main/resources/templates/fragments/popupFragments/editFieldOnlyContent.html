@@ -1,0 +1,31 @@
+<!-- Pannello generico per modifica singolo campo -->
+<div th:fragment="editFieldOnlyContent" id="editFieldOnlyContent" class="none animate-fade-in-up">
+    <p class="mb-6 opacity-70 text-sm leading-relaxed">
+        <span id="editFieldOnlyDescription"></span><br>
+        <strong id="editFieldOnlyCurrent" class="text-brand text-lg"></strong>
+    </p>
+    <div class="input-group relative">
+        <label id="editFieldOnlyLabel"
+               class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">
+        </label>
+
+        <!-- Input testuale (autocomplete) -->
+        <input type="text"
+               id="editFieldOnlyInput"
+               class="w-100 p-4 radius-12 border-none font-size-small bg-darkgrey"
+               placeholder=""
+               oninput="filterFieldSuggestions(this.value)">
+
+        <!-- Select (modalità useSelect) -->
+        <select id="editFieldOnlySelect"
+                class="w-100 p-4 radius-12 border-none font-size-small bg-darkgrey none">
+        </select>
+
+        <!-- Dropdown autocomplete -->
+        <div id="editFieldSuggestionsDropdown" class="suggestions-dropdown none"></div>
+
+        <!-- Hidden inputs per autore (nome/cognome separati) -->
+        <input type="hidden" id="editFieldHiddenFirst">
+        <input type="hidden" id="editFieldHiddenLast">
+    </div>
+</div>
