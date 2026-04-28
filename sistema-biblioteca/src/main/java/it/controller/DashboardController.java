@@ -15,6 +15,7 @@ import it.configuration.UserSession;
 import it.dto.BookDto;
 import it.dto.RentDto;
 import it.dto.UserDto;
+import it.dto.response.BookRecordsJoinDtoResponse;
 import it.service.BookService;
 import it.service.RentService;
 import it.service.UserService;
@@ -128,10 +129,14 @@ public class DashboardController {
 
             // Sezione Registri (per Libro o per Utente)
             if (("bookRecords".equals(section) || "userRecords".equals(section)) && "role_admin".equals(user.getUserRole())) {
+                System.out.println("[DEBUG] DashboardController - Sezione: " + section);
                 if ("bookRecords".equals(section)) {
                     Integer bookId = userSession.getRecordBookId();
+                    System.out.println("[DEBUG] DashboardController - Book ID: " + bookId);
                     if (bookId != null) {
-                        model.addAttribute("bookRecords", rentService.getBookRecords(bookId));
+                        List<BookRecordsJoinDtoResponse> records = rentService.getBookRecords(bookId);
+                        System.out.println("[DEBUG] DashboardController - Record trovati: " + (records != null ? records.size() : "NULL"));
+                        model.addAttribute("bookRecords", records);
                         
                         // Titolo dinamico per il registro del libro
                         try {
@@ -143,8 +148,11 @@ public class DashboardController {
                     }
                 } else {
                     Integer targetUserId = userSession.getRecordUserId();
+                    System.out.println("[DEBUG] DashboardController - User ID: " + targetUserId);
                     if (targetUserId != null) {
-                        model.addAttribute("bookRecords", rentService.getUserRecords(targetUserId));
+                        List<BookRecordsJoinDtoResponse> records = rentService.getUserRecords(targetUserId);
+                        System.out.println("[DEBUG] DashboardController - Record trovati: " + (records != null ? records.size() : "NULL"));
+                        model.addAttribute("bookRecords", records);
                         
                         // Titolo dinamico per il registro dell'utente
                         UserDto targetUser = userService.getUserById(targetUserId);
