@@ -51,7 +51,9 @@ public class UserController {
             UserDto newUser = new UserDto();
             newUser.setUserName(userName);
             newUser.setUserLastName(userLastName);
-            newUser.setUserEmail(userName + "." + userLastName + "@biblioteca.it");
+            String cleanName = userName.toLowerCase().replaceAll("[^a-z0-9àèéìòù]", "");
+            String cleanLastName = userLastName.toLowerCase().replaceAll("[^a-z0-9àèéìòù]", "");
+            newUser.setUserEmail(cleanName + "." + cleanLastName + "@biblioteca.it");
             newUser.setUserPassword("Password123!");
             newUser.setUserRole(userRole);
 

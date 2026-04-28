@@ -26,7 +26,8 @@ import it.service.EditionService;
 
 /**
  * Controller per la gestione della dashboard principale dell'applicazione.
- * Gestisce la visualizzazione delle diverse sezioni (home, utenti, catalogo, noleggi).
+ * Gestisce la visualizzazione delle diverse sezioni (home, utenti, catalogo,
+ * noleggi).
  */
 @Controller
 public class DashboardController {
@@ -43,15 +44,17 @@ public class DashboardController {
     /**
      * Costruttore per DashboardController.
      *
-     * @param userService Servizio per la gestione degli utenti
-     * @param bookService Servizio per la gestione dei libri
-     * @param rentService Servizio per la gestione dei noleggi
-     * @param authorService Servizio per la gestione degli autori
-     * @param categoryService Servizio per la gestione delle categorie
+     * @param userService      Servizio per la gestione degli utenti
+     * @param bookService      Servizio per la gestione dei libri
+     * @param rentService      Servizio per la gestione dei noleggi
+     * @param authorService    Servizio per la gestione degli autori
+     * @param categoryService  Servizio per la gestione delle categorie
      * @param publisherService Servizio per la gestione degli editori
-     * @param editionService Servizio per la gestione delle edizioni
+     * @param editionService   Servizio per la gestione delle edizioni
      */
-    public DashboardController(UserService userService, BookService bookService, RentService rentService, AuthorService authorService, CategoryService categoryService, PublisherService publisherService, EditionService editionService, UserSession userSession) {
+    public DashboardController(UserService userService, BookService bookService, RentService rentService,
+            AuthorService authorService, CategoryService categoryService, PublisherService publisherService,
+            EditionService editionService, UserSession userSession) {
         this.userService = userService;
         this.bookService = bookService;
         this.rentService = rentService;
@@ -64,26 +67,38 @@ public class DashboardController {
 
     /**
      * Gestisce la visualizzazione della dashboard e delle sue sezioni.
-     * In base al ruolo dell'utente e alla sezione richiesta, carica i dati appropriati nel modello.
+     * In base al ruolo dell'utente e alla sezione richiesta, carica i dati
+     * appropriati nel modello.
      *
      * @param email   Email dell'utente loggato
-     * @param section Sezione della dashboard da visualizzare (home, users, catalog, rents)
+     * @param section Sezione della dashboard da visualizzare (home, users, catalog,
+     *                rents)
      * @param model   il modello per la vista
-     * @return Nome della vista della dashboard, o redirect alla home se l'email manca o l'utente non esiste
+     * @return Nome della vista della dashboard, o redirect alla home se l'email
+     *         manca o l'utente non esiste
      * @throws Exception se si verifica un errore durante il caricamento dei dati
      */
     @GetMapping("/dashboard")
     public String dashboard(Model model,
             @RequestParam(value = "editionId", required = false) Integer editionId,
             @RequestParam(value = "action", required = false) String action,
-            @RequestParam(value = "includeDeleted", defaultValue = "false") boolean includeDeleted
-    ) {
+            @RequestParam(value = "includeDeleted", defaultValue = "false") boolean includeDeleted,
+            @RequestParam(value = "search", required = false) String search) {
         UserDto user = userSession.getUser();
         String section = userSession.getSection();
-        if(section == null || section.isEmpty()) {
+        if (section == null || section.isEmpty()) {
             section = "home";
         }
-        String search = (String) model.asMap().get("search");
+
+        // Se non passato come parametro, controlla i flash attributes
+        if (search == null) {
+            search = (String) model.asMap().get("search");
+        }
+
+        // Se la ricerca è vuota o contiene solo spazi, la consideriamo null per resettare i filtri
+        if (search != null && search.trim().isEmpty()) {
+            search = null;
+        }
 
         model.addAttribute("user", user);
         model.addAttribute("section", section);
@@ -106,8 +121,8 @@ public class DashboardController {
             }
 
             if ("catalog".equals(section)) {
-                
-                model.addAttribute("books", bookService.getBookListByName(search,user.getUserRole()));
+
+                model.addAttribute("books", bookService.getBookListByName(search, user.getUserRole()));
 
             }
 
@@ -119,8 +134,9 @@ public class DashboardController {
             if ("edition".equals(section) && "role_admin".equals(user.getUserRole())) {
                 model.addAttribute("editions", editionService.getEditionListByName(search));
             }
-            
-            if (("catalog".equals(section) || "edition".equals(section) || "settings".equals(section)) && "role_admin".equals(user.getUserRole())) {
+
+            if (("catalog".equals(section) || "edition".equals(section) || "settings".equals(section))
+                    && "role_admin".equals(user.getUserRole())) {
                 model.addAttribute("authors", authorService.getAllAuthors());
                 model.addAttribute("categories", categoryService.getAllCategories());
                 model.addAttribute("publishers", publisherService.getAllPublishers());
@@ -128,16 +144,18 @@ public class DashboardController {
             }
 
             // Sezione Registri (per Libro o per Utente)
-            if (("bookRecords".equals(section) || "userRecords".equals(section)) && "role_admin".equals(user.getUserRole())) {
+            if (("bookRecords".equals(section) || "userRecords".equals(section))
+                    && "role_admin".equals(user.getUserRole())) {
                 System.out.println("[DEBUG] DashboardController - Sezione: " + section);
                 if ("bookRecords".equals(section)) {
                     Integer bookId = userSession.getRecordBookId();
                     System.out.println("[DEBUG] DashboardController - Book ID: " + bookId);
                     if (bookId != null) {
                         List<BookRecordsJoinDtoResponse> records = rentService.getBookRecords(bookId);
-                        System.out.println("[DEBUG] DashboardController - Record trovati: " + (records != null ? records.size() : "NULL"));
+                        System.out.println("[DEBUG] DashboardController - Record trovati: "
+                                + (records != null ? records.size() : "NULL"));
                         model.addAttribute("bookRecords", records);
-                        
+
                         // Titolo dinamico per il registro del libro
                         try {
                             BookDto book = bookService.getBookById(bookId);
@@ -151,13 +169,15 @@ public class DashboardController {
                     System.out.println("[DEBUG] DashboardController - User ID: " + targetUserId);
                     if (targetUserId != null) {
                         List<BookRecordsJoinDtoResponse> records = rentService.getUserRecords(targetUserId);
-                        System.out.println("[DEBUG] DashboardController - Record trovati: " + (records != null ? records.size() : "NULL"));
+                        System.out.println("[DEBUG] DashboardController - Record trovati: "
+                                + (records != null ? records.size() : "NULL"));
                         model.addAttribute("bookRecords", records);
-                        
+
                         // Titolo dinamico per il registro dell'utente
                         UserDto targetUser = userService.getUserById(targetUserId);
                         if (targetUser != null) {
-                            model.addAttribute("targetRecordName", "Registro: " + targetUser.getUserName() + " " + targetUser.getUserLastName());
+                            model.addAttribute("targetRecordName",
+                                    "Registro: " + targetUser.getUserName() + " " + targetUser.getUserLastName());
                         }
                     }
                 }
@@ -170,7 +190,7 @@ public class DashboardController {
                 model.addAttribute("showCopiesPopup", true);
                 model.addAttribute("popupEditionId", editionId);
                 model.addAttribute("popupIncludeDeleted", includeDeleted);
-                
+
                 if (!popupBooks.isEmpty()) {
                     model.addAttribute("popupEditionTitle", popupBooks.get(0).getTitle());
                 } else {

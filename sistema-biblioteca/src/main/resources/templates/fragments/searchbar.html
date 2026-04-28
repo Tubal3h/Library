@@ -8,7 +8,7 @@
 -->
 <div th:fragment="searchbar" id="searchPopupOverlay" class="popup-overlay none"
     th:data-email="${user != null ? user.userEmail : ''}">
-    
+
     <!-- Contenuto Centrale del Popup -->
     <div class="popup-content glass radius-24 shadow-soft animate-scale-in" onclick="event.stopPropagation()">
 
@@ -26,7 +26,7 @@
                     </p>
                 </div>
             </div>
-            
+
             <!-- Pulsante di chiusura (X) -->
             <button type="button" class="btn-icon-close cursor-pointer transition shadow-card"
                 onclick="closeSearchPopup()" title="Chiudi">
@@ -41,8 +41,7 @@
                     <label id="searchInputLabel" class="text-xs uppercase fw-700 opacity-60 mb-2 block ">
                         Query di ricerca
                     </label>
-                    <input type="text" id="searchInputField"
-                        class="w-100 p-4 radius-12 border-none font-size-small"
+                    <input type="text" id="searchInputField" class="w-100 p-4 radius-12 border-none font-size-small"
                         placeholder="Inserisci il testo qui..." autocomplete="off">
                 </div>
             </div>
@@ -53,6 +52,12 @@
             <button type="button"
                 class="btn-link-action radius-12 px-8 py-4 cursor-pointer transition fw-600 text-lg m-1"
                 onclick="closeSearchPopup()"> Annulla </button>
+
+            <button type="button" id="searchResetBtn"
+                class="btn-secondary radius-12 px-8 py-4 cursor-pointer transition fw-600 text-lg m-1"
+                onclick="resetSearch()">
+                Reset
+            </button>
             
             <button type="button" id="searchConfirmBtn"
                 class="btn-primary radius-12 px-12 py-4 cursor-pointer transition fw-700 text-lg shadow-soft m-1"
