@@ -1,11 +1,11 @@
 <div th:fragment="updatePanels">
     <!-- Update Title -->
     <div id="updateTitleContent" class="none animate-fade-in-up">
-        <p class="mb-6 opacity-70 text-sm leading-relaxed">Modifica il nome dell'opera nel catalogo.</p>
+        <p class="mb-6 opacity-70 text-sm ">Modifica il nome dell'opera nel catalogo.</p>
         <form id="updateTitleForm" th:action="@{/api/updateBookNameName}" method="post">
             <input type="hidden" name="bookNameId" id="updateTitleId">
             <div class="input-group">
-                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nuovo Titolo</label>
+                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block ">Nuovo Titolo</label>
                 <input type="text" name="newTitle" id="updateTitleInput" class="w-100 p-4 radius-12 border-none font-size-small" required>
             </div>
         </form>
@@ -13,16 +13,16 @@
 
     <!-- Update Author -->
     <div id="updateAuthorContent" class="none animate-fade-in-up">
-        <p class="mb-6 opacity-70 text-sm leading-relaxed">Modifica i dati dell'autore selezionato.</p>
+        <p class="mb-6 opacity-70 text-sm ">Modifica i dati dell'autore selezionato.</p>
         <form id="updateAuthorForm" th:action="@{/api/updateAuthorName}" method="post">
             <input type="hidden" name="authorId" id="updateAuthorId">
             <div class="flex flex-column gap-5">
                 <div class="input-group">
-                    <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nuovo Nome</label>
+                    <label class="text-xs uppercase fw-700 opacity-60 mb-2 block ">Nuovo Nome</label>
                     <input type="text" name="newName" id="updateAuthorNameInput" class="w-100 p-4 radius-12 border-none font-size-small" required>
                 </div>
                 <div class="input-group">
-                    <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nuovo Cognome</label>
+                    <label class="text-xs uppercase fw-700 opacity-60 mb-2 block ">Nuovo Cognome</label>
                     <input type="text" name="newLastName" id="updateAuthorLastNameInput" class="w-100 p-4 radius-12 border-none font-size-small" required>
                 </div>
             </div>
@@ -31,11 +31,11 @@
 
     <!-- Update Publisher -->
     <div id="updatePublisherContent" class="none animate-fade-in-up">
-        <p class="mb-6 opacity-70 text-sm leading-relaxed">Modifica il nome dell'editore nel catalogo.</p>
+        <p class="mb-6 opacity-70 text-sm ">Modifica il nome dell'editore nel catalogo.</p>
         <form id="updatePublisherForm" th:action="@{/api/updatePublisherName}" method="post">
             <input type="hidden" name="publisherId" id="updatePublisherId">
             <div class="input-group">
-                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nuovo Nome Editore</label>
+                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block ">Nuovo Nome Editore</label>
                 <input type="text" name="newName" id="updatePublisherInput" class="w-100 p-4 radius-12 border-none font-size-small" required>
             </div>
         </form>
@@ -43,11 +43,11 @@
 
     <!-- Update Category -->
     <div id="updateCategoryContent" class="none animate-fade-in-up">
-        <p class="mb-6 opacity-70 text-sm leading-relaxed">Modifica il nome della categoria nel catalogo.</p>
+        <p class="mb-6 opacity-70 text-sm ">Modifica il nome della categoria nel catalogo.</p>
         <form id="updateCategoryForm" th:action="@{/api/updateCategoryName}" method="post">
             <input type="hidden" name="categoryId" id="updateCategoryId">
             <div class="input-group">
-                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nuovo Nome Categoria</label>
+                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block ">Nuovo Nome Categoria</label>
                 <input type="text" name="newName" id="updateCategoryInput" class="w-100 p-4 radius-12 border-none font-size-small" required>
             </div>
         </form>

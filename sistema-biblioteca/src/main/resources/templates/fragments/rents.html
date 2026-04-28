@@ -46,7 +46,7 @@
                 </div>
                 <div class="flex align-center gap-2">
                     <div th:if="${user.userRole == 'role_admin'}"
-                        class="category-label font-mono italic tracking-widest opacity-80 uppercase"
+                        class="category-label font-mono italic  opacity-80 uppercase"
                         th:text="${rent.book != null ? rent.book.categoryName : 'ALTRO'}">CATEGORIA</div>
                 </div>
             </div>
@@ -97,7 +97,7 @@
                     th:classappend="${isExpired ? 'status-vibrant-error' : (rent.book.status == 'in prestito' ? 'status-vibrant-pending' : 'status-vibrant-booked')}">
 
                     <div
-                        class="glass-indicator radius-10 text-nm tracking-widest flex align-center gap-1 p-2 px-8">
+                        class="glass-indicator radius-10 text-nm  flex align-center gap-1 p-2 px-8">
                         <div class="dot mr-1"></div>
                         <span th:if="${rent.book.status == 'prenotato'}" th:text="'Prenotato'">STATO</span>
                         <span th:if="${rent.book.status == 'in prestito' && !isExpired}" th:text="'In Prestito'">STATO</span>

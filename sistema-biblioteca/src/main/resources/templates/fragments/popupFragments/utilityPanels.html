@@ -2,8 +2,8 @@
     <!-- Confirm -->
     <div id="confirmContent" class="none animate-fade-in-up text-center py-6">
         <h3 id="confirmTitle" class="text-2xl fw-700 text-brand mb-2">Attenzione</h3>
-        <p id="confirmMessage" class="opacity-70 text-sm leading-relaxed px-6">Confermi l'operazione?</p>
-        <div id="confirmDetails" class="mt-4 p-4 radius-12 bg-darkgrey font-size-small opacity-80" style="display: none;"></div>
+        <p id="confirmMessage" class="opacity-70 text-xl  px-6">Confermi l'operazione?</p>
+        <div id="confirmDetails" class="mt-4 p-4 radius-12 bg-darkgrey text-xl opacity-80" style="display: none;"></div>
     </div>
 
     <!-- Error -->
@@ -12,7 +12,7 @@
             <div class="popup-feedback-icon" style="background: rgba(198,40,40,0.08); color: var(--color-error);"><i class="fa-solid fa-circle-exclamation"></i></div>
         </div>
         <h3 class="text-2xl fw-700 mb-2" style="color: var(--color-error);">Operazione fallita</h3>
-        <p class="opacity-70 text-sm leading-relaxed"><strong id="errorMessage" class="text-brand"></strong></p>
+        <p class="opacity-70 text-xl "><strong id="errorMessage" class="text-brand"></strong></p>
     </div>
 
     <!-- Add User -->
@@ -21,23 +21,23 @@
             <div class="flex flex-column gap-5">
                 <div class="add-user-row">
                     <div class="input-group">
-                        <label class="text-nm uppercase fw-700 opacity-60 mb-1 block tracking-widest">Nome</label>
+                        <label class="text-nm uppercase fw-700 opacity-60 mb-1 block ">Nome</label>
                         <input type="text" id="addUserNameInput" name="userName" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Mario" required oninput="updateAddUserEmailPreview()">
                     </div>
                     <div class="input-group">
-                        <label class="text-nm uppercase fw-700 opacity-60 mb-1 block tracking-widest">Cognome</label>
+                        <label class="text-nm uppercase fw-700 opacity-60 mb-1 block ">Cognome</label>
                         <input type="text" id="addUserLastNameInput" name="userLastName" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Rossi" required oninput="updateAddUserEmailPreview()">
                     </div>
                 </div>
                 <div class="input-group">
-                    <label class="text-nm uppercase fw-700 opacity-60 mb-1 block tracking-widest">Mail Aziendale</label>
+                    <label class="text-nm uppercase fw-700 opacity-60 mb-1 block ">Mail Aziendale</label>
                     <div class="add-user-preview-field radius-12">
                         <i class="fa-solid fa-envelope add-user-preview-icon"></i>
                         <span id="addUserEmailPreview" class="add-user-preview-text font-mono">nome.cognome@biblioteca.it</span>
                     </div>
                 </div>
                 <div class="input-group">
-                    <label class="text-nm uppercase fw-700 opacity-60 mb-1 block tracking-widest">Ruolo</label>
+                    <label class="text-nm uppercase fw-700 opacity-60 mb-1 block ">Ruolo</label>
                     <div class="add-user-role-grid">
                         <label class="role-option" id="roleOptionUser" >
                             <input type="radio" name="userRole" value="role_user" checked onchange="updateRoleSelection()">
@@ -80,10 +80,10 @@
             <table class="w-100 border-collapse">
                 <thead>
                     <tr class="text-center border-b opacity-60">
-                        <th class="text-xs uppercase tracking-widest fw-700">ID Libro</th>
-                        <th class="text-xs uppercase tracking-widest fw-700">Stato</th>
-                        <th class="text-xs uppercase tracking-widest fw-700">Utente</th>
-                        <th class="text-xs uppercase tracking-widest fw-700 text-right">Azioni</th>
+                        <th class="text-xs uppercase  fw-700">ID Libro</th>
+                        <th class="text-xs uppercase  fw-700">Stato</th>
+                        <th class="text-xs uppercase  fw-700">Utente</th>
+                        <th class="text-xs uppercase  fw-700 text-right">Azioni</th>
                     </tr>
                 </thead>
                 <tbody id="viewBooksListContainer" th:fragment="bookCopiesList">
