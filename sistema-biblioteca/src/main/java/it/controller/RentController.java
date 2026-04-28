@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import it.configuration.UserSession;
 import it.dto.RentDto;
 import it.dto.UserDto;
-import it.component.UserSession;
 import it.service.RentService;
 
 /**

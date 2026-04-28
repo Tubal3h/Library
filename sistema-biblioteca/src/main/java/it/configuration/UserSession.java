@@ -1,4 +1,4 @@
-package it.component;
+package it.configuration;
 
 import it.dto.UserDto;
 import jakarta.servlet.http.HttpSession;

@@ -11,10 +11,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import it.configuration.UserSession;
 import it.dto.BookDto;
 import it.dto.RentDto;
 import it.dto.UserDto;
-import it.component.UserSession;
 import it.service.BookService;
 import it.service.RentService;
 import it.service.UserService;

@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import it.configuration.UserSession;
 import it.dto.BookDto;
 import it.dto.EditionDto;
 import it.dto.InsertBookDto;
 import it.dto.UserDto;
-import it.component.UserSession;
 import it.exception.NoBookIdFoundException;
 import it.exception.InsertBookServiceException;
 import it.exception.NoIsbnFoundException;
