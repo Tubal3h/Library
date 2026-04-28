@@ -76,6 +76,8 @@ public class UserService {
 					filteredList.add(user);
 				}
 			}
+		}else {
+			return myList;
 		}
 		if(filteredList.isEmpty() || filteredList == null) {
 			return myList;
