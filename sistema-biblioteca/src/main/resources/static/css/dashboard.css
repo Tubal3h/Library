@@ -12,14 +12,20 @@
     display: flex;
     flex-wrap: wrap;
     flex-direction: row;
-    align-items: stretch;
+    align-items: flex-start;
     width: 100%;
 }
 
 .dashboard-grid>.card {
     flex: 1 1 260px;
     min-width: 240px;
-    max-width: calc(25% - 1rem);
+    max-width: calc(33.33% - 1rem);
+}
+
+.dashboard-grid>.card2 {
+    flex: 1 1 260px;
+    min-width: 240px;
+    max-width: calc(33.33% - 1rem);
 }
 
 /*.dashboard-grid {
@@ -50,7 +56,7 @@
     background: var(--color-accent);
     color: #FFFFFF !important;
     font-weight: 600;
-    border-radius: 999px;
+    border-radius: 12px;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: 0 4px 14px rgba(245, 166, 35, 0.3);
     cursor: pointer;
@@ -59,7 +65,7 @@
 .btn-create.btn-sm {
     height: 32px;
     padding: 0 14px;
-    font-size: 0.82rem;
+    font-size: 1rem;
     gap: 6px;
 }
 
@@ -177,6 +183,12 @@
     }
 }
 
+@media (max-width: 1024px) {
+    .dashboard-grid>.card2 {
+        max-width: calc(50% - 1rem);
+    }
+}
+
 /* ---- Mobile (≤480px) ---- */
 @media (max-width: 480px) {
     .btn-create.btn-sm {
@@ -192,6 +204,11 @@
     }
 
     .dashboard-grid>.card {
+        max-width: 100%;
+        min-width: 100%;
+    }
+
+    .dashboard-grid>.card2 {
         max-width: 100%;
         min-width: 100%;
     }

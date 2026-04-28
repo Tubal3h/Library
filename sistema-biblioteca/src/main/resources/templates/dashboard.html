@@ -12,11 +12,12 @@
     <main class="dashboard-wrapper flex flex-column gap-1 w-100 h-100">
         <!-- Header -->
         <header class="dashboard-header flex justify-between align-center mb-2 animate-fade-in-up opacity-0">
-            <div class="greeting">
-                <h2 class="fw-700">Ciao, <span th:text="${user.userName}">User</span>.</h2>
+            <div class="flex justify-content align-end">
 
-                <p th:text="${user.userRole == 'role_admin' ? 'Benvenuto nella dashboard Admin.' : 'Benvenuto nella dashboard.'}"
-                    class="opacity-70">Benvenuto nella dashboard.</p>
+                    <h3 class="fw-700">Ciao, <span th:text="${user.userName}">User</span></h3>
+                    <p th:text="${user.userRole == 'role_admin' ? ', benvenuto nella dashboard Admin.' : ',  benvenuto nella tua dashboard.'}"
+                        class="opacity-70"> benvenuto nella tua dashboard.</p>
+                </span>
             </div>
             <div class="header-actions flex align-center gap-2">
 
@@ -50,7 +51,7 @@
             <!-- Card 1: Users totali -->
             <a th:href="@{/api/navigation/users}" class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
-                    <span class="opacity-70 font-size-small uppercase fw-700">Dipendenti</span>
+                    <span class="opacity-70 font-size-medium uppercase fw-700">Dipendenti</span>
                     <i class="fa-solid fa-users text-brand"></i>
                 </div>
                 <div class="flex align-end gap-1">
@@ -58,43 +59,46 @@
                 </div>
             </a>
 
-            <!-- Card 2: Books totali -->
-            <a th:href="@{/api/navigation/catalog}" class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
-                <div class="flex justify-between align-center mb-2">
-                    <span class="opacity-70 font-size-small uppercase fw-700">Totale manuali</span>
-                    <i class="fa-solid fa-book text-brand"></i>
-                </div>
-                <div class="flex align-end gap-1">
-                    <span class="text-3xl fw-700" th:text="${totalBooks}">totalBooks</span>
-                </div>
-            </a>
+            <div class="card2 flex flex-column gap-2">
+                 <!-- Card 2: Books totali -->
+                <a th:href="@{/api/navigation/catalog}" class="card glass radius-12 p-3 shadow-card flex flex-column border-none">
+                    <div class="flex justify-between align-center mb-2">
+                        <span class="opacity-70 font-size-medium uppercase fw-700">Manuali</span>
+                        <i class="fa-solid fa-book text-brand"></i>
+                    </div>
+                    <div class="flex align-end gap-1">
+                        <span class="text-3xl fw-700" th:text="${totalBooks}">totalBooks</span>
+                    </div>
+                </a>
 
-            <!-- Card 3: Books disponibili -->
-            <a th:href="@{/api/navigation/catalog}" class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
-                <div class="flex justify-between align-center mb-2">
-                    <span class="opacity-70 font-size-small uppercase fw-700">Manuali disponibili</span>
-                    <i class="fa-solid fa-check-to-slot text-success"></i>
-                </div>
-                <div class="flex align-end gap-1">
-                    <span class="text-3xl fw-700" th:text="${totalBooks - totalRents}">availableBooks</span>
-                </div>
-            </a>
+                <!-- Card 3: Books disponibili -->
+                <a th:href="@{/api/navigation/catalog}" class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
+                    <div class="flex justify-between align-center mb-2">
+                        <span class="opacity-70 text-xs uppercase fw-700">Disponibili</span>
+                        <i class="fa-solid fa-check-to-slot text-success"></i>
+                    </div>
+                    <div class="flex align-end gap-1">
+                        <span class="text-3xl fw-700" th:text="${totalBooks - totalRents}">availableBooks</span>
+                    </div>
+                </a>
 
-            <!-- Card 4: Books prestati -->
-            <a th:href="@{/api/navigation/rents}" class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
-                <div class="flex justify-between align-center mb-2">
-                    <span class="opacity-70 font-size-small uppercase fw-700">Manuali in prestito</span>
-                    <i class="fa-solid fa-hand-holding-hand text-warning"></i>
-                </div>
-                <div class="flex align-end gap-2">
-                    <span class="text-3xl fw-700" th:text="${totalRents}">totalRents</span>
-                </div>
-            </a>
+                <!-- Card 4: Books prestati -->
+                <a th:href="@{/api/navigation/rents}" class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
+                    <div class="flex justify-between align-center mb-2">
+                        <span class="opacity-70 text-xs uppercase fw-700">In Prestito</span>
+                        <i class="fa-solid fa-hand-holding-hand text-warning"></i>
+                    </div>
+                    <div class="flex align-end gap-2">
+                        <span class="text-3xl fw-700" th:text="${totalRents}">totalRents</span>
+                    </div>
+                </a>
+            </div>
+           
 
             <!-- Card 5: Books prenotati-->
             <a th:href="@{/api/navigation/rents}" class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
-                    <span class="opacity-70 font-size-small uppercase fw-700">Manuali Prenotati</span>
+                    <span class="opacity-70 font-size-medium uppercase fw-700">Manuali Prenotati</span>
                     <i class="fa-solid fa-clock text-info"></i>
                 </div>
                 <div class="flex align-end gap-2">
@@ -124,36 +128,36 @@
 
         <!-- Sezione Impostazioni Profilo in Home -->
         <div th:if="${section == 'profile'}" class="mt-6 animate-fade-in-up opacity-0 delay-2">
-            <div class="card glass radius-12 p-6 shadow-card border-none" style="max-width: 500px;">
-                <div class="flex align-center gap-4 mb-6">
-                    <div class="icon-box-accent radius-12 p-3 flex center shadow-soft" style="background: rgba(245, 166, 35, 0.1); color: var(--color-accent);">
+            <div class="card glass radius-12 p-4 shadow-card border-none" style="max-width: 500px;">
+                <div class="flex align-center gap-4 mb-8">
+                    <div class="icon-box-accent radius-12 p-2 flex center shadow-soft" style="background: rgba(245, 166, 35, 0.1); color: var(--color-accent);">
                         <i class="fa-solid fa-lock text-xl"></i>
                     </div>
                     <div>
-                        <h3 class="text-xl fw-700 m-0 text-brand">Cambia Password</h3>
-                        <p class="opacity-70 text-sm mt-1">Aggiorna le credenziali di accesso al tuo profilo</p>
+                        <h3 class="text-2xl fw-700 m-0 text-brand">Cambia Password</h3>
+                        <p class="opacity-80 text-nm mt-1">Aggiorna le credenziali di accesso al tuo profilo</p>
                     </div>
                 </div>
                 
-                <form th:action="@{/api/changePassword}" method="post" class="flex flex-column gap-5">
+                <form th:action="@{/api/changePassword}" method="post" class="flex flex-column gap-3">
                     <input type="hidden" name="email" th:value="${user.userEmail}">
                     
                     <div class="input-group">
-                        <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Password Attuale</label>
+                        <label class="text-nm uppercase fw-700 opacity-75 mb-2 block tracking-widest">Password Attuale</label>
                         <input type="password" name="oldPassword" required
                             class="w-100 p-4 radius-12 border-none font-size-small bg-darkgrey"
                             placeholder="Inserisci la tua password attuale">
                     </div>
                     
                     <div class="input-group">
-                        <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nuova Password</label>
+                        <label class="text-nm uppercase fw-700 opacity-75 mb-2 block tracking-widest">Nuova Password</label>
                         <input type="password" name="newPassword" required
                             class="w-100 p-4 radius-12 border-none font-size-small bg-darkgrey"
                             placeholder="Inserisci la nuova password">
                     </div>
                     
                     <div class="input-group">
-                        <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Conferma Nuova Password</label>
+                        <label class="text-nm uppercase fw-700 opacity-75 mb-2 block tracking-widest">Conferma Nuova Password</label>
                         <input type="password" name="confirmPassword" required
                             class="w-100 p-4 radius-12 border-none font-size-small bg-darkgrey"
                             placeholder="Ripeti la nuova password">
@@ -169,34 +173,34 @@
         </div>
 
         <!-- Sezione catalogo libri -->
-        <div th:if="${section == 'catalog'}" class="grid gap-3 animate-fade-in-up opacity-0 delay-1">
+        <div th:if="${section == 'catalog'}" class="grid gap-1 animate-fade-in-up opacity-0 delay-1">
             <div th:replace="~{fragments/catalog :: catalog}"
                 class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
 
             </div>
         </div>
 
-        <div th:if="${section == 'edition'}" class="grid gap-3 animate-fade-in-up opacity-0 delay-1">
+        <div th:if="${section == 'edition'}" class="grid gap-1 animate-fade-in-up opacity-0 delay-1">
             <div th:replace="~{fragments/catalog :: edition}"
                 class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
 
             </div>
         </div>
         <!-- Sezione lista utenti per admin-->
-        <div th:if="${section == 'users'}" class="grid gap-3 animate-fade-in-up opacity-0 delay-1">
+        <div th:if="${section == 'users'}" class="grid gap-1 animate-fade-in-up opacity-0 delay-1">
             <div th:replace="~{fragments/users :: users}"
                 class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
             </div>
         </div>
         <!-- Sezione lista prestiti -->
-        <div th:if="${section == 'rents'}" class="grid gap-3 animate-fade-in-up opacity-0 delay-1">
+        <div th:if="${section == 'rents'}" class="grid gap-1 animate-fade-in-up opacity-0 delay-1">
             <div th:replace="~{fragments/rents :: rents}"
                 class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
             </div>
         </div>
 
         <!-- Sezione impostazioni per admin-->
-        <div th:if="${section == 'settings'}" class="grid gap-3 animate-fade-in-up opacity-0 delay-1">
+        <div th:if="${section == 'settings'}" class="grid gap-1 animate-fade-in-up opacity-0 delay-1">
             <div th:replace="~{fragments/settings :: settings}"
                 class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
             </div>

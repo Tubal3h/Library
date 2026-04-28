@@ -11,8 +11,8 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     flex-direction: column;
-    min-height: 400px;
-    max-height: 500px;
+    min-height: 200px;
+    max-height: 300px;
 }
 
 .settings-card:hover {
@@ -47,8 +47,8 @@
 }
 
 .settings-item {
-    padding: 0.75rem 1rem;
-    border-radius: 12px;
+    padding: 0.50rem 0.75rem;
+    border-radius: 8px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -67,13 +67,13 @@
 
 .settings-item-name {
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 1rem;
 }
 
 .settings-item-id {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
-    opacity: 0.5;
+    font-size: 1rem;
+    opacity: 0.6;
 }
 
 .settings-actions {

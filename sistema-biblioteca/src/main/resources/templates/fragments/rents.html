@@ -8,7 +8,7 @@
 -->
 <th:block th:fragment="rents">
     <!-- Barra dei Filtri -->
-    <div class="rents animate-fade-in-up flex align-center gap-6 mb-6 opacity-0 delay-1">
+    <div class="rents animate-fade-in-up flex align-center gap-3 mb-6 opacity-0 delay-1">
 
         <!-- Filter: Solo Scaduti -->
         <label class="toggle-container shadow-soft">
@@ -35,7 +35,7 @@
         th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
 
         <!-- Colonna Sinistra: Informazioni sul Libro e sul Prestito -->
-        <div class="card-info-main flex-1 p-5 flex flex-column justify-center">
+        <div class="card-info-main flex-1 p-2 flex flex-column justify-center">
 
             <!-- Titolo e Autore del Libro -->
             <div class="mb-2">
@@ -45,10 +45,6 @@
                     <p class="text-2xl fw-400 opacity-60 mb-3"
                         th:text="${rent.book != null ? rent.book.authorFullName : 'N/A'}"></p>
                 </div>
-                <!-- <div class="flex align-center gap-2">
-                    <p class="text-2xl fw-400 opacity-60 mb-3"
-                        th:text="${rent.book != null ? rent.book.authorFullName : 'N/A'}"></p>
-                </div> -->
                 <div class="flex align-center gap-2">
                     <div th:if="${user.userRole == 'role_admin'}"
                         class="category-label font-mono italic tracking-widest opacity-80 uppercase"
@@ -99,10 +95,10 @@
 
                 <!-- Indicatore di Stato Dinamico (Restituito, Da Restituire, Scaduto) -->
                 <div class="mb-3 status-context"
-                    th:classappend="${isExpired ? 'status-vibrant-error' : (rent.book.status == 'in prestito' ? 'status-vibrant-active' : 'status-vibrant-pending')}">
+                    th:classappend="${isExpired ? 'status-vibrant-error' : (rent.book.status == 'in prestito' ? 'status-vibrant-pending' : 'status-vibrant-booked')}">
 
                     <div
-                        class="glass-indicator radius-10 font-size-xs tracking-widest flex align-center gap-1 p-2 px-8">
+                        class="glass-indicator radius-10 text-nm tracking-widest flex align-center gap-1 p-2 px-8">
                         <div class="dot mr-1"></div>
                         <span th:if="${rent.book.status == 'prenotato'}" th:text="'Prenotato'">STATO</span>
                         <span th:if="${rent.book.status == 'in prestito' && !isExpired}" th:text="'In Prestito'">STATO</span>
@@ -115,13 +111,13 @@
                     th:data-url="@{/api/delivered(bookID=${rent.bookId}, rentID=${rent.rentId}, bookTitle=${rent.book.title})}"
                     onclick="triggerConfirmDelivered(this)"
                     class="w-100 btn-modern-action pointer transition shadow-soft">
-                    <span>Conferma richiesta</span>
+                    <span>Conferma prestito</span>
                 </button>
                 <button type="button" th:if="${rent.book != null && rent.book.status == 'in prestito' && user.userRole == 'role_admin'}" th:data-title="${rent.book.title}"
                     th:data-url="@{/api/returned(bookID=${rent.bookId}, rentID=${rent.rentId}, bookTitle=${rent.book.title})}"
                     onclick="triggerConfirmReturned(this)"
                     class="w-100 btn-modern-action pointer transition shadow-soft">
-                    <span>Rientrato</span>
+                    <span>Riconsegnato</span>
                 </button>
             </div>
         </div>
