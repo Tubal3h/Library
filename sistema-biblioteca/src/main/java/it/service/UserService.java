@@ -106,6 +106,28 @@ public class UserService {
     }
 
     /**
+     * Recupera un utente tramite il suo ID.
+     * 
+     * @param userId ID dell'utente
+     * @return UserDto dell'utente se trovato, null altrimenti
+     */
+    @Transactional(readOnly = true)
+    public UserDto getUserById(int userId) {
+        User user = userRepository.findById(userId);
+        if (user == null) {
+            return null;
+        }
+        UserDto dto = new UserDto();
+        dto.setUserId(user.getUserId());
+        dto.setUserName(user.getUserName());
+        dto.setUserLastName(user.getUserLastName());
+        dto.setUserEmail(user.getUserEmail());
+        dto.setUserPassword(user.getUserPassword());
+        dto.setUserRole(user.getUserRole());
+        return dto;
+    }
+
+    /**
      * Recupera il numero totale di utenti registrati nel sistema.
      * 
      * @return Il numero totale di utenti registrati con ruolo 'role_user'

@@ -268,18 +268,22 @@ public class RentService {
 			return filteredList;
 		}
 	}
-    
     @Transactional(readOnly = true)
-    public List<BookRecordsJoinDtoResponse> bookHistory(Integer bookId) throws BookNotFoundException{
-    	List<BookRecordsJoinDtoResponse> myList = new ArrayList<>();
-       	if(bookId != null) {
-    		try{
-    			myList= rentRepository.getBookRecords(bookId);
-    			return myList;
-    		}catch(BookNotFoundException ex) {
-    			throw new RuntimeException(ex.getMessage());
-    		}
-    	}
-       	return myList;
+    public List<BookRecordsJoinDtoResponse> getBookRecords(int bookId) throws HistoryNotFoundException {
+        return rentRepository.getBookRecords(bookId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookRecordsJoinDtoResponse> getUserRecords(int userId) throws HistoryNotFoundException {
+        return rentRepository.getUserRecords(userId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookRecordsJoinDtoResponse> bookHistory(Integer bookId) throws HistoryNotFoundException {
+        List<BookRecordsJoinDtoResponse> myList = new ArrayList<>();
+        if(bookId != null) {
+            myList = rentRepository.getBookRecords(bookId);
+        }
+        return myList;
     }
 }

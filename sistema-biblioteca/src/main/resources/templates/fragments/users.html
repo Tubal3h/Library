@@ -25,7 +25,10 @@
 
             <!-- Nome e Cognome -->
             <div class="mb-5">
-                <h3 class="text-xl fw-700 text-brand mb-1" th:text="${user.userName} + ' ' + ${user.userLastName}"></h3>
+                <a th:href="@{'/api/navigation/userRecords/' + ${user.userId}}" class="no-underline">
+                    <h3 class="text-xl fw-700 text-brand mb-1 cursor-pointer hover-opacity-100 transition" 
+                        th:text="${user.userName} + ' ' + ${user.userLastName}"></h3>
+                </a>
             </div>
 
             <!-- Metadati: Email e User ID -->

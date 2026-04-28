@@ -261,8 +261,8 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 	@Override
 	public void deleteRentalById(int rentId) {
 		String sql = """
-				DELETE FROM books
-				WHERE rent_id = ?
+				DELETE FROM rental_record
+				WHERE rental_id = ?
 				""";
 		jdbcTemplate.update(sql, rentId);
 	}
@@ -270,13 +270,12 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 	@Override
 	public List<BookRecordsJoinDtoResponse> getBookRecords(int bookId) throws HistoryNotFoundException {
 	    String sql = """
-	    		SELECT books.book_id, rental_record.rental_id, users.user_name, users.user_last_name, rental_record.rental_date, rental_record.rental_expired, rental_record.rental_ended
-	    		FROM rental_record
-	    		INNER JOIN users
-	    		ON rental_record.users_id = users.users_id
-	    		INNER JOIN books
-	    		ON books.book_id = rental_record.book_id
-	    		WHERE books.book_id = ?
+	    		SELECT b.book_id, r.rental_id, u.user_name, u.user_last_name, r.rental_date, r.rental_expired, r.rental_ended
+	    		FROM rental_record r
+	    		INNER JOIN users u ON r.users_id = u.users_id
+	    		INNER JOIN books b ON b.book_id = r.book_id
+	    		WHERE b.book_id = ?
+                ORDER BY r.rental_date DESC
 	    """;
 	    
 	    try {
@@ -286,5 +285,23 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 	    	throw new HistoryNotFoundException("errore nel cercare i dati");
 	    }
 	}
+
+    public List<BookRecordsJoinDtoResponse> getUserRecords(int userId) throws HistoryNotFoundException {
+        String sql = """
+                SELECT b.book_id, r.rental_id, u.user_name, u.user_last_name, r.rental_date, r.rental_expired, r.rental_ended
+                FROM rental_record r
+                INNER JOIN users u ON r.users_id = u.users_id
+                INNER JOIN books b ON b.book_id = r.book_id
+                WHERE u.users_id = ?
+                ORDER BY r.rental_date DESC
+        """;
+        
+        try {
+            return jdbcTemplate.query(sql, bookRecordsJoinDtoResponseMapper, userId);
+        } catch (DataAccessException ex) {
+            System.out.println(ex.getMessage());
+            throw new HistoryNotFoundException("errore nel cercare i dati dell'utente");
+        }
+    }
     
 }

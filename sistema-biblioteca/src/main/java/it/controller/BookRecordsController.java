@@ -18,16 +18,26 @@ public class BookRecordsController {
     }
     
     @GetMapping("/api/navigation/bookRecords/{bookId}")
-    public String bookRecords(@PathVariable(value = "bookId", required = false) String bookId, RedirectAttributes redirectAttributes) {
+    public String bookRecords(@PathVariable(value = "bookId") String bookId, RedirectAttributes redirectAttributes) {
         UserDto user = userSession.getUser();
-        if (user == null) {
+        if (user == null || !"role_admin".equals(user.getUserRole())) {
             return "redirect:/";
         }
-        if (bookId == null || bookId.isEmpty()) {
-            return "redirect:/dashboard";
+        
+        userSession.setSection("bookRecords");
+        redirectAttributes.addFlashAttribute("recordBookId", bookId);
+        return "redirect:/dashboard";
+    }
+
+    @GetMapping("/api/navigation/userRecords/{userId}")
+    public String userRecords(@PathVariable(value = "userId") String userId, RedirectAttributes redirectAttributes) {
+        UserDto user = userSession.getUser();
+        if (user == null || !"role_admin".equals(user.getUserRole())) {
+            return "redirect:/";
         }
         
-        redirectAttributes.addFlashAttribute("bookId", bookId);
+        userSession.setSection("userRecords");
+        redirectAttributes.addFlashAttribute("recordUserId", userId);
         return "redirect:/dashboard";
     }
 }
