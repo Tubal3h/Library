@@ -75,12 +75,26 @@ public class RentDto {
     /**
      * @return DTO del libro associato al noleggio
      */
-    public BookHistoryDto getBookHistory() {
+    public BookHistoryDto getBook() {
         return book;
     }
 
     /**
      * @param book DTO del libro associato al noleggio
+     */
+    public void setBook(BookHistoryDto book) {
+        this.book = book;
+    }
+
+    /**
+     * @return DTO del libro associato al noleggio
+     */
+    public BookHistoryDto getBookHistory() {
+        return book;
+    }
+
+    /**
+     * @param bookHistory DTO del libro associato al noleggio
      */
     public void setBookHistory(BookHistoryDto bookHistory) {
         this.book = bookHistory;

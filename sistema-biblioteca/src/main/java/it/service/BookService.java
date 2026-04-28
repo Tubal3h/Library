@@ -93,7 +93,8 @@ public class BookService {
                 dto.setEditionId(book.getEditionId());
                 dto.setBookId(book.getBookId());
                 dto.setTitle(book.getBookName());
-                dto.setAuthorFullName(book.getAuthorFullName());
+                dto.setAuthorName(book.getAuthorName());
+                dto.setAuthorLastName(book.getAuthorLastName());
                 dto.setPublisherName(book.getPublisherName());
                 dto.setPublishingDate(book.getPublicationDate());
                 dto.setIsbnCode(book.getIsbnCode());
@@ -122,7 +123,8 @@ public class BookService {
         dto.setEditionId(book.getEditionId());
         dto.setBookId(book.getBookId());
         dto.setTitle(book.getBookName());
-        dto.setAuthorFullName(book.getAuthorFullName());
+        dto.setAuthorName(book.getAuthorName());
+        dto.setAuthorLastName(book.getAuthorLastName());
         dto.setPublisherName(book.getPublisherName());
         dto.setPublishingDate(book.getPublicationDate());
         dto.setIsbn(book.getIsbnCode());
@@ -285,7 +287,8 @@ public class BookService {
                 dto.setEditionId(book.getEditionId());
                 dto.setBookId(book.getBookId());
                 dto.setTitle(book.getBookName());
-                dto.setAuthorFullName(book.getAuthorFullName());
+                dto.setAuthorName(book.getAuthorName());
+                dto.setAuthorLastName(book.getAuthorLastName());
                 dto.setPublisherName(book.getPublisherName());
                 dto.setPublishingDate(book.getPublicationDate());
                 dto.setIsbn(book.getIsbnCode());

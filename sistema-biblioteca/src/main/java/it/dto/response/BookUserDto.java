@@ -8,7 +8,6 @@ public class BookUserDto {
     private String title;
     private String authorName;
     private String authorLastName;
-    private String authorFullName;
     private String publisherName;
     private LocalDate publishingDate;
     private String isbnCode;
@@ -16,7 +15,7 @@ public class BookUserDto {
     private String status;
 	
     public BookUserDto(int editionId, int bookId, String title, String authorName, String authorLastName,
-			String authorFullName, String publisherName, LocalDate publishingDate, String isbnCode, String categoryName,
+			String publisherName, LocalDate publishingDate, String isbnCode, String categoryName,
 			String status) {
 
 		this.editionId = editionId;
@@ -24,7 +23,6 @@ public class BookUserDto {
 		this.title = title;
 		this.authorName = authorName;
 		this.authorLastName = authorLastName;
-		this.authorFullName = authorFullName;
 		this.publisherName = publisherName;
 		this.publishingDate = publishingDate;
 		this.isbnCode = isbnCode;
@@ -74,14 +72,6 @@ public class BookUserDto {
 
 	public void setAuthorLastName(String authorLastName) {
 		this.authorLastName = authorLastName;
-	}
-
-	public String getAuthorFullName() {
-		return authorFullName;
-	}
-
-	public void setAuthorFullName(String authorFullName) {
-		this.authorFullName = authorFullName;
 	}
 
 	public String getPublisherName() {

@@ -28,7 +28,7 @@
     <!-- Contenitore delle Card dei Prestiti -->
     <div th:each="rent, iter : ${rentedBooks}"
         th:with="todayStr=${#temporals.format(#temporals.createNow(), 'yyyyMMdd')}, rentDateStr=${rent.rentalExpired != null ? #temporals.format(rent.rentalExpired, 'yyyyMMdd') : '99999999'}, isExpired=${rent.rentalEnded == null && rentDateStr < todayStr}"
-        th:data-status="${#strings.replace(rent.book.status, ' ', '-')}"
+        th:data-status="${rent.book != null && rent.book.status != null ? #strings.replace(rent.book.status, ' ', '-') : 'unknown'}"
         th:data-expired="${isExpired}"
         class="book-card-horizontal glass radius-12 shadow-card flex animate-card p-relative"
         th:style="'--delay: ' + (${iter.index} * 0.1) + 's;'">
@@ -54,19 +54,19 @@
             <!-- Righe Metadati: Date, ISBN e User ID -->
             <div class="card-meta mt-auto flex align-center gap-3 opacity-70">
                 <!-- Data Prenotazione -->
-                <div th:if="${rent.book.status == 'prenotato'}" class="flex align-center font-size-small">
+                <div th:if="${rent.book != null && rent.book.status == 'prenotato'}" class="flex align-center font-size-small">
                     <i class="fa-solid fa-calendar-plus text-sm text-brand pr-1"></i>
                     <label class="fw-600" title="Data Prenotazione" th:text="${#temporals.format(rent.bookingDate, 'dd-MM-yyyy')}">Data Prenotazione</label>
                 </div>
                 
                 <!-- Data di Inizio Noleggio -->
-                <div th:if="${rent.book.status != 'prenotato'}" class="flex align-center font-size-small">
+                <div th:if="${rent.book != null && rent.book.status != 'prenotato'}" class="flex align-center font-size-small">
                     <i class="fa-solid fa-calendar-check text-sm text-brand pr-1"></i>
                     <label class="fw-600" title="Data inizio prestito" th:text="${#temporals.format(rent.rentalDate, 'dd-MM-yyyy')}">Inizio</label>
                 </div>
 
                 <!-- Data di Scadenza -->
-                <div th:if="${rent.book.status != 'prenotato'}" class="flex align-center font-size-small">
+                <div th:if="${rent.book != null && rent.book.status != 'prenotato'}" class="flex align-center font-size-small">
                     <i class="fa-regular fa-clock text-sm text-brand pr-1"></i>
                     <label class="fw-600" title="Data scadenza prestito" th:text="${#temporals.format(rent.rentalExpired, 'dd-MM-yyyy')}">Scadenza</label>
                 </div>
@@ -94,14 +94,14 @@
 
                 <!-- Indicatore di Stato Dinamico (Restituito, Da Restituire, Scaduto) -->
                 <div class="mb-3 status-context"
-                    th:classappend="${isExpired ? 'status-vibrant-error' : (rent.book.status == 'in prestito' ? 'status-vibrant-pending' : 'status-vibrant-booked')}">
+                    th:classappend="${isExpired ? 'status-vibrant-error' : (rent.book != null && rent.book.status == 'in prestito' ? 'status-vibrant-pending' : 'status-vibrant-booked')}">
 
                     <div
                         class="glass-indicator radius-10 text-nm tracking-widest flex align-center gap-1 p-2 px-8">
                         <div class="dot mr-1"></div>
-                        <span th:if="${rent.book.status == 'prenotato'}" th:text="'Prenotato'">STATO</span>
-                        <span th:if="${rent.book.status == 'in prestito' && !isExpired}" th:text="'In Prestito'">STATO</span>
-                        <span th:if="${rent.book.status == 'in prestito' && isExpired}" th:text="'Scaduto'">STATO</span>
+                        <span th:if="${rent.book != null && rent.book.status == 'prenotato'}" th:text="'Prenotato'">STATO</span>
+                        <span th:if="${rent.book != null && rent.book.status == 'in prestito' && !isExpired}" th:text="'In Prestito'">STATO</span>
+                        <span th:if="${rent.book != null && rent.book.status == 'in prestito' && isExpired}" th:text="'Scaduto'">STATO</span>
                     </div>
                 </div>
 

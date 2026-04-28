@@ -10,7 +10,7 @@ import java.time.LocalDate;
  * Entità che rappresenta la vista aggregata di un libro nel sistema,
  * ottenuta tramite JOIN tra le tabelle books, edition, books_names, author, publisher e category.
  */
-public class BookJoin {
+public class BookHistoryJoin {
 
     private int edition_id;
     private int book_id;
@@ -22,12 +22,14 @@ public class BookJoin {
     private String category_name;
     private String isbn_code;
     private String status;
+    private String user_name;
+    private String user_last_name;
 
 
     /**
      * Costruttore di default.
      */
-    public BookJoin() {
+    public BookHistoryJoin() {
     }
 
     /**
@@ -44,9 +46,9 @@ public class BookJoin {
      * @param isbn_code        Codice ISBN
      * @param status           Stato del libro (es. disponibilita, in prestito)
      */
-    public BookJoin(int edition_id, int book_id, String book_name, String author_name, String author_last_name,
+    public BookHistoryJoin(int edition_id, int book_id, String book_name, String author_name, String author_last_name,
             String publisher_name, LocalDate publication_date, String category_name,
-            String isbn_code, String status) {
+            String isbn_code, String status, String user_name, String user_last_name) {
         this.edition_id = edition_id;
         this.book_id = book_id;
         this.book_name = book_name;
@@ -57,6 +59,8 @@ public class BookJoin {
         this.category_name = category_name;
         this.isbn_code = isbn_code;
         this.status = status;
+        this.user_name = user_name;
+        this.user_last_name = user_last_name;
     }
 
 
@@ -187,6 +191,34 @@ public class BookJoin {
      */
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    /**
+     * @return Nome dell'utente
+     */
+    public String getUserName() {
+        return user_name;
+    }
+
+    /**
+     * @param user_name Nome dell'utente
+     */
+    public void setUserName(String user_name) {
+        this.user_name = user_name;
+    }
+
+    /**
+     * @return Cognome dell'utente
+     */
+    public String getUserLastName() {
+        return user_last_name;
+    }
+
+    /**
+     * @param user_last_name Cognome dell'utente
+     */
+    public void setUserLastName(String user_last_name) {
+        this.user_last_name = user_last_name;
     }
 
 

@@ -32,14 +32,13 @@ public class BookJoinRowMapper implements RowMapper<BookJoin> {
         bookJoin.setEditionId(rs.getInt("edition_id"));
         bookJoin.setBookId(rs.getInt("book_id"));
         bookJoin.setBookName(rs.getString("title"));
-        bookJoin.setAuthorFullName(rs.getString("author_full_name"));
+        bookJoin.setAuthorName(rs.getString("author_name"));
+        bookJoin.setAuthorLastName(rs.getString("author_last_name"));
         bookJoin.setPublisherName(rs.getString("publisher_name"));
         bookJoin.setPublicationDate(rs.getDate("publishing_date").toLocalDate());
         bookJoin.setCategoryName(rs.getString("category_name"));
         bookJoin.setIsbn(rs.getString("isbn"));
         bookJoin.setStatus(rs.getString("status"));
-        bookJoin.setUserName(rs.getString("user_name"));
-        bookJoin.setUserLastName(rs.getString("user_last_name"));
         return bookJoin;
 
     }

@@ -2,6 +2,7 @@ package it.repository.interfaces;
 
 import java.util.List;
 
+import it.entity.BookHistoryJoin;
 import it.entity.BookJoin;
 import it.exception.InsertBookNameException;
 
@@ -16,5 +17,5 @@ public interface BookRepositoryInterface {
 	public int insertBookByIsbn(String isbn);
 	public int deleteBookById(int id);
 	public void insertBookByTitle(String title) throws InsertBookNameException;
-	public List<BookJoin> getBooksByEditionId(int editionId, boolean includeDeleted);
+	public List<BookHistoryJoin> getBooksByEditionId(int editionId, boolean includeDeleted);
 }
