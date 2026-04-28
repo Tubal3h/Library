@@ -20,4 +20,5 @@ public interface RentRecordRepositoryInterface {
 	public void updateRentalStatusNotOk(int bookId);
 	public void deleteRentalById(int rentId);
 	public List<BookRecordsJoinDtoResponse> getBookRecords(int bookId) throws HistoryNotFoundException;
+	public List<BookRecordsJoinDtoResponse> getUserRecords(int userId) throws HistoryNotFoundException;
 }
