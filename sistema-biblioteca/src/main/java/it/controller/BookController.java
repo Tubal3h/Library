@@ -19,6 +19,7 @@ import it.exception.NoIsbnFoundException;
 import it.service.AuthorService;
 import it.service.BookService;
 import it.service.PublisherService;
+import jakarta.validation.Valid;
 import it.service.CategoryService;
 import it.service.EditionService;
 
@@ -135,7 +136,7 @@ public class BookController {
 	 */
 	@PostMapping("/api/addEdition")
 	public String addEdition(
-	        @ModelAttribute InsertBookDto insertBookDto,
+	        @Valid @ModelAttribute InsertBookDto insertBookDto,
 	        BindingResult bindingResult,
 	        RedirectAttributes redirectAttributes) {
 			

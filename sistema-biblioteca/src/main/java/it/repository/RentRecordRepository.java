@@ -125,7 +125,12 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                 WHERE r.rental_ended IS NULL
                 ORDER BY r.rental_date DESC
                 """;
-        return jdbcTemplate.query(sql, rentalRecordJoinRowMapper);
+        try {
+        	return jdbcTemplate.query(sql, rentalRecordJoinRowMapper);
+        }catch(DataAccessException ex) {
+        	System.out.println(ex.getMessage());
+        	throw new RuntimeException();
+        }
     }
 
     /**
@@ -161,7 +166,13 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                   AND r.users_id = ?
                 ORDER BY r.rental_date DESC
                 """;
-        return jdbcTemplate.query(sql, rentalRecordJoinRowMapper, userId);
+        try {
+        	return jdbcTemplate.query(sql, rentalRecordJoinRowMapper, userId);
+        	
+        }catch(DataAccessException ex) {
+        	System.out.println(ex.getMessage());
+        	throw new RuntimeException();
+        }
     }
 
     /**
