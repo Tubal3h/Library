@@ -12,9 +12,9 @@ import java.time.LocalDate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.dto.BookDto;
 import it.dto.RentDto;
 import it.dto.UserDto;
+import it.dto.response.BookHistoryDto;
 import it.dto.response.BookRecordsJoinDtoResponse;
 import it.entity.RentalRecord;
 import it.entity.RentalRecordJoin;
@@ -81,7 +81,7 @@ public class RentService {
     	user.setUserName(rent.getUserName());
     	user.setUserLastName(rent.getUserLastName());
     	
-    	BookDto book = new BookDto();
+    	BookHistoryDto book = new BookHistoryDto();
         book.setBookId(rent.getBookId());
         book.setTitle(rent.getBookName());
         book.setAuthorFullName(rent.getAuthorFullName());
@@ -95,7 +95,7 @@ public class RentService {
         dto.setRentId(rent.getRentalId());
         dto.setUserId(rent.getUserId());
         dto.setBookId(rent.getBookId());
-        dto.setBook(book);
+        dto.setBookHistory(book);
         dto.setUser(user);
         dto.setRentalDate(rent.getRentalDate());
         dto.setRentalExpired(rent.getRentalExpired());
@@ -243,16 +243,15 @@ public class RentService {
 			for(RentDto rent : myList) {
 				String userName = rent.getUser().getUserName();
 				String userLastName = rent.getUser().getUserLastName();
-				String title = rent.getBook().getTitle();
-				String authorName = rent.getBook().getAuthorName();
-				String authorLastName = rent.getBook().getAuthorLastName();
+				String title = rent.getBookHistory().getTitle();
 				
 				String finalString = (userName + " " + userLastName + " " + title).toLowerCase();
 				boolean allMatch = true;
 				for(String s : arraySearch) {
 					System.out.println("nome " + userName);
+					System.out.println("nome autore: ");
 					System.out.println("stringa " + arraySearch[0]);
-					if(!finalString.contains(s)) {
+					if(!(finalString.contains(s))) {
 						allMatch = false;
 						break;
 					}

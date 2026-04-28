@@ -3,6 +3,7 @@ package it.service;
 import java.util.ArrayList;
 
 
+
 /* -------------------------------------------------------------------------- */
 /*                                   SERVICE                                  */
 /* -------------------------------------------------------------------------- */
@@ -16,9 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.exception.NoBookIdFoundException;
 
-import it.dto.BookDto;
 import it.dto.BookNameDto;
 import it.dto.InsertBookDto;
+import it.dto.response.BookHistoryDto;
+import it.dto.response.BookUserDto;
 import it.entity.BookJoin;
 import it.entity.Category;
 import it.entity.BookName;
@@ -81,20 +83,20 @@ public class BookService {
      * @return Lista di {@link BookDto} dei libri accessibili all'utente
      */
     @Transactional(readOnly = true)
-    private List<BookDto> getAllBooks(String userRole) {
+    private List<BookUserDto> getAllBooks(String userRole) {
         List<BookJoin> repoBook = bookRepository.getAllBooks();
         return repoBook.stream()
             .filter(book -> !userRole.equals("role_user") ||
                     "disponibilita".equalsIgnoreCase(book.getStatus()))
             .map(book -> {
-                BookDto dto = new BookDto();
+                BookUserDto dto = new BookUserDto();
                 dto.setEditionId(book.getEditionId());
                 dto.setBookId(book.getBookId());
                 dto.setTitle(book.getBookName());
                 dto.setAuthorFullName(book.getAuthorFullName());
                 dto.setPublisherName(book.getPublisherName());
                 dto.setPublishingDate(book.getPublicationDate());
-                dto.setIsbn(book.getIsbnCode());
+                dto.setIsbnCode(book.getIsbnCode());
                 dto.setCategoryName(book.getCategoryName());
                 dto.setStatus(book.getStatus());
                 return dto;
@@ -110,13 +112,13 @@ public class BookService {
      * @throws BookNotFoundException se nessun libro corrisponde all'ID specificato
      */
     @Transactional(readOnly = true)
-    public BookDto getBookById(int bookId) {
+    public BookHistoryDto getBookById(int bookId) {
         var book = bookRepository.getAllBooks().stream()
             .filter(b -> b.getBookId() == bookId)
             .findFirst()
             .orElseThrow(() -> new BookNotFoundException("Libro non trovato con l'ID: " + bookId));
 
-        BookDto dto = new BookDto();
+        BookHistoryDto dto = new BookHistoryDto();
         dto.setEditionId(book.getEditionId());
         dto.setBookId(book.getBookId());
         dto.setTitle(book.getBookName());
@@ -191,11 +193,11 @@ public class BookService {
      * @return Lista di BookDto contenente le informazioni condensate dei libri filtrati per nome del libro
      */
 	
-	public List<BookDto> getBookListByName(String search, String userRole) {
-		List<BookDto> myList = getAllBooks(userRole);
-		List<BookDto> filteredList = new ArrayList<>();
+	public List<BookUserDto> getBookListByName(String search, String userRole) {
+		List<BookUserDto> myList = getAllBooks(userRole);
+		List<BookUserDto> filteredList = new ArrayList<>();
 		if(search != null && !search.isBlank()) {
-			for(BookDto book : myList) {
+			for(BookUserDto book : myList) {
 				if(book.getTitle().replaceAll("\\s+","").toLowerCase().contains(search.replaceAll("\\s+","").toLowerCase())) {
 					filteredList.add(book);
 				}
@@ -276,10 +278,10 @@ public class BookService {
      * @param includeDeleted Flag per includere anche i libri eliminati
      * @return Lista di BookDto delle copie trovate
      */
-    public List<BookDto> getBooksByEditionId(int editionId, boolean includeDeleted) {
+    public List<BookHistoryDto> getBooksByEditionId(int editionId, boolean includeDeleted) {
         return bookRepository.getBooksByEditionId(editionId, includeDeleted).stream()
             .map(book -> {
-                BookDto dto = new BookDto();
+                BookHistoryDto dto = new BookHistoryDto();
                 dto.setEditionId(book.getEditionId());
                 dto.setBookId(book.getBookId());
                 dto.setTitle(book.getBookName());

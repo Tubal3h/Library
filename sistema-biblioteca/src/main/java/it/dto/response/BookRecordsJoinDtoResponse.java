@@ -12,7 +12,8 @@ public class BookRecordsJoinDtoResponse {
     private LocalDate rentalExpired;
     private LocalDate rentalEnded;
     private LocalDate bookingDate;
-	public BookRecordsJoinDtoResponse(int bookId, int rentalId, String userName, String userLastName,
+	
+    public BookRecordsJoinDtoResponse(int bookId, int rentalId, String userName, String userLastName,
 			LocalDate rentalDate, LocalDate rentalExpired, LocalDate rentalEnded) {
 		this.bookId = bookId;
 		this.rentalId = rentalId;

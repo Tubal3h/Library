@@ -1,4 +1,4 @@
-package it.dto;
+package it.dto.response;
 
 /* -------------------------------------------------------------------------- */
 /*                                     DTO                                    */
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 /**
  * Data Transfer Object per la visualizzazione dei libri nel catalogo.
  */
-public class BookDto {
+public class BookHistoryDto {
     private int editionId;
     private int bookId;
     private String title;
@@ -29,7 +29,7 @@ public class BookDto {
     /**
      * Costruttore di default.
      */
-    public BookDto() {
+    public BookHistoryDto() {
     }
     
     /**
@@ -37,7 +37,7 @@ public class BookDto {
      */
 
     
-    public BookDto(int editionId, int bookId, String title, String authorFullName, LocalDate publishingDate, String publisherName, String isbnCode, String categoryName, String status) {
+    public BookHistoryDto(int editionId, int bookId, String title, String authorFullName, LocalDate publishingDate, String publisherName, String isbnCode, String categoryName, String status) {
         this.editionId = editionId;
         this.bookId = bookId;
         this.title = title;
@@ -65,7 +65,7 @@ public class BookDto {
     	this.authorLastName = authorLastName;
     }
 
-    public BookDto(int bookId) {
+    public BookHistoryDto(int bookId) {
     	this.bookId = bookId;
     }
 

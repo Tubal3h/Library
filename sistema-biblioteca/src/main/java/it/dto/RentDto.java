@@ -6,6 +6,8 @@ package it.dto;
 
 import java.time.LocalDate;
 
+import it.dto.response.BookHistoryDto;
+
 /**
  * Data Transfer Object per la gestione dei prestiti (noleggi).
  */
@@ -13,7 +15,7 @@ public class RentDto {
     private int rentId;
     private int userId;
     private int bookId;
-    private BookDto book;
+    private BookHistoryDto book;
     private UserDto user;
     private LocalDate bookingDate;
     private LocalDate rentalDate;
@@ -73,15 +75,15 @@ public class RentDto {
     /**
      * @return DTO del libro associato al noleggio
      */
-    public BookDto getBook() {
+    public BookHistoryDto getBookHistory() {
         return book;
     }
 
     /**
      * @param book DTO del libro associato al noleggio
      */
-    public void setBook(BookDto book) {
-        this.book = book;
+    public void setBookHistory(BookHistoryDto bookHistory) {
+        this.book = bookHistory;
     }
     
     /**
