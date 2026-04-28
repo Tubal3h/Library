@@ -21,6 +21,9 @@ public class BookDto {
     private String isbnCode;
     private String categoryName;
     private String status;
+    private String userName;
+    private String userLastName;
+
     
 
     /**
@@ -191,6 +194,23 @@ public class BookDto {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserLastName() {
+        return userLastName;
+    }
+
+    public void setUserLastName(String userLastName) {
+        this.userLastName = userLastName;
+    }
+
 }
 
 

@@ -290,6 +290,8 @@ public class BookService {
                 dto.setIsbn(book.getIsbnCode());
                 dto.setCategoryName(book.getCategoryName());
                 dto.setStatus(book.getStatus());
+                dto.setUserName(book.getUserName());
+                dto.setUserLastName(book.getUserLastName());
                 return dto;
             })
             .toList();

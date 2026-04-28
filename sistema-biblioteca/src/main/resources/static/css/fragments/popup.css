@@ -380,11 +380,127 @@
     font-weight: 700;
     color: var(--color-text-muted);
     text-transform: uppercase;
-    font-size: 0.7rem;
-    letter-spacing: 0.05em;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
 }
+
+/* Status Badges in Popup */
+.status-pill {
+    padding: 0.35rem 0.8rem;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    letter-spacing: 0.02em;
+}
+
+.status-pill i {
+    font-size: 0.65rem;
+}
+
+.status-pill.disponibilita {
+    background: rgba(var(--color-success-rgb), 0.1);
+    color: var(--color-success);
+    border: 1px solid rgba(var(--color-success-rgb), 0.2);
+}
+
+.status-pill.prenotato {
+    background: rgba(245, 166, 35, 0.1);
+    color: #D98F10;
+    border: 1px solid rgba(245, 166, 35, 0.2);
+}
+
+.status-pill.in-prestito {
+    background: rgba(var(--color-error-rgb), 0.1);
+    color: var(--color-error);
+    border: 1px solid rgba(var(--color-error-rgb), 0.2);
+}
+
+.status-pill.eliminato {
+    background: var(--color-surface-2);
+    color: var(--color-text-muted);
+    border: 1px solid var(--color-border);
+    opacity: 0.6;
+}
+
 
 .popup-table-wrap tr:last-child td {
     border-bottom: none;
 }
+
+/* Utilities for Popup Table */
+.avatar-xs {
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    border-radius: 50%;
+}
+
+
+.radius-50 {
+    border-radius: 50%;
+}
+
+.bg-surface-2 {
+    background-color: var(--color-surface-2);
+}
+
+.hover-underline:hover {
+    text-decoration: underline;
+}
+
+/* Filter Bar in Popup */
+.popup-filter-bar {
+    background: var(--color-surface-2);
+    padding: 6px;
+    border-radius: 14px;
+    display: inline-flex;
+    gap: 4px;
+    border: 1px solid var(--color-border);
+}
+
+.filter-chip {
+    padding: 8px 16px;
+    border-radius: 10px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    white-space: nowrap;
+}
+
+.filter-chip i {
+    font-size: 0.85rem;
+    opacity: 0.7;
+}
+
+.filter-chip:hover {
+    background: rgba(var(--color-text-rgb), 0.05);
+    color: var(--color-text);
+}
+
+.filter-chip.active {
+    background: var(--color-surface);
+    color: var(--color-brand);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.filter-chip.active i {
+    opacity: 1;
+}
+
+[data-theme="dark"] .filter-chip.active {
+    background: var(--color-accent);
+    color: white;
+}
+
 

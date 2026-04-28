@@ -37,8 +37,44 @@ function initServerSidePopup() {
     });
 }
 
+/**
+ * Filtra le righe della tabella delle copie in base allo stato.
+ * @param {HTMLElement} btn Il bottone cliccato
+ */
+function filterBookCopies(btn) {
+    const filter = btn.dataset.filter;
+    const container = document.getElementById('viewBooksListContainer');
+    if (!container) return;
+
+    const rows = container.querySelectorAll('tr');
+    
+    // Aggiorna stato attivo dei chip
+    const bar = btn.closest('.popup-filter-bar');
+    if (bar) {
+        bar.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    }
+    btn.classList.add('active');
+    
+    rows.forEach(row => {
+        const statusPill = row.querySelector('.status-pill');
+        if (!statusPill) return;
+
+        if (filter === 'all') {
+            row.style.display = '';
+        } else {
+            // Verifica se la pillola ha la classe corrispondente al filtro
+            if (statusPill.classList.contains(filter)) {
+                row.style.display = '';
+            } else {
+                row.style.display = 'none';
+            }
+        }
+    });
+}
+
 // Esponi globalmente
 window.openAddUserPopup = openAddUserPopup;
 window.updateAddUserEmailPreview = updateAddUserEmailPreview;
 window.updateRoleSelection = updateRoleSelection;
 window.initServerSidePopup = initServerSidePopup;
+window.filterBookCopies = filterBookCopies;
