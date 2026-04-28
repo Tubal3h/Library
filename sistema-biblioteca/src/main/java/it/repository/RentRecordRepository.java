@@ -270,14 +270,14 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 	@Override
 	public List<BookRecordsJoinDtoResponse> getBookRecords(int bookId) throws HistoryNotFoundException {
 	    String sql = """
-	    		SELECT b.book_id, r.rental_id, u.user_name, u.user_last_name, r.rental_date, r.rental_expired, r.rental_ended, bn.title
+	    		SELECT b.book_id, r.rental_id, u.user_name, u.user_last_name, r.booking_date, r.rental_date, r.rental_expired, r.rental_ended, bn.title
 	    		FROM rental_record r
 	    		INNER JOIN users u ON r.users_id = u.users_id
 	    		INNER JOIN books b ON b.book_id = r.book_id
                 LEFT JOIN edition e ON b.edition_id = e.edition_id
                 LEFT JOIN books_names bn ON e.book_name_id = bn.book_name_id
 	    		WHERE b.book_id = ?
-                ORDER BY r.rental_date DESC
+                ORDER BY r.rental_id DESC
 	    """;
 	    
 	    try {
@@ -290,14 +290,14 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 
     public List<BookRecordsJoinDtoResponse> getUserRecords(int userId) throws HistoryNotFoundException {
         String sql = """
-                SELECT b.book_id, r.rental_id, u.user_name, u.user_last_name, r.rental_date, r.rental_expired, r.rental_ended, bn.title
+                SELECT b.book_id, r.rental_id, u.user_name, u.user_last_name, r.booking_date, r.rental_date, r.rental_expired, r.rental_ended, bn.title
                 FROM rental_record r
                 INNER JOIN users u ON r.users_id = u.users_id
                 INNER JOIN books b ON b.book_id = r.book_id
                 LEFT JOIN edition e ON b.edition_id = e.edition_id
                 LEFT JOIN books_names bn ON e.book_name_id = bn.book_name_id
                 WHERE u.users_id = ?
-                ORDER BY r.rental_date DESC
+                ORDER BY r.rental_id DESC
         """;
         
         try {

@@ -27,7 +27,7 @@
 
     <div class="records-view-container">
         <!-- Tabella Desktop -->
-        <div class="premium-table-wrapper glass radius-24 shadow-xl overflow-hidden animate-fade-in delay-2">
+        <div class="premium-table-wrapper glass radius-24 shadow-xl overflow-hidden animate-fade-in-up delay-2">
             <div class="records-table">
                 <div class="table-header">
                     <div class="header-col col-id">ID Libro</div>
@@ -51,7 +51,7 @@
                         <!-- Utente -->
                         <div class="table-cell col-user">
                             <div class="user-info">
-                                <div class="user-avatar" th:text="${#strings.substring(record.userName,0,1) + #strings.substring(record.userLastName,0,1)}">JD</div>
+                                <div class="user-avatar" th:text="${(!#strings.isEmpty(record.userName) ? #strings.substring(record.userName,0,1) : '') + (!#strings.isEmpty(record.userLastName) ? #strings.substring(record.userLastName,0,1) : '')}">JD</div>
                                 <div class="user-details">
                                     <span class="user-fullname" th:text="${record.userName + ' ' + record.userLastName}">John Doe</span>
                                     <span class="user-role-label">Socio</span>
@@ -69,22 +69,29 @@
                             <div class="date-range">
                                 <div class="date-item start">
                                     <i class="fa-solid fa-calendar-check"></i>
-                                    <span th:text="${#temporals.format(record.rentalDate, 'dd MMM yyyy')} ?: 'N/D'">-</span>
+                                    <span th:text="${record.rentalDate != null ? #temporals.format(record.rentalDate, 'dd MMM yyyy') : #temporals.format(record.bookingDate, 'dd MMM yyyy')} ?: 'N/D'">-</span>
                                 </div>
                                 <div class="date-arrow"><i class="fa-solid fa-arrow-right-long"></i></div>
                                 <div class="date-item end" th:classappend="${record.rentalEnded != null ? 'ended' : ''}">
                                     <i th:class="${record.rentalEnded != null ? 'fa-solid fa-calendar-xmark' : 'fa-solid fa-clock'}"></i>
-                                    <span th:text="${record.rentalEnded != null ? #temporals.format(record.rentalEnded, 'dd MMM yyyy') : #temporals.format(record.rentalExpired, 'dd MMM yyyy')} ?: 'N/D'">-</span>
+                                    <span th:text="${record.rentalEnded != null ? #temporals.format(record.rentalEnded, 'dd MMM yyyy') : (record.rentalExpired != null ? #temporals.format(record.rentalExpired, 'dd MMM yyyy') : '---')}">---</span>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Stato -->
                         <div class="table-cell col-status">
-                            <div th:if="${record.rentalEnded == null}" class="status-indicator active">
+                            <!-- Stato Prenotato (Richiesta effettuata ma non ancora consegnato) -->
+                            <div th:if="${record.rentalDate == null && record.rentalEnded == null}" class="status-indicator pending">
+                                <i class="fa-solid fa-clock"></i>
+                                <span class="status-text">Prenotato</span>
+                            </div>
+                            <!-- Stato In Corso (Consegnato) -->
+                            <div th:if="${record.rentalDate != null && record.rentalEnded == null}" class="status-indicator active">
                                 <span class="pulse-dot"></span>
                                 <span class="status-text">In Corso</span>
                             </div>
+                            <!-- Stato Concluso (Restituito) -->
                             <div th:if="${record.rentalEnded != null}" class="status-indicator completed">
                                 <i class="fa-solid fa-circle-check"></i>
                                 <span class="status-text">Concluso</span>
