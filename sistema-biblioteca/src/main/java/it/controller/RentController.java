@@ -67,6 +67,16 @@ public class RentController {
     	return null;
     }
     
+    /**
+     * Riceve la richiesta di prestito da parte di un utente e la invia al servizio
+     * Valida i parametri, costruisce il DTO con i dati corretti e delega
+     * la creazione del noleggio al {@link it.service.RentService}.
+     *
+     * @param bookId ID del libro da noleggiare (stringa numerica)
+     * @param userId ID dell'utente che effettua il prestito (stringa numerica)
+     * @param confirmed Booleano che indica se il prestito è stato confermato
+     * @return Redirect alla sezione noleggi in caso di successo, o redirect al catalogo con errore
+     */
     @GetMapping("/api/borrow")
     public String borrowBook(@RequestParam(value = "bookId", required = false) String bookId, 
     						 @RequestParam(value = "userId", required = false) String userId,
@@ -119,7 +129,15 @@ public class RentController {
         return "redirect:/dashboard";
     }
     
-    
+    /**
+     * Riceve la richiesta di prenotazione di un libro da parte di un utente e la invia al servizio
+     * Valida i parametri, costruisce il DTO con i dati corretti e delega
+     * la creazione del noleggio al {@link it.service.RentService}.
+     * 
+     * @param bookId ID del libro da prenotare (stringa numerica)
+     * @param redirectAttributes Attributi per il redirect
+     * @return Redirect alla sezione noleggi in caso di successo, o redirect al catalogo con errore
+     */
     @GetMapping("/api/booked")
     public String bookedBook(
             @RequestParam(value = "bookId", required = false) String bookId,

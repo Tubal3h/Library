@@ -16,7 +16,15 @@ public class BookRecordsController {
     public BookRecordsController(UserSession userSession) {
         this.userSession = userSession;
     }
-    
+
+    /**
+     * Gestisce la navigazione verso la sezione "Storico Copie".
+     * Imposta l'ID della copia da visualizzare nella sessione e reindirizza al dashboard.
+     *
+     * @param bookId ID della copia di cui visualizzare lo storico
+     * @param redirectAttributes Attributi di redirect
+     * @return Redirect al dashboard
+     */
     @GetMapping("/api/navigation/bookRecords/{bookId}")
     public String bookRecords(@PathVariable(value = "bookId") String bookId, RedirectAttributes redirectAttributes) {
         UserDto user = userSession.getUser();
@@ -29,6 +37,14 @@ public class BookRecordsController {
         return "redirect:/dashboard";
     }
 
+    /**
+     * Gestisce la navigazione verso la sezione "Storico Utenti".
+     * Imposta l'ID dell'utente da visualizzare nella sessione e reindirizza al dashboard.
+     *
+     * @param userId ID dell'utente di cui visualizzare lo storico
+     * @param redirectAttributes Attributi di redirect
+     * @return Redirect al dashboard
+     */
     @GetMapping("/api/navigation/userRecords/{userId}")
     public String userRecords(@PathVariable(value = "userId") String userId, RedirectAttributes redirectAttributes) {
         UserDto user = userSession.getUser();

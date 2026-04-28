@@ -281,6 +281,14 @@ public class BookController {
 		return "redirect:/dashboard";
 	}
 
+	/**
+	 * Aggiorna la categoria di un libro.
+	 *
+	 * @param editionId ID dell'edizione
+	 * @param categoryNameId ID della categoria
+	 * @param redirectAttributes Attributi di redirect per passare messaggi alla vista
+	 * @return Redirect alla sezione delle edizioni con i parametri necessari
+	 */
 	@PostMapping("/api/updateCategory")
 	public String updateCategory(
 		@RequestParam(value = "editionId") int editionId,
@@ -310,6 +318,13 @@ public class BookController {
 		return "redirect:/dashboard";
 	}
 
+	/**
+	 * Aggiunge un nuovo titolo di libro.
+	 *
+	 * @param title Titolo del libro da aggiungere
+	 * @param redirectAttributes Attributi di redirect per passare messaggi alla vista
+	 * @return Redirect alla sezione delle edizioni con i parametri necessari
+	 */
 	@PostMapping("/api/addBookName")
 	public String addBookName(
 		@RequestParam(value = "title") String title,
@@ -334,6 +349,14 @@ public class BookController {
 		return "redirect:/dashboard";
 	}
 	
+	/**
+	 * Aggiunge un nuovo autore.
+	 *
+	 * @param authorName Nome dell'autore da aggiungere
+	 * @param authorLastName Cognome dell'autore da aggiungere
+	 * @param redirectAttributes Attributi di redirect per passare messaggi alla vista
+	 * @return Redirect alla sezione delle edizioni con i parametri necessari
+	 */
 	@PostMapping("/api/addAuthor")
 	public String addAuthor(
 		@RequestParam(value = "authorName") String authorName,
@@ -360,7 +383,13 @@ public class BookController {
 		return "redirect:/dashboard";
 	}
 	
-
+	/**
+	 * Aggiunge una nuova casa editrice.
+	 *
+	 * @param publisherName Nome della casa editrice da aggiungere
+	 * @param redirectAttributes Attributi di redirect per passare messaggi alla vista
+	 * @return Redirect alla sezione delle edizioni con i parametri necessari
+	 */
 	@PostMapping("/api/addPublisher")
 	public String addPublisher(
 		@RequestParam(value = "publisherName") String publisherName,
@@ -385,6 +414,13 @@ public class BookController {
 		return "redirect:/dashboard";
 	}
 	
+	/**
+	 * Aggiunge una nuova categoria.
+	 *
+	 * @param categoryName Nome della categoria da aggiungere
+	 * @param redirectAttributes Attributi di redirect per passare messaggi alla vista
+	 * @return Redirect alla sezione delle edizioni con i parametri necessari
+	 */
 	@PostMapping("/api/addCategory")
 	public String addCategory(
 		@RequestParam(value = "categoryName") String categoryName,
