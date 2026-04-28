@@ -4,9 +4,8 @@
 @keyframes fadeSlideUp {
     from {
         opacity: 0;
-        transform: translateY(28px);
+        transform: translateY(20px);
     }
-
     to {
         opacity: 1;
         transform: translateY(0);
@@ -14,164 +13,137 @@
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-
-    to {
-        opacity: 1;
-    }
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 @keyframes scaleIn {
     from {
         opacity: 0;
-        transform: scale(1.04);
+        transform: scale(0.95);
     }
-
     to {
         opacity: 1;
         transform: scale(1);
     }
 }
 
-/* Stato iniziale — tutto invisibile fino al trigger JS */
-body.page-loading #left-panel,
-body.page-loading #right-panel {
+/* Stato iniziale */
+body.page-loading #login-card {
     opacity: 0;
 }
 
-/* Pannello sinistro: zoom-in lento */
-body.page-ready #left-panel {
-    animation: scaleIn 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+body.page-ready #login-card {
+    animation: scaleIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-/* Pannello destro: sale dal basso con leggero ritardo */
-body.page-ready #right-panel {
-    animation: fadeSlideUp 0.75s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
-}
-
-/* Logo */
-body.page-ready #right-logo {
-    animation: fadeSlideUp 0.6s ease 0.3s both;
-}
-
-/* Titolo e sottotitolo */
-body.page-ready #form-title {
-    animation: fadeSlideUp 0.55s ease 0.4s both;
-}
-
-body.page-ready #form-subtitle {
-    animation: fadeSlideUp 0.55s ease 0.48s both;
-}
-
-/* Ogni input-group a cascata */
-body.page-ready #login-form .input-group:nth-child(1) {
-    animation: fadeSlideUp 0.5s ease 0.55s both;
-}
-
-body.page-ready #login-form .input-group:nth-child(2) {
-    animation: fadeSlideUp 0.5s ease 0.63s both;
-}
-
-/* form-options e bottone */
-body.page-ready #form-options {
-    animation: fadeSlideUp 0.45s ease 0.7s both;
-}
-
-body.page-ready #login-btn {
-    animation: fadeSlideUp 0.45s ease 0.77s both;
-}
-
-/* Footer */
-body.page-ready #right-footer {
-    animation: fadeIn 0.5s ease 0.9s both;
-}
+body.page-ready #right-logo { animation: fadeSlideUp 0.6s ease 0.2s both; }
+body.page-ready #form-header { animation: fadeSlideUp 0.6s ease 0.3s both; }
+body.page-ready .input-group:nth-child(1) { animation: fadeSlideUp 0.5s ease 0.4s both; }
+body.page-ready .input-group:nth-child(2) { animation: fadeSlideUp 0.5s ease 0.5s both; }
+body.page-ready #login-btn { animation: fadeSlideUp 0.5s ease 0.6s both; }
+body.page-ready #login-footer { animation: fadeIn 0.8s ease 0.8s both; }
 
 /* ============================================================
-   WRAPPER
+   LAYOUT & BACKGROUND
    ============================================================ */
-#login-wrapper {
-    height: 80vh;
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent page scroll */
+    min-height: 100dvh;
+    width: 100vw;
+    background-color: var(--color-bg);
+}
+
+.login-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     background-image: url('/img/library.png');
-    /*background-color: var(--color-bg);*/
-}
-
-/* ============================================================
-   PANNELLO SINISTRO
-   ============================================================ */
-#left-panel {
-    flex: 1.1;
-    
     background-size: cover;
     background-position: center;
-    margin: 5px;
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+    z-index: -1;
+    filter: brightness(0.8);
 }
 
-#left-overlay {
-    inset: 0;
-    background: linear-gradient(to bottom,
-            rgba(10, 8, 5, 0.45) 0%,
-            rgba(10, 8, 5, 0.15) 40%,
-            rgba(10, 8, 5, 0.65) 100%);
+#login-wrapper {
+    height: 100dvh;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 /* ============================================================
-   PANNELLO DESTRO
+   GLASS CARD
    ============================================================ */
-#right-panel {
-    flex: 1;
-    justify-content: space-between;
-    /*background-color: var(--color-surface);*/
-    padding: 32px 48px;
+#login-card {
+    width: 100%;
+    max-width: 440px;
+    max-height: 90vh;
+    padding: clamp(24px, 5vh, 48px) clamp(20px, 5vw, 40px);
+    border-radius: 24px;
+    position: relative;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+    z-index: 1;
 }
 
+.glass-effect {
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+[data-theme="dark"] .glass-effect {
+    background: rgba(28, 28, 28, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+#card-content {
+    width: 100%;
+    gap: clamp(16px, 3vh, 32px);
+}
+
+/* ============================================================
+   ELEMENTS
+   ============================================================ */
 #right-logo {
-    width: 130px;
-}
-
-#right-form-wrapper {
-    gap: 0;
+    width: 100px;
+    margin-bottom: -10px;
 }
 
 #form-title {
-    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-size: clamp(1.8rem, 4vh, 2.4rem);
     color: var(--color-brand);
-    line-height: 1.2;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
 }
 
 #form-subtitle {
     font-size: 0.95rem;
     color: var(--color-text-muted);
-    margin-bottom: 32px;
 }
 
-/* --- Messaggio errore --- */
-#error-msg {
-    gap: 8px;
-    background: rgba(198, 40, 40, 0.08);
+/* --- Errors --- */
+.error-banner {
+    gap: 10px;
+    background: rgba(var(--color-error-rgb), 0.1);
     border: 1px solid var(--color-error);
     color: var(--color-error);
     font-size: 0.85rem;
-    padding: 10px 14px;
-    margin-bottom: 20px;
 }
 
 /* --- Form --- */
 #login-form {
-    gap: 18px;
-}
-
-.input-group {
-    gap: 6px;
+    gap: clamp(12px, 2vh, 20px);
 }
 
 .input-group label {
-    font-size: 0.82rem;
+    font-size: 0.75rem;
     color: var(--color-text-muted);
-    letter-spacing: 0.03em;
+    margin-bottom: 6px;
 }
 
 .input-wrapper {
@@ -180,48 +152,37 @@ body.page-ready #right-footer {
 
 .input-icon {
     position: absolute;
-    left: 14px;
+    left: 16px;
     color: var(--color-text-muted);
-    font-size: 0.9rem;
-    transition: color 0.2s;
-}
-
-.input-wrapper:focus-within .input-icon {
-    color: var(--color-accent);
+    font-size: 1rem;
+    pointer-events: none;
 }
 
 .input-wrapper input {
     width: 100%;
-    padding: 13px 44px 13px 42px;
+    padding: 14px 44px 14px 46px;
     border: 1.5px solid var(--color-border);
-    background-color: var(--color-surface);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.5);
     color: var(--color-text);
-    font-family: var(--font-main);
-    font-size: 0.95rem;
+    font-size: 1rem;
     outline: none;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.input-wrapper input::placeholder {
-    color: var(--color-border);
+    transition: all 0.3s ease;
 }
 
 .input-wrapper input:focus {
     border-color: var(--color-accent);
-    box-shadow: 0 0 0 3px rgba(245, 166, 35, 0.15);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 0 0 4px rgba(245, 166, 35, 0.1);
 }
 
-/* Toggle password */
 .toggle-pw-btn {
     position: absolute;
     right: 14px;
     background: none;
     border: none;
     color: var(--color-text-muted);
-    font-size: 0.9rem;
-    padding: 4px;
-    display: flex;
-    align-items: center;
+    padding: 6px;
     transition: color 0.2s;
 }
 
@@ -229,50 +190,36 @@ body.page-ready #right-footer {
     color: var(--color-accent);
 }
 
-/* --- Opzioni --- */
-#form-options {
-    margin-top: -4px;
-}
-
-#remember-label {
-    gap: 8px;
-    font-size: 0.85rem;
-    color: var(--color-text-muted);
-}
-
-#remember-label input[type="checkbox"] {
-    width: 16px;
-    height: 16px;
-    accent-color: var(--color-accent);
-}
-
-/* --- Bottone login --- */
+/* --- Button --- */
 #login-btn {
-    margin-top: 8px;
-    padding: 14px 24px;
+    padding: 16px;
     background-color: var(--color-accent);
     color: #fff;
     border: none;
-    font-family: var(--font-main);
     font-size: 1rem;
-    letter-spacing: 0.02em;
     gap: 10px;
-    transition: background-color 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
-    box-shadow: 0 4px 20px rgba(245, 166, 35, 0.35);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 8px 20px rgba(245, 166, 35, 0.3);
 }
 
 #login-btn:hover {
     background-color: var(--color-accent-hover);
-    transform: translateY(-1px);
-    box-shadow: 0 6px 28px rgba(245, 166, 35, 0.45);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 25px rgba(245, 166, 35, 0.4);
 }
 
 #login-btn:active {
     transform: translateY(0);
 }
 
+#login-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+    transform: none;
+}
+
 #btn-icon {
-    transition: transform 0.2s ease;
+    transition: transform 0.3s ease;
 }
 
 #login-btn:hover #btn-icon {
@@ -280,31 +227,40 @@ body.page-ready #right-footer {
 }
 
 /* --- Footer --- */
-#right-footer p {
-    font-size: 0.78rem;
+#login-footer p {
+    font-size: 0.75rem;
     color: var(--color-text-muted);
+    opacity: 0.8;
 }
 
 /* ============================================================
    RESPONSIVE
    ============================================================ */
-@media (max-width: 900px) {
-    #left-panel {
+@media (max-height: 600px) {
+    #login-card {
+        padding: 20px;
+    }
+    #right-logo {
         display: none;
     }
-
-    #right-panel {
-        flex: 1;
-        padding: 32px 28px;
+    #form-title {
+        font-size: 1.5rem;
     }
 }
 
 @media (max-width: 480px) {
-    #right-panel {
-        padding: 24px 20px;
+    #login-wrapper {
+        padding: 0;
     }
-
-    #form-title {
-        font-size: 1.8rem;
+    #login-card {
+        height: 100dvh;
+        max-height: 100dvh;
+        border-radius: 0;
+        justify-content: center;
+        backdrop-filter: blur(20px);
+        background: rgba(255, 255, 255, 0.85);
     }
-}
+    [data-theme="dark"] #login-card {
+        background: rgba(28, 28, 28, 0.85);
+    }
+}

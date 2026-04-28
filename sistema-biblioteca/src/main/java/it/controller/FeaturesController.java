@@ -37,7 +37,14 @@ public class FeaturesController {
         redirectAttributes.addFlashAttribute("search",search);
         return "redirect:/dashboard";
     }
-
+    /**
+     * Gestisce la navigazione tra le diverse sezioni dell'applicazione.
+     * Aggiorna la sezione corrente nella sessione utente e reindirizza al dashboard.
+     *
+     * @param section Sezione desiderata (es. "home", "users", "edition")
+     * @param model   il modello per la vista
+     * @return Redirect al dashboard con la sezione aggiornata
+     */
     @GetMapping("/api/navigation/{section}")
     public String navigate(
         @PathVariable(value = "section") String section,

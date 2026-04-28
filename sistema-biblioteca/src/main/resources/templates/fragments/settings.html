@@ -7,7 +7,7 @@
     <div class="settings-grid">
         
         <!-- Sezione Titoli (Book Names) -->
-        <div class="settings-card glass radius-24 shadow-soft">
+        <div class="settings-card card-titles radius-24 shadow-soft">
             <div class="settings-header flex justify-between align-center">
                 <div>
                     <h3 class="settings-card-title">
@@ -18,11 +18,18 @@
                 </div>
                 <button class="btn-modern-action px-4 py-2 radius-12 pointer" 
                         onclick="openAddTitlePopup()">
-                    <i class="fa-solid fa-plus mr-1"></i> Nuovo
+                    <i class="fa-solid fa-plus"></i> Nuovo
                 </button>
             </div>
-            <div class="settings-list">
-                <div th:each="bn : ${bookNames}" class="settings-item">
+            <div class="settings-search-container">
+                <div class="settings-search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" class="settings-search-input" placeholder="Cerca titolo..." 
+                           onkeyup="filterSettingsList(this, 'titles-list')">
+                </div>
+            </div>
+            <div class="settings-list" id="titles-list">
+                <div th:each="bn : ${bookNames}" class="settings-item" th:data-search="${bn.title.toLowerCase()}">
                     <div class="settings-item-info">
                         <span class="settings-item-name" th:text="${bn.title}">Titolo</span>
                         <span class="settings-item-id" th:text="'ID: #' + ${bn.bookNameId}">ID</span>
@@ -33,36 +40,42 @@
                                 title="Modifica">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
-                        <button class="btn-icon-settings delete" th:data-id="${bn.bookNameId}" th:data-title="${bn.title}"
-                                onclick="triggerConfirmDeleteBookName(this)"
-                                title="Elimina">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
                     </div>
                 </div>
                 <div th:if="${bookNames.isEmpty()}" class="settings-empty">
-                    Nessun titolo registrato.
+                    <i class="fa-solid fa-box-open"></i>
+                    <p>Nessun titolo registrato.</p>
                 </div>
             </div>
         </div>
 
         <!-- Sezione Autori -->
-        <div class="settings-card glass radius-24 shadow-soft">
+        <div class="settings-card card-authors radius-24 shadow-soft">
             <div class="settings-header flex justify-between align-center">
-                <div>
-                    <h3 class="settings-card-title">
-                        <i class="fa-solid fa-user-pen opacity-50"></i>
-                        Autori
-                    </h3>
-                    <p class="settings-card-subtitle" th:text="${authors.size() + ' autori registrati'}"></p>
+                <div class="flex align-center">
+                    <div class="icon-wrapper">
+                        <i class="fa-solid fa-user-pen"></i>
+                    </div>
+                    <div>
+                        <h3 class="settings-card-title">Autori</h3>
+                        <p class="settings-card-subtitle" th:text="${authors.size() + ' autori registrati'}"></p>
+                    </div>
                 </div>
                 <button class="btn-modern-action px-4 py-2 radius-12 pointer" 
                         onclick="openAddAuthorPopup()">
-                    <i class="fa-solid fa-plus mr-1"></i> Nuovo
+                    <i class="fa-solid fa-plus"></i> Nuovo
                 </button>
             </div>
-            <div class="settings-list">
-                <div th:each="author : ${authors}" class="settings-item">
+            <div class="settings-search-container">
+                <div class="settings-search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" class="settings-search-input" placeholder="Cerca autore..." 
+                           onkeyup="filterSettingsList(this, 'authors-list')">
+                </div>
+            </div>
+            <div class="settings-list" id="authors-list">
+                <div th:each="author : ${authors}" class="settings-item" 
+                     th:data-search="${(author.authorName + ' ' + author.authorLastName).toLowerCase()}">
                     <div class="settings-item-info">
                         <span class="settings-item-name" th:text="${author.authorName + ' ' + author.authorLastName}">Autore</span>
                         <span class="settings-item-id" th:text="'ID: #' + ${author.authorId}">ID</span>
@@ -74,36 +87,41 @@
                                 title="Modifica">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
-                        <button class="btn-icon-settings delete" th:data-id="${author.authorId}" th:data-title="${author.authorName + ' ' + author.authorLastName}"
-                                onclick="triggerConfirmDeleteAuthor(this)"
-                                title="Elimina">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
                     </div>
                 </div>
                 <div th:if="${authors.isEmpty()}" class="settings-empty">
-                    Nessun autore registrato.
+                    <i class="fa-solid fa-user-slash"></i>
+                    <p>Nessun autore registrato.</p>
                 </div>
             </div>
         </div>
 
         <!-- Sezione Editori -->
-        <div class="settings-card glass radius-24 shadow-soft">
+        <div class="settings-card card-publishers radius-24 shadow-soft">
             <div class="settings-header flex justify-between align-center">
-                <div>
-                    <h3 class="settings-card-title">
-                        <i class="fa-solid fa-building-columns opacity-50"></i>
-                        Editori
-                    </h3>
-                    <p class="settings-card-subtitle" th:text="${publishers.size() + ' editori registrati'}"></p>
+                <div class="flex align-center">
+                    <div class="icon-wrapper">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+                    <div>
+                        <h3 class="settings-card-title">Editori</h3>
+                        <p class="settings-card-subtitle" th:text="${publishers.size() + ' editori registrati'}"></p>
+                    </div>
                 </div>
                 <button class="btn-modern-action px-4 py-2 radius-12 pointer" 
                         onclick="openAddPublisherPopup()">
-                    <i class="fa-solid fa-plus mr-1"></i> Nuovo
+                    <i class="fa-solid fa-plus"></i> Nuovo
                 </button>
             </div>
-            <div class="settings-list">
-                <div th:each="pub : ${publishers}" class="settings-item">
+            <div class="settings-search-container">
+                <div class="settings-search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" class="settings-search-input" placeholder="Cerca editore..." 
+                           onkeyup="filterSettingsList(this, 'publishers-list')">
+                </div>
+            </div>
+            <div class="settings-list" id="publishers-list">
+                <div th:each="pub : ${publishers}" class="settings-item" th:data-search="${pub.publisherName.toLowerCase()}">
                     <div class="settings-item-info">
                         <span class="settings-item-name" th:text="${pub.publisherName}">Editore</span>
                         <span class="settings-item-id" th:text="'ID: #' + ${pub.publisherId}">ID</span>
@@ -114,36 +132,41 @@
                                 title="Modifica">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
-                        <button class="btn-icon-settings delete" th:data-id="${pub.publisherId}" th:data-title="${pub.publisherName}"
-                                onclick="triggerConfirmDeletePublisher(this)"
-                                title="Elimina">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
                     </div>
                 </div>
                 <div th:if="${publishers.isEmpty()}" class="settings-empty">
-                    Nessun editore registrato.
+                    <i class="fa-solid fa-building-slash"></i>
+                    <p>Nessun editore registrato.</p>
                 </div>
             </div>
         </div>
 
         <!-- Sezione Categorie -->
-        <div class="settings-card glass radius-24 shadow-soft">
+        <div class="settings-card card-categories radius-24 shadow-soft">
             <div class="settings-header flex justify-between align-center">
-                <div>
-                    <h3 class="settings-card-title">
-                        <i class="fa-solid fa-tags opacity-50"></i>
-                        Categorie
-                    </h3>
-                    <p class="settings-card-subtitle" th:text="${categories.size() + ' categorie registrate'}"></p>
+                <div class="flex align-center">
+                    <div class="icon-wrapper">
+                        <i class="fa-solid fa-tags"></i>
+                    </div>
+                    <div>
+                        <h3 class="settings-card-title">Categorie</h3>
+                        <p class="settings-card-subtitle" th:text="${categories.size() + ' categorie registrate'}"></p>
+                    </div>
                 </div>
                 <button class="btn-modern-action px-4 py-2 radius-12 pointer" 
                         onclick="openAddCategoryPopup()">
-                    <i class="fa-solid fa-plus mr-1"></i> Nuovo
+                    <i class="fa-solid fa-plus"></i> Nuovo
                 </button>
             </div>
-            <div class="settings-list">
-                <div th:each="cat : ${categories}" class="settings-item">
+            <div class="settings-search-container">
+                <div class="settings-search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" class="settings-search-input" placeholder="Cerca categoria..." 
+                           onkeyup="filterSettingsList(this, 'categories-list')">
+                </div>
+            </div>
+            <div class="settings-list" id="categories-list">
+                <div th:each="cat : ${categories}" class="settings-item" th:data-search="${cat.categoryName.toLowerCase()}">
                     <div class="settings-item-info">
                         <span class="settings-item-name" th:text="${cat.categoryName}">Categoria</span>
                         <span class="settings-item-id" th:text="'ID: #' + ${cat.categoryId}">ID</span>
@@ -154,15 +177,11 @@
                                 title="Modifica">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
-                        <button class="btn-icon-settings delete" th:data-id="${cat.categoryId}" th:data-title="${cat.categoryName}"
-                                onclick="triggerConfirmDeleteCategory(this)"
-                                title="Elimina">
-                            <i class="fa-solid fa-trash"></i>
-                        </button>
                     </div>
                 </div>
                 <div th:if="${categories.isEmpty()}" class="settings-empty">
-                    Nessun categoria registrata.
+                    <i class="fa-solid fa-tags-slash"></i>
+                    <p>Nessun categoria registrata.</p>
                 </div>
             </div>
         </div>
