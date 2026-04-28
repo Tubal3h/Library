@@ -24,7 +24,11 @@ import it.entity.Category;
 import it.entity.BookName;
 import it.entity.Publisher;
 import it.exception.BookNotFoundException;
+import it.exception.InsertAuthorException;
+import it.exception.InsertBookNameException;
 import it.exception.InsertBookServiceException;
+import it.exception.InsertCategoryException;
+import it.exception.InsertPublisherException;
 import it.repository.AuthorRepository;
 import it.repository.BookNameRepository;
 import it.repository.BookRepository;
@@ -260,7 +264,7 @@ public class BookService {
 			bookRepository.insertBookByTitle(insertBookDto.getTitle());
 		}catch(RuntimeException ex) {
 			System.out.println(ex.toString());
-			throw new InsertBookServiceException("errore nell'inserimento di un libro");	
+			throw new InsertBookServiceException(ex.getMessage());	
 		}
 	}
 	
@@ -299,23 +303,23 @@ public class BookService {
     }
 
     @Transactional
-    public int insertAndGetBookNameId(String title) throws it.exception.InsertBookNameException {
+    public int insertAndGetBookNameId(String title) throws InsertBookNameException {
         bookNameRepository.insertBookByTitle(title);
         return getBookNameId(title);
     }
 
     @Transactional
-    public void insertAuthor(String authorName, String authorLastName) throws it.exception.InsertAuthorException {
+    public void insertAuthor(String authorName, String authorLastName) throws InsertAuthorException {
         authorRepository.insertAuthor(authorName, authorLastName);
     }
 
     @Transactional
-    public void insertPublisher(String publisherName) throws it.exception.InsertPublisherException {
+    public void insertPublisher(String publisherName) throws InsertPublisherException {
         publisherRepository.insertPublisher(publisherName);
     }
 
     @Transactional
-    public void insertCategory(String categoryName) throws it.exception.InsertCategoryException {
+    public void insertCategory(String categoryName) throws InsertCategoryException {
         categoryRepository.insertCategory(categoryName);
     }
 
