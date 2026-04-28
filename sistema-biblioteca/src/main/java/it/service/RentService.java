@@ -18,7 +18,6 @@ import it.dto.UserDto;
 import it.dto.response.BookRecordsJoinDtoResponse;
 import it.entity.RentalRecord;
 import it.entity.RentalRecordJoin;
-import it.exception.BookNotFoundException;
 import it.exception.HistoryNotFoundException;
 import it.repository.RentRecordRepository;
 

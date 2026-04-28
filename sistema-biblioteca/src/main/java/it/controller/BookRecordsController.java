@@ -25,7 +25,7 @@ public class BookRecordsController {
         }
         
         userSession.setSection("bookRecords");
-        redirectAttributes.addFlashAttribute("recordBookId", bookId);
+        userSession.setRecordBookId(Integer.parseInt(bookId));
         return "redirect:/dashboard";
     }
 
@@ -37,7 +37,7 @@ public class BookRecordsController {
         }
         
         userSession.setSection("userRecords");
-        redirectAttributes.addFlashAttribute("recordUserId", userId);
+        userSession.setRecordUserId(Integer.parseInt(userId));
         return "redirect:/dashboard";
     }
 }

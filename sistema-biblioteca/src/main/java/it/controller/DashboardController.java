@@ -129,9 +129,8 @@ public class DashboardController {
             // Sezione Registri (per Libro o per Utente)
             if (("bookRecords".equals(section) || "userRecords".equals(section)) && "role_admin".equals(user.getUserRole())) {
                 if ("bookRecords".equals(section)) {
-                    Object bookIdObj = model.asMap().get("recordBookId");
-                    if (bookIdObj != null) {
-                        int bookId = Integer.parseInt(bookIdObj.toString());
+                    Integer bookId = userSession.getRecordBookId();
+                    if (bookId != null) {
                         model.addAttribute("bookRecords", rentService.getBookRecords(bookId));
                         
                         // Titolo dinamico per il registro del libro
@@ -143,9 +142,8 @@ public class DashboardController {
                         }
                     }
                 } else {
-                    Object userIdObj = model.asMap().get("recordUserId");
-                    if (userIdObj != null) {
-                        int targetUserId = Integer.parseInt(userIdObj.toString());
+                    Integer targetUserId = userSession.getRecordUserId();
+                    if (targetUserId != null) {
                         model.addAttribute("bookRecords", rentService.getUserRecords(targetUserId));
                         
                         // Titolo dinamico per il registro dell'utente
