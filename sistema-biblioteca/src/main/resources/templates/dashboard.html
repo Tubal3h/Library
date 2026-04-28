@@ -32,7 +32,7 @@
                 <button th:if="${user.userRole == 'role_admin' && section == 'users'}"
                     class="btn-create btn-sm shadow-soft" onclick="openAddUserPopup()" title="Aggiungi Dipendente">
                     <i class="fa-solid fa-plus"></i> 
-                    <span class="btn-label">Aggiungi dipendente</span>
+                    <span class="btn-label">Aggiungi un nuovo dipendente</span>
                 </button>
 
                 <div th:if="${(section == 'catalog' || section == 'users' || section == 'edition' || section == 'rents')}"
