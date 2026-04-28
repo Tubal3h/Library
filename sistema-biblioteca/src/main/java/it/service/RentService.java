@@ -244,9 +244,13 @@ public class RentService {
 				String userName = rent.getUser().getUserName();
 				String userLastName = rent.getUser().getUserLastName();
 				String title = rent.getBookHistory().getTitle();
-				
-				String finalString = (userName + " " + userLastName + " " + title).toLowerCase();
-				boolean allMatch = true;
+                String bookAuthorFullName = rent.getBookHistory().getAuthorFullName();
+                String bookPublisher = rent.getBookHistory().getPublisherName();
+                String bookCategory = rent.getBookHistory().getCategoryName();
+				String finalString = (userName + " " + userLastName + " " +  title + " " +  bookAuthorFullName + " " +  bookPublisher + " " +  bookCategory).toLowerCase();
+				System.out.println("finalString: " + finalString);
+                boolean allMatch = true;
+
 				for(String s : arraySearch) {
 					System.out.println("nome " + userName);
 					System.out.println("nome autore: ");

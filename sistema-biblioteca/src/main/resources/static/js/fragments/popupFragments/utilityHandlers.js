@@ -5,7 +5,7 @@
 
 function openAddUserPopup() {
     Popup.open({
-        title: 'Aggiungi Dipendente', icon: 'fa-user-plus', panelId: 'addUserContent',
+        title: 'Aggiungi un nuovo dipendente', icon: 'fa-user-plus', panelId: 'addUserContent',
         confirmText: 'Aggiungi Dipendente',
         onConfirm: () => {
             const form = document.getElementById('addUserForm');
@@ -18,8 +18,11 @@ function openAddUserPopup() {
 }
 
 function updateAddUserEmailPreview() {
-    const n = document.getElementById('addUserNameInput')?.value.trim().toLowerCase().replace(/\s+/g, '') || 'nome';
-    const l = document.getElementById('addUserLastNameInput')?.value.trim().toLowerCase().replace(/\s+/g, '') || 'cognome';
+    const sanitize = (val) => val ? val.toLowerCase().replace(/[^a-z0-9àèéìòù]/g, '') : '';
+    
+    const n = sanitize(document.getElementById('addUserNameInput')?.value) || 'nome';
+    const l = sanitize(document.getElementById('addUserLastNameInput')?.value) || 'cognome';
+    
     const p = document.getElementById('addUserEmailPreview');
     if (p) p.textContent = `${n}.${l}@biblioteca.it`;
 }
@@ -32,7 +35,7 @@ function updateRoleSelection() {
 
 function initServerSidePopup() {
     Popup.open({
-        title: 'Gestione copie', icon: 'fa-eye', panelId: 'viewBooksEditionContent',
+        title: 'Gestione delle copie', icon: 'fa-eye', panelId: 'viewBooksEditionContent',
         confirmText: 'Chiudi', showCancel: false, onConfirm: () => Popup.close()
     });
 }

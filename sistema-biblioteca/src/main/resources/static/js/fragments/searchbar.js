@@ -28,18 +28,18 @@ function openSearchPopup(section) {
     } else if (section === 'users') {
         title.innerText = 'Ricerca Utenti';
         subtitle.innerText = 'Cerca tra gli utenti del sistema';
-        inputLabel.innerText = 'Cerca per nome, cognome o email';
-        inputField.placeholder = 'Es: mario.rossi@email.com...';
+        inputLabel.innerText = 'Cerca per nome e cognome';
+        inputField.placeholder = 'Es: Mario Rossi...';
     } else if (section === 'edition') {
         title.innerText = 'Ricerca Edizioni';
         subtitle.innerText = 'Cerca tra le edizioni disponibili';
         inputLabel.innerText = 'Cerca per titolo, autore, isbn, editore, categoria';
-        inputField.placeholder = 'Es: Mondadori, 2023...';
+        inputField.placeholder = 'Es: C++ Primer o John Doe...';
     } else if (section === 'rents') {
         title.innerText = 'Ricerca Prestiti';
         subtitle.innerText = 'Cerca tra i prestiti in corso o scaduti';
-        inputLabel.innerText = 'Cerca per ISBN, ID utente o Data di Scadenza';
-        inputField.placeholder = 'Es: 978-..., user-id...';
+        inputLabel.innerText = 'Cerca per libro, utente, editore o autore';
+        inputField.placeholder = 'Es: C++ Primer o John Doe...';
     } else {
         title.innerText = 'Ricerca Generale';
         subtitle.innerText = 'Cerca nel sistema';
@@ -48,13 +48,13 @@ function openSearchPopup(section) {
     }
 
     inputField.value = ''; // Reset del campo input
-    
+
     // Memorizza la sezione attuale nell'attributo data-section dell'overlay
     overlay.dataset.section = section;
 
     // Visualizza il popup e imposta il focus sull'input
     overlay.classList.remove('none');
-    document.body.style.overflow = 'hidden'; 
+    document.body.style.overflow = 'hidden';
     inputField.focus();
 }
 
@@ -65,7 +65,7 @@ function closeSearchPopup() {
     const overlay = document.getElementById('searchPopupOverlay');
     if (overlay) {
         overlay.classList.add('none');
-        document.body.style.overflow = ''; 
+        document.body.style.overflow = '';
     }
 }
 
@@ -75,9 +75,10 @@ function closeSearchPopup() {
  */
 function executeSearch() {
     const inputField = document.getElementById('searchInputField');
-    const query = inputField.value.trim();
+    const query = inputField.value; // Prende il valore così com'è
 
-    if (query === '') {
+    // Se è vuoto (e non è lo spazio di reset), mostra errore
+    if (query.trim() === '' && query !== ' ') {
         inputField.classList.add('border-error');
         setTimeout(() => {
             inputField.classList.remove('border-error');
@@ -87,7 +88,20 @@ function executeSearch() {
 
     closeSearchPopup();
 
-    window.location.href = `/api/search/${encodeURIComponent(query)}`;
+    // Reindirizza alla dashboard con il parametro di ricerca
+    window.location.href = `/dashboard?search=${encodeURIComponent(query)}`;
+}
+
+/**
+ * Resetta la ricerca corrente inserendo uno spazio ed eseguendo la ricerca,
+ * che per la logica di backend equivale a mostrare tutti i risultati.
+ */
+function resetSearch() {
+    const inputField = document.getElementById('searchInputField');
+    if (inputField) {
+        inputField.value = ' '; // Inserisce uno spazio come richiesto per resettare
+        executeSearch();
+    }
 }
 
 
