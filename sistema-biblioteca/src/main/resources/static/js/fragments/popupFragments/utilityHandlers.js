@@ -18,8 +18,11 @@ function openAddUserPopup() {
 }
 
 function updateAddUserEmailPreview() {
-    const n = document.getElementById('addUserNameInput')?.value.trim().toLowerCase().replace(/\s+/g, '') || 'nome';
-    const l = document.getElementById('addUserLastNameInput')?.value.trim().toLowerCase().replace(/\s+/g, '') || 'cognome';
+    const sanitize = (val) => val ? val.toLowerCase().replace(/[^a-z0-9àèéìòù]/g, '') : '';
+    
+    const n = sanitize(document.getElementById('addUserNameInput')?.value) || 'nome';
+    const l = sanitize(document.getElementById('addUserLastNameInput')?.value) || 'cognome';
+    
     const p = document.getElementById('addUserEmailPreview');
     if (p) p.textContent = `${n}.${l}@biblioteca.it`;
 }

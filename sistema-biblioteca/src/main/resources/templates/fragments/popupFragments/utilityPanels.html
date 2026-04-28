@@ -22,11 +22,15 @@
                 <div class="add-user-row">
                     <div class="input-group">
                         <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nome</label>
-                        <input type="text" id="addUserNameInput" name="userName" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Mario" required oninput="updateAddUserEmailPreview()">
+                        <input type="text" id="addUserNameInput" name="userName" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Mario" required 
+                               pattern="^[a-zA-Z0-9àèéìòùÀÈÉÌÒÙ]+$" title="Inserire solo lettere e numeri, senza spazi o simboli"
+                               oninput="this.value = this.value.replace(/[^a-zA-Z0-9àèéìòùÀÈÉÌÒÙ]/g, ''); updateAddUserEmailPreview()">
                     </div>
                     <div class="input-group">
                         <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Cognome</label>
-                        <input type="text" id="addUserLastNameInput" name="userLastName" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Rossi" required oninput="updateAddUserEmailPreview()">
+                        <input type="text" id="addUserLastNameInput" name="userLastName" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Rossi" required 
+                               pattern="^[a-zA-Z0-9àèéìòùÀÈÉÌÒÙ]+$" title="Inserire solo lettere e numeri, senza spazi o simboli"
+                               oninput="this.value = this.value.replace(/[^a-zA-Z0-9àèéìòùÀÈÉÌÒÙ]/g, ''); updateAddUserEmailPreview()">
                     </div>
                 </div>
                 <div class="input-group">
