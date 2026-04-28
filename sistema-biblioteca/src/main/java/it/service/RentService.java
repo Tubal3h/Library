@@ -15,8 +15,11 @@ import org.springframework.transaction.annotation.Transactional;
 import it.dto.BookDto;
 import it.dto.RentDto;
 import it.dto.UserDto;
+import it.dto.response.BookRecordsJoinDtoResponse;
 import it.entity.RentalRecord;
 import it.entity.RentalRecordJoin;
+import it.exception.BookNotFoundException;
+import it.exception.HistoryNotFoundException;
 import it.repository.RentRecordRepository;
 
 /**
@@ -265,4 +268,18 @@ public class RentService {
 			return filteredList;
 		}
 	}
+    
+    @Transactional(readOnly = true)
+    public List<BookRecordsJoinDtoResponse> bookHistory(Integer bookId) throws BookNotFoundException{
+    	List<BookRecordsJoinDtoResponse> myList = new ArrayList<>();
+       	if(bookId != null) {
+    		try{
+    			myList= rentRepository.getBookRecords(bookId);
+    			return myList;
+    		}catch(BookNotFoundException ex) {
+    			throw new RuntimeException(ex.getMessage());
+    		}
+    	}
+       	return myList;
+    }
 }
