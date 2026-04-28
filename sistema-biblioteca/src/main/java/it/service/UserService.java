@@ -60,12 +60,22 @@ public class UserService {
 		List<UserDto> myList = getAllUsers();
 		List<UserDto> filteredList = new ArrayList<>();
 		if(search != null && !search.isBlank()) {
-			String [] searchString = search.split("\\s+");
+			String [] searchString = search.toLowerCase().trim().split("\\s+");
 			for(UserDto user : myList) {
-				if(user.getUserName().replaceAll("\\s+","").toLowerCase().equals(search.replaceAll("\\s+","").toLowerCase())) {
+				String userName = user.getUserName();
+				String userLastName = user.getUserLastName();
+				String fullName = (userName + " " + userLastName).toLowerCase();
+				boolean allMatch = true;
+				for(String s : searchString) {
+					if(!fullName.contains(s)) {
+						allMatch = false;
+						break;
+					}
+				}
+				if(allMatch) {
 					filteredList.add(user);
 				}
-			}	
+			}
 		}
 		if(filteredList.isEmpty() || filteredList == null) {
 			return myList;

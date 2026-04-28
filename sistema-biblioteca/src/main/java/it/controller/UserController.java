@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import it.component.UserSession;
+import it.configuration.UserSession;
 import it.dto.UserDto;
 import it.service.UserService;
 
