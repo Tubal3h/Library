@@ -1,4 +1,4 @@
-package it.component;
+package it.configuration;
 
 import it.dto.UserDto;
 import jakarta.servlet.http.HttpSession;
@@ -18,6 +18,8 @@ public class UserSession implements Serializable {
 
     private UserDto user;
     private String section = "home";
+    private Integer recordBookId;
+    private Integer recordUserId;
 
     @Autowired
     private transient HttpSession session;
@@ -70,8 +72,26 @@ public class UserSession implements Serializable {
     public void logout() {
         this.user = null;
         this.section = "home";
+        this.recordBookId = null;
+        this.recordUserId = null;
         if (session != null) {
             session.invalidate();
         }
+    }
+
+    public Integer getRecordBookId() {
+        return recordBookId;
+    }
+
+    public void setRecordBookId(Integer recordBookId) {
+        this.recordBookId = recordBookId;
+    }
+
+    public Integer getRecordUserId() {
+        return recordUserId;
+    }
+
+    public void setRecordUserId(Integer recordUserId) {
+        this.recordUserId = recordUserId;
     }
 }

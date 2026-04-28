@@ -1,8 +1,5 @@
 package it.controller;
 
-import java.time.LocalDate;
-
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,11 +8,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import it.configuration.UserSession;
 import it.dto.BookDto;
 import it.dto.EditionDto;
 import it.dto.InsertBookDto;
 import it.dto.UserDto;
-import it.component.UserSession;
 import it.exception.NoBookIdFoundException;
 import it.exception.InsertBookServiceException;
 import it.exception.NoIsbnFoundException;
@@ -411,12 +408,4 @@ public class BookController {
 		return "redirect:/dashboard";
 	}
 
-	private boolean hasNullOrBlankParameters(String...params) {
-		for(String s : params) {
-			if(s == null || s.isBlank()) {
-				return true;
-			}
-		}
-		return false;
-	}
 }

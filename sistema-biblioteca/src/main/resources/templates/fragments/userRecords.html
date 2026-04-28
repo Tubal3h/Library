@@ -1,25 +1,25 @@
 <!-- 
     -------------------------------------------------------------------------
-    BOOK RECORDS FRAGMENT (BOOKRECORDS.HTML)
+    USER RECORDS FRAGMENT (USERRECORDS.HTML)
     -------------------------------------------------------------------------
 -->
-<div class="dashboard-grid" th:fragment="bookRecords">
+<div class="dashboard-grid" th:fragment="userRecords">
     <!-- Header della Sezione -->
     <header class="dashboard-header flex justify-between align-center mb-8 animate-fade-in-up">
         <div class="flex align-center gap-5">
-            <a th:href="@{/api/navigation/edition}" class="btn-back-premium" title="Torna ai Manuali">
+            <a th:href="@{/api/navigation/users}" class="btn-back-premium" title="Torna agli Utenti">
                 <i class="fa-solid fa-chevron-left"></i>
-                <span>Manuali</span>
+                <span>Utenti</span>
             </a>
             <div class="header-content">
-                <span class="header-subtitle uppercase tracking-widest text-xs opacity-50 mb-1 block">Archivio Storico</span>
-                <h2 class="text-4xl fw-800 text-gradient-brand leading-tight" th:text="${targetRecordName ?: 'Registro Libro'}">Registro Libro</h2>
+                <span class="header-subtitle uppercase tracking-widest text-xs opacity-50 mb-1 block">Profilo Utente</span>
+                <h2 class="text-4xl fw-800 text-gradient-brand leading-tight" th:text="${targetRecordName ?: 'Registro Utente'}">Registro Utente</h2>
             </div>
         </div>
-        
+
         <div class="header-stats flex gap-4 hide-mobile">
             <div class="stat-pill glass">
-                <span class="stat-label">Totale Record</span>
+                <span class="stat-label">Prestiti Totali</span>
                 <span class="stat-value" th:text="${#lists.size(bookRecords)}">0</span>
             </div>
         </div>
@@ -31,7 +31,7 @@
             <div class="records-table">
                 <div class="table-header">
                     <div class="header-col col-id">ID Libro</div>
-                    <div class="header-col col-user">Utente</div>
+                    <div class="header-col col-book">Titolo Libro</div>
                     <div class="header-col col-rent">ID Noleggio</div>
                     <div class="header-col col-dates">Periodo Prestito</div>
                     <div class="header-col col-status">Stato</div>
@@ -48,14 +48,10 @@
                             <span class="badge-mono" th:text="${record.bookId}">000</span>
                         </div>
 
-                        <!-- Utente -->
-                        <div class="table-cell col-user">
-                            <div class="user-info">
-                                <div class="user-avatar" th:text="${(!#strings.isEmpty(record.userName) ? #strings.substring(record.userName,0,1) : '') + (!#strings.isEmpty(record.userLastName) ? #strings.substring(record.userLastName,0,1) : '')}">JD</div>
-                                <div class="user-details">
-                                    <span class="user-fullname" th:text="${record.userName + ' ' + record.userLastName}">John Doe</span>
-                                    <span class="user-role-label">Socio</span>
-                                </div>
+                        <!-- Titolo Libro -->
+                        <div class="table-cell col-book">
+                            <div class="book-info">
+                                <span class="book-title-cell fw-700" th:text="${record.bookTitle}">Il Signore degli Anelli</span>
                             </div>
                         </div>
 
@@ -81,17 +77,17 @@
 
                         <!-- Stato -->
                         <div class="table-cell col-status">
-                            <!-- Stato Prenotato (Richiesta effettuata ma non ancora consegnato) -->
+                            <!-- Stato Prenotato -->
                             <div th:if="${record.rentalDate == null && record.rentalEnded == null}" class="status-indicator pending">
                                 <i class="fa-solid fa-clock"></i>
                                 <span class="status-text">Prenotato</span>
                             </div>
-                            <!-- Stato In Corso (Consegnato) -->
+                            <!-- Stato In Corso -->
                             <div th:if="${record.rentalDate != null && record.rentalEnded == null}" class="status-indicator active">
                                 <span class="pulse-dot"></span>
                                 <span class="status-text">In Corso</span>
                             </div>
-                            <!-- Stato Concluso (Restituito) -->
+                            <!-- Stato Concluso -->
                             <div th:if="${record.rentalEnded != null}" class="status-indicator completed">
                                 <i class="fa-solid fa-circle-check"></i>
                                 <span class="status-text">Concluso</span>
@@ -106,7 +102,7 @@
                                 <i class="fa-solid fa-receipt text-6xl opacity-10"></i>
                             </div>
                             <h3 class="text-xl fw-700 opacity-60 mb-2">nessun prestito registrato</h3>
-                            <p class="text-nm opacity-40">Non ci sono movimenti nello storico di questo libro.</p>
+                            <p class="text-nm opacity-40">L'utente non ha ancora effettuato prestiti.</p>
                         </div>
                     </div>
                 </div>
@@ -114,4 +110,3 @@
         </div>
     </div>
 </div>
->

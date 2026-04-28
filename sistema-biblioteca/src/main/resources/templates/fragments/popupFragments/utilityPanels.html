@@ -89,7 +89,7 @@
                 <tbody id="viewBooksListContainer" th:fragment="bookCopiesList">
                     <tr th:each="book : ${popupBooks != null ? popupBooks : books}" class="text-center border-b hover-bg-light transition">
                         <td class="p-4 font-mono fw-600 text-brand">
-                            <a th:href="@{/api/navigation/bookRecords(bookId=${book.bookId})}" class="hover-underline">#[[${book.bookId}]]</a>
+                            <a th:href="@{'/api/navigation/bookRecords/' + ${book.bookId}}" class="hover-underline">#[[${book.bookId}]]</a>
                         </td>
                         <td class="p-4">
                             <div class="status-pill" th:classappend="${#strings.replace(book.status, ' ', '-')}">

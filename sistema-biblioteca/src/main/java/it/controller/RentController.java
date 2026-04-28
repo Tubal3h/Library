@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import it.configuration.UserSession;
 import it.dto.RentDto;
 import it.dto.UserDto;
-import it.component.UserSession;
 import it.service.RentService;
 
 /**
@@ -49,7 +49,6 @@ public class RentController {
     @GetMapping("/api/acceptLending")
     public String acceptLengindByAdmin(@RequestParam(value = "bookId", required = false) String bookId) {
     	UserDto user = userSession.getUser();
-    	int parsedInteger = 0;
     	userSession.setSection("rents");
     	if(user == null) {
     		return "redirect:/";
@@ -60,7 +59,7 @@ public class RentController {
     	}
     	
     	try {
-    		parsedInteger = Integer.parseInt(bookId);
+    		Integer.parseInt(bookId);
     	}catch(NumberFormatException ex) {
     		System.out.println("Errore: bookId non valido - " + bookId);
             return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog&error=invalid_id";

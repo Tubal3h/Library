@@ -7,9 +7,11 @@ public class BookRecordsJoinDtoResponse {
     private int rentalId;
     private String userName;
     private String userLastName;
+    private String bookTitle;
     private LocalDate rentalDate;
     private LocalDate rentalExpired;
     private LocalDate rentalEnded;
+    private LocalDate bookingDate;
 	public BookRecordsJoinDtoResponse(int bookId, int rentalId, String userName, String userLastName,
 			LocalDate rentalDate, LocalDate rentalExpired, LocalDate rentalEnded) {
 		this.bookId = bookId;
@@ -67,8 +69,18 @@ public class BookRecordsJoinDtoResponse {
 	public void setRentalEnded(LocalDate rentalEnded) {
 		this.rentalEnded = rentalEnded;
 	}
-    
-	
-    
-    
+	public String getBookTitle() {
+		return bookTitle;
+	}
+	public void setBookTitle(String bookTitle) {
+		this.bookTitle = bookTitle;
+	}
+
+    public LocalDate getBookingDate() {
+        return bookingDate;
+    }
+
+    public void setBookingDate(LocalDate bookingDate) {
+        this.bookingDate = bookingDate;
+    }
 }

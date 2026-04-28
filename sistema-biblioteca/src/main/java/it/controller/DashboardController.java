@@ -11,10 +11,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import it.configuration.UserSession;
 import it.dto.BookDto;
 import it.dto.RentDto;
 import it.dto.UserDto;
-import it.component.UserSession;
+import it.dto.response.BookRecordsJoinDtoResponse;
 import it.service.BookService;
 import it.service.RentService;
 import it.service.UserService;
@@ -124,6 +125,42 @@ public class DashboardController {
                 model.addAttribute("categories", categoryService.getAllCategories());
                 model.addAttribute("publishers", publisherService.getAllPublishers());
                 model.addAttribute("bookNames", bookService.getAllBookNames());
+            }
+
+            // Sezione Registri (per Libro o per Utente)
+            if (("bookRecords".equals(section) || "userRecords".equals(section)) && "role_admin".equals(user.getUserRole())) {
+                System.out.println("[DEBUG] DashboardController - Sezione: " + section);
+                if ("bookRecords".equals(section)) {
+                    Integer bookId = userSession.getRecordBookId();
+                    System.out.println("[DEBUG] DashboardController - Book ID: " + bookId);
+                    if (bookId != null) {
+                        List<BookRecordsJoinDtoResponse> records = rentService.getBookRecords(bookId);
+                        System.out.println("[DEBUG] DashboardController - Record trovati: " + (records != null ? records.size() : "NULL"));
+                        model.addAttribute("bookRecords", records);
+                        
+                        // Titolo dinamico per il registro del libro
+                        try {
+                            BookDto book = bookService.getBookById(bookId);
+                            model.addAttribute("targetRecordName", "Registro: " + book.getTitle() + " #" + bookId);
+                        } catch (Exception e) {
+                            model.addAttribute("targetRecordName", "Registro Libro #" + bookId);
+                        }
+                    }
+                } else {
+                    Integer targetUserId = userSession.getRecordUserId();
+                    System.out.println("[DEBUG] DashboardController - User ID: " + targetUserId);
+                    if (targetUserId != null) {
+                        List<BookRecordsJoinDtoResponse> records = rentService.getUserRecords(targetUserId);
+                        System.out.println("[DEBUG] DashboardController - Record trovati: " + (records != null ? records.size() : "NULL"));
+                        model.addAttribute("bookRecords", records);
+                        
+                        // Titolo dinamico per il registro dell'utente
+                        UserDto targetUser = userService.getUserById(targetUserId);
+                        if (targetUser != null) {
+                            model.addAttribute("targetRecordName", "Registro: " + targetUser.getUserName() + " " + targetUser.getUserLastName());
+                        }
+                    }
+                }
             }
 
             // Gestione Popup Visualizzazione Copie (Server-Side)

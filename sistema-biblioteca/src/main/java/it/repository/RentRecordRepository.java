@@ -7,14 +7,17 @@ package it.repository;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import it.dto.response.BookRecordsJoinDtoResponse;
 import it.entity.RentalRecord;
 import it.entity.RentalRecordJoin;
+import it.exception.HistoryNotFoundException;
 import it.mapper.RentRecordRowMapper;
 import it.mapper.RentalRecordJoinRowMapper;
+import it.mapper.response.BookRecordsJoinDtoResponseMapper;
 import it.repository.interfaces.RentRecordRepositoryInterface;
 
 /**
@@ -26,6 +29,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
     private final JdbcTemplate jdbcTemplate;
     private final RentRecordRowMapper rentRecordRowMapper;
     private final RentalRecordJoinRowMapper rentalRecordJoinRowMapper;
+    private final BookRecordsJoinDtoResponseMapper bookRecordsJoinDtoResponseMapper;
 
     /**
      * Costruttore per RentRecordRepository.
@@ -35,10 +39,11 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
      * @param rentalRecordJoinRowMapper Mapper per le query aggregate con JOIN su libri ed edizioni
      */
     public RentRecordRepository(JdbcTemplate jdbcTemplate, RentRecordRowMapper rentRecordRowMapper,
-            RentalRecordJoinRowMapper rentalRecordJoinRowMapper) {
+            RentalRecordJoinRowMapper rentalRecordJoinRowMapper, BookRecordsJoinDtoResponseMapper bookRecordsJoinDtoResponseMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.rentRecordRowMapper = rentRecordRowMapper;
         this.rentalRecordJoinRowMapper = rentalRecordJoinRowMapper;
+        this.bookRecordsJoinDtoResponseMapper = bookRecordsJoinDtoResponseMapper;
     }
 
     /**
@@ -256,25 +261,51 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 	@Override
 	public void deleteRentalById(int rentId) {
 		String sql = """
-				DELETE FROM books
-				WHERE rent_id = ?
+				DELETE FROM rental_record
+				WHERE rental_id = ?
 				""";
 		jdbcTemplate.update(sql, rentId);
 	}
 
 	@Override
-	public List<BookRecordsJoinDtoResponse> getBookRecords(int bookId) {
+	public List<BookRecordsJoinDtoResponse> getBookRecords(int bookId) throws HistoryNotFoundException {
 	    String sql = """
-	    		SELECT books.book_id, rental_record.rental_id, users.user_name, users.user_last_name, rental_record.rental_date, rental_record.rental_expired, rental_record.rental_ended
-	    		FROM rental_record
-	    		INNER JOIN users
-	    		ON rental_record.users_id = users.users_id
-	    		INNER JOIN books
-	    		ON books.book_id = rental_record.book_id
-	    		WHERE books.book_id = ?
+	    		SELECT r.book_id, r.rental_id, u.user_name, u.user_last_name, r.booking_date, r.rental_date, r.rental_expired, r.rental_ended, bn.title
+	    		FROM rental_record r
+	    		LEFT JOIN users u ON r.users_id = u.users_id
+	    		LEFT JOIN books b ON b.book_id = r.book_id
+                LEFT JOIN edition e ON b.edition_id = e.edition_id
+                LEFT JOIN books_names bn ON e.book_name_id = bn.book_name_id
+	    		WHERE r.book_id = ?
+                ORDER BY r.rental_id DESC
 	    """;
 	    
-		return null;
+	    try {
+	    	return jdbcTemplate.query(sql, bookRecordsJoinDtoResponseMapper, bookId);
+	    }catch(DataAccessException ex) {
+	    	System.out.println(ex.getMessage());
+	    	throw new HistoryNotFoundException("errore nel cercare i dati");
+	    }
 	}
+
+    public List<BookRecordsJoinDtoResponse> getUserRecords(int userId) throws HistoryNotFoundException {
+        String sql = """
+                SELECT r.book_id, r.rental_id, u.user_name, u.user_last_name, r.booking_date, r.rental_date, r.rental_expired, r.rental_ended, bn.title
+                FROM rental_record r
+                LEFT JOIN users u ON r.users_id = u.users_id
+                LEFT JOIN books b ON b.book_id = r.book_id
+                LEFT JOIN edition e ON b.edition_id = e.edition_id
+                LEFT JOIN books_names bn ON e.book_name_id = bn.book_name_id
+                WHERE r.users_id = ?
+                ORDER BY r.rental_id DESC
+        """;
+        
+        try {
+            return jdbcTemplate.query(sql, bookRecordsJoinDtoResponseMapper, userId);
+        } catch (DataAccessException ex) {
+            System.out.println(ex.getMessage());
+            throw new HistoryNotFoundException("errore nel cercare i dati dell'utente");
+        }
+    }
     
 }
