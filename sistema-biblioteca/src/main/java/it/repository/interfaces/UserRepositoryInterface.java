@@ -12,4 +12,5 @@ public interface UserRepositoryInterface {
 	public boolean existsByEmail(String email);
 	public int deleteUserById(String userId);
 	public int updatePassword(String email, String newPassword);
+	public User findById(int userId);
 }

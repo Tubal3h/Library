@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import it.dto.BookDto;
 import it.dto.RentDto;
 import it.dto.UserDto;
+import it.dto.response.BookRecordsJoinDtoResponse;
 import it.entity.RentalRecord;
 import it.entity.RentalRecordJoin;
 import it.repository.RentRecordRepository;
@@ -265,4 +266,14 @@ public class RentService {
 			return filteredList;
 		}
 	}
+
+    @Transactional(readOnly = true)
+    public List<BookRecordsJoinDtoResponse> getBookRecords(int bookId) {
+        return rentRepository.getBookRecords(bookId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<BookRecordsJoinDtoResponse> getUserRecords(int userId) {
+        return rentRepository.getUserRecords(userId);
+    }
 }

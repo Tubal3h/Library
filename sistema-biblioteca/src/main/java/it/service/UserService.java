@@ -60,7 +60,6 @@ public class UserService {
 		List<UserDto> myList = getAllUsers();
 		List<UserDto> filteredList = new ArrayList<>();
 		if(search != null && !search.isBlank()) {
-			String [] searchString = search.split("\\s+");
 			for(UserDto user : myList) {
 				if(user.getUserName().replaceAll("\\s+","").toLowerCase().equals(search.replaceAll("\\s+","").toLowerCase())) {
 					filteredList.add(user);
@@ -89,6 +88,28 @@ public class UserService {
         UserDto dto = new UserDto();
         dto.setUserId(user.getUserId());
         dto.setUserName(user.getUserName());
+        dto.setUserEmail(user.getUserEmail());
+        dto.setUserPassword(user.getUserPassword());
+        dto.setUserRole(user.getUserRole());
+        return dto;
+    }
+
+    /**
+     * Recupera un utente tramite il suo ID.
+     * 
+     * @param userId ID dell'utente
+     * @return UserDto dell'utente se trovato, null altrimenti
+     */
+    @Transactional(readOnly = true)
+    public UserDto getUserById(int userId) {
+        User user = userRepository.findById(userId);
+        if (user == null) {
+            return null;
+        }
+        UserDto dto = new UserDto();
+        dto.setUserId(user.getUserId());
+        dto.setUserName(user.getUserName());
+        dto.setUserLastName(user.getUserLastName());
         dto.setUserEmail(user.getUserEmail());
         dto.setUserPassword(user.getUserPassword());
         dto.setUserRole(user.getUserRole());

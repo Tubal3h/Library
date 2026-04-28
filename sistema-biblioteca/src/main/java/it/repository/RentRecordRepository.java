@@ -256,8 +256,8 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 	@Override
 	public void deleteRentalById(int rentId) {
 		String sql = """
-				DELETE FROM books
-				WHERE rent_id = ?
+				DELETE FROM rental_record
+				WHERE rental_id = ?
 				""";
 		jdbcTemplate.update(sql, rentId);
 	}
@@ -265,16 +265,48 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 	@Override
 	public List<BookRecordsJoinDtoResponse> getBookRecords(int bookId) {
 	    String sql = """
-	    		SELECT books.book_id, rental_record.rental_id, users.user_name, users.user_last_name, rental_record.rental_date, rental_record.rental_expired, rental_record.rental_ended
-	    		FROM rental_record
-	    		INNER JOIN users
-	    		ON rental_record.users_id = users.users_id
-	    		INNER JOIN books
-	    		ON books.book_id = rental_record.book_id
-	    		WHERE books.book_id = ?
+	    		SELECT b.book_id, r.rental_id, u.user_name, u.user_last_name, r.rental_date, r.rental_expired, r.rental_ended
+	    		FROM rental_record r
+	    		INNER JOIN users u ON r.users_id = u.users_id
+	    		INNER JOIN books b ON b.book_id = r.book_id
+	    		WHERE b.book_id = ?
+                ORDER BY r.rental_date DESC
 	    """;
 	    
-		return null;
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            BookRecordsJoinDtoResponse dto = new BookRecordsJoinDtoResponse();
+            dto.setBookId(rs.getInt("book_id"));
+            dto.setRentalId(rs.getInt("rental_id"));
+            dto.setUserName(rs.getString("user_name"));
+            dto.setUserLastName(rs.getString("user_last_name"));
+            dto.setRentalDate(rs.getDate("rental_date") != null ? rs.getDate("rental_date").toLocalDate() : null);
+            dto.setRentalExpired(rs.getDate("rental_expired") != null ? rs.getDate("rental_expired").toLocalDate() : null);
+            dto.setRentalEnded(rs.getDate("rental_ended") != null ? rs.getDate("rental_ended").toLocalDate() : null);
+            return dto;
+        }, bookId);
 	}
+
+    public List<BookRecordsJoinDtoResponse> getUserRecords(int userId) {
+        String sql = """
+                SELECT b.book_id, r.rental_id, u.user_name, u.user_last_name, r.rental_date, r.rental_expired, r.rental_ended
+                FROM rental_record r
+                INNER JOIN users u ON r.users_id = u.users_id
+                INNER JOIN books b ON b.book_id = r.book_id
+                WHERE u.users_id = ?
+                ORDER BY r.rental_date DESC
+        """;
+        
+        return jdbcTemplate.query(sql, (rs, rowNum) -> {
+            BookRecordsJoinDtoResponse dto = new BookRecordsJoinDtoResponse();
+            dto.setBookId(rs.getInt("book_id"));
+            dto.setRentalId(rs.getInt("rental_id"));
+            dto.setUserName(rs.getString("user_name"));
+            dto.setUserLastName(rs.getString("user_last_name"));
+            dto.setRentalDate(rs.getDate("rental_date") != null ? rs.getDate("rental_date").toLocalDate() : null);
+            dto.setRentalExpired(rs.getDate("rental_expired") != null ? rs.getDate("rental_expired").toLocalDate() : null);
+            dto.setRentalEnded(rs.getDate("rental_ended") != null ? rs.getDate("rental_ended").toLocalDate() : null);
+            return dto;
+        }, userId);
+    }
     
 }

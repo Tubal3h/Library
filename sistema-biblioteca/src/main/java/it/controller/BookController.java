@@ -1,8 +1,5 @@
 package it.controller;
 
-import java.time.LocalDate;
-
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -411,12 +408,4 @@ public class BookController {
 		return "redirect:/dashboard";
 	}
 
-	private boolean hasNullOrBlankParameters(String...params) {
-		for(String s : params) {
-			if(s == null || s.isBlank()) {
-				return true;
-			}
-		}
-		return false;
-	}
 }

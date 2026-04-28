@@ -117,4 +117,11 @@ public class UserRepository implements UserRepositoryInterface{
         String sql = "UPDATE users SET pass = ? WHERE email = ?";
         return jdbcTemplate.update(sql, newPassword, email);
     }
+
+    @Override
+    public User findById(int userId) {
+        String sql = "SELECT * FROM users WHERE users_id = ?";
+        List<User> users = jdbcTemplate.query(sql, userRowMapper, userId);
+        return users.isEmpty() ? null : users.get(0);
+    }
 }
