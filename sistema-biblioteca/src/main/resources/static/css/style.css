@@ -214,7 +214,7 @@ a {
 }
 
 .text-lg {
-    font-size: 1.125rem;
+    font-size: 1.12rem;
 }
 
 .text-xl {
@@ -405,6 +405,10 @@ a {
 
 .mb-8 {
     margin-bottom: 2rem;
+}
+
+.mb-10 {
+    margin-bottom: 2.5rem;
 }
 
 /* ------------------------------- margin left ------------------------------ */
