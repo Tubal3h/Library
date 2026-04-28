@@ -5,7 +5,7 @@
 
 function openAddUserPopup() {
     Popup.open({
-        title: 'Aggiungi Dipendente', icon: 'fa-user-plus', panelId: 'addUserContent',
+        title: 'Aggiungi un nuovo dipendente', icon: 'fa-user-plus', panelId: 'addUserContent',
         confirmText: 'Aggiungi Dipendente',
         onConfirm: () => {
             const form = document.getElementById('addUserForm');
@@ -35,7 +35,7 @@ function updateRoleSelection() {
 
 function initServerSidePopup() {
     Popup.open({
-        title: 'Gestione copie', icon: 'fa-eye', panelId: 'viewBooksEditionContent',
+        title: 'Gestione delle copie', icon: 'fa-eye', panelId: 'viewBooksEditionContent',
         confirmText: 'Chiudi', showCancel: false, onConfirm: () => Popup.close()
     });
 }

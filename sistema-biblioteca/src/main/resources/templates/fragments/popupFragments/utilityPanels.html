@@ -21,29 +21,29 @@
             <div class="flex flex-column gap-5">
                 <div class="add-user-row">
                     <div class="input-group">
-                        <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Nome</label>
+                        <label class="text-nm uppercase fw-700 opacity-60 mb-1 block tracking-widest">Nome</label>
                         <input type="text" id="addUserNameInput" name="userName" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Mario" required 
                                pattern="^[a-zA-Z0-9àèéìòùÀÈÉÌÒÙ]+$" title="Inserire solo lettere e numeri, senza spazi o simboli"
                                oninput="this.value = this.value.replace(/[^a-zA-Z0-9àèéìòùÀÈÉÌÒÙ]/g, ''); updateAddUserEmailPreview()">
                     </div>
                     <div class="input-group">
-                        <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Cognome</label>
+                        <label class="text-nm uppercase fw-700 opacity-60 mb-1 block tracking-widest">Cognome</label>
                         <input type="text" id="addUserLastNameInput" name="userLastName" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Rossi" required 
                                pattern="^[a-zA-Z0-9àèéìòùÀÈÉÌÒÙ]+$" title="Inserire solo lettere e numeri, senza spazi o simboli"
                                oninput="this.value = this.value.replace(/[^a-zA-Z0-9àèéìòùÀÈÉÌÒÙ]/g, ''); updateAddUserEmailPreview()">
                     </div>
                 </div>
                 <div class="input-group">
-                    <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Mail Aziendale</label>
+                    <label class="text-nm uppercase fw-700 opacity-60 mb-1 block tracking-widest">Mail Aziendale</label>
                     <div class="add-user-preview-field radius-12">
                         <i class="fa-solid fa-envelope add-user-preview-icon"></i>
                         <span id="addUserEmailPreview" class="add-user-preview-text font-mono">nome.cognome@biblioteca.it</span>
                     </div>
                 </div>
                 <div class="input-group">
-                    <label class="text-xs uppercase fw-700 opacity-60 mb-2 block tracking-widest">Ruolo</label>
+                    <label class="text-nm uppercase fw-700 opacity-60 mb-1 block tracking-widest">Ruolo</label>
                     <div class="add-user-role-grid">
-                        <label class="role-option" id="roleOptionUser">
+                        <label class="role-option" id="roleOptionUser" >
                             <input type="radio" name="userRole" value="role_user" checked onchange="updateRoleSelection()">
                             <div class="role-card"><span class="role-label">Dipendente</span></div>
                         </label>

@@ -150,7 +150,7 @@
 }
 
 .input-group label {
-    font-size: 0.75rem;
+    font-size: 1rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.08em;
@@ -503,4 +503,53 @@
     color: white;
 }
 
-
+/* -----------------------------------------------------------------------------------------*/
+/* Ruoli aggiunta utente */
+.add-user-role-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.role-option {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    cursor: pointer;
+    padding: 0;
+    margin: 0;
+}
+
+/* Sovrascrive lo stile generico degli input */
+.input-group .role-option input[type="radio"] {
+    width: auto;
+    padding: 0;
+    margin: 0;
+    background: none;
+    border: none;
+    border-radius: 0;
+    flex-shrink: 0;
+    accent-color: var(--color-accent);
+}
+
+.role-card {
+    width: 100%;
+    padding: 1rem 1.25rem;
+    background: var(--color-surface-2);
+    border: 1.5px solid var(--color-border);
+    border-radius: 12px;
+    transition: all 0.25s ease;
+}
+
+.role-option--selected .role-card {
+    border-color: var(--color-accent);
+    background: rgba(245, 166, 35, 0.1);
+}
+
+.role-label {
+    display: block;
+    font-weight: 700;
+    color: var(--color-text);
+    text-transform: none;
+    letter-spacing: normal;
+}

@@ -1,7 +1,7 @@
 <div th:fragment="settings" class="animate-fade-in">
     <div class="mb-8 pl-2">
-        <h2 class="text-4xl fw-700 text-brand mb-2">Impostazioni</h2>
-        <p class="opacity-60 text-sm">Gestisci le entità principali della biblioteca: titoli, autori, editori e categorie.</p>
+        <h3 class="text-3xl fw-700 text-brand mb-2">Gestione dati libreria</h3>
+        <p class="opacity-60 text-lg">Gestisci le entità principali della biblioteca: Titoli, Autori, Editori e Categorie.</p>
     </div>
 
     <div class="settings-grid">
@@ -9,14 +9,12 @@
         <!-- Sezione Titoli (Book Names) -->
         <div class="settings-card card-titles radius-24 shadow-soft">
             <div class="settings-header flex justify-between align-center">
-                <div class="flex align-center">
-                    <div class="icon-wrapper">
-                        <i class="fa-solid fa-book-bookmark"></i>
-                    </div>
-                    <div>
-                        <h3 class="settings-card-title">Titoli Opere</h3>
-                        <p class="settings-card-subtitle" th:text="${bookNames.size() + ' titoli registrati'}"></p>
-                    </div>
+                <div>
+                    <h3 class="settings-card-title">
+                        <i class="fa-solid fa-book-bookmark opacity-50"></i>
+                        Titoli manuali
+                    </h3>
+                    <p class="settings-card-subtitle" th:text="${bookNames.size() + ' titoli registrati'}"></p>
                 </div>
                 <button class="btn-modern-action px-4 py-2 radius-12 pointer" 
                         onclick="openAddTitlePopup()">
