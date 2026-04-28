@@ -8,19 +8,19 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public class InsertBookDto {
-	@NotNull
+	
 	@NotBlank
 	private String title;
 	
-	@NotNull
+	
 	@NotBlank
 	private String isbn;
 	
-	@NotNull
+	
 	@NotBlank
 	private String authorName;
 	
-	@NotNull
+	
 	@NotBlank
 	private String authorLastName;
 	
@@ -28,15 +28,15 @@ public class InsertBookDto {
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	LocalDate localDate;
 	
-	@NotNull
+	
 	@NotBlank
 	private String categoryName;
 	
-	@NotNull
+	
 	@NotBlank
 	private String publisherName;
 	
-	@NotNull
+	
 	@NotBlank
 	private String email;
 	
