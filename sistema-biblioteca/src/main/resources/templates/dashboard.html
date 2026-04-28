@@ -206,6 +206,13 @@
             </div>
         </div>
 
+        <!-- Sezione registri libri -->
+        <div th:if="${section == 'bookRecords' && user.userRole == 'role_admin'}" class="grid gap-3 animate-fade-in-up opacity-0 delay-1">
+            <div th:replace="~{fragments/bookRecords :: bookRecords}"
+                class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
+            </div>
+        </div>
+
 
 
     </main>

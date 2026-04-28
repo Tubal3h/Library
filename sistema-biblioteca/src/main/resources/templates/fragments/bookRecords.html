@@ -1,0 +1,116 @@
+<!-- 
+    -------------------------------------------------------------------------
+    BOOK RECORDS FRAGMENT (BOOKRECORDS.HTML)
+    -------------------------------------------------------------------------
+    Visualizza lo storico completo dei record di noleggio per i libri.
+    Design responsive ottimizzato per desktop e mobile.
+-->
+<div class="dashboard-grid" th:fragment="bookRecords">
+    <!-- Header della Sezione -->
+    <header class="dashboard-header flex justify-between align-center mb-8 animate-fade-in-up opacity-0">
+        <div class="flex align-center gap-5">
+            <a th:href="@{/api/navigation/edition}" class="btn-back shadow-soft" title="Torna ai Manuali">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span class="btn-label">Manuali</span>
+            </a>
+            <div class="header-text">
+                <h2 class="text-4xl fw-700 text-brand leading-tight">Registro Noleggi</h2>
+                <p class="text-nm opacity-50">Archivio storico dei movimenti e prestiti</p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenitore della Lista -->
+    <div class="records-container">
+        
+        <!-- Intestazione Desktop -->
+        <div class="records-header glass radius-16 mb-4 p-5 px-8 hide-mobile">
+            <div class="record-row-grid">
+                <div class="header-cell">ID Libro</div>
+                <div class="header-cell">Utente</div>
+                <div class="header-cell">ID Noleggio</div>
+                <div class="header-cell">Data Inizio</div>
+                <div class="header-cell">Scadenza</div>
+                <div class="header-cell">Stato / Fine</div>
+            </div>
+        </div>
+
+        <!-- Ciclo sui Record -->
+        <div th:each="record, iter : ${bookRecords}" 
+             class="record-item glass radius-16 mb-4 p-5 px-8 animate-card"
+             th:classappend="${record.rentalEnded == null ? 'status-active' : ''}"
+             th:style="'--delay: ' + (${iter.index} * 0.06) + 's;'">
+            
+            <div class="record-row-grid">
+                <!-- ID Libro -->
+                <div class="record-cell" data-label="ID Libro">
+                    <span class="badge-id" th:text="${record.bookId}">000</span>
+                </div>
+
+                <!-- Utente -->
+                <div class="record-cell" data-label="Utente">
+                    <span class="user-name-text" th:text="${record.userName + ' ' + record.userLastName}">Nome Cognome</span>
+                </div>
+
+                <!-- ID Noleggio -->
+                <div class="record-cell" data-label="ID Noleggio">
+                    <span class="rental-id-text" th:text="'#' + ${record.rentalId}">#0</span>
+                </div>
+
+                <!-- Data Inizio -->
+                <div class="record-cell" data-label="Data Inizio">
+                    <div class="date-text">
+                        <span class="date-label">Inizio</span>
+                        <div class="date-value">
+                            <i class="fa-solid fa-calendar-check"></i>
+                            <span th:text="${#temporals.format(record.rentalDate, 'dd/MM/yyyy')} ?: 'N/D'">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Scadenza -->
+                <div class="record-cell" data-label="Scadenza">
+                    <div class="date-text">
+                        <span class="date-label">Scadenza</span>
+                        <div class="date-value">
+                            <i class="fa-solid fa-clock"></i>
+                            <span th:text="${#temporals.format(record.rentalExpired, 'dd/MM/yyyy')} ?: 'N/D'">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stato / Fine -->
+                <div class="record-cell" data-label="Status">
+                    <div class="flex flex-column gap-2">
+                        <!-- Badge di Stato -->
+                        <div th:if="${record.rentalEnded == null}" class="status-badge active">
+                            <i class="fa-solid fa-circle-dot"></i>
+                            <span>In Corso</span>
+                        </div>
+                        <div th:if="${record.rentalEnded != null}" class="status-badge ended">
+                            <i class="fa-solid fa-check-circle"></i>
+                            <span>Concluso</span>
+                        </div>
+                        
+                        <!-- Data Fine (se presente) -->
+                        <div class="date-text" th:if="${record.rentalEnded != null}">
+                            <div class="date-value font-size-small opacity-70">
+                                <i class="fa-solid fa-calendar-xmark"></i>
+                                <span th:text="${#temporals.format(record.rentalEnded, 'dd/MM/yyyy')}">-</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Stato Vuoto -->
+        <div th:if="${#lists.isEmpty(bookRecords)}" class="empty-state p-12 text-center glass radius-24 animate-fade-in">
+            <div class="empty-icon-wrapper mb-6 opacity-20">
+                <i class="fa-solid fa-folder-open text-6xl"></i>
+            </div>
+            <h3 class="text-2xl fw-700 opacity-60 mb-2">Nessun record trovato</h3>
+            <p class="text-nm opacity-40">Il registro dei noleggi è attualmente vuoto o nessun risultato corrisponde ai criteri.</p>
+        </div>
+    </div>
+</div>

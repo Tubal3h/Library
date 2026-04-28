@@ -13,12 +13,18 @@ public class BookDto {
     private int editionId;
     private int bookId;
     private String title;
+    private String authorName;
+    private String authorLastName;
     private String authorFullName;
     private String publisherName;
     private LocalDate publishingDate;
     private String isbnCode;
     private String categoryName;
     private String status;
+    private String userName;
+    private String userLastName;
+
+    
 
     /**
      * Costruttore di default.
@@ -43,6 +49,21 @@ public class BookDto {
         this.status = status;
     }
     
+    public String getAuthorName() {
+    	return authorName;
+    }
+    
+    public void setAuthorName(String authorName) {
+    	this.authorName = authorName;
+    }
+    
+    public String getAuthorLastName() {
+    	return authorLastName;
+    }
+    
+    public void setAuthorLastName(String authorLastName) {
+    	this.authorLastName = authorLastName;
+    }
 
     public BookDto(int bookId) {
     	this.bookId = bookId;
@@ -173,6 +194,23 @@ public class BookDto {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserLastName() {
+        return userLastName;
+    }
+
+    public void setUserLastName(String userLastName) {
+        this.userLastName = userLastName;
+    }
+
 }
 
 

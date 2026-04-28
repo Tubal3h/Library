@@ -143,6 +143,7 @@ public class RentService {
      * @throws RuntimeException se si verifica un errore durante la creazione del noleggio
      */
     
+
     @Transactional
     public void createBookedDate(RentDto rentDto) throws RuntimeException {
         try {
@@ -152,6 +153,7 @@ public class RentService {
             rental.setBookingDate(LocalDate.now());
             rentRepository.createABookedDate(rental);
             rentRepository.updateStatusToLend(rentDto.getBookId());
+        
         } catch (Exception e) {
             System.out.println("Eccezione nella repository: " + e.getMessage());
             throw new RuntimeException("impossibile effettuare la prenotazione.");

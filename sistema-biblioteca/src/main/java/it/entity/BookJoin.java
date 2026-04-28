@@ -21,6 +21,9 @@ public class BookJoin {
     private String category_name;
     private String isbn_code;
     private String status;
+    private String userName;
+    private String userLastName;
+
 
     /**
      * Costruttore di default.
@@ -43,7 +46,7 @@ public class BookJoin {
      */
     public BookJoin(int edition_id, int book_id, String book_name, String author_full_name,
             String publisher_name, LocalDate publication_date, String category_name,
-            String isbn_code, String status) {
+            String isbn_code, String status, String userName, String userLastName) {
         this.edition_id = edition_id;
         this.book_id = book_id;
         this.book_name = book_name;
@@ -53,7 +56,10 @@ public class BookJoin {
         this.category_name = category_name;
         this.isbn_code = isbn_code;
         this.status = status;
+        this.userName = userName;
+        this.userLastName = userLastName;
     }
+
 
     /**
      * @return ID dell'edizione
@@ -180,6 +186,23 @@ public class BookJoin {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserLastName() {
+        return userLastName;
+    }
+
+    public void setUserLastName(String userLastName) {
+        this.userLastName = userLastName;
+    }
+
 
     @Override
     public String toString() {

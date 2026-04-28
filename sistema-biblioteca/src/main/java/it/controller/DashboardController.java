@@ -94,7 +94,7 @@ public class DashboardController {
                     model.addAttribute("totalRents", rentService.getTotalRentsByUserId(user.getUserId()));
                 } else if ("role_admin".equals(user.getUserRole())) {
                     model.addAttribute("totalUsers", userService.getTotalUsers());
-                    model.addAttribute("totalBooks", bookService.getTotalCountBooks());
+                    model.addAttribute("totalBooks", bookService.getTotalNotElimatedBooks());
                     model.addAttribute("totalRents", rentService.getTotalRents());
                     model.addAttribute("totalBooksBooked", rentService.getTotalBooksBooked());
                 }

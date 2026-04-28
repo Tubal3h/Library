@@ -1,4 +1,4 @@
-package it.repository;
+package it.repository.interfaces;
 
 import java.time.LocalDate;
 import java.util.List;

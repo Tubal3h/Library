@@ -19,6 +19,7 @@ import it.entity.Edition;
 import it.entity.EditionJoin;
 import it.exception.InsertEditionException;
 import it.mapper.EditionRowMapper;
+import it.repository.interfaces.EditionRepositoryInterface;
 import it.mapper.EditionJoinRowMapper;
 
 /**

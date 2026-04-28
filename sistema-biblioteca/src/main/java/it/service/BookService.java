@@ -19,6 +19,7 @@ import it.exception.NoBookIdFoundException;
 
 import it.dto.BookDto;
 import it.dto.BookNameDto;
+import it.dto.InsertBookDto;
 import it.entity.BookJoin;
 import it.entity.Category;
 import it.entity.BookName;
@@ -132,9 +133,13 @@ public class BookService {
      */
     @Transactional(readOnly = true)
     public int getTotalCountBooks() {
-        return bookRepository.countBooks();
+        return bookRepository.countAllBooks();
     }
     
+    @Transactional(readOnly = true)
+    public int getTotalNotElimatedBooks() {
+    	return bookRepository.countAllNotEliminatedBooks();
+    }
     /**
      * Aggiunge una nuova copia fisica di un libro al sistema tramite il suo ISBN.
      * Recupera l'edizione corrispondente e inserisce un nuovo record nella tabella books.
@@ -188,7 +193,7 @@ public class BookService {
 		List<BookDto> filteredList = new ArrayList<>();
 		if(search != null && !search.isBlank()) {
 			for(BookDto book : myList) {
-				if(book.getTitle().replaceAll("\\s+","").toLowerCase().equals(search.replaceAll("\\s+","").toLowerCase())) {
+				if(book.getTitle().replaceAll("\\s+","").toLowerCase().contains(search.replaceAll("\\s+","").toLowerCase())) {
 					filteredList.add(book);
 				}
 			}	
@@ -218,42 +223,42 @@ public class BookService {
      */
 	
 	@Transactional
-	public void insertBook(String title, String authorName, String authorLastName, LocalDate date, String category, String publisher, String isbn) throws InsertBookServiceException {
-		String authorFullName = authorName.concat(" ").concat(authorLastName);
+	public void insertBook(InsertBookDto insertBookDto) throws InsertBookServiceException {
+		String authorFullName = insertBookDto.getAuthorName().concat(" ").concat(insertBookDto.getAuthorLastName());
 		System.out.println("author full name: " + authorFullName);
-		System.out.println("title: " + title);
-		System.out.println("authorName: " + authorName);
-		System.out.println("authorLastName " + authorLastName);
-		System.out.println("publisher: " + publisher);
-		System.out.println("date: " + date);
-		System.out.println("category: " + category);
-		System.out.println("isbn: " + isbn);
+		System.out.println("title: " + insertBookDto.getTitle());
+		System.out.println("authorName: " + insertBookDto.getAuthorName());
+		System.out.println("authorLastName " + insertBookDto.getAuthorLastName());
+		System.out.println("publisher: " + insertBookDto.getPublisherName());
+		System.out.println("date: " + insertBookDto.getLocalDate());
+		System.out.println("category: " + insertBookDto.getCategoryName());
+		System.out.println("isbn: " + insertBookDto.getIsbn());
 		
 		
 		try {
-			if(!bookNameRepository.isTitleOnDb(title)) {
-				bookNameRepository.insertBookByTitle(title);
+			if(!bookNameRepository.isTitleOnDb(insertBookDto.getTitle())) {
+				bookNameRepository.insertBookByTitle(insertBookDto.getTitle());
 				System.out.println("titolo insert fatta");
 			}
 			
-			if(!authorRepository.isAuthorPresent(authorName, authorLastName)) {
-				authorRepository.insertAuthorByNameAndLastName(authorName, authorLastName);	
+			if(!authorRepository.isAuthorPresent(insertBookDto.getAuthorName(), insertBookDto.getAuthorLastName())) {
+				authorRepository.insertAuthorByNameAndLastName(insertBookDto.getAuthorName(), insertBookDto.getAuthorLastName());	
 				System.out.println("autore insert fatta");
 			}
 			 
-			Category categoryBis = new Category(category);
+			Category categoryBis = new Category(insertBookDto.getCategoryName());
 			if(!categoryRepository.isCategoryPresentByName(categoryBis)) {
-				categoryRepository.insertCategoryByNameCategory(category);
+				categoryRepository.insertCategoryByNameCategory(insertBookDto.getCategoryName());
 				System.out.println("caegoria insert fatta");
 			}
 			
-			Publisher publisherBis = new Publisher(publisher);
+			Publisher publisherBis = new Publisher(insertBookDto.getPublisherName());
 			if(!publisherRepository.isPublisherPresent(publisherBis)) {
-				publisherRepository.insertPublisherByPubliserName(publisher);
+				publisherRepository.insertPublisherByPubliserName(insertBookDto.getPublisherName());
 				System.out.println("publisher insert fatta");
 			}
-			editionRepository.insertEdition(title, authorName, authorLastName, publisher, date, category, isbn);
-			bookRepository.insertBookByTitle(title);
+			editionRepository.insertEdition(insertBookDto.getTitle(), insertBookDto.getAuthorName(), insertBookDto.getAuthorLastName(), insertBookDto.getPublisherName(), insertBookDto.getLocalDate(), insertBookDto.getCategoryName(), insertBookDto.getIsbn());
+			bookRepository.insertBookByTitle(insertBookDto.getTitle());
 		}catch(RuntimeException ex) {
 			System.out.println(ex.toString());
 			throw new InsertBookServiceException("errore nell'inserimento di un libro");	
@@ -281,6 +286,8 @@ public class BookService {
                 dto.setIsbn(book.getIsbnCode());
                 dto.setCategoryName(book.getCategoryName());
                 dto.setStatus(book.getStatus());
+                dto.setUserName(book.getUserName());
+                dto.setUserLastName(book.getUserLastName());
                 return dto;
             })
             .toList();

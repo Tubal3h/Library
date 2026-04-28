@@ -18,6 +18,7 @@ import org.springframework.stereotype.Repository;
 import it.entity.BookJoin;
 import it.exception.InsertBookException;
 import it.mapper.BookJoinRowMapper;
+import it.repository.interfaces.BookRepositoryInterface;
 
 /**
  * Repository per la gestione dei dati dei libri nel database.
@@ -97,9 +98,16 @@ public class BookRepository implements BookRepositoryInterface{
      *
      * @return Numero totale di libri presenti nella tabella books
      */
-    @Override
-    public int countBooks() {
+
+    public int countAllBooks() {
+        String sql = "SELECT COUNT(*) FROM books ";
+        return jdbcTemplate.queryForObject(sql, Integer.class);
+    }
+
+    
+    public int countAllNotEliminatedBookss() {
         String sql = "SELECT COUNT(*) FROM books WHERE status != 'eliminato'";
+
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
@@ -210,15 +218,25 @@ public class BookRepository implements BookRepositoryInterface{
                     e.publishing_date,
                     c.category_name,
                     e.isbn,
-                    b.status
+                    b.status,
+                    u.user_name,
+                    u.user_last_name
                 FROM books b
                 JOIN edition e ON b.edition_id = e.edition_id
                 JOIN books_names bn ON e.book_name_id = bn.book_name_id
                 JOIN author a ON e.author_id = a.author_id
                 JOIN publisher p ON e.publisher_id = p.publisher_id
                 JOIN category c ON e.category_id = c.category_id
+                LEFT JOIN (SELECT book_id, users_id FROM rental_record WHERE rental_ended IS NULL) r ON b.book_id = r.book_id
+                LEFT JOIN users u ON r.users_id = u.users_id
                 WHERE e.edition_id = ?
                 """ + filter;
         return jdbcTemplate.query(sql, bookJoinMapper, editionId);
     }
+
+	@Override
+	public int countAllNotEliminatedBooks() {
+		String query = "SELECT COUNT(*) FROM books WHERE status != 'eliminato'";
+		return jdbcTemplate.queryForObject(query, Integer.class);
+	}
 }

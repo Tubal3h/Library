@@ -40,6 +40,7 @@ function openAddEditionPopup() {
     Popup.open({
         title: 'Aggiungi Edizione', icon: 'fa-plus', panelId: 'addEditionContent',
         confirmText: 'Aggiungi Edizione',
+        size: 'large',
         onConfirm: () => {
             const form = document.getElementById('addEditionForm');
             if (form) form.submit();

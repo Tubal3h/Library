@@ -6,6 +6,8 @@ package it.repository;
 
 import it.entity.User;
 import it.mapper.UserRowMapper;
+import it.repository.interfaces.UserRepositoryInterface;
+
 import java.util.List;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;

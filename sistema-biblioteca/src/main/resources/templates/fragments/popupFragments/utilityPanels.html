@@ -56,23 +56,62 @@
     <!-- View Copies List -->
     <div id="viewBooksEditionContent" class="none animate-fade-in-up">
         <h3 id="viewBooksEditionTitle" class="text-xl fw-700 text-brand mb-4" th:text="${popupEditionTitle}">Titolo Edizione</h3>
+        
+        <!-- Filter Bar -->
+        <div class="popup-filter-bar mb-5 flex-wrap">
+            <button type="button" class="filter-chip active" data-filter="all" onclick="filterBookCopies(this)">
+                <i class="fa-solid fa-layer-group"></i> Tutti
+            </button>
+            <button type="button" class="filter-chip" data-filter="disponibilita" onclick="filterBookCopies(this)">
+                <i class="fa-solid fa-circle-check" style="color: var(--color-success);"></i> Disponibili
+            </button>
+            <button type="button" class="filter-chip" data-filter="prenotato" onclick="filterBookCopies(this)">
+                <i class="fa-solid fa-clock" style="color: #D98F10;"></i> Prenotati
+            </button>
+            <button type="button" class="filter-chip" data-filter="in-prestito" onclick="filterBookCopies(this)">
+                <i class="fa-solid fa-hand-holding-heart" style="color: var(--color-error);"></i> In Prestito
+            </button>
+            <button type="button" class="filter-chip" data-filter="eliminato" onclick="filterBookCopies(this)">
+                <i class="fa-solid fa-trash-can opacity-50"></i> Eliminati
+            </button>
+        </div>
+
         <div class="popup-table-wrap">
             <table class="w-100 border-collapse">
                 <thead>
                     <tr class="text-center border-b opacity-60">
                         <th class="text-xs uppercase tracking-widest fw-700">ID Libro</th>
                         <th class="text-xs uppercase tracking-widest fw-700">Stato</th>
+                        <th class="text-xs uppercase tracking-widest fw-700">Utente</th>
                         <th class="text-xs uppercase tracking-widest fw-700 text-right">Azioni</th>
                     </tr>
                 </thead>
                 <tbody id="viewBooksListContainer" th:fragment="bookCopiesList">
                     <tr th:each="book : ${popupBooks != null ? popupBooks : books}" class="text-center border-b hover-bg-light transition">
-                        <td class="p-3 font-mono fw-600 text-brand">#[[${book.bookId}]]</td>
-                        <td>
-                            <div class="glass-indicator radius-4 p-1 font-size-xs fw-700 uppercase" th:text="${book.status}">STATO</div>
+                        <td class="p-4 font-mono fw-600 text-brand">
+                            <a th:href="@{/api/navigation/bookRecords(bookId=${book.bookId})}" class="hover-underline">#[[${book.bookId}]]</a>
                         </td>
-                        <td class="text-right">
-                            <button th:if="${book.status == 'disponibilita'}" type="button" class="btn-modern-action" th:data-title="${popupEditionTitle}" th:data-url="'/api/deleteBook?bookId=' + ${book.bookId}" onclick="triggerConfirmDelete(this)">Elimina</button>
+                        <td class="p-4">
+                            <div class="status-pill" th:classappend="${#strings.replace(book.status, ' ', '-')}">
+                                <i th:if="${book.status == 'disponibilita'}" class="fa-solid fa-circle-check"></i>
+                                <i th:if="${book.status == 'prenotato'}" class="fa-solid fa-clock"></i>
+                                <i th:if="${book.status == 'in prestito'}" class="fa-solid fa-hand-holding-heart"></i>
+                                <i th:if="${book.status == 'eliminato'}" class="fa-solid fa-trash-can"></i>
+                                <span th:text="${book.status}">STATO</span>
+                            </div>
+                        </td>
+                        <td class="p-4">
+                            <div th:if="${book.userName != null}" class="flex align-center justify-center gap-2">
+                                <div class="avatar-xs bg-surface-2 radius-50 flex center font-size-xs fw-700 text-brand" 
+                                     th:text="${(!#strings.isEmpty(book.userName) ? #strings.substring(book.userName,0,1) : '') + (!#strings.isEmpty(book.userLastName) ? #strings.substring(book.userLastName,0,1) : '')}">US</div>
+                                <span class="text-sm fw-600 opacity-80" th:text="${book.userName + ' ' + book.userLastName}">Nome Cognome</span>
+                            </div>
+                            <span th:if="${book.userName == null}" class="opacity-30 text-xs">---</span>
+                        </td>
+                        <td class="p-4 text-right">
+                            <button th:if="${book.status == 'disponibilita'}" type="button" class="btn-modern-action" th:data-title="${popupEditionTitle}" th:data-url="'/api/deleteBook?bookId=' + ${book.bookId}" onclick="triggerConfirmDelete(this)">
+                                <i class="fa-solid fa-trash mr-1"></i> Elimina
+                            </button>
                         </td>
                     </tr>
                 </tbody>

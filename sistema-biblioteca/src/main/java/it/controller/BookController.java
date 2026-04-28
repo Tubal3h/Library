@@ -4,13 +4,16 @@ import java.time.LocalDate;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.dto.BookDto;
 import it.dto.EditionDto;
+import it.dto.InsertBookDto;
 import it.dto.UserDto;
 import it.component.UserSession;
 import it.exception.NoBookIdFoundException;
@@ -135,30 +138,25 @@ public class BookController {
 	 */
 	@PostMapping("/api/addEdition")
 	public String addEdition(
-	        @RequestParam(value = "title", required = false) String title,
-	        @RequestParam(value = "isbn", required = false) String isbn,
-	        @RequestParam(value = "date", required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
-	        @RequestParam(value = "authorName", required = false) String authorName,
-	        @RequestParam(value = "authorLastName", required = false) String authorLastName,
-	        @RequestParam(value = "categoryName", required = false) String categoryName,
-	        @RequestParam(value = "publisherName", required = false) String publisherName,
-	        @RequestParam(value = "email", required = false) String email,
+	        @ModelAttribute InsertBookDto insertBookDto,
+	        BindingResult bindingResult,
 	        RedirectAttributes redirectAttributes) {
-			if(hasNullOrBlankParameters(title, isbn, authorName, authorLastName, categoryName, publisherName, email) && date == null) {
+			
+		if(bindingResult.hasErrors()) {
 				redirectAttributes.addFlashAttribute("popupType", "error");
 				redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
 				return "redirect:/dashboard";
-			}
+		}
 		
 		UserDto user = userSession.getUser();
 		if (user == null) {
 			return "redirect:/";
 		}
 		try {
-			bookService.insertBook(title, authorName, authorLastName, date, categoryName, publisherName, isbn);
+			bookService.insertBook(insertBookDto);
 			redirectAttributes.addFlashAttribute("popupType", "addEdition");
-			redirectAttributes.addFlashAttribute("popupBookTitle", title);
-			redirectAttributes.addFlashAttribute("popupBookIsbn", isbn);
+			redirectAttributes.addFlashAttribute("popupBookTitle", insertBookDto.getTitle());
+			redirectAttributes.addFlashAttribute("popupBookIsbn", insertBookDto.getIsbn());
 		} catch (InsertBookServiceException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
@@ -413,7 +411,7 @@ public class BookController {
 		return "redirect:/dashboard";
 	}
 
-	private boolean hasNullOrBlankParameters(String... params) {
+	private boolean hasNullOrBlankParameters(String...params) {
 		for(String s : params) {
 			if(s == null || s.isBlank()) {
 				return true;

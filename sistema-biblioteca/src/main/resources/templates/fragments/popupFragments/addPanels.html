@@ -59,7 +59,8 @@
                     <input type="text" id="addEditionTitleInput" name="title" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Esempio: Programmare in Java" required>
                     <div id="addEditionTitleSuggestions" class="suggestions-dropdown none"></div>
                 </div>
-                <div class="add-user-row">
+                
+                <div class="popup-grid-3">
                     <div class="input-group">
                         <label class="text-xs uppercase fw-700 opacity-60  block tracking-widest">ISBN (13 cifre)</label>
                         <input type="text" name="isbn" class="w-100 p-4 radius-12 border-none font-size-small font-mono" placeholder="9788845292613" maxlength="13" required>
@@ -68,8 +69,6 @@
                         <label class="text-xs uppercase fw-700 opacity-60  block tracking-widest">Data Pubblicazione</label>
                         <input type="date" name="date" class="w-100 p-4 radius-12 border-none font-size-small cursor-pointer" required>
                     </div>
-                </div>
-                <div class="add-user-row">
                     <div class="input-group">
                         <label class="text-xs uppercase fw-700 opacity-60  block tracking-widest">Categoria</label>
                         <select name="categoryName" class="w-100 p-4 radius-12 border-none font-size-small cursor-pointer" required>
@@ -77,13 +76,14 @@
                             <option th:each="c : ${categories}" th:value="${c.categoryName}" th:text="${c.categoryName}"></option>
                         </select>
                     </div>
+                </div>
+
+                <div class="popup-grid-3">
                     <div class="input-group relative">
                         <label class="text-xs uppercase fw-700 opacity-60  block tracking-widest">Editore</label>
                         <input type="text" id="addEditionPublisherInput" name="publisherName" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Esempio: Mondadori" required>
                         <div id="addEditionPublisherSuggestions" class="suggestions-dropdown none"></div>
                     </div>
-                </div>
-                <div class="add-user-row">
                     <div class="input-group relative">
                         <label class="text-xs uppercase fw-700 opacity-60  block tracking-widest">Nome Autore</label>
                         <input type="text" id="addEditionAuthorNameInput" name="authorName" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Mario" required>

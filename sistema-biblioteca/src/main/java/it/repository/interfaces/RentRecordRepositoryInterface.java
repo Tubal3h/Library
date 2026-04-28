@@ -1,7 +1,8 @@
-package it.repository;
+package it.repository.interfaces;
 
 import java.util.List;
 
+import it.dto.response.BookRecordsJoinDtoResponse;
 import it.entity.RentalRecord;
 import it.entity.RentalRecordJoin;
 
@@ -17,4 +18,5 @@ public interface RentRecordRepositoryInterface {
 	public void updateRentalStatusOk(int bookId);
 	public void updateRentalStatusNotOk(int bookId);
 	public void deleteRentalById(int rentId);
+	public List<BookRecordsJoinDtoResponse> getBookRecords(int bookId);
 }
