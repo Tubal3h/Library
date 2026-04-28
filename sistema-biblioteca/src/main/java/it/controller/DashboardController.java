@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import it.configuration.UserSession;
 import it.dto.RentDto;
 import it.dto.UserDto;
-import it.dto.response.BookHistoryDto;
+import it.dto.join.BookRecordJoinDto;
 import it.dto.response.BookRecordsJoinDtoResponse;
 import it.service.BookService;
 import it.service.RentService;
@@ -159,7 +159,7 @@ public class DashboardController {
 
                         // Titolo dinamico per il registro del libro
                         try {
-                            BookHistoryDto book = bookService.getBookById(bookId);
+                            BookRecordJoinDto book = bookService.getBookById(bookId);
                             model.addAttribute("targetRecordName", "Registro: " + book.getTitle() + " #" + bookId);
                         } catch (Exception e) {
                             model.addAttribute("targetRecordName", "Registro Libro #" + bookId);
@@ -186,7 +186,7 @@ public class DashboardController {
 
             // Gestione Popup Visualizzazione Copie (Server-Side)
             if ("viewCopies".equals(action) && editionId != null) {
-                List<BookHistoryDto> popupBooks = bookService.getBooksByEditionId(editionId, includeDeleted);
+                List<BookRecordJoinDto> popupBooks = bookService.getBooksByEditionId(editionId, includeDeleted);
                 model.addAttribute("popupBooks", popupBooks);
                 model.addAttribute("showCopiesPopup", true);
                 model.addAttribute("popupEditionId", editionId);

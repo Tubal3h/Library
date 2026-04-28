@@ -20,9 +20,13 @@ public class Category {
     /**
      * Costruttore con parametri.
      * 
+     * @param categoryId ID della categoria
      * @param categoryName Nome della categoria
      */
-    public Category(String categoryName) {
+    public Category(
+        int categoryId,
+        String categoryName) {
+        this.categoryId = categoryId;
         this.categoryName = categoryName;
     }
 

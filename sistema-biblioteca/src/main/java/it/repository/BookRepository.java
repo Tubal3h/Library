@@ -15,11 +15,11 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import it.entity.BookHistoryJoin;
-import it.entity.BookJoin;
+import it.entity.join.BookRecordJoin;
+import it.entity.join.BookJoin;
 import it.exception.InsertBookException;
-import it.mapper.BookHistoryJoinRowMapper;
-import it.mapper.BookJoinRowMapper;
+import it.mapper.response.BookJoinResponseRowMapper;
+import it.mapper.response.BookRecordJoinResponseRowMapper;
 import it.repository.interfaces.BookRepositoryInterface;
 
 /**
@@ -30,8 +30,8 @@ import it.repository.interfaces.BookRepositoryInterface;
 public class BookRepository implements BookRepositoryInterface{
 
     private final JdbcTemplate jdbcTemplate;
-    private final BookJoinRowMapper bookJoinMapper;
-    private final BookHistoryJoinRowMapper bookHistoryJoinMapper;
+    private final BookJoinResponseRowMapper bookJoinMapper;
+    private final BookRecordJoinResponseRowMapper bookHistoryJoinMapper;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     
 
@@ -41,7 +41,7 @@ public class BookRepository implements BookRepositoryInterface{
      * @param jdbcTemplate  Il template JDBC per le operazioni sul database
      * @param bookJoinMapper Mapper per convertire i record del database in oggetti BookJoin
      */
-    public BookRepository(JdbcTemplate jdbcTemplate, BookJoinRowMapper bookJoinMapper, BookHistoryJoinRowMapper bookHistoryJoinMapper, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public BookRepository(JdbcTemplate jdbcTemplate, BookJoinResponseRowMapper bookJoinMapper, BookRecordJoinResponseRowMapper bookHistoryJoinMapper, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.bookJoinMapper = bookJoinMapper;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
@@ -211,7 +211,7 @@ public class BookRepository implements BookRepositoryInterface{
      * @return Lista di oggetti BookJoin con i dati delle copie associate
      */
     @Override
-    public List<BookHistoryJoin> getBooksByEditionId(int editionId, boolean includeDeleted) {
+    public List<BookRecordJoin> getBooksByEditionId(int editionId, boolean includeDeleted) {
         String filter = includeDeleted ? "" : " AND b.status != 'eliminato'";
         String sql = """
                 SELECT

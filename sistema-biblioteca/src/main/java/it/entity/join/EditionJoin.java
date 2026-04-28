@@ -1,5 +1,10 @@
-package it.entity;
+package it.entity.join;
 
+import it.entity.Book;
+import it.entity.BookName;
+import it.entity.Author;
+import it.entity.Publisher;
+import it.entity.Category;
 import java.time.LocalDate;
 
 /**
@@ -7,15 +12,14 @@ import java.time.LocalDate;
  */
 public class EditionJoin {
     private int editionId;
-    private int bookId;
-    private String bookName;
-    private String authorName;
-    private String publisherName;
-    private String categoryName;
+    private Author author;
+    private Book book;
+    private BookName bookName;
+    private Category category;
+    private Publisher publisher;
     private LocalDate publishingDate;
     private String isbn;
     private int quantity;
-    private String status;
     
     /**
      * Costruttore vuoto per EditionJoin.
@@ -26,27 +30,35 @@ public class EditionJoin {
     /**
      * Costruttore completo per EditionJoin.
      * 
-     * @param edition_id ID dell'edizione
-     * @param book_id ID del libro
-     * @param book_name Nome del libro
-     * @param author_name Nome dell'autore
-     * @param publisher_name Nome dell'editore
-     * @param category_name Nome della categoria
-     * @param publishing_date Data di pubblicazione
+     * @param editionId ID dell'edizione
+     * @param author Autore
+     * @param book Libro
+     * @param bookName Nome del libro
+     * @param category Categoria
+     * @param publisher Editore
+     * @param publishingDate Data di pubblicazione
      * @param isbn Codice ISBN
      * @param quantity Quantità di copie disponibili
      */
-    public EditionJoin(int editionId, int bookId, String bookName, String authorName, String publisherName, String categoryName, LocalDate publishingDate, String isbn, int quantity, String status) {
+    public EditionJoin(
+        int editionId, 
+        Author author, 
+        Book book, 
+        BookName bookName, 
+        Category category, 
+        Publisher publisher, 
+        LocalDate publishingDate, 
+        String isbn, 
+        int quantity
+    ) {
         this.editionId = editionId;
-        this.bookId = bookId;
-        this.bookName = bookName;
-        this.authorName = authorName;
-        this.publisherName = publisherName;
-        this.categoryName = categoryName;
+        this.book = book;
+        this.author = author;
+        this.publisher = publisher;
+        this.category = category;
         this.publishingDate = publishingDate;
         this.isbn = isbn;
         this.quantity = quantity;
-        this.status = status;
     }
     
     /**
@@ -68,37 +80,30 @@ public class EditionJoin {
     }
     
     /**
-     * Ottiene l'ID del libro.
+     * Ottiene il libro.
      * 
-     * @return ID del libro
+     * @return Libro
      */
-    public int getBookId() {
-        return bookId;
+    public Book getBook() {
+        return book;
     }
     
     /**
-     * Imposta l'ID del libro.
+     * Imposta il libro.
      * 
-     * @param book_id ID del libro
+     * @param book Libro
      */
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
+    public void setBook(Book book) {
+        this.book = book;
     }
-    
-    public String getStatus() {
-		return status;
-	}
 
-	public void setStatus(String status) {
-		this.status = status;
-	}
-
-	/**
+	
+    /**
      * Ottiene il nome del libro.
      * 
      * @return Nome del libro
      */
-    public String getBookName() {
+    public BookName getBookName() {
         return bookName;
     }
     
@@ -107,62 +112,62 @@ public class EditionJoin {
      * 
      * @param book_name Nome del libro
      */
-    public void setBookName(String bookName) {
+    public void setBookName(BookName bookName) {
         this.bookName = bookName;
     }
     
     /**
-     * Ottiene il nome dell'autore.
+     * Ottiene l'autore.
      * 
-     * @return Nome dell'autore
+     * @return Autore
      */
-    public String getAuthor() {
-        return authorName;
+    public Author getAuthor() {
+        return author;
     }
     
     /**
-     * Imposta il nome dell'autore.
+     * Imposta l'autore.
      * 
-     * @param author_name Nome dell'autore
+     * @param author Autore
      */
-    public void setAuthor(String authorName) {
-        this.authorName = authorName;
+    public void setAuthor(Author author) {
+        this.author = author;
     }
     
     /**
-     * Ottiene il nome dell'editore.
+     * Ottiene l'editore.
      * 
-     * @return Nome dell'editore
+     * @return Editore
      */
-    public String getPublisher() {
-        return publisherName;
+    public Publisher getPublisher() {
+        return publisher;
     }
     
     /**
-     * Imposta il nome dell'editore.
+     * Imposta l'editore.
      * 
-     * @param publisher_name Nome dell'editore
+     * @param publisher Editore
      */
-    public void setPublisher(String publisherName) {
-        this.publisherName = publisherName;
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
     }
     
     /**
-     * Ottiene il nome della categoria.
+     * Ottiene la categoria.
      * 
-     * @return Nome della categoria
+     * @return Categoria
      */
-    public String getCategory() {
-        return categoryName;
+    public Category getCategory() {
+        return category;
     }
     
     /**
-     * Imposta il nome della categoria.
+     * Imposta la categoria.
      * 
-     * @param category_name Nome della categoria
+     * @param category Categoria
      */
-    public void setCategory(String categoryName) {
-        this.categoryName = categoryName;
+    public void setCategory(Category category) {
+        this.category = category;
     }
     
     /**
@@ -226,8 +231,8 @@ public class EditionJoin {
      */
     @Override
     public String toString() {
-        return "EditionJoin [editionId=" + editionId + ", bookName=" + bookName + ", author=" + authorName
-                + ", publisher=" + publisherName + ", category=" + categoryName + ", publishingDate="
+        return "EditionJoin [editionId=" + editionId + ", bookName=" + bookName + ", author=" + author
+                + ", publisher=" + publisher + ", category=" + category + ", publishingDate="
                 + publishingDate + ", isbn=" + isbn + ", quantity=" + quantity + "]";
     }
 }

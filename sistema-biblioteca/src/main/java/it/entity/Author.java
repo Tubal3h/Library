@@ -21,10 +21,12 @@ public class Author {
     /**
      * Costruttore con parametri.
      * 
+     * @param authorId ID dell'autore
      * @param authorName Nome dell'autore
      * @param authorLastName Cognome dell'autore
      */
-    public Author(String authorName, String authorLastName) {
+    public Author(int authorId, String authorName, String authorLastName) {
+        this.authorId = authorId;
         this.authorName = authorName;
         this.authorLastName = authorLastName;
     }

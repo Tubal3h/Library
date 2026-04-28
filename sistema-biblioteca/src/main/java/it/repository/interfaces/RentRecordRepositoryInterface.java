@@ -2,9 +2,9 @@ package it.repository.interfaces;
 
 import java.util.List;
 
-import it.dto.response.BookRecordsJoinDtoResponse;
 import it.entity.RentalRecord;
-import it.entity.RentalRecordJoin;
+import it.entity.join.BookRecordJoin;
+import it.entity.join.RentalRecordJoin;
 import it.exception.HistoryNotFoundException;
 
 public interface RentRecordRepositoryInterface {
@@ -19,6 +19,6 @@ public interface RentRecordRepositoryInterface {
 	public void updateRentalStatusOk(int bookId);
 	public void updateRentalStatusNotOk(int bookId);
 	public void deleteRentalById(int rentId);
-	public List<BookRecordsJoinDtoResponse> getBookRecords(int bookId) throws HistoryNotFoundException;
-	public List<BookRecordsJoinDtoResponse> getUserRecords(int userId) throws HistoryNotFoundException;
+	public List<BookRecordJoin> getBookRecords(int bookId) throws HistoryNotFoundException;
+	public List<BookRecordJoin> getUserRecords(int userId) throws HistoryNotFoundException;
 }

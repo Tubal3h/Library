@@ -14,10 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.dto.RentDto;
 import it.dto.UserDto;
-import it.dto.response.BookHistoryDto;
+import it.dto.join.BookRecordJoinDto;
 import it.dto.response.BookRecordsJoinDtoResponse;
 import it.entity.RentalRecord;
-import it.entity.RentalRecordJoin;
+import it.entity.join.RentalRecordJoin;
 import it.exception.HistoryNotFoundException;
 import it.repository.RentRecordRepository;
 
@@ -81,7 +81,7 @@ public class RentService {
     	user.setUserName(rent.getUserName());
     	user.setUserLastName(rent.getUserLastName());
     	
-    	BookHistoryDto book = new BookHistoryDto();
+    	BookRecordJoinDto book = new BookRecordJoinDto();
         book.setBookId(rent.getBookId());
         book.setTitle(rent.getBookName());
         book.setAuthorFullName(rent.getAuthorFullName());

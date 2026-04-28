@@ -11,13 +11,13 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import it.dto.response.BookRecordsJoinDtoResponse;
 import it.entity.RentalRecord;
-import it.entity.RentalRecordJoin;
+import it.entity.join.BookRecordJoin;
+import it.entity.join.RentalRecordJoin;
 import it.exception.HistoryNotFoundException;
 import it.mapper.RentRecordRowMapper;
-import it.mapper.RentalRecordJoinRowMapper;
-import it.mapper.response.BookRecordsJoinDtoResponseMapper;
+import it.mapper.response.BookRecordJoinResponseRowMapper;
+import it.mapper.response.RentalRecordJoinResponseRowMapper;
 import it.repository.interfaces.RentRecordRepositoryInterface;
 
 /**
@@ -28,8 +28,8 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 
     private final JdbcTemplate jdbcTemplate;
     private final RentRecordRowMapper rentRecordRowMapper;
-    private final RentalRecordJoinRowMapper rentalRecordJoinRowMapper;
-    private final BookRecordsJoinDtoResponseMapper bookRecordsJoinDtoResponseMapper;
+    private final RentalRecordJoinResponseRowMapper rentalRecordJoinRowMapper;
+    private final BookRecordJoinResponseRowMapper bookRecordJoinResponseRowMapper;
 
     /**
      * Costruttore per RentRecordRepository.
@@ -39,11 +39,11 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
      * @param rentalRecordJoinRowMapper Mapper per le query aggregate con JOIN su libri ed edizioni
      */
     public RentRecordRepository(JdbcTemplate jdbcTemplate, RentRecordRowMapper rentRecordRowMapper,
-            RentalRecordJoinRowMapper rentalRecordJoinRowMapper, BookRecordsJoinDtoResponseMapper bookRecordsJoinDtoResponseMapper) {
+            RentalRecordJoinResponseRowMapper rentalRecordJoinRowMapper, BookRecordJoinResponseRowMapper bookRecordJoinResponseRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.rentRecordRowMapper = rentRecordRowMapper;
         this.rentalRecordJoinRowMapper = rentalRecordJoinRowMapper;
-        this.bookRecordsJoinDtoResponseMapper = bookRecordsJoinDtoResponseMapper;
+        this.bookRecordJoinResponseRowMapper = bookRecordJoinResponseRowMapper;
     }
 
     /**
@@ -106,7 +106,8 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                     r.rental_id, r.users_id, r.book_id,
                     r.rental_date, r.rental_expired, r.rental_ended, r.booking_date,
                     bn.title,
-                    CONCAT(a.author_name, ' ', a.author_last_name) AS author_full_name,
+                    a.author_name,
+                    a.author_last_name,
                     u.user_name, 
                     u.user_last_name,
                     p.publisher_name,
@@ -146,7 +147,8 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                     r.rental_id, r.users_id, r.book_id,
                     r.rental_date, r.rental_expired, r.rental_ended, r.booking_date,
                     bn.title,
-                    CONCAT(a.author_name, ' ', a.author_last_name) AS author_full_name,
+                    a.author_name,
+                    a.author_last_name,
                     u.user_name, 
                     u.user_last_name,
                     p.publisher_name,
@@ -279,7 +281,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 	}
 
 	@Override
-	public List<BookRecordsJoinDtoResponse> getBookRecords(int bookId) throws HistoryNotFoundException {
+	public List<BookRecordJoin> getBookRecords(int bookId) throws HistoryNotFoundException {
 	    String sql = """
 	    		SELECT r.book_id, r.rental_id, u.user_name, u.user_last_name, r.booking_date, r.rental_date, r.rental_expired, r.rental_ended, bn.title
 	    		FROM rental_record r
@@ -292,14 +294,14 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 	    """;
 	    
 	    try {
-	    	return jdbcTemplate.query(sql, bookRecordsJoinDtoResponseMapper, bookId);
+	    	return jdbcTemplate.query(sql, bookRecordJoinResponseRowMapper, bookId);
 	    }catch(DataAccessException ex) {
 	    	System.out.println(ex.getMessage());
 	    	throw new HistoryNotFoundException("errore nel cercare i dati");
 	    }
 	}
 
-    public List<BookRecordsJoinDtoResponse> getUserRecords(int userId) throws HistoryNotFoundException {
+    public List<BookRecordJoin> getUserRecords(int userId) throws HistoryNotFoundException {
         String sql = """
                 SELECT r.book_id, r.rental_id, u.user_name, u.user_last_name, r.booking_date, r.rental_date, r.rental_expired, r.rental_ended, bn.title
                 FROM rental_record r
@@ -312,7 +314,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
         """;
         
         try {
-            return jdbcTemplate.query(sql, bookRecordsJoinDtoResponseMapper, userId);
+            return jdbcTemplate.query(sql, bookRecordJoinResponseRowMapper, userId);
         } catch (DataAccessException ex) {
             System.out.println(ex.getMessage());
             throw new HistoryNotFoundException("errore nel cercare i dati dell'utente");

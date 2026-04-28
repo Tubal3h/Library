@@ -5,9 +5,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import it.dto.EditionDto;
-import it.dto.EditionJoinDto;
+import it.dto.join.EditionJoinDto;
 import it.entity.Edition;
-import it.entity.EditionJoin;
+import it.entity.join.EditionJoin;
 import it.repository.EditionRepository;
 
 /**

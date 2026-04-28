@@ -26,12 +26,16 @@ public class BookNameRowMapper implements RowMapper<BookName> {
      * @return L'oggetto BookName mappato dalla riga del database
      * @throws SQLException in caso di errori con il database
      */
-    @Override
-    public BookName mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public static BookName map(ResultSet rs) throws SQLException {
         BookName bookName = new BookName();
-        bookName.setBookNameId(rs.getInt("book_name_id"));
+        bookName.setBookNameId(rs.getInt("bookNameId"));
         bookName.setTitle(rs.getString("title"));
         return bookName;
+    }
+
+    @Override
+    public BookName mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return map(rs);
     }
 }
 

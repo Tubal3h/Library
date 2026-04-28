@@ -1,4 +1,4 @@
-package it.mapper;
+package it.mapper.response;
 
 /* -------------------------------------------------------------------------- */
 /*                                   MAPPER                                   */
@@ -10,13 +10,13 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import it.entity.BookJoin;
+import it.entity.join.BookJoin;
 
 /**
  * Mapper per convertire i record del database in oggetti DTO BookCatalogDto.
  */
 @Component
-public class BookJoinRowMapper implements RowMapper<BookJoin> {
+public class BookJoinResponseRowMapper implements RowMapper<BookJoin> {
     
     /**
      * Mappa una riga del ResultSet in un oggetto BookCatalogDto.
@@ -28,17 +28,10 @@ public class BookJoinRowMapper implements RowMapper<BookJoin> {
      */
     @Override
     public BookJoin mapRow(ResultSet rs, int rowNum) throws SQLException {
+
         BookJoin bookJoin = new BookJoin();
-        bookJoin.setEditionId(rs.getInt("edition_id"));
-        bookJoin.setBookId(rs.getInt("book_id"));
-        bookJoin.setBookName(rs.getString("title"));
-        bookJoin.setAuthorName(rs.getString("author_name"));
-        bookJoin.setAuthorLastName(rs.getString("author_last_name"));
-        bookJoin.setPublisherName(rs.getString("publisher_name"));
-        bookJoin.setPublicationDate(rs.getDate("publishing_date").toLocalDate());
-        bookJoin.setCategoryName(rs.getString("category_name"));
-        bookJoin.setIsbn(rs.getString("isbn"));
-        bookJoin.setStatus(rs.getString("status"));
+        bookJoin.setEdition(EditionJoinResponseRowMapper.map(rs));
+
         return bookJoin;
 
     }

@@ -17,14 +17,18 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.exception.NoBookIdFoundException;
 
+import it.dto.AuthorDto;
+import it.dto.BookDto;
+import it.dto.CategoryDto;
+import it.dto.PublisherDto;
 import it.dto.BookNameDto;
 import it.dto.InsertBookDto;
-import it.dto.response.BookHistoryDto;
-import it.dto.response.BookUserDto;
-import it.entity.BookJoin;
-import it.entity.Category;
+import it.dto.join.BookJoinDto;
+import it.dto.join.BookRecordJoinDto;
+import it.dto.join.EditionJoinDto;
 import it.entity.BookName;
 import it.entity.Publisher;
+import it.entity.join.BookJoin;
 import it.exception.BookNotFoundException;
 import it.exception.InsertAuthorException;
 import it.exception.InsertBookNameException;
@@ -38,6 +42,7 @@ import it.repository.EditionRepository;
 import it.repository.PublisherRepository;
 import it.repository.CategoryRepository;
 import it.exception.NoIsbnFoundException;
+
 
 
 /**
@@ -80,27 +85,52 @@ public class BookService {
      * gli amministratori vedono tutti i libri indipendentemente dallo stato.
      *
      * @param userRole Ruolo dell'utente (es. role_user, role_admin)
-     * @return Lista di {@link BookDto} dei libri accessibili all'utente
+     * @return Lista di {@link BookJoinDto} dei libri accessibili all'utente
      */
     @Transactional(readOnly = true)
-    private List<BookUserDto> getAllBooks(String userRole) {
+    private List<BookJoinDto> getAllBooks(String userRole) {
         List<BookJoin> repoBook = bookRepository.getAllBooks();
         return repoBook.stream()
             .filter(book -> !userRole.equals("role_user") ||
-                    "disponibilita".equalsIgnoreCase(book.getStatus()))
+                    "disponibilita".equalsIgnoreCase(book.getEdition().getBook().getStatus()))
             .map(book -> {
-                BookUserDto dto = new BookUserDto();
-                dto.setEditionId(book.getEditionId());
-                dto.setBookId(book.getBookId());
-                dto.setTitle(book.getBookName());
-                dto.setAuthorName(book.getAuthorName());
-                dto.setAuthorLastName(book.getAuthorLastName());
-                dto.setPublisherName(book.getPublisherName());
-                dto.setPublishingDate(book.getPublicationDate());
-                dto.setIsbnCode(book.getIsbnCode());
-                dto.setCategoryName(book.getCategoryName());
-                dto.setStatus(book.getStatus());
-                return dto;
+                
+                EditionJoinDto editionJoinDto = new EditionJoinDto();
+                editionJoinDto.setEditionId(book.getEdition().getEditionId());
+                editionJoinDto.setAuthorDto(
+                    new AuthorDto(
+                        book.getEdition().getAuthor().getAuthorId(),
+                        book.getEdition().getAuthor().getAuthorName(),
+                        book.getEdition().getAuthor().getAuthorLastName()
+                    )
+                );
+                editionJoinDto.setBookDto(
+                    new BookDto(
+                        book.getEdition().getBook().getBookId(),
+                        book.getEdition().getBook().getEditionId(),
+                        book.getEdition().getBook().getStatus()
+                    )
+                );
+                editionJoinDto.setCategoryDto(
+                    new CategoryDto(
+                        book.getEdition().getCategory().getCategoryId(),
+                        book.getEdition().getCategory().getCategoryName()
+                    )
+                );
+                editionJoinDto.setPublisherDto(
+                    new PublisherDto(
+                        book.getEdition().getPublisher().getPublisherId(),
+                        book.getEdition().getPublisher().getPublisherName()
+                    )
+                );
+                editionJoinDto.setPublishingDate(book.getEdition().getPublishingDate());
+                editionJoinDto.setIsbn(book.getEdition().getIsbn());
+                editionJoinDto.setQuantity(book.getEdition().getQuantity());
+
+                BookJoinDto dtoBookJoin = new BookJoinDto();
+                dtoBookJoin.setEdition(editionJoinDto);
+                
+                return dtoBookJoin;
             })
             .toList();
     }
@@ -109,17 +139,17 @@ public class BookService {
      * Recupera i dettagli di un singolo libro tramite il suo ID.
      *
      * @param bookId ID del libro da cercare
-     * @return {@link BookDto} del libro trovato
+     * @return {@link BookJoinDto} del libro trovato
      * @throws BookNotFoundException se nessun libro corrisponde all'ID specificato
      */
     @Transactional(readOnly = true)
-    public BookHistoryDto getBookById(int bookId) {
+    public BookRecordJoinDto getBookById(int bookId) {
         var book = bookRepository.getAllBooks().stream()
             .filter(b -> b.getBookId() == bookId)
             .findFirst()
             .orElseThrow(() -> new BookNotFoundException("Libro non trovato con l'ID: " + bookId));
 
-        BookHistoryDto dto = new BookHistoryDto();
+        BookRecordJoinDto dto = new BookRecordJoinDto();
         dto.setEditionId(book.getEditionId());
         dto.setBookId(book.getBookId());
         dto.setTitle(book.getBookName());
@@ -280,10 +310,10 @@ public class BookService {
      * @param includeDeleted Flag per includere anche i libri eliminati
      * @return Lista di BookDto delle copie trovate
      */
-    public List<BookHistoryDto> getBooksByEditionId(int editionId, boolean includeDeleted) {
+    public List<BookRecordJoinDto> getBooksByEditionId(int editionId, boolean includeDeleted) {
         return bookRepository.getBooksByEditionId(editionId, includeDeleted).stream()
             .map(book -> {
-                BookHistoryDto dto = new BookHistoryDto();
+                BookRecordJoinDto dto = new BookRecordJoinDto();
                 dto.setEditionId(book.getEditionId());
                 dto.setBookId(book.getBookId());
                 dto.setTitle(book.getBookName());

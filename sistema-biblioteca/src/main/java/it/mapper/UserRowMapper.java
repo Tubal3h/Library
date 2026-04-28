@@ -27,16 +27,18 @@ public class UserRowMapper implements RowMapper<User> {
      * @return L'oggetto User mappato dalla riga del database
      * @throws SQLException in caso di errori con il database
      */
+    public static User map(ResultSet rs) throws SQLException {
+        User user = new User();
+        user.setUserId(rs.getInt("userId"));
+        user.setUserName(rs.getString("userName"));
+        user.setUserLastName(rs.getString("userLastName"));
+        user.setUserRole(rs.getString("userRole"));
+        return user;
+    }
+
     @Override
     public User mapRow(ResultSet rs, int rowNum) throws SQLException {
-        User user = new User();
-        user.setUserId(rs.getInt("users_id"));
-        user.setUserName(rs.getString("user_name"));
-        user.setUserLastName(rs.getString("user_last_name"));
-        user.setUserEmail(rs.getString("email"));
-        user.setUserPassword(rs.getString("pass"));
-        user.setUserRole(rs.getString("roles"));
-        return user;
+        return map(rs);
     }
 }
 

@@ -12,7 +12,7 @@ import it.configuration.UserSession;
 import it.dto.EditionDto;
 import it.dto.InsertBookDto;
 import it.dto.UserDto;
-import it.dto.response.BookHistoryDto;
+import it.dto.join.BookRecordJoinDto;
 import it.exception.NoBookIdFoundException;
 import it.exception.InsertBookServiceException;
 import it.exception.NoIsbnFoundException;
@@ -105,7 +105,7 @@ public class BookController {
 			return "redirect:/";
 		}
 		try {
-			BookHistoryDto bookDto = new BookHistoryDto(bookId);
+			BookRecordJoinDto bookDto = new BookRecordJoinDto(bookId);
 			bookService.deleteBook(bookDto.getBookId());
 			redirectAttributes.addFlashAttribute("popupType", "deleteBook");
 			redirectAttributes.addFlashAttribute("popupBookId", bookId);

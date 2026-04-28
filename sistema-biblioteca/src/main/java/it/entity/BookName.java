@@ -22,7 +22,11 @@ public class BookName {
      * 
      * @param title Titolo del libro
      */
-    public BookName(String title) {
+    public BookName(
+        int bookNameId,
+        String title
+        ) {
+        this.bookNameId = bookNameId;
         this.title = title;
     }
 

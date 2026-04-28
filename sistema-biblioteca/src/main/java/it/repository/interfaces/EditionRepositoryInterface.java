@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 import it.entity.Edition;
-import it.entity.EditionJoin;
+import it.entity.join.EditionJoin;
 
 public interface EditionRepositoryInterface {
 	public List<EditionJoin> getAllEditions();

@@ -18,21 +18,17 @@ import it.entity.Author;
 @Component
 public class AuthorRowMapper implements RowMapper<Author> {
 
-    /**
-     * Mappa una riga del ResultSet in un oggetto Author.
-     * 
-     * @param rs il ResultSet da cui estrarre i dati
-     * @param rowNum il numero della riga corrente
-     * @return L'oggetto Author mappato dalla riga del database
-     * @throws SQLException in caso di errori con il database
-     */
+    public static Author map(ResultSet rs) throws SQLException {
+        Author author = new Author();
+        author.setAuthorId(rs.getInt("authorId"));
+        author.setAuthorName(rs.getString("authorName"));
+        author.setAuthorLastName(rs.getString("authorLastName"));
+        return author;
+    }
+
     @Override
     public Author mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Author author = new Author();
-        author.setAuthorId(rs.getInt("author_id"));
-        author.setAuthorName(rs.getString("author_name"));
-        author.setAuthorLastName(rs.getString("author_last_name"));
-        return author;
+        return map(rs);
     }
 }
 
