@@ -28,18 +28,18 @@ function openSearchPopup(section) {
     } else if (section === 'users') {
         title.innerText = 'Ricerca Utenti';
         subtitle.innerText = 'Cerca tra gli utenti del sistema';
-        inputLabel.innerText = 'Cerca per nome, cognome o email';
-        inputField.placeholder = 'Es: mario.rossi@email.com...';
+        inputLabel.innerText = 'Cerca per nome e cognome';
+        inputField.placeholder = 'Es: Mario Rossi...';
     } else if (section === 'edition') {
         title.innerText = 'Ricerca Edizioni';
         subtitle.innerText = 'Cerca tra le edizioni disponibili';
         inputLabel.innerText = 'Cerca per titolo, autore, isbn, editore, categoria';
-        inputField.placeholder = 'Es: Mondadori, 2023...';
+        inputField.placeholder = 'Es: C++ Primer o John Doe...';
     } else if (section === 'rents') {
         title.innerText = 'Ricerca Prestiti';
         subtitle.innerText = 'Cerca tra i prestiti in corso o scaduti';
-        inputLabel.innerText = 'Cerca per ISBN, ID utente o Data di Scadenza';
-        inputField.placeholder = 'Es: 978-..., user-id...';
+        inputLabel.innerText = 'Cerca per libro, utente, editore o autore';
+        inputField.placeholder = 'Es: C++ Primer o John Doe...';
     } else {
         title.innerText = 'Ricerca Generale';
         subtitle.innerText = 'Cerca nel sistema';
