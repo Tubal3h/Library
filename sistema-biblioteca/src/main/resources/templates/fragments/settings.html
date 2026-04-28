@@ -33,11 +33,11 @@
                                 title="Modifica">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
-                        <button class="btn-icon-settings delete" th:data-id="${bn.bookNameId}" th:data-title="${bn.title}"
+                        <!-- <button class="btn-icon-settings delete" th:data-id="${bn.bookNameId}" th:data-title="${bn.title}"
                                 onclick="triggerConfirmDeleteBookName(this)"
                                 title="Elimina">
                             <i class="fa-solid fa-trash"></i>
-                        </button>
+                        </button> -->
                     </div>
                 </div>
                 <div th:if="${bookNames.isEmpty()}" class="settings-empty">
@@ -74,11 +74,11 @@
                                 title="Modifica">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
-                        <button class="btn-icon-settings delete" th:data-id="${author.authorId}" th:data-title="${author.authorName + ' ' + author.authorLastName}"
+                        <!-- <button class="btn-icon-settings delete" th:data-id="${author.authorId}" th:data-title="${author.authorName + ' ' + author.authorLastName}"
                                 onclick="triggerConfirmDeleteAuthor(this)"
                                 title="Elimina">
                             <i class="fa-solid fa-trash"></i>
-                        </button>
+                        </button> -->
                     </div>
                 </div>
                 <div th:if="${authors.isEmpty()}" class="settings-empty">
@@ -114,11 +114,11 @@
                                 title="Modifica">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
-                        <button class="btn-icon-settings delete" th:data-id="${pub.publisherId}" th:data-title="${pub.publisherName}"
+                        <!-- <button class="btn-icon-settings delete" th:data-id="${pub.publisherId}" th:data-title="${pub.publisherName}"
                                 onclick="triggerConfirmDeletePublisher(this)"
                                 title="Elimina">
                             <i class="fa-solid fa-trash"></i>
-                        </button>
+                        </button> -->
                     </div>
                 </div>
                 <div th:if="${publishers.isEmpty()}" class="settings-empty">
@@ -154,11 +154,11 @@
                                 title="Modifica">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
-                        <button class="btn-icon-settings delete" th:data-id="${cat.categoryId}" th:data-title="${cat.categoryName}"
+                        <!-- <button class="btn-icon-settings delete" th:data-id="${cat.categoryId}" th:data-title="${cat.categoryName}"
                                 onclick="triggerConfirmDeleteCategory(this)"
                                 title="Elimina">
                             <i class="fa-solid fa-trash"></i>
-                        </button>
+                        </button> -->
                     </div>
                 </div>
                 <div th:if="${categories.isEmpty()}" class="settings-empty">
