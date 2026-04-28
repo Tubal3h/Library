@@ -48,6 +48,7 @@
 .text-gradient-brand {
     background: linear-gradient(135deg, var(--color-brand-primary), var(--record-accent));
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
