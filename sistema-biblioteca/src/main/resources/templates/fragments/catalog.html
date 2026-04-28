@@ -164,7 +164,7 @@
                 <span>Aggiungi Copia</span>
                 <!-- <i class="fa-solid fa-plus-circle"></i> -->
             </button>
-            <a th:href="@{/dashboard(editionId=${edition.editionId}, action='viewCopies')}"
+            <a th:href="@{/dashboard(editionId=${edition.editionId}, action='viewCopies', includeDeleted=true)}"
                 class="w-100 btn-modern-action pointer transition shadow-soft" style="text-decoration: none;">
                 <span>Visualizza Copie</span>
                 <!-- <i class="fa-solid fa-layer-group"></i> -->

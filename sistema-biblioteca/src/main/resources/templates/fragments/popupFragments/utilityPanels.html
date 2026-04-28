@@ -56,6 +56,26 @@
     <!-- View Copies List -->
     <div id="viewBooksEditionContent" class="none animate-fade-in-up">
         <h3 id="viewBooksEditionTitle" class="text-xl fw-700 text-brand mb-4" th:text="${popupEditionTitle}">Titolo Edizione</h3>
+        
+        <!-- Filter Bar -->
+        <div class="popup-filter-bar mb-5 flex-wrap">
+            <button type="button" class="filter-chip active" data-filter="all" onclick="filterBookCopies(this)">
+                <i class="fa-solid fa-layer-group"></i> Tutti
+            </button>
+            <button type="button" class="filter-chip" data-filter="disponibilita" onclick="filterBookCopies(this)">
+                <i class="fa-solid fa-circle-check" style="color: var(--color-success);"></i> Disponibili
+            </button>
+            <button type="button" class="filter-chip" data-filter="prenotato" onclick="filterBookCopies(this)">
+                <i class="fa-solid fa-clock" style="color: #D98F10;"></i> Prenotati
+            </button>
+            <button type="button" class="filter-chip" data-filter="in-prestito" onclick="filterBookCopies(this)">
+                <i class="fa-solid fa-hand-holding-heart" style="color: var(--color-error);"></i> In Prestito
+            </button>
+            <button type="button" class="filter-chip" data-filter="eliminato" onclick="filterBookCopies(this)">
+                <i class="fa-solid fa-trash-can opacity-50"></i> Eliminati
+            </button>
+        </div>
+
         <div class="popup-table-wrap">
             <table class="w-100 border-collapse">
                 <thead>
