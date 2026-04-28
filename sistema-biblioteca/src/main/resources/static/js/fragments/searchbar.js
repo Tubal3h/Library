@@ -48,13 +48,13 @@ function openSearchPopup(section) {
     }
 
     inputField.value = ''; // Reset del campo input
-    
+
     // Memorizza la sezione attuale nell'attributo data-section dell'overlay
     overlay.dataset.section = section;
 
     // Visualizza il popup e imposta il focus sull'input
     overlay.classList.remove('none');
-    document.body.style.overflow = 'hidden'; 
+    document.body.style.overflow = 'hidden';
     inputField.focus();
 }
 
@@ -65,7 +65,7 @@ function closeSearchPopup() {
     const overlay = document.getElementById('searchPopupOverlay');
     if (overlay) {
         overlay.classList.add('none');
-        document.body.style.overflow = ''; 
+        document.body.style.overflow = '';
     }
 }
 
@@ -75,9 +75,10 @@ function closeSearchPopup() {
  */
 function executeSearch() {
     const inputField = document.getElementById('searchInputField');
-    const query = inputField.value.trim();
+    const query = inputField.value; // Prende il valore così com'è
 
-    if (query === '') {
+    // Se è vuoto (e non è lo spazio di reset), mostra errore
+    if (query.trim() === '' && query !== ' ') {
         inputField.classList.add('border-error');
         setTimeout(() => {
             inputField.classList.remove('border-error');
@@ -87,7 +88,20 @@ function executeSearch() {
 
     closeSearchPopup();
 
-    window.location.href = `/api/search/${encodeURIComponent(query)}`;
+    // Reindirizza alla dashboard con il parametro di ricerca
+    window.location.href = `/dashboard?search=${encodeURIComponent(query)}`;
+}
+
+/**
+ * Resetta la ricerca corrente inserendo uno spazio ed eseguendo la ricerca,
+ * che per la logica di backend equivale a mostrare tutti i risultati.
+ */
+function resetSearch() {
+    const inputField = document.getElementById('searchInputField');
+    if (inputField) {
+        inputField.value = ' '; // Inserisce uno spazio come richiesto per resettare
+        executeSearch();
+    }
 }
 
 

@@ -29,10 +29,21 @@
 }
 
 /* Category Specific Accents */
-.card-titles { --card-accent: var(--accent-indigo); }
-.card-authors { --card-accent: var(--accent-emerald); }
-.card-publishers { --card-accent: var(--accent-amber); }
-.card-categories { --card-accent: var(--accent-rose); }
+.card-titles {
+    --card-accent: var(--accent-indigo);
+}
+
+.card-authors {
+    --card-accent: var(--accent-emerald);
+}
+
+.card-publishers {
+    --card-accent: var(--accent-amber);
+}
+
+.card-categories {
+    --card-accent: var(--accent-rose);
+}
 
 .settings-header {
     padding: 1.5rem;
@@ -236,6 +247,13 @@
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
