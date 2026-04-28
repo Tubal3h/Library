@@ -38,7 +38,10 @@ public class BookJoinRowMapper implements RowMapper<BookJoin> {
         bookJoin.setCategoryName(rs.getString("category_name"));
         bookJoin.setIsbn(rs.getString("isbn"));
         bookJoin.setStatus(rs.getString("status"));
+        bookJoin.setUserName(rs.getString("user_name"));
+        bookJoin.setUserLastName(rs.getString("user_last_name"));
         return bookJoin;
+
     }
 }
 

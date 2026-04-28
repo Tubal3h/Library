@@ -218,13 +218,17 @@ public class BookRepository implements BookRepositoryInterface{
                     e.publishing_date,
                     c.category_name,
                     e.isbn,
-                    b.status
+                    b.status,
+                    u.user_name,
+                    u.user_last_name
                 FROM books b
                 JOIN edition e ON b.edition_id = e.edition_id
                 JOIN books_names bn ON e.book_name_id = bn.book_name_id
                 JOIN author a ON e.author_id = a.author_id
                 JOIN publisher p ON e.publisher_id = p.publisher_id
                 JOIN category c ON e.category_id = c.category_id
+                LEFT JOIN (SELECT book_id, users_id FROM rental_record WHERE rental_ended IS NULL) r ON b.book_id = r.book_id
+                LEFT JOIN users u ON r.users_id = u.users_id
                 WHERE e.edition_id = ?
                 """ + filter;
         return jdbcTemplate.query(sql, bookJoinMapper, editionId);

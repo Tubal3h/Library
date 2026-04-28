@@ -3,7 +3,9 @@
 /* -------------------------------------------------------------------------- */
 
 .records-container {
-    padding-bottom: 2rem;
+    padding-bottom: 3rem;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 /* Header della Lista (Desktop) */
@@ -11,37 +13,57 @@
     background: var(--color-surface);
     border: 1px solid var(--color-border);
     display: grid;
-    grid-template-columns: 80px 2fr 120px 1.2fr 1.2fr 1.2fr;
+    grid-template-columns: 100px 2fr 120px 1fr 1fr 1.2fr;
     gap: 1.5rem;
     align-items: center;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    backdrop-filter: blur(10px);
 }
 
 .header-cell {
     font-size: 0.75rem;
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.1em;
+    letter-spacing: 0.15em;
     color: var(--color-text-muted);
+    padding: 0.5rem 0;
 }
 
 /* Elemento della Lista (Card) */
 .record-item {
     background: var(--color-surface);
     border: 1px solid var(--color-border);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
     cursor: default;
+    overflow: hidden;
+    position: relative;
+}
+
+.record-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: transparent;
+    transition: background 0.3s ease;
+}
+
+.record-item.status-active::before {
+    background: var(--color-accent);
 }
 
 .record-item:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.08);
     border-color: var(--color-accent);
+    background: var(--color-surface);
 }
 
 .record-row-grid {
     display: grid;
-    grid-template-columns: 80px 2fr 120px 1.2fr 1.2fr 1.2fr;
+    grid-template-columns: 100px 2fr 120px 1fr 1fr 1.2fr;
     gap: 1.5rem;
     align-items: center;
 }
@@ -53,61 +75,122 @@
 }
 
 .badge-id {
-    display: inline-block;
-    padding: 0.35rem 0.6rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.4rem 0.8rem;
     background: var(--color-surface-2);
-    border-radius: 8px;
-    font-family: 'Monaco', 'Consolas', monospace;
-    font-size: 0.85rem;
-    font-weight: 600;
+    border-radius: 10px;
+    font-family: 'JetBrains Mono', 'Fira Code', monospace;
+    font-size: 0.8rem;
+    font-weight: 700;
     color: var(--color-text-muted);
     border: 1px solid var(--color-border);
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
 }
 
 .rental-id-text {
-    font-weight: 700;
+    font-weight: 800;
     color: var(--color-accent);
+    font-size: 1.1rem;
+    letter-spacing: -0.02em;
 }
 
 .user-name-text {
-    font-weight: 600;
-    font-size: 1.05rem;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--color-text);
 }
 
 .date-text {
     display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.date-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    opacity: 0.6;
+    display: none; /* Solo mobile */
+}
+
+.date-value {
+    display: flex;
     align-items: center;
     gap: 0.5rem;
     font-size: 0.9rem;
-    color: var(--color-text);
+    font-weight: 600;
 }
 
-.date-text i {
+.date-value i {
     color: var(--color-accent);
-    opacity: 0.7;
-    width: 16px;
+    font-size: 0.85rem;
+    opacity: 0.8;
 }
 
-/* Pulsante Indietro */
-.btn-back {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    display: flex;
+.status-badge {
+    display: inline-flex;
     align-items: center;
-    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.status-badge.active {
+    background: rgba(var(--color-accent-rgb, 245, 166, 35), 0.1);
+    color: var(--color-accent);
+    border: 1px solid rgba(var(--color-accent-rgb, 245, 166, 35), 0.2);
+}
+
+.status-badge.ended {
+    background: rgba(var(--color-success-rgb, 46, 125, 50), 0.1);
+    color: var(--color-success);
+    border: 1px solid rgba(var(--color-success-rgb, 46, 125, 50), 0.2);
+}
+
+/* Pulsante Indietro / Back Button */
+.btn-back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 1.25rem;
     background: var(--color-surface);
     border: 1px solid var(--color-border);
+    border-radius: 14px;
     color: var(--color-text);
-    cursor: pointer;
-    transition: all 0.25s ease;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     box-shadow: var(--shadow-sm);
+    cursor: pointer;
+}
+
+.btn-back i {
+    font-size: 1.1rem;
+    transition: transform 0.3s ease;
+}
+
+.btn-back .btn-label {
+    font-size: 0.9rem;
+    letter-spacing: 0.02em;
 }
 
 .btn-back:hover {
     background: var(--color-accent);
-    color: white;
     border-color: var(--color-accent);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(var(--color-accent-rgb, 245, 166, 35), 0.2);
+}
+
+.btn-back:hover i {
     transform: translateX(-4px);
 }
 
@@ -117,24 +200,24 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 200px;
+    min-height: 300px;
     background: var(--color-surface);
     border: 2px dashed var(--color-border);
-    border-radius: 16px;
-    margin-top: 1rem;
+    border-radius: 24px;
+    margin-top: 2rem;
 }
 
 /* Animazioni */
 .animate-card {
-    animation: slideUp 0.5s ease forwards;
+    animation: slideUpFade 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
     opacity: 0;
     animation-delay: var(--delay);
 }
 
-@keyframes slideUp {
+@keyframes slideUpFade {
     from {
         opacity: 0;
-        transform: translateY(20px);
+        transform: translateY(30px);
     }
     to {
         opacity: 1;
@@ -142,39 +225,96 @@
     }
 }
 
-/* Mobile Responsiveness */
-@media (max-width: 1024px) {
+/* Mobile Responsiveness — THE BIG IMPROVEMENT */
+@media (max-width: 1200px) {
     .record-row-grid, .records-header {
-        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-columns: 80px 1.5fr 100px 1fr 1fr 1.2fr;
+        gap: 1rem;
     }
+}
+
+@media (max-width: 1024px) {
     .records-header {
         display: none;
     }
+    
     .record-item {
         padding: 1.5rem !important;
+        border-radius: 20px;
     }
-    .record-cell {
-        margin-bottom: 1rem;
+
+    .record-row-grid {
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: 
+            "id status"
+            "user user"
+            "rent rent"
+            "date1 date2"
+            "date3 date3";
+        gap: 1.25rem;
     }
+
+    .record-cell[data-label="ID Libro"] { grid-area: id; }
+    .record-cell[data-label="Status"] { grid-area: status; justify-self: end; }
+    .record-cell[data-label="Utente"] { grid-area: user; border-bottom: 1px solid var(--color-border); padding-bottom: 0.5rem; }
+    .record-cell[data-label="ID Noleggio"] { grid-area: rent; }
+    .record-cell[data-label="Data Inizio"] { grid-area: date1; }
+    .record-cell[data-label="Scadenza"] { grid-area: date2; }
+    .record-cell[data-label="Data Fine"] { grid-area: date3; }
+
+    .date-label {
+        display: block;
+        margin-bottom: 0.2rem;
+    }
+
     .record-cell::before {
         content: attr(data-label);
         display: block;
-        font-size: 0.7rem;
-        font-weight: 700;
+        font-size: 0.65rem;
+        font-weight: 800;
         text-transform: uppercase;
         color: var(--color-text-muted);
-        margin-bottom: 0.25rem;
+        margin-bottom: 0.4rem;
+        opacity: 0.7;
+    }
+    
+    /* Remove before for cells that have their own labels */
+    .record-cell[data-label="Data Inizio"]::before,
+    .record-cell[data-label="Scadenza"]::before,
+    .record-cell[data-label="Data Fine"]::before,
+    .record-cell[data-label="Status"]::before {
+        display: none;
     }
 }
 
 @media (max-width: 640px) {
     .record-row-grid {
         grid-template-columns: 1fr;
-        gap: 0.75rem;
+        grid-template-areas: 
+            "id"
+            "status"
+            "user"
+            "rent"
+            "date1"
+            "date2"
+            "date3";
+        gap: 1rem;
     }
+    
+    .record-cell[data-label="Status"] { justify-self: start; }
+    
     .dashboard-header {
         flex-direction: column;
         align-items: flex-start !important;
-        gap: 1rem;
+        gap: 1.5rem;
+    }
+    
+    .header-text h2 {
+        font-size: 1.8rem;
+    }
+    
+    .btn-create {
+        width: 100%;
+        justify-content: center;
     }
 }

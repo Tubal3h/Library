@@ -118,11 +118,8 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                 JOIN category c     ON e.category_id   = c.category_id
                 JOIN users u		ON r.users_id      = u.users_id
                 WHERE r.rental_ended IS NULL
-<<<<<<< HEAD
                 AND r.rental_expired IS NULL
-=======
                 ORDER BY r.rental_date DESC
->>>>>>> 5088af4f7c092c17706c09e9dbd8f35149c5cbbb
                 """;
         return jdbcTemplate.query(sql, rentalRecordJoinRowMapper);
     }
