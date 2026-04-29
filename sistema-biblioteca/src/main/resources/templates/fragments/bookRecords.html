@@ -46,18 +46,18 @@
 
                         <!-- ID Libro -->
                         <div class="table-cell col-id">
-                            <span class="badge-mono" th:text="${record.bookId}">000</span>
+                            <span class="badge-mono" th:text="${record.bookDto.bookId}">000</span>
                         </div>
-
+ 
                         <!-- Utente -->
                         <div class="table-cell col-user">
                             <div class="user-info">
                                 <div class="user-avatar"
-                                    th:text="${(!#strings.isEmpty(record.userName) ? #strings.substring(record.userName,0,1) : '') + (!#strings.isEmpty(record.userLastName) ? #strings.substring(record.userLastName,0,1) : '')}">
+                                    th:text="${(!#strings.isEmpty(record.userDto.userName) ? #strings.substring(record.userDto.userName,0,1) : '') + (!#strings.isEmpty(record.userDto.userLastName) ? #strings.substring(record.userDto.userLastName,0,1) : '')}">
                                     JD</div>
                                 <div class="user-details">
                                     <span class="user-fullname"
-                                        th:text="${record.userName + ' ' + record.userLastName}">John Doe</span>
+                                        th:text="${record.userDto.userName + ' ' + record.userDto.userLastName}">John Doe</span>
                                     <span class="user-role-label">Socio</span>
                                 </div>
                             </div>

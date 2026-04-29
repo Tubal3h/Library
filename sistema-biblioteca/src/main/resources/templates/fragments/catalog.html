@@ -8,10 +8,10 @@
             <!--  Title & Author -->
             <div class="mb-2">
                 <div class="flex align-center gap-1">
-                    <h3 class="text-2xl italicfw-700 text-brand mb-1" th:text="${book.title}"></h3>
+                    <h3 class="text-2xl italicfw-700 text-brand mb-1" th:text="${book.editionDto.bookNameDto.title}"></h3>
                     <i th:if="${user.userDto.userRole == 'role_admin'}"
                         class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
-                        th:data-id="${book.editionId}" th:data-title="${book.title}"
+                        th:data-id="${book.editionDto.editionId}" th:data-title="${book.editionDto.bookNameDto.title}"
                         onclick="openEditTitlePopup(this.getAttribute('data-id'), this.getAttribute('data-title'), true)"
                         title="Modifica Titolo"></i>
 
@@ -21,7 +21,7 @@
                     <p class="text-2xl fw-400 opacity-60 mb-3" th:text="${book.editionDto.authorDto.authorName + ' ' + book.editionDto.authorDto.authorLastName}"></p>
                     <i th:if="${user.userDto.userRole == 'role_admin'}" 
                        class="fa-solid fa-user-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
-                        th:data-id="${book.editionId}" th:data-author="${book.authorFullName}"
+                        th:data-id="${book.editionDto.editionId}" th:data-author="${book.editionDto.authorDto.authorName + ' ' + book.editionDto.authorDto.authorLastName}"
                         onclick="openEditAuthorPopup(this.getAttribute('data-id'), this.getAttribute('data-author'), true)"
                         title="Modifica Autore"></i>
 
@@ -31,7 +31,7 @@
                         th:text="${book.editionDto.categoryDto.categoryName}">CATEGORIA</div>
                     <i th:if="${user.userDto.userRole == 'role_admin'}" 
                        class="fa-solid fa-tag cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
-                        th:data-id="${book.editionId}" th:data-category="${book.categoryName}"
+                        th:data-id="${book.editionDto.editionId}" th:data-category="${book.editionDto.categoryDto.categoryName}"
                         onclick="openEditCategoryPopup(this.getAttribute('data-id'), this.getAttribute('data-category'), true)"
                         title="Modifica Categoria"></i>
                 </div>
@@ -39,12 +39,12 @@
 
             <!-- Info book -->
             <div class="card-meta mt-auto flex align-center gap-3 opacity-70">
-                <div class="flex align-center font-size-small" th:title="${book.publisherName}">
+                <div class="flex align-center font-size-small" th:title="${book.editionDto.publisherDto.publisherName}">
                     <i class="fa-solid fa-building-columns text-sm text-brand pr-1"></i>
-                    <label class="fw-600" title="Editore" th:text="${book.publisherName}">Editore</label>
+                    <label class="fw-600" title="Editore" th:text="${book.editionDto.publisherDto.publisherName}">Editore</label>
                     <i th:if="${user.userDto.userRole == 'role_admin'}"
                         class="fa-solid fa-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon pl-2"
-                        th:data-id="${book.editionId}" th:data-publisher="${book.publisherName}"
+                        th:data-id="${book.editionDto.editionId}" th:data-publisher="${book.editionDto.publisherDto.publisherName}"
                         onclick="openEditPublisherPopup(this.getAttribute('data-id'), this.getAttribute('data-publisher'), true)"
                         title="Modifica Editore"></i>
 
@@ -52,11 +52,11 @@
                 <div class="flex align-center font-size-small">
                     <i class="fa-solid fa-calendar-check text-sm text-brand pr-1"></i>
                     <label class="fw-600" title="Pubblicato il"
-                        th:text="${#temporals.format(book.publishingDate, 'dd-MM-yyyy')}">Pubblicato il</label>
+                        th:text="${#temporals.format(book.editionDto.publishingDate, 'dd-MM-yyyy')}">Pubblicato il</label>
                 </div>
                 <div class="flex align-center font-size-small">
                     <i class="fa-solid fa-barcode text-sm text-brand pr-1"></i>
-                    <label class="font-mono fw-600" title="ISBN" th:text="${book.isbn}">ISBN</label>
+                    <label class="font-mono fw-600" title="ISBN" th:text="${book.editionDto.isbn}">ISBN</label>
                 </div>
             </div>
         </div>
@@ -108,7 +108,7 @@
                     <h3 class="text-2xl italic fw-700 text-brand mb-1" th:text="${edition.bookNameDto.title}"></h3>
                     <i th:if="${user.userDto.userRole == 'role_admin'}" 
                        class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
-                        th:data-id="${edition.editionId}" th:data-title="${edition.bookName}"
+                        th:data-id="${edition.editionId}" th:data-title="${edition.bookNameDto.title}"
                         onclick="openEditTitlePopup(this.getAttribute('data-id'), this.getAttribute('data-title'), true)"
                         title="Modifica Titolo"></i>
 
@@ -117,7 +117,7 @@
                     <p class="text-xl fw-400 opacity-80 mb-1" th:text="${edition.authorDto.authorName + ' ' + edition.authorDto.authorLastName}"></p>
                     <i th:if="${user.userDto.userRole == 'role_admin'}" 
                        class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
-                        th:data-id="${edition.editionId}" th:data-author="${edition.authorName}"
+                        th:data-id="${edition.editionId}" th:data-author="${edition.authorDto.authorName + ' ' + edition.authorDto.authorLastName}"
                         onclick="openEditAuthorPopup(this.getAttribute('data-id'), this.getAttribute('data-author'), true)"
                         title="Modifica Autore"></i>
 
@@ -127,7 +127,7 @@
                         th:text="${edition.categoryDto.categoryName}">CATEGORIA</div>
                     <i th:if="${user.userDto.userRole == 'role_admin'}" 
                        class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
-                        th:data-id="${edition.editionId}" th:data-category="${edition.categoryName}"
+                        th:data-id="${edition.editionId}" th:data-category="${edition.categoryDto.categoryName}"
                         onclick="openEditCategoryPopup(this.getAttribute('data-id'), this.getAttribute('data-category'), true)"
                         title="Modifica Categoria"></i>
                 </div>
@@ -140,7 +140,7 @@
                     <label class="fw-600" title="Editore" th:text="${edition.publisherDto.publisherName}">Editore</label>
                     <i th:if="${user.userDto.userRole == 'role_admin'}" 
                        class="fa-solid fa-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon pl-2"
-                        th:data-id="${edition.editionId}" th:data-publisher="${edition.publisherName}"
+                        th:data-id="${edition.editionId}" th:data-publisher="${edition.publisherDto.publisherName}"
                         onclick="openEditPublisherPopup(this.getAttribute('data-id'), this.getAttribute('data-publisher'), true)"
                         title="Modifica Editore"></i>
 
@@ -148,11 +148,11 @@
                 <div class="flex align-center font-size-small">
                     <i class="fa-solid fa-calendar-check text-sm text-brand pr-1"></i>
                     <label class="fw-600" title="Pubblicato il"
-                        th:text="${#temporals.format(edition.publicationDate, 'dd-MM-yyyy')}">Pubblicato il</label>
+                        th:text="${#temporals.format(edition.publishingDate, 'dd-MM-yyyy')}">Pubblicato il</label>
                 </div>
                 <div class="flex align-center font-size-small">
                     <i class="fa-solid fa-barcode text-sm text-brand pr-1"></i>
-                    <label class="font-mono fw-600" title="ISBN" th:text="${edition.isbnCode}">ISBN</label>
+                    <label class="font-mono fw-600" title="ISBN" th:text="${edition.isbn}">ISBN</label>
                 </div>
             </div>
         </div>
@@ -163,8 +163,8 @@
                     <span class="fw-700" th:text="'Quantità: ' + ${edition.quantity}"></span>
                 </div>
             </div>
-            <button type="button" th:data-title="${edition.bookName}"
-                th:data-url="@{/api/addBook(email=${user.email}, isbn=${edition.isbnCode}, bookName=${edition.bookName})}"
+            <button type="button" th:data-title="${edition.bookNameDto.title}"
+                th:data-url="@{/api/addBook(email=${user.email}, isbn=${edition.isbn}, bookName=${edition.bookNameDto.title})}"
                 onclick="triggerConfirmAdd(this)" class="w-100 btn-modern-action pointer transition shadow-soft">
                 <span>Aggiungi Copia</span>
                 <!-- <i class="fa-solid fa-plus-circle"></i> -->

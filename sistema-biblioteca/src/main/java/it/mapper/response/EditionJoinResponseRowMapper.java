@@ -37,12 +37,12 @@ public class EditionJoinResponseRowMapper implements RowMapper<Edition> {
      */
     public static Edition map(ResultSet rs) throws SQLException {
         Edition editionJoin = new Edition();
-        editionJoin.setEditionId(rs.getInt("editionId"));
+        editionJoin.setEditionId(rs.getInt("edition_id"));
         editionJoin.setAuthor(AuthorRowMapper.map(rs));
         editionJoin.setBookName(BookNameRowMapper.map(rs));
         editionJoin.setCategory(CategoryRowMapper.map(rs));
         editionJoin.setPublisher(PublisherRowMapper.map(rs));
-        editionJoin.setPublishingDate(rs.getDate("publishingDate").toLocalDate());
+        editionJoin.setPublishingDate(rs.getDate("publishing_date").toLocalDate());
         editionJoin.setIsbn(rs.getString("isbn"));
         editionJoin.setQuantity(rs.getInt("quantity"));
         return editionJoin;

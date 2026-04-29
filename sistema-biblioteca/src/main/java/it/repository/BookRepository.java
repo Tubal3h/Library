@@ -220,8 +220,12 @@ public class BookRepository implements BookRepositoryInterface {
         String sql = """
                 SELECT
                     e.edition_id,
+                    e.book_name_id,
+                    e.author_id,
+                    e.publisher_id,
+                    e.category_id,
                     b.book_id,
-                    bn.title AS book_name,
+                    bn.title,
                     a.author_name,
                     a.author_last_name,
                     p.publisher_name,

@@ -28,8 +28,8 @@ public class CategoryRowMapper implements RowMapper<Category> {
      */
     public static Category map(ResultSet rs) throws SQLException {
         Category category = new Category();
-        category.setCategoryId(rs.getInt("categoryId"));
-        category.setCategoryName(rs.getString("categoryName"));
+        category.setCategoryId(rs.getInt("category_id"));
+        category.setCategoryName(rs.getString("category_name"));
         return category;
     }
 

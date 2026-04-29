@@ -108,20 +108,16 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
     public List<RentalRecord> getActiveRents() {
         String sql = """
                 SELECT
-                    r.rental_id as rentalId, r.users_id as userId, r.book_id as bookId,
-                    r.rental_date as rentalDate, r.rental_expired as rentalExpired, r.rental_ended as rentalEnded, r.booking_date as bookingDate,
+                    r.rental_id, r.users_id, r.book_id,
+                    r.rental_date, r.rental_expired, r.rental_ended, r.booking_date,
+                    u.user_name, u.user_last_name, u.email, u.pass, u.roles,
+                    b.status,
+                    e.edition_id, e.book_name_id, e.author_id, e.publisher_id, e.category_id, e.publishing_date, e.isbn,
                     bn.title,
-                    a.author_id as authorId,
-                    a.author_name as authorName,
-                    a.author_last_name as authorLastName,
-                    u.user_name as userName,
-                    u.user_last_name as userLastName,
-                    p.publisher_name as publisherName,
-                    e.edition_id as editionId,
-                    e.publishing_date as publishingDate,
-                    c.category_name as categoryName,
-                    e.isbn,
-                    b.status
+                    a.author_name, a.author_last_name,
+                    p.publisher_name,
+                    c.category_name,
+                    0 AS quantity
                 FROM rental_record r
                 JOIN books b        ON r.book_id       = b.book_id
                 JOIN edition e      ON b.edition_id    = e.edition_id
@@ -154,20 +150,16 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
     public List<RentalRecord> getActiveRentsByUserId(int userId) {
         String sql = """
                 SELECT
-                    r.rental_id as rentalId, r.users_id as userId, r.book_id as bookId,
-                    r.rental_date as rentalDate, r.rental_expired as rentalExpired, r.rental_ended as rentalEnded, r.booking_date as bookingDate,
+                    r.rental_id, r.users_id, r.book_id,
+                    r.rental_date, r.rental_expired, r.rental_ended, r.booking_date,
+                    u.user_name, u.user_last_name, u.email, u.pass, u.roles,
+                    b.status,
+                    e.edition_id, e.book_name_id, e.author_id, e.publisher_id, e.category_id, e.publishing_date, e.isbn,
                     bn.title,
-                    a.author_id as authorId,
-                    a.author_name as authorName,
-                    a.author_last_name as authorLastName,
-                    u.user_name as userName,
-                    u.user_last_name as userLastName,
-                    p.publisher_name as publisherName,
-                    e.edition_id as editionId,
-                    e.publishing_date as publishingDate,
-                    c.category_name as categoryName,
-                    e.isbn,
-                    b.status
+                    a.author_name, a.author_last_name,
+                    p.publisher_name,
+                    c.category_name,
+                    0 AS quantity
                 FROM rental_record r
                 JOIN books b        ON r.book_id       = b.book_id
                 JOIN edition e      ON b.edition_id    = e.edition_id
@@ -294,14 +286,27 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
     @Override
     public List<RentalRecord> getBookRecords(int bookId) throws HistoryNotFoundException {
         String sql = """
-                		SELECT r.book_id, r.rental_id, u.user_name, u.user_last_name, r.booking_date, r.rental_date, r.rental_expired, r.rental_ended, bn.title
+                		SELECT
+                            r.rental_id, r.users_id, r.book_id,
+                            r.rental_date, r.rental_expired, r.rental_ended, r.booking_date,
+                            u.user_name, u.user_last_name, u.email, u.pass, u.roles,
+                            b.status,
+                            e.edition_id, e.book_name_id, e.author_id, e.publisher_id, e.category_id, e.publishing_date, e.isbn,
+                            bn.title,
+                            a.author_name, a.author_last_name,
+                            p.publisher_name,
+                            c.category_name,
+                            0 AS quantity
                 		FROM rental_record r
                 		LEFT JOIN users u ON r.users_id = u.users_id
                 		LEFT JOIN books b ON b.book_id = r.book_id
-                           LEFT JOIN edition e ON b.edition_id = e.edition_id
-                           LEFT JOIN books_names bn ON e.book_name_id = bn.book_name_id
+                        LEFT JOIN edition e ON b.edition_id = e.edition_id
+                        LEFT JOIN books_names bn ON e.book_name_id = bn.book_name_id
+                        LEFT JOIN author a ON e.author_id = a.author_id
+                        LEFT JOIN publisher p ON e.publisher_id = p.publisher_id
+                        LEFT JOIN category c ON e.category_id = c.category_id
                 		WHERE r.book_id = ?
-                           ORDER BY r.rental_id DESC
+                        ORDER BY r.rental_id DESC
                 """;
 
         try {
@@ -314,12 +319,25 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 
     public List<RentalRecord> getUserRecords(int userId) throws HistoryNotFoundException {
         String sql = """
-                        SELECT r.book_id, r.rental_id, u.user_name, u.user_last_name, r.booking_date, r.rental_date, r.rental_expired, r.rental_ended, bn.title
+                        SELECT
+                            r.rental_id, r.users_id, r.book_id,
+                            r.rental_date, r.rental_expired, r.rental_ended, r.booking_date,
+                            u.user_name, u.user_last_name, u.email, u.pass, u.roles,
+                            b.status,
+                            e.edition_id, e.book_name_id, e.author_id, e.publisher_id, e.category_id, e.publishing_date, e.isbn,
+                            bn.title,
+                            a.author_name, a.author_last_name,
+                            p.publisher_name,
+                            c.category_name,
+                            0 AS quantity
                         FROM rental_record r
                         LEFT JOIN users u ON r.users_id = u.users_id
                         LEFT JOIN books b ON b.book_id = r.book_id
                         LEFT JOIN edition e ON b.edition_id = e.edition_id
                         LEFT JOIN books_names bn ON e.book_name_id = bn.book_name_id
+                        LEFT JOIN author a ON e.author_id = a.author_id
+                        LEFT JOIN publisher p ON e.publisher_id = p.publisher_id
+                        LEFT JOIN category c ON e.category_id = c.category_id
                         WHERE r.users_id = ?
                         ORDER BY r.rental_id DESC
                 """;

@@ -20,9 +20,9 @@ public class AuthorRowMapper implements RowMapper<Author> {
 
     public static Author map(ResultSet rs) throws SQLException {
         Author author = new Author();
-        author.setAuthorId(rs.getInt("authorId"));
-        author.setAuthorName(rs.getString("authorName"));
-        author.setAuthorLastName(rs.getString("authorLastName"));
+        author.setAuthorId(rs.getInt("author_id"));
+        author.setAuthorName(rs.getString("author_name"));
+        author.setAuthorLastName(rs.getString("author_last_name"));
         return author;
     }
 

@@ -57,17 +57,21 @@ public class EditionRepository implements EditionRepositoryInterface {
 	public List<Edition> getAllEditions() {
 		String sql = """
 				SELECT
-				COUNT(b.book_id) AS quantity,
-				e.edition_id,
-				MIN(b.book_id) AS book_id,
-				bn.title AS book_name,
-				a.author_name,
-				a.author_last_name,
-				p.publisher_name,
-				c.category_name,
-				e.publishing_date,
-				e.isbn,
-				MIN(b.status) AS status
+				    COUNT(b.book_id) AS quantity,
+				    e.edition_id,
+				    e.book_name_id,
+				    e.author_id,
+				    e.publisher_id,
+				    e.category_id,
+				    bn.title,
+				    a.author_name,
+				    a.author_last_name,
+				    p.publisher_name,
+				    c.category_name,
+				    e.publishing_date,
+				    e.isbn,
+				    MIN(b.book_id) AS book_id,
+				    MIN(b.status) AS status
 				FROM edition e
 				JOIN books_names bn ON e.book_name_id = bn.book_name_id
 				JOIN author a ON e.author_id = a.author_id
@@ -75,14 +79,18 @@ public class EditionRepository implements EditionRepositoryInterface {
 				JOIN category c ON e.category_id = c.category_id
 				LEFT JOIN books b ON e.edition_id = b.edition_id AND b.status != 'eliminato'
 				GROUP BY
-				e.edition_id,
-				bn.title,
-				a.author_name,
-				a.author_last_name,
-				p.publisher_name,
-				c.category_name,
-				e.publishing_date,
-				e.isbn
+				    e.edition_id,
+				    e.book_name_id,
+				    e.author_id,
+				    e.publisher_id,
+				    e.category_id,
+				    bn.title,
+				    a.author_name,
+				    a.author_last_name,
+				    p.publisher_name,
+				    c.category_name,
+				    e.publishing_date,
+				    e.isbn
 				""";
 
 		return jdbcTemplate.query(sql, editionJoinRowMapper);

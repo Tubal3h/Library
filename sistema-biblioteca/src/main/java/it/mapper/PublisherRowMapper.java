@@ -28,8 +28,8 @@ public class PublisherRowMapper implements RowMapper<Publisher> {
      */
     public static Publisher map(ResultSet rs) throws SQLException {
         Publisher publisher = new Publisher();
-        publisher.setPublisherId(rs.getInt("publisherId"));
-        publisher.setPublisherName(rs.getString("publisherName"));
+        publisher.setPublisherId(rs.getInt("publisher_id"));
+        publisher.setPublisherName(rs.getString("publisher_name"));
         return publisher;
     }
 

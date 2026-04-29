@@ -89,27 +89,27 @@
                 <tbody id="viewBooksListContainer" th:fragment="bookCopiesList">
                     <tr th:each="book : ${popupBooks != null ? popupBooks : books}" class="text-center border-b hover-bg-light transition">
                         <td class="p-4 font-mono fw-600 text-brand">
-                            <a th:href="@{'/api/navigation/bookRecords/' + ${book.bookId}}" class="hover-underline">#[[${book.bookId}]]</a>
+                            <a th:href="@{'/api/navigation/bookRecords/' + ${book.bookDto.bookId}}" class="hover-underline">#[[${book.bookDto.bookId}]]</a>
                         </td>
                         <td class="p-4">
-                            <div class="status-pill" th:classappend="${#strings.replace(book.status, ' ', '-')}">
-                                <i th:if="${book.status == 'disponibilita'}" class="fa-solid fa-circle-check"></i>
-                                <i th:if="${book.status == 'prenotato'}" class="fa-solid fa-clock"></i>
-                                <i th:if="${book.status == 'in prestito'}" class="fa-solid fa-book-open-reader"></i>
-                                <i th:if="${book.status == 'eliminato'}" class="fa-solid fa-trash-can"></i>
-                                <span th:text="${book.status}">STATO</span>
+                            <div class="status-pill" th:classappend="${#strings.replace(book.bookDto.status, ' ', '-')}">
+                                <i th:if="${book.bookDto.status == 'disponibilita'}" class="fa-solid fa-circle-check"></i>
+                                <i th:if="${book.bookDto.status == 'prenotato'}" class="fa-solid fa-clock"></i>
+                                <i th:if="${book.bookDto.status == 'in prestito'}" class="fa-solid fa-book-open-reader"></i>
+                                <i th:if="${book.bookDto.status == 'eliminato'}" class="fa-solid fa-trash-can"></i>
+                                <span th:text="${book.bookDto.status}">STATO</span>
                             </div>
                         </td>
                         <td class="p-4">
-                            <div th:if="${book.userName != null}" class="flex align-center justify-center gap-2">
+                            <div th:if="${book.userDto.userName != null}" class="flex align-center justify-center gap-2">
                                 <div class="avatar-xs bg-surface-2 radius-50 flex center font-size-xs fw-700 text-brand" 
-                                     th:text="${(!#strings.isEmpty(book.userName) ? #strings.substring(book.userName,0,1) : '') + (!#strings.isEmpty(book.userLastName) ? #strings.substring(book.userLastName,0,1) : '')}">US</div>
-                                <span class="text-sm fw-600 opacity-80" th:text="${book.userName + ' ' + book.userLastName}">Nome Cognome</span>
+                                     th:text="${(!#strings.isEmpty(book.userDto.userName) ? #strings.substring(book.userDto.userName,0,1) : '') + (!#strings.isEmpty(book.userDto.userLastName) ? #strings.substring(book.userDto.userLastName,0,1) : '')}">US</div>
+                                <span class="text-sm fw-600 opacity-80" th:text="${book.userDto.userName + ' ' + book.userDto.userLastName}">Nome Cognome</span>
                             </div>
-                            <span th:if="${book.userName == null}" class="opacity-30 text-xs">---</span>
+                            <span th:if="${book.userDto.userName == null}" class="opacity-30 text-xs">---</span>
                         </td>
                         <td class="p-4 text-right">
-                            <button th:if="${book.status == 'disponibilita'}" type="button" class="btn-modern-action" th:data-title="${popupEditionTitle}" th:data-url="'/api/deleteBook?bookId=' + ${book.bookId}" onclick="triggerConfirmDelete(this)">
+                            <button th:if="${book.bookDto.status == 'disponibilita'}" type="button" class="btn-modern-action" th:data-title="${popupEditionTitle}" th:data-url="'/api/deleteBook?bookId=' + ${book.bookDto.bookId}" onclick="triggerConfirmDelete(this)">
                                 <i class="fa-solid fa-trash mr-1"></i> Elimina
                             </button>
                         </td>
