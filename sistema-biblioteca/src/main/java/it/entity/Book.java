@@ -47,15 +47,15 @@ public class Book {
     /**
      * @return ID dell'edizione
      */
-    public Edition getEditionId() {
+    public Edition getEdition() {
         return edition;
     }
 
     /**
-     * @param editionId ID dell'edizione
+     * @param edition ID dell'edizione
      */
-    public void setEditionId(Edition editionId) {
-        this.edition = editionId;
+    public void setEdition(Edition edition) {
+        this.edition = edition;
     }
 
     /**
