@@ -118,7 +118,7 @@ public class UserController {
         }
 
         try {
-            userService.updatePassword(email, oldPassword, newPassword, confirmPassword);
+            userService.updatePassword(currentUser, oldPassword, newPassword, confirmPassword);
             redirectAttributes.addFlashAttribute("popupType", "changePassword");
         } catch (IllegalArgumentException ex) {
             redirectAttributes.addFlashAttribute("popupType", "error");

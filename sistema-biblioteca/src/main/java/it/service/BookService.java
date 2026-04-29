@@ -25,7 +25,7 @@ import it.dto.PublisherDto;
 import it.dto.RentalRecordDto;
 import it.dto.request.InsertBookDto;
 import it.dto.BookNameDto;
-import it.entity.BookName;
+import it.entity.BookNames;
 import it.entity.Publisher;
 import it.entity.join.BookJoin;
 import it.exception.BookNotFoundException;
@@ -76,6 +76,16 @@ public class BookService {
 
     public List<BookNameDto> getAllBookNames() {
         return bookNameRepository.getAllBookNames();
+    }
+
+    /**
+     * Converte un oggetto {@link BookNames} in un {@link BookNameDto}.
+     * 
+     * @param bookNames Oggetto {@link BookNames} da convertire
+     * @return Oggetto {@link BookNameDto} convertito
+     */
+    private BookNameDto convertToBookNamesDto(BookNames bookNames) {
+        return new BookNameDto(bookNames.getBookNamesId(), bookNames.getTitle());
     }
 
     /**

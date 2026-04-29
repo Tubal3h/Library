@@ -7,6 +7,7 @@ import java.util.ArrayList;
 /* -------------------------------------------------------------------------- */
 
 import java.util.List;
+import it.service.AuthService;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +46,6 @@ public class UserService {
             dto.setUserId(u.getUserId());
             dto.setUserName(u.getUserName());
             dto.setUserLastName(u.getUserLastName());
-            dto.setUserEmail(u.getUserEmail());
             dto.setUserRole(u.getUserRole());
             return dto;
         }).toList();
@@ -88,27 +88,6 @@ public class UserService {
 	}
 
     /**
-     * Recupera un utente tramite la sua email.
-     * 
-     * @param email L'email dell'utente
-     * @return UserDto dell'utente se trovato, null altrimenti
-     */
-    @Transactional(readOnly = true)
-    public UserDto getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            return null;
-        }
-        UserDto dto = new UserDto();
-        dto.setUserId(user.getUserId());
-        dto.setUserName(user.getUserName());
-        dto.setUserEmail(user.getUserEmail());
-        dto.setUserPassword(user.getUserPassword());
-        dto.setUserRole(user.getUserRole());
-        return dto;
-    }
-
-    /**
      * Recupera un utente tramite il suo ID.
      * 
      * @param userId ID dell'utente
@@ -124,8 +103,6 @@ public class UserService {
         dto.setUserId(user.getUserId());
         dto.setUserName(user.getUserName());
         dto.setUserLastName(user.getUserLastName());
-        dto.setUserEmail(user.getUserEmail());
-        dto.setUserPassword(user.getUserPassword());
         dto.setUserRole(user.getUserRole());
         return dto;
     }
@@ -212,12 +189,12 @@ public class UserService {
      * @param confirmPassword Conferma della nuova password
      */
     @Transactional
-    public void updatePassword(String email, String oldPassword, String newPassword, String confirmPassword) {
+    public void updatePassword(AuthDto authDto, String oldPassword, String newPassword, String confirmPassword) {
         if (newPassword == null || confirmPassword == null || !newPassword.equals(confirmPassword)) {
             throw new IllegalArgumentException("La nuova password e la conferma non coincidono.");
         }
         
-        UserDto user = getUserByEmail(email);
+        AuthDto user = authService.authenticate(authDto);
         if (user == null) {
             throw new IllegalArgumentException("Utente non trovato.");
         }

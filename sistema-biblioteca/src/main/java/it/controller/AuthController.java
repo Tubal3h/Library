@@ -4,7 +4,7 @@ package it.controller;
 /*                                 CONTROLLER                                 */
 /* -------------------------------------------------------------------------- */
 
-import it.service.UserService;
+import it.service.AuthService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import it.configuration.UserSession;
-import it.dto.UserDto;
 import it.dto.request.AuthDto;
 
 /**
@@ -21,7 +20,7 @@ import it.dto.request.AuthDto;
 @Controller
 public class AuthController {
 
-    private final UserService userService;
+    private final AuthService authService;
     private final UserSession userSession;
 
     /**
@@ -30,8 +29,8 @@ public class AuthController {
      * @param userService Servizio per la gestione degli utenti
      * @param userSession Componente per la gestione della sessione utente
      */
-    public AuthController(UserService userService, UserSession userSession) {
-        this.userService = userService;
+    public AuthController(AuthService authService, UserSession userSession) {
+        this.authService = authService;
         this.userSession = userSession;
     }
 
@@ -56,10 +55,10 @@ public class AuthController {
      */
     @PostMapping("/api/login")
     public String login(@ModelAttribute AuthDto loginDto, Model model) {
-    	UserDto user = null;
+    	AuthDto authDto = null;
     	if(loginDto.getEmail() != null && !loginDto.getEmail().isBlank()) {
     		if(loginDto.getPassword() != null && !loginDto.getPassword().isBlank()) {
-    			user = userService.getUserByEmail(loginDto.getEmail());
+    			authDto = authService.authenticate(loginDto);
     			
     		}else {
     			return "redirect:/?error=invalid_credentials";
@@ -68,8 +67,8 @@ public class AuthController {
     		return "redirect:/?error=invalid_credentials";
 		}
     	
-    	if(user != null) {
-    		userSession.setUser(user);
+    	if(authDto != null) {
+    		userSession.setUser(authDto.getUserDto());
     		userSession.setSection("home"); 		
     		return "redirect:/dashboard";
     	}else {

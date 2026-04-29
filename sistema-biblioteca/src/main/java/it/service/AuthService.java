@@ -34,22 +34,26 @@ public class AuthService {
      * @param loginDto DTO contenente le credenziali dell'utente
      * @return L'oggetto User se le credenziali sono corrette, null altrimenti
      */
-    public UserDto login(AuthDto loginDto) {
-        User user = userRepository.findByEmail(loginDto.getEmail());
+    public AuthDto authenticate(AuthDto authDto) {
+        User user = userRepository.findByEmail(authDto.getEmail());
         UserDto userDto = new UserDto();
         userDto.setUserName(user.getUserName());
         userDto.setUserLastName(user.getUserLastName());
-        userDto.setUserEmail(user.getUserEmail());
-        userDto.setUserPassword(user.getUserPassword());
         userDto.setUserRole(user.getUserRole());
+        authDto.setUserDto(userDto);
+        authDto.setEmail(user.getUserEmail());
+        authDto.setPassword(user.getUserPassword());
 
 
-        if (!userDto.getUserPassword().equals(loginDto.getPassword())) {
+
+        if (!authDto.getPassword().equals(authDto.getPassword())) {
             return null;
         }
 
-        return userDto;
+        return authDto;
     }
+
+
 
     
 }

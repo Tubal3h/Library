@@ -1,4 +1,5 @@
 package it.dto.request;
+import it.dto.UserDto;
 
 /* -------------------------------------------------------------------------- */
 /*                                     DTO                                    */
@@ -8,7 +9,7 @@ package it.dto.request;
  * Data Transfer Object per le credenziali di login.
  */
 public class AuthDto {
-
+    private UserDto userDto;
     private String email;
     private String password;
 
@@ -16,6 +17,20 @@ public class AuthDto {
      * Costruttore di default.
      */
     public AuthDto() {
+    }
+
+    /**
+     * @return Utente
+     */
+    public UserDto getUserDto() {
+        return userDto;
+    }
+
+    /**
+     * @param userDto Utente
+     */
+    public void setUserDto(UserDto userDto) {
+        this.userDto = userDto;
     }
 
     /**
