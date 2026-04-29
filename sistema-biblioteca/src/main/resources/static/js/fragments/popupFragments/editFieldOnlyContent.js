@@ -5,7 +5,7 @@ const FIELD_CONFIG = {
   title: {
     titleText:    'Modifica Titolo',
     icon:         'fa-pen-to-square',
-    description:  "Stai modificando il titolo dell'opera:",
+    description:  "Stai modificando il titolo del manuale:",
     label:        'Nuovo Titolo',
     placeholder:  'Inizia a scrivere il titolo...',
     dataSourceId: 'titleDataSource',
@@ -18,7 +18,7 @@ const FIELD_CONFIG = {
   author: {
     titleText:    'Modifica Autore',
     icon:         'fa-user-pen',
-    description:  "Stai cambiando l'autore dell'edizione:",
+    description:  "Stai cambiando l'autore dell'edizione:", 
     label:        'Cerca e Seleziona Autore',
     placeholder:  'Cerca autore per nome o cognome...',
     dataSourceId: 'authorDataSource',

@@ -1,23 +1,24 @@
 <div th:fragment="settings" class="animate-fade-in">
-    <div class="mb-8 pl-2">
-        <h3 class="text-3xl fw-700 text-brand mb-2">Gestione dati libreria</h3>
-        <p class="opacity-60 text-lg">Gestisci le entità principali della biblioteca: Titoli, Autori, Editori e
-            Categorie.</p>
+    <div class="mb-4 pl-2">
+        <h3 class="text-3xl fw-700 text-brand mb-2">Gestione dati libreria aziendale.</h3>
+        <p class="opacity-60 text-lg">Gestisci le entità principali della biblioteca: Titoli, Autori, Editori e Categorie.</p>
     </div>
 
     <div class="settings-grid">
 
         <!-- Sezione Titoli (Book Names) -->
-        <div class="settings-card card-titles radius-24 shadow-soft">
+        <div class="settings-card card-titles radius-12 shadow-soft">
             <div class="settings-header flex justify-between align-center">
-                <div>
-                    <h3 class="settings-card-title">
-                        <i class="fa-solid fa-book-bookmark opacity-50"></i>
-                        Titoli manuali
-                    </h3>
-                    <p class="settings-card-subtitle" th:text="${bookNames.size() + ' titoli registrati'}"></p>
+                <div class="flex align-center" >
+                    <div class="icon-wrapper">
+                        <i class="fa-solid fa-book-bookmark"></i>
+                    </div>
+                    <div>
+                        <h3 class="settings-card-title">Titoli manuali</h3>
+                        <p class="settings-card-subtitle" th:text="${bookNames.size() + ' titoli registrati'}"></p>
+                    </div>  
                 </div>
-                <button class="btn-modern-action px-4 py-2 radius-12 pointer" onclick="openAddTitlePopup()">
+                <button class="btn-modern-action px-4 py-2 radius-8 pointer" onclick="openAddTitlePopup()">
                     <i class="fa-solid fa-plus"></i> Nuovo
                 </button>
             </div>
@@ -50,7 +51,7 @@
         </div>
 
         <!-- Sezione Autori -->
-        <div class="settings-card card-authors radius-24 shadow-soft">
+        <div class="settings-card card-authors radius-12 shadow-soft">
             <div class="settings-header flex justify-between align-center">
                 <div class="flex align-center">
                     <div class="icon-wrapper">
@@ -61,7 +62,7 @@
                         <p class="settings-card-subtitle" th:text="${authors.size() + ' autori registrati'}"></p>
                     </div>
                 </div>
-                <button class="btn-modern-action px-4 py-2 radius-12 pointer" onclick="openAddAuthorPopup()">
+                <button class="btn-modern-action px-4 py-2 radius-8 pointer" onclick="openAddAuthorPopup()">
                     <i class="fa-solid fa-plus"></i> Nuovo
                 </button>
             </div>
@@ -97,7 +98,7 @@
         </div>
 
         <!-- Sezione Editori -->
-        <div class="settings-card card-publishers radius-24 shadow-soft">
+        <div class="settings-card card-publishers radius-12 shadow-soft">
             <div class="settings-header flex justify-between align-center">
                 <div class="flex align-center">
                     <div class="icon-wrapper">
@@ -108,7 +109,7 @@
                         <p class="settings-card-subtitle" th:text="${publishers.size() + ' editori registrati'}"></p>
                     </div>
                 </div>
-                <button class="btn-modern-action px-4 py-2 radius-12 pointer" onclick="openAddPublisherPopup()">
+                <button class="btn-modern-action px-4 py-2 radius-8 pointer" onclick="openAddPublisherPopup()">
                     <i class="fa-solid fa-plus"></i> Nuovo
                 </button>
             </div>
@@ -143,7 +144,7 @@
         </div>
 
         <!-- Sezione Categorie -->
-        <div class="settings-card card-categories radius-24 shadow-soft">
+        <div class="settings-card card-categories radius-12 shadow-soft">
             <div class="settings-header flex justify-between align-center">
                 <div class="flex align-center">
                     <div class="icon-wrapper">
@@ -154,8 +155,8 @@
                         <p class="settings-card-subtitle" th:text="${categories.size() + ' categorie registrate'}"></p>
                     </div>
                 </div>
-                <button class="btn-modern-action px-4 py-2 radius-12 pointer" onclick="openAddCategoryPopup()">
-                    <i class="fa-solid fa-plus"></i> Nuovo
+                <button class="btn-modern-action px-4 py-2 radius-8 pointer" onclick="openAddCategoryPopup()">
+                    <i class="fa-solid fa-plus"></i> Nuova
                 </button>
             </div>
             <div class="settings-search-container">

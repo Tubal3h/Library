@@ -1,8 +1,8 @@
 :root {
-    --accent-indigo: #6366f1;
+    --accent-indigo: #101298;
     --accent-emerald: #10b981;
-    --accent-amber: #f59e0b;
-    --accent-rose: #f43f5e;
+    --accent-amber: #b78211;
+    --accent-rose: #b21630;
 }
 
 .settings-grid {
@@ -18,8 +18,8 @@
     transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     display: flex;
     flex-direction: column;
-    min-height: 400px;
-    max-height: 500px;
+    min-height: 200px;
+    max-height: 300px;
 }
 
 .settings-card:hover {
@@ -65,14 +65,14 @@
 }
 
 .settings-card-title {
-    font-size: 1.15rem;
+    font-size: 1.25rem;
     font-weight: 700;
     color: var(--color-text);
     margin: 0;
 }
 
 .settings-card-subtitle {
-    font-size: 0.8rem;
+    font-size: 1rem;
     color: var(--color-text-muted);
     margin-top: 0.15rem;
 }
@@ -146,12 +146,12 @@
 
 .settings-item-name {
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 1rem;
 }
 
 .settings-item-id {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 0.75rem;
+    font-size: 0.9rem;
     opacity: 0.5;
 }
 

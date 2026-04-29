@@ -5,15 +5,15 @@
 -->
 <div class="dashboard-grid" th:fragment="userRecords">
     <!-- Header della Sezione -->
-    <header class="dashboard-header flex justify-between align-center mb-8 animate-fade-in-up">
+    <header class="dashboard-header flex justify-between align-center gap-5 mb-8 animate-fade-in-up">
         <div class="flex align-center gap-5">
-            <a th:href="@{/api/navigation/users}" class="btn-back-premium" title="Torna agli Utenti">
+            <a th:href="@{/api/navigation/users}" class="btn-back-premium center" title="Torna agli Utenti">
                 <i class="fa-solid fa-chevron-left"></i>
-                <span>Utenti</span>
+                <span>Sezione <br>dipendenti</span>
             </a>
             <div class="header-content">
-                <span class="header-subtitle uppercase tracking-widest text-xs opacity-50 mb-1 block">Profilo Utente</span>
-                <h2 class="text-4xl fw-800 text-gradient-brand leading-tight" th:text="${targetRecordName ?: 'Registro Utente'}">Registro Utente</h2>
+                <span class="header-subtitle text-lg opacity-50 mb-1 block">Storico prestiti</span>
+                <h2 class="text-2xl fw-800 text-brand leading-tight" th:text="${targetRecordName ?: 'Registro Utente'}">Registro Utente</h2>
             </div>
         </div>
 

@@ -180,7 +180,7 @@ public class DashboardController {
                         UserDto targetUser = userService.getUserById(userDto.getUserId());
                         if (targetUser != null) {
                             model.addAttribute("targetRecordName",
-                                    "Registro: " + targetUser.getUserName() + " " + targetUser.getUserLastName());
+                                    "Dipendente: " + targetUser.getUserName() + " " + targetUser.getUserLastName());
                         }
                     }
                 }

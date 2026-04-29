@@ -83,7 +83,7 @@ function openConfirmPopup(action, titleTxt, message, confirmUrl, method = 'GET')
         }
     }
 
-    document.getElementById('confirmTitle').innerText = 'Confermi l\'operazione?';
+    document.getElementById('confirmTitle').innerText = 'Vuoi proseguire?';
     document.getElementById('confirmMessage').innerText = message;
     const details = document.getElementById('confirmDetails');
     if (details) {
@@ -93,8 +93,8 @@ function openConfirmPopup(action, titleTxt, message, confirmUrl, method = 'GET')
 }
 
 // Trigger veloci
-function triggerConfirmDelete(el) { openConfirmPopup('delete', el.dataset.title, 'Verrà eliminata questa copia dalla libreria', el.dataset.url); }
-function triggerConfirmDeleteUser(el) { openConfirmPopup('delete', el.dataset.title, 'Verrà eliminato definitivamente questo dipendente', el.dataset.url); }
+function triggerConfirmDelete(el) { openConfirmPopup('delete', el.dataset.title, 'Questa copia verrà eliminata dalla libreria', el.dataset.url); }
+function triggerConfirmDeleteUser(el) { openConfirmPopup('delete', el.dataset.title, 'Il seguente dipendente verrà eliminato dal sistema', el.dataset.url); }
 function triggerConfirmAdd(el) { openConfirmPopup('add', el.dataset.title, 'Si aggiungerà una nuova copia per questa edizione', el.dataset.url); }
 function triggerConfirmDelivered(el) { openConfirmPopup('delivered', el.dataset.title, 'Il manuale verrà reso disponibile', el.dataset.url); }
 function triggerConfirmReturned(el) { openConfirmPopup('returned', el.dataset.title, 'Il manuale verrà segnato come restituito', el.dataset.url); }
