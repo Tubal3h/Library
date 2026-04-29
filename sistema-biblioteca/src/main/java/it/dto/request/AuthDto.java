@@ -7,7 +7,7 @@ package it.dto.request;
 /**
  * Data Transfer Object per le credenziali di login.
  */
-public class LoginDto {
+public class AuthDto {
 
     private String email;
     private String password;
@@ -15,7 +15,7 @@ public class LoginDto {
     /**
      * Costruttore di default.
      */
-    public LoginDto() {
+    public AuthDto() {
     }
 
     /**
@@ -35,8 +35,22 @@ public class LoginDto {
     /**
      * @return Password inserita per il login
      */
+    public void setUserEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * @return Password inserita per il login
+     */
     public String getPassword() {
         return password;
+    }
+
+    /**
+     * @param password Password inserita per il login
+     */
+    public void setUserPassword(String password) {
+        this.password = password;
     }
 
     /**

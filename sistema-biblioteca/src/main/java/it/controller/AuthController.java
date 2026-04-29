@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import it.configuration.UserSession;
 import it.dto.UserDto;
-import it.dto.request.LoginDto;
+import it.dto.request.AuthDto;
 
 /**
  * Controller per la gestione dell'autenticazione degli utenti (login e logout).
@@ -43,7 +43,7 @@ public class AuthController {
      */
     @GetMapping("/")
     public String showLoginForm(Model model) {
-        model.addAttribute("loginDto", new LoginDto());
+        model.addAttribute("loginDto", new AuthDto());
         return "index";
     }
 
@@ -55,7 +55,7 @@ public class AuthController {
      * @return Redirect alla dashboard in caso di successo, o ritorno alla pagina di login in caso di errore
      */
     @PostMapping("/api/login")
-    public String login(@ModelAttribute LoginDto loginDto, Model model) {
+    public String login(@ModelAttribute AuthDto loginDto, Model model) {
     	UserDto user = null;
     	if(loginDto.getEmail() != null && !loginDto.getEmail().isBlank()) {
     		if(loginDto.getPassword() != null && !loginDto.getPassword().isBlank()) {

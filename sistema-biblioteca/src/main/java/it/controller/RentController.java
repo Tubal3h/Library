@@ -84,12 +84,10 @@ public class RentController {
      */
     @GetMapping("/api/borrow")
     public String borrowBook(@RequestParam(value = "bookId", required = false) String bookId, 
-    						 @RequestParam(value = "userId", required = false) String userId,
     						 Boolean confirmed, 
     						 RedirectAttributes redirectAttributes) {
                 
     	int parsedBookId;
-    	int parsedUserId;
     	UserDto user = userSession.getUser();
     	if(bookId == null || bookId.isEmpty()) {
     		return "redirect:/dashboard";
@@ -104,17 +102,8 @@ public class RentController {
             return "redirect:/dashboard";
         }
         
-        try {
-            parsedUserId = Integer.parseInt(userId);
-        } catch (NumberFormatException e) {
-            System.out.println("Errore: user non valido - " + userId);
-            redirectAttributes.addFlashAttribute("popupType", "error");
-            redirectAttributes.addFlashAttribute("popupErrorMessage", "ID non valido.");
-            return "redirect:/dashboard";
-        }
-        
         UserDto userDto = new UserDto();
-        userDto.setUserId(parsedUserId);
+        userDto.setUserId(user.getUserId());
         
         BookDto bookDto = new BookDto();
         bookDto.setBookId(parsedBookId);

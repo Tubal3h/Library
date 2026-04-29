@@ -8,6 +8,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.configuration.UserSession;
 import it.dto.UserDto;
+import it.dto.request.AuthDto;
 import it.service.UserService;
 
 /**
@@ -48,20 +49,21 @@ public class UserController {
         }
 
         try {
-            UserDto newUser = new UserDto();
-            newUser.setUserName(userName);
-            newUser.setUserLastName(userLastName);
+            UserDto userDto = new UserDto();
+            AuthDto AuthDto = new AuthDto();
+            userDto.setUserName(userName);
+            userDto.setUserLastName(userLastName);
             String cleanName = userName.toLowerCase().replaceAll("[^a-z0-9àèéìòù]", "");
             String cleanLastName = userLastName.toLowerCase().replaceAll("[^a-z0-9àèéìòù]", "");
-            newUser.setUserEmail(cleanName + "." + cleanLastName + "@biblioteca.it");
-            newUser.setUserPassword("Password123!");
-            newUser.setUserRole(userRole);
+            AuthDto.setUserEmail(cleanName + "." + cleanLastName + "@biblioteca.it");
+            AuthDto.setUserPassword("Password123!");
+            userDto.setUserRole(userRole);
 
-            userService.createUser(newUser);
+            userService.createUser(userDto, AuthDto);
 
             redirectAttributes.addFlashAttribute("popupType", "addUser");
             redirectAttributes.addFlashAttribute("popupUserName", userName + " " + userLastName);
-            redirectAttributes.addFlashAttribute("popupUserEmail", newUser.getUserEmail());
+            redirectAttributes.addFlashAttribute("popupUserEmail", AuthDto.getEmail());
             redirectAttributes.addFlashAttribute("popupUserRole",
                     "role_admin".equalsIgnoreCase(userRole) ? "Amministratore" : "Dipendente");
         } catch (IllegalArgumentException ex) {
@@ -110,8 +112,8 @@ public class UserController {
             @RequestParam("confirmPassword") String confirmPassword,
             RedirectAttributes redirectAttributes) {
         
-        UserDto currentUser = userSession.getUser();
-        if (currentUser == null || !currentUser.getUserEmail().equals(email)) {
+        AuthDto currentUser = userSession.getAuth();
+        if (currentUser == null || !currentUser.getEmail().equals(email)) {
             return "redirect:/";
         }
 

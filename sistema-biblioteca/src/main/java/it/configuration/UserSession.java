@@ -1,6 +1,7 @@
 package it.configuration;
 
 import it.dto.UserDto;
+import it.dto.request.AuthDto;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,6 +18,7 @@ public class UserSession implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private UserDto user;
+    private AuthDto auth;
     private String section = "home";
     private Integer recordBookId;
     private Integer recordUserId;
@@ -36,6 +38,20 @@ public class UserSession implements Serializable {
      */
     public void setUser(UserDto user) {
         this.user = user;
+    }
+
+    /**
+     * @return L'utente attualmente in sessione
+     */
+    public AuthDto getAuth() {
+        return auth;
+    }
+
+    /**
+     * @param user L'utente da salvare in sessione
+     */
+    public void setAuth(AuthDto auth) {
+        this.auth = auth;
     }
 
     /**
