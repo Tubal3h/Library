@@ -90,6 +90,9 @@ public class RentController {
                 
     	int parsedBookId;
     	AuthDto user = userSession.getUser();
+    	if (user == null) {
+    		return "redirect:/";
+    	}
     	if(bookId == null || bookId.isEmpty()) {
     		return "redirect:/dashboard";
     	}

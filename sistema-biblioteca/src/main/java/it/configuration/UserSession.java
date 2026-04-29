@@ -1,6 +1,5 @@
 package it.configuration;
 
-import it.dto.UserDto;
 import it.dto.request.AuthDto;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import java.io.Serializable;
 public class UserSession implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    private UserDto user;
     private AuthDto auth;
     private String section = "home";
     private Integer recordBookId;
@@ -34,13 +32,6 @@ public class UserSession implements Serializable {
     }
 
     /**
-     * @param user L'utente da salvare in sessione
-     */
-    public void setUser(UserDto user) {
-        this.user = user;
-    }
-
-    /**
      * @return L'utente attualmente in sessione
      */
     public AuthDto getAuth() {
@@ -48,7 +39,7 @@ public class UserSession implements Serializable {
     }
 
     /**
-     * @param user L'utente da salvare in sessione
+     * @param auth L'utente da salvare in sessione
      */
     public void setAuth(AuthDto auth) {
         this.auth = auth;
@@ -72,21 +63,21 @@ public class UserSession implements Serializable {
      * @return true se l'utente è loggato
      */
     public boolean isLoggedIn() {
-        return user != null;
+        return auth != null;
     }
 
     /**
      * @return true se l'utente è un amministratore
      */
     public boolean isAdmin() {
-        return user != null && "role_admin".equals(user.getUserRole());
+        return auth != null && auth.getUserDto() != null && "role_admin".equals(auth.getUserDto().getUserRole());
     }
 
     /**
      * Pulisce i dati della sessione.
      */
     public void logout() {
-        this.user = null;
+        this.auth = null;
         this.section = "home";
         this.recordBookId = null;
         this.recordUserId = null;

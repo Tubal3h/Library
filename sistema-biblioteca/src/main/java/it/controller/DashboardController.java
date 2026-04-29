@@ -89,6 +89,9 @@ public class DashboardController {
             @RequestParam(value = "search", required = false) String search,
             RedirectAttributes redirectAttributes) {
         AuthDto user = userSession.getUser();
+        if (user == null) {
+            return "redirect:/";
+        }
         String section = userSession.getSection();
         if (section == null || section.isEmpty()) {
             section = "home";

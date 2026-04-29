@@ -52,7 +52,7 @@
     <!-- Add Edition (Complex) -->
     <div id="addEditionContent" class="none animate-fade-in-up">
         <form id="addEditionForm" th:action="@{/api/addEdition}" method="post">
-            <input type="hidden" name="email" th:value="${user != null ? user.userEmail : ''}">
+            <input type="hidden" name="email" th:value="${user != null ? user.email : ''}">
             <div class="flex flex-column gap-5">
                 <div class="input-group relative">
                     <label class="text-xs uppercase fw-700 opacity-60  block ">Titolo</label>

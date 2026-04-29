@@ -7,7 +7,7 @@
     per supportare la ricerca in diverse sezioni (Libri, Utenti, Prestiti).
 -->
 <div th:fragment="searchbar" id="searchPopupOverlay" class="popup-overlay none"
-    th:data-email="${user != null ? user.userEmail : ''}">
+    th:data-email="${user != null ? user.email : ''}">
 
     <!-- Contenuto Centrale del Popup -->
     <div class="popup-content glass radius-24 shadow-soft animate-scale-in" onclick="event.stopPropagation()">

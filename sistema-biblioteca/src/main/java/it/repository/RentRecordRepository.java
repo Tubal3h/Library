@@ -32,12 +32,16 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
     /**
      * Costruttore per RentRecordRepository.
      *
-     * @param jdbcTemplate             Il template JDBC per le operazioni sul database
-     * @param rentRecordRowMapper      Mapper per convertire i record del database in oggetti RentalRecord
-     * @param rentalRecordJoinRowMapper Mapper per le query aggregate con JOIN su libri ed edizioni
+     * @param jdbcTemplate              Il template JDBC per le operazioni sul
+     *                                  database
+     * @param rentRecordRowMapper       Mapper per convertire i record del database
+     *                                  in oggetti RentalRecord
+     * @param rentalRecordJoinRowMapper Mapper per le query aggregate con JOIN su
+     *                                  libri ed edizioni
      */
     public RentRecordRepository(JdbcTemplate jdbcTemplate, RentRecordRowMapper rentRecordRowMapper,
-            RentalRecordJoinResponseRowMapper rentalRecordJoinRowMapper, BookRecordJoinResponseRowMapper bookRecordJoinResponseRowMapper) {
+            RentalRecordJoinResponseRowMapper rentalRecordJoinRowMapper,
+            BookRecordJoinResponseRowMapper bookRecordJoinResponseRowMapper) {
         this.jdbcTemplate = jdbcTemplate;
         this.rentRecordRowMapper = rentRecordRowMapper;
         this.rentalRecordJoinRowMapper = rentalRecordJoinRowMapper;
@@ -74,6 +78,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 
     /**
      * Conta il numero totale di copie prese in prestito dagli utenti
+     * 
      * @return Numero di copie prese in prestito
      */
     public int countBorrowedBooks() {
@@ -93,10 +98,12 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
     }
 
     /**
-     * Recupera tutti i noleggi attivi con i dati completi del libro in una singola query.
+     * Recupera tutti i noleggi attivi con i dati completi del libro in una singola
+     * query.
      * Risolve il problema N+1 eseguendo un JOIN direttamente nel database.
      *
-     * @return Lista di {@link RentalRecord} con i dati del noleggio e del libro associato
+     * @return Lista di {@link RentalRecord} con i dati del noleggio e del libro
+     *         associato
      */
     public List<RentalRecord> getActiveRents() {
         String sql = """
@@ -107,7 +114,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                     a.author_id as authorId,
                     a.author_name as authorName,
                     a.author_last_name as authorLastName,
-                    u.user_name as userName, 
+                    u.user_name as userName,
                     u.user_last_name as userLastName,
                     p.publisher_name as publisherName,
                     e.edition_id as editionId,
@@ -128,19 +135,21 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                 """;
 
         try {
-        	return jdbcTemplate.query(sql, rentalRecordJoinRowMapper);
-        }catch(DataAccessException ex) {
-        	System.out.println(ex.getMessage());
-        	throw new RuntimeException();
+            return jdbcTemplate.query(sql, rentalRecordJoinRowMapper);
+        } catch (DataAccessException ex) {
+            System.out.println(ex.getMessage());
+            throw new RuntimeException();
         }
     }
 
     /**
-     * Recupera i noleggi attivi di un utente specifico con i dati completi del libro in una singola query.
+     * Recupera i noleggi attivi di un utente specifico con i dati completi del
+     * libro in una singola query.
      * Risolve il problema N+1 eseguendo un JOIN direttamente nel database.
      *
      * @param userId ID dell'utente
-     * @return Lista di {@link RentalRecord} con i dati del noleggio e del libro associato
+     * @return Lista di {@link RentalRecord} con i dati del noleggio e del libro
+     *         associato
      */
     public List<RentalRecord> getActiveRentsByUserId(int userId) {
         String sql = """
@@ -151,7 +160,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                     a.author_id as authorId,
                     a.author_name as authorName,
                     a.author_last_name as authorLastName,
-                    u.user_name as userName, 
+                    u.user_name as userName,
                     u.user_last_name as userLastName,
                     p.publisher_name as publisherName,
                     e.edition_id as editionId,
@@ -173,18 +182,19 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                 """;
 
         try {
-        	return jdbcTemplate.query(sql, rentalRecordJoinRowMapper, userId);
-        	
-        }catch(DataAccessException ex) {
-        	System.out.println(ex.getMessage());
-        	throw new RuntimeException();
+            return jdbcTemplate.query(sql, rentalRecordJoinRowMapper, userId);
+
+        } catch (DataAccessException ex) {
+            System.out.println(ex.getMessage());
+            throw new RuntimeException();
         }
     }
 
     /**
      * Crea un nuovo record di noleggio nel database e aggiorna lo stato del libro.
      *
-     * @param rental Entità {@link RentalRecord} contenente i dati del noleggio da inserire
+     * @param rental Entità {@link RentalRecord} contenente i dati del noleggio da
+     *               inserire
      */
     public void createRental(RentalRecord rental) {
         String sql = """
@@ -195,18 +205,18 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                 """;
         jdbcTemplate.update(sql, rental.getRentalDate(), rental.getRentalExpired(), rental.getRentalId());
     }
-    
+
     public void createABookedDate(RentalRecord rental) {
-    	String sql = """
-    		INSERT INTO rental_record (users_id, book_id, booking_date)
-    		VALUES (?, ?, ?)
-    		""";
-    	jdbcTemplate.update(sql, rental.getUser().getUserId(), rental.getBook().getBookId(), rental.getBookingDate());
+        String sql = """
+                INSERT INTO rental_record (users_id, book_id, booking_date)
+                VALUES (?, ?, ?)
+                """;
+        jdbcTemplate.update(sql, rental.getUser().getUserId(), rental.getBook().getBookId(), rental.getBookingDate());
     }
-    
 
     /**
-     * Chiude un noleggio attivo registrando la data di restituzione e aggiornando lo stato del libro.
+     * Chiude un noleggio attivo registrando la data di restituzione e aggiornando
+     * lo stato del libro.
      *
      * @param bookId ID del libro restituito
      * @param rentId ID del record di noleggio da chiudere
@@ -233,18 +243,17 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                 """;
         jdbcTemplate.update(sql, bookId);
     }
-    
+
     public void updateRentalStatusNotOk(int bookId) {
-    	String sql = """
-        		UPDATE books
-        		SET status = CASE
-        		WHEN status = 'prenotato' THEN 'disponibilita'
-        		END
-        		WHERE book_id = ?
-        				""";
-    	jdbcTemplate.update(sql, bookId);
+        String sql = """
+                UPDATE books
+                SET status = CASE
+                WHEN status = 'prenotato' THEN 'disponibilita'
+                END
+                WHERE book_id = ?
+                		""";
+        jdbcTemplate.update(sql, bookId);
     }
-  
 
     /**
      * Registra la data di restituzione effettiva per il noleggio specificato.
@@ -261,62 +270,60 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
         jdbcTemplate.update(sql, date, rentId);
     }
 
-	@Override
-	public void updateStatusToLend(int bookId) {
-		String sql = """
-				UPDATE books
-				SET status = 'prenotato'
-				WHERE status = 'disponibilita'
-				AND book_id = ?
-				""";
-		
-		jdbcTemplate.update(sql, bookId);
-	}
+    @Override
+    public void updateStatusToLend(int bookId) {
+        String sql = """
+                UPDATE books
+                SET status = 'prenotato'
+                WHERE status = 'disponibilita'
+                AND book_id = ?
+                """;
 
+        jdbcTemplate.update(sql, bookId);
+    }
 
-	
-	@Override
-	public void deleteRentalById(int rentId) {
-		String sql = """
-				DELETE FROM rental_record
-				WHERE rental_id = ?
-				""";
-		jdbcTemplate.update(sql, rentId);
-	}
+    @Override
+    public void deleteRentalById(int rentId) {
+        String sql = """
+                DELETE FROM rental_record
+                WHERE rental_id = ?
+                """;
+        jdbcTemplate.update(sql, rentId);
+    }
 
-	@Override
-	public List<RentalRecord> getBookRecords(int bookId) throws HistoryNotFoundException {
-	    String sql = """
-	    		SELECT r.book_id, r.rental_id, u.user_name, u.user_last_name, r.booking_date, r.rental_date, r.rental_expired, r.rental_ended, bn.title
-	    		FROM rental_record r
-	    		LEFT JOIN users u ON r.users_id = u.users_id
-	    		LEFT JOIN books b ON b.book_id = r.book_id
-                LEFT JOIN edition e ON b.edition_id = e.edition_id
-                LEFT JOIN books_names bn ON e.book_name_id = bn.book_name_id
-	    		WHERE r.book_id = ?
-                ORDER BY r.rental_id DESC
-	    """;
-	    
-	    try {
-	    	return jdbcTemplate.query(sql, bookRecordJoinResponseRowMapper, bookId);
-	    }catch(DataAccessException ex) {
-	    	System.out.println(ex.getMessage());
-	    	throw new HistoryNotFoundException("errore nel cercare i dati");
-	    }
-	}
+    @Override
+    public List<RentalRecord> getBookRecords(int bookId) throws HistoryNotFoundException {
+        String sql = """
+                		SELECT r.book_id, r.rental_id, u.user_name, u.user_last_name, r.booking_date, r.rental_date, r.rental_expired, r.rental_ended, bn.title
+                		FROM rental_record r
+                		LEFT JOIN users u ON r.users_id = u.users_id
+                		LEFT JOIN books b ON b.book_id = r.book_id
+                           LEFT JOIN edition e ON b.edition_id = e.edition_id
+                           LEFT JOIN books_names bn ON e.book_name_id = bn.book_name_id
+                		WHERE r.book_id = ?
+                           ORDER BY r.rental_id DESC
+                """;
+
+        try {
+            return jdbcTemplate.query(sql, bookRecordJoinResponseRowMapper, bookId);
+        } catch (DataAccessException ex) {
+            System.out.println(ex.getMessage());
+            throw new HistoryNotFoundException("errore nel cercare i dati");
+        }
+    }
 
     public List<RentalRecord> getUserRecords(int userId) throws HistoryNotFoundException {
         String sql = """
-                SELECT r.book_id, r.rental_id, u.user_name, u.user_last_name, r.booking_date, r.rental_date, r.rental_expired, r.rental_ended, bn.title
-                FROM rental_record r
-                LEFT JOIN users u ON r.users_id = u.users_id
-                LEFT JOIN books b ON b.book_id = r.book_id
-                LEFT JOIN edition e ON b.edition_id = e.edition_id
-                LEFT JOIN books_names bn ON e.book_name_id = bn.book_name_id
-                WHERE r.users_id = ?
-                ORDER BY r.rental_id DESC
-        """;
-        
+                        SELECT r.book_id, r.rental_id, u.user_name, u.user_last_name, r.booking_date, r.rental_date, r.rental_expired, r.rental_ended, bn.title
+                        FROM rental_record r
+                        LEFT JOIN users u ON r.users_id = u.users_id
+                        LEFT JOIN books b ON b.book_id = r.book_id
+                        LEFT JOIN edition e ON b.edition_id = e.edition_id
+                        LEFT JOIN books_names bn ON e.book_name_id = bn.book_name_id
+                        WHERE r.users_id = ?
+                        ORDER BY r.rental_id DESC
+                """;
+
         try {
             return jdbcTemplate.query(sql, bookRecordJoinResponseRowMapper, userId);
         } catch (DataAccessException ex) {
@@ -324,5 +331,5 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
             throw new HistoryNotFoundException("errore nel cercare i dati dell'utente");
         }
     }
-    
+
 }

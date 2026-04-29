@@ -9,7 +9,7 @@
             <div class="mb-2">
                 <div class="flex align-center gap-1">
                     <h3 class="text-2xl italicfw-700 text-brand mb-1" th:text="${book.title}"></h3>
-                    <i th:if="${user.userRole == 'role_admin'}"
+                    <i th:if="${user.userDto.userRole == 'role_admin'}"
                         class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
                         th:data-id="${book.editionId}" th:data-title="${book.title}"
                         onclick="openEditTitlePopup(this.getAttribute('data-id'), this.getAttribute('data-title'), true)"
@@ -18,19 +18,19 @@
 
                 </div>
                 <div class="flex align-center gap-1">
-                    <p class="text-2xl fw-400 opacity-60 mb-3" th:text="${book.authorFullName}"></p>
-                    <i th:if="${user.userRole == 'role_admin'}"
-                        class="fa-solid fa-user-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
+                    <p class="text-2xl fw-400 opacity-60 mb-3" th:text="${book.editionDto.authorDto.authorName + ' ' + book.editionDto.authorDto.authorLastName}"></p>
+                    <i th:if="${user.userDto.userRole == 'role_admin'}" 
+                       class="fa-solid fa-user-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
                         th:data-id="${book.editionId}" th:data-author="${book.authorFullName}"
                         onclick="openEditAuthorPopup(this.getAttribute('data-id'), this.getAttribute('data-author'), true)"
                         title="Modifica Autore"></i>
 
                 </div>
                 <div class="flex align-center gap-1">
-                    <div class="category-label font-mono italic  opacity-80 uppercase"
-                        th:text="${book.categoryName}">CATEGORIA</div>
-                    <i th:if="${user.userRole == 'role_admin'}"
-                        class="fa-solid fa-tag cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
+                    <div class="category-label font-mono italic tracking-widest opacity-80 uppercase"
+                        th:text="${book.editionDto.categoryDto.categoryName}">CATEGORIA</div>
+                    <i th:if="${user.userDto.userRole == 'role_admin'}" 
+                       class="fa-solid fa-tag cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
                         th:data-id="${book.editionId}" th:data-category="${book.categoryName}"
                         onclick="openEditCategoryPopup(this.getAttribute('data-id'), this.getAttribute('data-category'), true)"
                         title="Modifica Categoria"></i>
@@ -42,7 +42,7 @@
                 <div class="flex align-center font-size-small" th:title="${book.publisherName}">
                     <i class="fa-solid fa-building-columns text-sm text-brand pr-1"></i>
                     <label class="fw-600" title="Editore" th:text="${book.publisherName}">Editore</label>
-                    <i th:if="${user.userRole == 'role_admin'}"
+                    <i th:if="${user.userDto.userRole == 'role_admin'}"
                         class="fa-solid fa-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon pl-2"
                         th:data-id="${book.editionId}" th:data-publisher="${book.publisherName}"
                         onclick="openEditPublisherPopup(this.getAttribute('data-id'), this.getAttribute('data-publisher'), true)"
@@ -61,22 +61,36 @@
             </div>
         </div>
 
-        <!-- Status - Returned/Del/Booking-->
-        <div class="card-action-column p-1 flex flex-column justify-center align-center border-l">
-            <div th:if="${user.userRole == 'role_admin'}" class="flex align-center mb-3 status-context"
-                th:classappend="${book.status == 'disponibilita' ? 'status-vibrant-active' : 'status-vibrant-pending'}">
-
-                <div class="glass-indicator radius-10 text-nm  flex align-center gap-1">
-                    <span th:if="${book.status.equals('disponibilita')}">Disponibile</span>
-                    <span th:if="${book.status.equals('in prestito')}">In Prestito</span>
-                    <span th:if="${book.status.equals('eliminato')}">Eliminato</span>
-                </div>
+        <!-- Action Section -->
+        <div class="card-action-column p-4 flex flex-column justify-center align-center border-l">
+            <button type="button" th:if="${user.userDto.userRole == 'role_user' && book.status == 'disponibile'}"
+                th:data-title="${book.editionDto.bookNameDto.title}"
+                th:data-url="@{/api/rent(email=${user.email}, bookId=${book.bookId}, bookTitle=${book.editionDto.bookNameDto.title})}"
+                onclick="triggerConfirmRent(this)"
+                class="w-100 btn-modern-action pointer transition shadow-soft">
+                <span>Prenota</span>
+            </button>
+            <div th:if="${user.userDto.userRole == 'role_admin'}" class="flex flex-column gap-2 w-100">
+                <button type="button"
+                    th:data-url="@{/dashboard(section='bookRecords', bookId=${book.bookId})}"
+                    onclick="window.location.href=this.getAttribute('data-url')"
+                    class="w-100 btn-modern-action pointer transition shadow-soft">
+                    <span>Registri</span>
+                </button>
+                <button type="button" th:if="${book.status != 'eliminato'}"
+                    th:data-title="${book.editionDto.bookNameDto.title}"
+                    th:data-url="@{/api/deleteBook(email=${user.email}, bookId=${book.bookId}, bookTitle=${book.editionDto.bookNameDto.title})}"
+                    onclick="triggerConfirmDelete(this)"
+                    class="w-100 btn-modern-action btn-danger pointer transition shadow-soft">
+                    <span>Elimina</span>
+                </button>
             </div>
-
-            <a th:if="${user.userRole != 'role_admin'}" th:href="@{/api/booked(bookId=${book.bookId})}"
-                class="btn-modern-action pointer transition shadow-soft" style="text-decoration: none;">
-                <span>Richiedi</span>
-            </a>
+            <div th:if="${book.status == 'in prestito'}" class="status-vibrant-pending radius-10 p-2 px-6">
+                <span class="text-nm fw-600">In Prestito</span>
+            </div>
+            <div th:if="${book.status == 'prenotato'}" class="status-vibrant-booked radius-10 p-2 px-6">
+                <span class="text-nm fw-600">Prenotato</span>
+            </div>
         </div>
     </div>
 </th:block>
@@ -91,28 +105,28 @@
             <!--  Title & Author -->
             <div class="mb-2">
                 <div class="flex align-center gap-1">
-                    <h3 class="text-2xl italic fw-700 text-brand mb-1" th:text="${edition.bookName}"></h3>
-                    <i th:if="${user.userRole == 'role_admin'}"
-                        class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
+                    <h3 class="text-2xl italic fw-700 text-brand mb-1" th:text="${edition.bookNameDto.title}"></h3>
+                    <i th:if="${user.userDto.userRole == 'role_admin'}" 
+                       class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
                         th:data-id="${edition.editionId}" th:data-title="${edition.bookName}"
                         onclick="openEditTitlePopup(this.getAttribute('data-id'), this.getAttribute('data-title'), true)"
                         title="Modifica Titolo"></i>
 
                 </div>
                 <div class="flex align-center gap-1">
-                    <p class="text-xl fw-400 opacity-80 mb-1" th:text="${edition.authorName}"></p>
-                    <i th:if="${user.userRole == 'role_admin'}"
-                        class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
+                    <p class="text-xl fw-400 opacity-80 mb-1" th:text="${edition.authorDto.authorName + ' ' + edition.authorDto.authorLastName}"></p>
+                    <i th:if="${user.userDto.userRole == 'role_admin'}" 
+                       class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
                         th:data-id="${edition.editionId}" th:data-author="${edition.authorName}"
                         onclick="openEditAuthorPopup(this.getAttribute('data-id'), this.getAttribute('data-author'), true)"
                         title="Modifica Autore"></i>
 
                 </div>
                 <div class="flex align-center gap-1">
-                    <div class="category-label font-mono italic  opacity-80 uppercase"
-                        th:text="${edition.categoryName}">CATEGORIA</div>
-                    <i th:if="${user.userRole == 'role_admin'}"
-                        class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
+                    <div class="category-label font-mono italic tracking-widest opacity-80 uppercase"
+                        th:text="${edition.categoryDto.categoryName}">CATEGORIA</div>
+                    <i th:if="${user.userDto.userRole == 'role_admin'}" 
+                       class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
                         th:data-id="${edition.editionId}" th:data-category="${edition.categoryName}"
                         onclick="openEditCategoryPopup(this.getAttribute('data-id'), this.getAttribute('data-category'), true)"
                         title="Modifica Categoria"></i>
@@ -121,11 +135,11 @@
 
             <!-- Info book -->
             <div class="card-meta mt-auto flex align-center gap-3 opacity-70">
-                <div class="flex align-center font-size-small" th:title="${edition.publisherName}">
+                <div class="flex align-center font-size-small" th:title="${edition.publisherDto.publisherName}">
                     <i class="fa-solid fa-building-columns text-sm text-brand pr-1"></i>
-                    <label class="fw-600" title="Editore" th:text="${edition.publisherName}">Editore</label>
-                    <i th:if="${user.userRole == 'role_admin'}"
-                        class="fa-solid fa-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon pl-2"
+                    <label class="fw-600" title="Editore" th:text="${edition.publisherDto.publisherName}">Editore</label>
+                    <i th:if="${user.userDto.userRole == 'role_admin'}" 
+                       class="fa-solid fa-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon pl-2"
                         th:data-id="${edition.editionId}" th:data-publisher="${edition.publisherName}"
                         onclick="openEditPublisherPopup(this.getAttribute('data-id'), this.getAttribute('data-publisher'), true)"
                         title="Modifica Editore"></i>
@@ -150,7 +164,7 @@
                 </div>
             </div>
             <button type="button" th:data-title="${edition.bookName}"
-                th:data-url="@{/api/addBook(email=${user.userEmail}, isbn=${edition.isbnCode}, bookName=${edition.bookName})}"
+                th:data-url="@{/api/addBook(email=${user.email}, isbn=${edition.isbnCode}, bookName=${edition.bookName})}"
                 onclick="triggerConfirmAdd(this)" class="w-100 btn-modern-action pointer transition shadow-soft">
                 <span>Aggiungi Copia</span>
                 <!-- <i class="fa-solid fa-plus-circle"></i> -->

@@ -68,7 +68,7 @@ public class AuthController {
 		}
     	
     	if(authDto != null) {
-    		userSession.setUser(authDto.getUserDto());
+    		userSession.setAuth(authDto);
     		userSession.setSection("home"); 		
     		return "redirect:/dashboard";
     	}else {

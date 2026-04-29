@@ -24,24 +24,27 @@ import it.repository.interfaces.BookRepositoryInterface;
 
 /**
  * Repository per la gestione dei dati dei libri nel database.
- * Esegue query aggregate con JOIN per recuperare le informazioni complete dei libri.
+ * Esegue query aggregate con JOIN per recuperare le informazioni complete dei
+ * libri.
  */
 @Repository
-public class BookRepository implements BookRepositoryInterface{
+public class BookRepository implements BookRepositoryInterface {
 
     private final JdbcTemplate jdbcTemplate;
     private final BookJoinResponseRowMapper bookJoinMapper;
     private final BookRecordJoinResponseRowMapper bookHistoryJoinMapper;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    
 
     /**
      * Costruttore per BookRepository.
      *
-     * @param jdbcTemplate  Il template JDBC per le operazioni sul database
-     * @param bookJoinMapper Mapper per convertire i record del database in oggetti BookJoin
+     * @param jdbcTemplate   Il template JDBC per le operazioni sul database
+     * @param bookJoinMapper Mapper per convertire i record del database in oggetti
+     *                       BookJoin
      */
-    public BookRepository(JdbcTemplate jdbcTemplate, BookJoinResponseRowMapper bookJoinMapper, BookRecordJoinResponseRowMapper bookHistoryJoinMapper, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public BookRepository(JdbcTemplate jdbcTemplate, BookJoinResponseRowMapper bookJoinMapper,
+            BookRecordJoinResponseRowMapper bookHistoryJoinMapper,
+            NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.bookJoinMapper = bookJoinMapper;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
@@ -107,7 +110,6 @@ public class BookRepository implements BookRepositoryInterface{
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
-    
     public int countAllNotEliminatedBookss() {
         String sql = "SELECT COUNT(*) FROM books WHERE status != 'eliminato'";
 
@@ -116,7 +118,8 @@ public class BookRepository implements BookRepositoryInterface{
 
     /**
      * Recupera la lista completa dei libri con tutte le informazioni aggregate.
-     * Utilizza una JOIN tra books, edition, books_names, author, publisher e category.
+     * Utilizza una JOIN tra books, edition, books_names, author, publisher e
+     * category.
      *
      * @return Lista di oggetti {@link BookJoin} con i dati completi di ogni libro
      */
@@ -145,26 +148,27 @@ public class BookRepository implements BookRepositoryInterface{
                 """;
         return jdbcTemplate.query(sql, bookJoinMapper);
     }
-    
+
     /**
-     * Inserisce una nuova copia fisica nella tabella books tramite il codice ISBN dell'edizione.
+     * Inserisce una nuova copia fisica nella tabella books tramite il codice ISBN
+     * dell'edizione.
      * La copia viene inizializzata con lo stato 'disponibilita'.
      *
      * @param isbn Codice ISBN dell'edizione
      * @return Numero di record inseriti
      */
     @Override
-	public int insertBookByIsbn(String isbn) {
-		String query = "INSERT INTO books(edition_id, status)\r\n"
-					 + "VALUES((SELECT edition_id FROM edition WHERE isbn = :isbn), \r\n"
-				     + "('disponibilita'))";
-		
-		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("isbn", isbn);
-		KeyHolder keyHolder = new GeneratedKeyHolder();
-		namedParameterJdbcTemplate.update(query, sqlParameters, keyHolder, new String[] { "book_id" });
-		
-		return keyHolder.getKey().intValue();
-	}
+    public int insertBookByIsbn(String isbn) {
+        String query = "INSERT INTO books(edition_id, status)\r\n"
+                + "VALUES((SELECT edition_id FROM edition WHERE isbn = :isbn), \r\n"
+                + "('disponibilita'))";
+
+        SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("isbn", isbn);
+        KeyHolder keyHolder = new GeneratedKeyHolder();
+        namedParameterJdbcTemplate.update(query, sqlParameters, keyHolder, new String[] { "book_id" });
+
+        return keyHolder.getKey().intValue();
+    }
 
     /**
      * Esegue l'eliminazione logica di un libro impostando lo stato a 'eliminato'.
@@ -172,38 +176,38 @@ public class BookRepository implements BookRepositoryInterface{
      * @param id ID univoco del libro fisico
      * @return Numero di record aggiornati
      */
-	@Override
-	public int deleteBookById(int id) {
-		String query = "UPDATE books\r\n"
-				 	 + "SET status = 'eliminato'\r\n"
-				 	 + "WHERE book_id = :id";
-		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("id", id);
-		int res = namedParameterJdbcTemplate.update(query, sqlParameters);
-		return res;
-	}
-	
+    @Override
+    public int deleteBookById(int id) {
+        String query = "UPDATE books\r\n"
+                + "SET status = 'eliminato'\r\n"
+                + "WHERE book_id = :id";
+        SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("id", id);
+        int res = namedParameterJdbcTemplate.update(query, sqlParameters);
+        return res;
+    }
 
     /**
      * Inserisce una nuova copia fisica basandosi sul titolo del libro.
-     * Utilizzato durante la creazione di una nuova edizione per aggiungere la prima copia.
+     * Utilizzato durante la creazione di una nuova edizione per aggiungere la prima
+     * copia.
      *
      * @param title Titolo del libro
      * @return Numero di record inseriti
      */
-	@Override
-	public void insertBookByTitle(String title) throws InsertBookException {
-		String insertBook = "INSERT INTO books (edition_id, status)\r\n"
-						  + "VALUES((SELECT edition_id FROM edition INNER JOIN books_names ON edition.book_name_id = books_names.book_name_id WHERE title = :title),\r\n"
-						  + "('disponibilita'))";
-		
-		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("title", title);
-		try {
-			namedParameterJdbcTemplate.update(insertBook, sqlParameter);	
-		}catch(DataAccessException ex) {
-			throw new InsertBookException("errore nell'inserimento della copia");
-		}
-	}
-	
+    @Override
+    public void insertBookByTitle(String title) throws InsertBookException {
+        String insertBook = "INSERT INTO books (edition_id, status)\r\n"
+                + "VALUES((SELECT edition_id FROM edition INNER JOIN books_names ON edition.book_name_id = books_names.book_name_id WHERE title = :title),\r\n"
+                + "('disponibilita'))";
+
+        SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("title", title);
+        try {
+            namedParameterJdbcTemplate.update(insertBook, sqlParameter);
+        } catch (DataAccessException ex) {
+            throw new InsertBookException("errore nell'inserimento della copia");
+        }
+    }
+
     /**
      * Recupera tutte le copie fisiche associate a una specifica edizione.
      *
@@ -236,13 +240,14 @@ public class BookRepository implements BookRepositoryInterface{
                 LEFT JOIN (SELECT book_id, users_id FROM rental_record WHERE rental_ended IS NULL) r ON b.book_id = r.book_id
                 LEFT JOIN users u ON r.users_id = u.users_id
                 WHERE e.edition_id = ?
-                """ + filter;
+                """
+                + filter;
         return jdbcTemplate.query(sql, bookHistoryJoinMapper, editionId);
     }
 
-	@Override
-	public int countAllNotEliminatedBooks() {
-		String query = "SELECT COUNT(*) FROM books WHERE status != 'eliminato'";
-		return jdbcTemplate.queryForObject(query, Integer.class);
-	}
+    @Override
+    public int countAllNotEliminatedBooks() {
+        String query = "SELECT COUNT(*) FROM books WHERE status != 'eliminato'";
+        return jdbcTemplate.queryForObject(query, Integer.class);
+    }
 }

@@ -47,6 +47,7 @@ public class UserService {
             dto.setUserId(u.getUserId());
             dto.setUserName(u.getUserName());
             dto.setUserLastName(u.getUserLastName());
+            dto.setUserEmail(u.getUserEmail());
             dto.setUserRole(u.getUserRole());
             return dto;
         }).toList();
@@ -105,6 +106,7 @@ public class UserService {
         dto.setUserId(user.getUserId());
         dto.setUserName(user.getUserName());
         dto.setUserLastName(user.getUserLastName());
+        dto.setUserEmail(user.getUserEmail());
         dto.setUserRole(user.getUserRole());
         return dto;
     }

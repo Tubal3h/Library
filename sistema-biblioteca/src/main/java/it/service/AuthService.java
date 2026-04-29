@@ -37,21 +37,24 @@ public class AuthService {
     public AuthDto authenticate(AuthDto authDto) {
         System.out.println("Autenticazione utente: " + authDto.getEmail());
         User user = userRepository.findByEmail(authDto.getEmail());
-        UserDto userDto = new UserDto();
-        userDto.setUserName(user.getUserName());
-        userDto.setUserLastName(user.getUserLastName());
-        userDto.setUserRole(user.getUserRole());
-        authDto.setUserDto(userDto);
-        authDto.setEmail(user.getUserEmail());
-        authDto.setPassword(user.getUserPassword());
-
-
-
-        if (!authDto.getPassword().equals(authDto.getPassword())) {
+        
+        if (user == null || !user.getUserPassword().equals(authDto.getPassword())) {
             return null;
         }
 
-        return authDto;
+        UserDto userDto = new UserDto();
+        userDto.setUserId(user.getUserId());
+        userDto.setUserName(user.getUserName());
+        userDto.setUserLastName(user.getUserLastName());
+        userDto.setUserRole(user.getUserRole());
+        userDto.setUserEmail(user.getUserEmail());
+
+        AuthDto result = new AuthDto();
+        result.setUserDto(userDto);
+        result.setEmail(user.getUserEmail());
+        result.setPassword(user.getUserPassword());
+
+        return result;
     }
 
 
