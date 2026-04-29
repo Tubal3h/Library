@@ -2,22 +2,23 @@ package it.dto;
 
 import java.time.LocalDate;
 
-import it.dto.EditionDto;
 
-public class RentalRecordJoinDto {
+public class RentalRecordDto {
     private int rentalId;
-    private EditionDto editionDto;
+    private BookDto bookDto;
     private UserDto userDto;
+    private LocalDate bookingDate;
     private LocalDate rentalDate;
     private LocalDate rentalExpired;
     private LocalDate rentalEnded;
     
-    public RentalRecordJoinDto() {}
+    public RentalRecordDto() {}
 
-    public RentalRecordJoinDto(int rentalId, EditionDto editionDto, UserDto userDto, LocalDate rentalDate, LocalDate rentalExpired, LocalDate rentalEnded) {
+    public RentalRecordDto(int rentalId, LocalDate bookingDate, LocalDate rentalDate, LocalDate rentalExpired, LocalDate rentalEnded, UserDto userDto, BookDto bookDto) {
         this.rentalId = rentalId;
-        this.editionDto = editionDto;
+        this.bookDto = bookDto;
         this.userDto = userDto;
+        this.bookingDate = bookingDate;
         this.rentalDate = rentalDate;
         this.rentalExpired = rentalExpired;
         this.rentalEnded = rentalEnded;
@@ -31,20 +32,28 @@ public class RentalRecordJoinDto {
         this.rentalId = rentalId;
     }
 
-    public EditionDto getEditionDto() {
-        return editionDto;
+    public BookDto getBookDto() {
+        return bookDto;
     }
 
-    public void setEditionDto(EditionDto editionDto) {
-        this.editionDto = editionDto;
+    public void setBookDto(BookDto bookDto) {
+        this.bookDto = bookDto;
     }
 
-    public UserDto getUserDto() {
+    public  UserDto getUserDto() {
         return userDto;
     }
 
     public void setUserDto(UserDto userDto) {
         this.userDto = userDto;
+    }
+
+    public LocalDate getBookingDate() {
+        return bookingDate;
+    }
+
+    public void setBookingDate(LocalDate bookingDate) {
+        this.bookingDate = bookingDate;
     }
 
     public LocalDate getRentalDate() {
@@ -73,8 +82,8 @@ public class RentalRecordJoinDto {
 
     @Override
     public String toString() {
-        return "RentalRecordJoinDto [rentalId=" + rentalId + ", editionDto=" + editionDto + ", userDto=" + userDto
-                + ", rentalDate=" + rentalDate + ", rentalExpired=" + rentalExpired + ", rentalEnded=" + rentalEnded
+        return "RentalRecordJoinDto [rentalId=" + rentalId + ", bookDto=" + bookDto + ", userDto=" + userDto
+                + ", bookingDate=" + bookingDate + ", rentalDate=" + rentalDate + ", rentalExpired=" + rentalExpired + ", rentalEnded=" + rentalEnded
                 + "]";
     }
 

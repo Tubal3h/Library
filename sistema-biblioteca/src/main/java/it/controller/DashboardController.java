@@ -11,12 +11,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.configuration.UserSession;
-import it.dto.BookRecordDto;
-import it.dto.RentDto;
+import it.dto.RentalRecordDto;
+import it.dto.BookDto;
+import it.dto.EditionDto;
 import it.dto.UserDto;
-import it.dto.response.BookRecordsJoinDtoResponse;
 import it.service.BookService;
 import it.service.RentService;
 import it.service.UserService;
@@ -84,7 +85,8 @@ public class DashboardController {
             @RequestParam(value = "editionId", required = false) Integer editionId,
             @RequestParam(value = "action", required = false) String action,
             @RequestParam(value = "includeDeleted", defaultValue = "false") boolean includeDeleted,
-            @RequestParam(value = "search", required = false) String search) {
+            @RequestParam(value = "search", required = false) String search,
+            RedirectAttributes redirectAttributes) {
         UserDto user = userSession.getUser();
         String section = userSession.getSection();
         if (section == null || section.isEmpty()) {
@@ -128,7 +130,7 @@ public class DashboardController {
             }
 
             if ("rents".equals(section)) {
-                List<RentDto> rentedBooks = rentService.getBookListByName(search, user.getUserRole(), user.getUserId());
+                List<RentalRecordDto> rentedBooks = rentService.getBookListByName(search, user.getUserRole(), user.getUserId());
                 model.addAttribute("rentedBooks", rentedBooks);
             }
 
@@ -147,35 +149,34 @@ public class DashboardController {
             // Sezione Registri (per Libro o per Utente)
             if (("bookRecords".equals(section) || "userRecords".equals(section))
                     && "role_admin".equals(user.getUserRole())) {
-                System.out.println("[DEBUG] DashboardController - Sezione: " + section);
                 if ("bookRecords".equals(section)) {
-                    Integer bookId = userSession.getRecordBookId();
-                    System.out.println("[DEBUG] DashboardController - Book ID: " + bookId);
-                    if (bookId != null) {
-                        List<BookRecordsJoinDtoResponse> records = rentService.getBookRecords(bookId);
-                        System.out.println("[DEBUG] DashboardController - Record trovati: "
-                                + (records != null ? records.size() : "NULL"));
+                    BookDto bookDto = new BookDto();
+                    bookDto.setBookId((int) redirectAttributes.getFlashAttributes().get("bookId"));
+                    
+                    if (bookDto.getBookId() != 0) {
+                        List<RentalRecordDto> records = rentService.getBookRecords(bookDto.getBookId());
                         model.addAttribute("bookRecords", records);
 
                         // Titolo dinamico per il registro del libro
                         try {
-                            BookRecordDto book = bookService.getBookById(bookId);
-                            model.addAttribute("targetRecordName", "Registro: " + book.getTitle() + " #" + bookId);
+                            bookDto = bookService.getBookById(bookDto.getBookId());
+                            model.addAttribute("targetRecordName", "Registro: " + bookDto.getEdition().getBookNameDto().getTitle() + " #" + bookDto.getBookId());
                         } catch (Exception e) {
-                            model.addAttribute("targetRecordName", "Registro Libro #" + bookId);
+                            model.addAttribute("targetRecordName", "Registro Libro #" + bookDto.getBookId());
                         }
                     }
                 } else {
-                    Integer targetUserId = userSession.getRecordUserId();
-                    System.out.println("[DEBUG] DashboardController - User ID: " + targetUserId);
-                    if (targetUserId != null) {
-                        List<BookRecordsJoinDtoResponse> records = rentService.getUserRecords(targetUserId);
+                    UserDto userDto = new UserDto();
+                    userDto.setUserId((int) redirectAttributes.getFlashAttributes().get("userId"));
+                    
+                    if (userDto.getUserId() != 0) {
+                        List<RentalRecordDto> records = rentService.getUserRecords(userDto.getUserId());
                         System.out.println("[DEBUG] DashboardController - Record trovati: "
                                 + (records != null ? records.size() : "NULL"));
                         model.addAttribute("bookRecords", records);
 
                         // Titolo dinamico per il registro dell'utente
-                        UserDto targetUser = userService.getUserById(targetUserId);
+                        UserDto targetUser = userService.getUserById(userDto.getUserId());
                         if (targetUser != null) {
                             model.addAttribute("targetRecordName",
                                     "Registro: " + targetUser.getUserName() + " " + targetUser.getUserLastName());
@@ -186,14 +187,17 @@ public class DashboardController {
 
             // Gestione Popup Visualizzazione Copie (Server-Side)
             if ("viewCopies".equals(action) && editionId != null) {
-                List<BookRecordDto> popupBooks = bookService.getBooksByEditionId(editionId, includeDeleted);
+                EditionDto editionDto = new EditionDto();
+                editionDto.setEditionId(editionId);
+
+                List<RentalRecordDto> popupBooks = bookService.getBooksByEditionId(editionDto.getEditionId(), includeDeleted);
                 model.addAttribute("popupBooks", popupBooks);
                 model.addAttribute("showCopiesPopup", true);
                 model.addAttribute("popupEditionId", editionId);
                 model.addAttribute("popupIncludeDeleted", includeDeleted);
 
                 if (!popupBooks.isEmpty()) {
-                    model.addAttribute("popupEditionTitle", popupBooks.get(0).getTitle());
+                    model.addAttribute("popupEditionTitle", popupBooks.get(0).getBookDto().getEdition().getBookNameDto().getTitle() + " #" + editionId);
                 } else {
                     model.addAttribute("popupEditionTitle", "Edizione #" + editionId);
                 }

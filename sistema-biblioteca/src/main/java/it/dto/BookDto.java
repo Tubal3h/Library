@@ -1,26 +1,48 @@
 package it.dto;
 
 public class BookDto {
-    private EditionDto editionJoinDto;
+    private int bookId;
+    private EditionDto editionDto;
+    private String status;
     
     public BookDto() {
     }
     
     public BookDto(
-        EditionDto editionJoinDto
+        int bookId,
+        EditionDto editionDto,
+        String status
     ) {
-        this.editionJoinDto = editionJoinDto;
+        this.bookId = bookId;
+        this.editionDto = editionDto;
+        this.status = status;
     }
     
     public EditionDto getEdition() {
-        return editionJoinDto;
+        return editionDto;
     }
 
-    public void setEdition(EditionDto editionJoinDto) {
-        this.editionJoinDto = editionJoinDto;
+    public void setEdition(EditionDto editionDto) {
+        this.editionDto = editionDto;
+    }
+
+    public int getBookId() {
+        return bookId;
+    }
+
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
     @Override
     public String toString() {
-        return "BookDto [editionDto=" + editionJoinDto + "]";
+        return "BookDto [bookId=" + bookId + ", editionDto=" + editionDto + ", status=" + status + "]";
     }    
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.dto.UserDto;
+import it.dto.request.AuthDto;
 import it.entity.User;
 import it.repository.UserRepository;
 
@@ -148,18 +149,18 @@ public class UserService {
      * @return numero di righe inserite
      */
 
-    public int createUser(UserDto userDto) {
+    public int createUser(UserDto userDto, AuthDto AuthDto) {
         validateUser(userDto);
 
-        if (userRepository.existsByEmail(userDto.getUserEmail())) {
-            throw new IllegalArgumentException("Esiste già un utente con questa email: " + userDto.getUserEmail());
+        if (userRepository.existsByEmail(AuthDto.getUserEmail())) {
+            throw new IllegalArgumentException("Esiste già un utente con questa email: " + AuthDto.getUserEmail());
         }
 
         return userRepository.insertUser(
                 userDto.getUserName().trim(),
                 userDto.getUserLastName().trim(),
-                userDto.getUserEmail().trim().toLowerCase(),
-                userDto.getUserPassword().trim(),
+                AuthDto.getUserEmail().trim().toLowerCase(),
+                AuthDto.getUserPassword().trim(),
                 userDto.getUserRole().trim().toLowerCase());
     }
 

@@ -19,13 +19,12 @@ import it.exception.NoBookIdFoundException;
 
 import it.dto.AuthorDto;
 import it.dto.BookDto;
-import it.dto.BookDto;
 import it.dto.CategoryDto;
 import it.dto.EditionDto;
 import it.dto.PublisherDto;
+import it.dto.RentalRecordDto;
+import it.dto.request.InsertBookDto;
 import it.dto.BookNameDto;
-import it.dto.BookRecordDto;
-import it.dto.InsertBookDto;
 import it.entity.BookName;
 import it.entity.Publisher;
 import it.entity.join.BookJoin;
@@ -75,7 +74,7 @@ public class BookService {
 		this.publisherRepository = publisherRepository;
     }
 
-    public List<it.entity.BookName> getAllBookNames() {
+    public List<BookNameDto> getAllBookNames() {
         return bookNameRepository.getAllBookNames();
     }
 
@@ -143,13 +142,13 @@ public class BookService {
      * @throws BookNotFoundException se nessun libro corrisponde all'ID specificato
      */
     @Transactional(readOnly = true)
-    public BookRecordDto getBookById(int bookId) {
+    public BookDto getBookById(int bookId) {
         var book = bookRepository.getAllBooks().stream()
             .filter(b -> b.getBookId() == bookId)
             .findFirst()
             .orElseThrow(() -> new BookNotFoundException("Libro non trovato con l'ID: " + bookId));
 
-        BookRecordDto dto = new BookRecordDto();
+        BookDto dto = new BookDto();
         dto.setEditionId(book.getEditionId());
         dto.setBookId(book.getBookId());
         dto.setTitle(book.getBookName());
@@ -225,12 +224,12 @@ public class BookService {
      * @return Lista di BookDto contenente le informazioni condensate dei libri filtrati per nome del libro
      */
 	
-	public List<BookUserDto> getBookListByName(String search, String userRole) {
-		List<BookUserDto> myList = getAllBooks(userRole);
-		List<BookUserDto> filteredList = new ArrayList<>();
+	public List<BookDto> getBookListByName(String search, String userRole) {
+		List<BookDto> myList = getAllBooks(userRole);
+		List<BookDto> filteredList = new ArrayList<>();
 		if(search != null && !search.isBlank()) {
-			for(BookUserDto book : myList) {
-				if(book.getTitle().replaceAll("\\s+","").toLowerCase().contains(search.replaceAll("\\s+","").toLowerCase())) {
+			for(BookDto book : myList) {
+				if(book.getEdition().getBookNameDto().getTitle().replaceAll("\\s+","").toLowerCase().contains(search.replaceAll("\\s+","").toLowerCase())) {
 					filteredList.add(book);
 				}
 			}	
@@ -310,10 +309,10 @@ public class BookService {
      * @param includeDeleted Flag per includere anche i libri eliminati
      * @return Lista di BookDto delle copie trovate
      */
-    public List<BookRecordDto> getBooksByEditionId(int editionId, boolean includeDeleted) {
+    public List<RentalRecordDto> getBooksByEditionId(int editionId, boolean includeDeleted) {
         return bookRepository.getBooksByEditionId(editionId, includeDeleted).stream()
             .map(book -> {
-                BookRecordDto dto = new BookRecordDto();
+                RentalRecordDto dto = new RentalRecordDto();
                 dto.setEditionId(book.getEditionId());
                 dto.setBookId(book.getBookId());
                 dto.setTitle(book.getBookName());

@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class EditionDto {
     private int editionId;
     private AuthorDto authorDto;
-    private BookDto bookDto;
+    private BookNameDto bookNameDto;
     private CategoryDto categoryDto;
     private PublisherDto publisherDto;
     private LocalDate publishingDate;
@@ -29,7 +29,7 @@ public class EditionDto {
      * 
      * @param editionId ID dell'edizione
      * @param authorDto DTO dell'autore
-     * @param bookDto DTO del libro
+     * @param bookNameDto DTO del libro
      * @param categoryDto DTO della categoria
      * @param publisherDto DTO dell'editore
      * @param publishingDate Data di pubblicazione
@@ -39,7 +39,7 @@ public class EditionDto {
     public EditionDto(
         int editionId,
         AuthorDto authorDto,
-        BookDto bookDto,
+        BookNameDto bookNameDto,
         CategoryDto categoryDto,
         PublisherDto publisherDto,
         LocalDate publishingDate,
@@ -48,7 +48,7 @@ public class EditionDto {
     ) {
         this.editionId = editionId;
         this.authorDto = authorDto;
-        this.bookDto = bookDto;
+        this.bookNameDto = bookNameDto;
         this.categoryDto = categoryDto;
         this.publisherDto = publisherDto;
         this.publishingDate = publishingDate;
@@ -87,15 +87,15 @@ public class EditionDto {
     /**
      * @return DTO del libro
      */
-    public BookDto getBookDto() {
-        return bookDto;
+    public BookNameDto getBookNameDto() {
+        return bookNameDto;
     }
     
     /**
-     * @param bookDto DTO del libro
+     * @param bookNameDto DTO del libro
      */
-    public void setBookDto(BookDto bookDto) {
-        this.bookDto = bookDto;
+    public void setBookNameDto(BookNameDto bookNameDto) {
+        this.bookNameDto = bookNameDto;
     }
     
     /**
@@ -152,6 +152,6 @@ public class EditionDto {
 
     @Override
     public String toString() {
-        return "EditionJoinDto [editionId=" + editionId + ", authorDto=" + authorDto + ", bookDto=" + bookDto + ", categoryDto=" + categoryDto + ", publisherDto=" + publisherDto + ", publishingDate=" + publishingDate + ", isbn=" + isbn + ", quantity=" + quantity + "]";
+        return "EditionJoinDto [editionId=" + editionId + ", authorDto=" + authorDto + ", bookNameDto=" + bookNameDto + ", categoryDto=" + categoryDto + ", publisherDto=" + publisherDto + ", publishingDate=" + publishingDate + ", isbn=" + isbn + ", quantity=" + quantity + "]";
     }
 }
