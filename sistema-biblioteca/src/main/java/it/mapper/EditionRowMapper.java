@@ -30,7 +30,7 @@ public class EditionRowMapper implements RowMapper<Edition> {
     public Edition mapRow(ResultSet rs, int rowNum) throws SQLException {
         Edition edition = new Edition();
         edition.setEditionId(rs.getInt("edition_id"));
-        edition.setBookNameId(rs.getInt("book_name_id"));
+        edition.setBookNamesId(rs.getInt("book_name_id"));
         edition.setAuthorId(rs.getInt("author_id"));
         edition.setPublisherId(rs.getInt("publisher_id"));
         edition.setPublishingDate(rs.getDate("publishing_date").toLocalDate());

@@ -8,12 +8,13 @@ import java.time.LocalDate;
 public class Edition {
     private int editionId;
     private Author author;
-    private Book book;
-    private BookName bookName;
+    private BookNames bookNames;
     private Category category;
     private Publisher publisher;
     private LocalDate publishingDate;
     private String isbn;
+    
+    //funzione colonna
     private int quantity;
     
     /**
@@ -37,17 +38,15 @@ public class Edition {
      */
     public Edition(
         int editionId, 
-        Author author, 
-        Book book, 
-        BookName bookName, 
+        Author author,  
+        BookNames bookNames, 
         Category category, 
         Publisher publisher, 
         LocalDate publishingDate, 
-        String isbn, 
+        String isbn,
         int quantity
     ) {
         this.editionId = editionId;
-        this.book = book;
         this.author = author;
         this.publisher = publisher;
         this.category = category;
@@ -79,18 +78,6 @@ public class Edition {
      * 
      * @return Libro
      */
-    public Book getBook() {
-        return book;
-    }
-    
-    /**
-     * Imposta il libro.
-     * 
-     * @param book Libro
-     */
-    public void setBook(Book book) {
-        this.book = book;
-    }
 
 	
     /**
@@ -98,8 +85,8 @@ public class Edition {
      * 
      * @return Nome del libro
      */
-    public BookName getBookName() {
-        return bookName;
+    public BookNames getBookNames() {
+        return bookNames;
     }
     
     /**
@@ -107,8 +94,8 @@ public class Edition {
      * 
      * @param book_name Nome del libro
      */
-    public void setBookName(BookName bookName) {
-        this.bookName = bookName;
+    public void setBookName(BookNames bookNames) {
+        this.bookNames = bookNames;
     }
     
     /**
@@ -226,7 +213,7 @@ public class Edition {
      */
     @Override
     public String toString() {
-        return "EditionJoin [editionId=" + editionId + ", bookName=" + bookName + ", author=" + author
+        return "Edition [editionId=" + editionId + ", bookName=" + bookNames + ", author=" + author
                 + ", publisher=" + publisher + ", category=" + category + ", publishingDate="
                 + publishingDate + ", isbn=" + isbn + ", quantity=" + quantity + "]";
     }
