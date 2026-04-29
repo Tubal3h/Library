@@ -28,10 +28,10 @@ public class BookNameRowMapper implements RowMapper<BookNames> {
      * @throws SQLException in caso di errori con il database
      */
     public static BookNames map(ResultSet rs) throws SQLException {
-        BookNames bookName = new BookNames();
-        bookName.setBookNameId(rs.getInt("bookNameId"));
-        bookName.setTitle(rs.getString("title"));
-        return bookName;
+        BookNames bookNames = new BookNames();
+        bookNames.setBookNamesId(rs.getInt("bookNameId"));
+        bookNames.setTitle(rs.getString("title"));
+        return bookNames;
     }
 
     @Override

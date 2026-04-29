@@ -8,7 +8,7 @@ package it.entity;
  * Entità che rappresenta il titolo di un libro nel sistema.
  */
 public class BookNames {
-    private int bookNameId;
+    private int bookNamesId;
     private String title;
 
     /**
@@ -23,22 +23,22 @@ public class BookNames {
      * @param title Titolo del libro
      */
     public BookNames(int bookNameId,String title) {
-        this.bookNameId = bookNameId;
+        this.bookNamesId = bookNameId;
         this.title = title;
     }
 
     /**
      * @return ID unico per il nome del libro
      */
-    public int getBookNameId() {
-        return bookNameId;
+    public int getBookNamesId() {
+        return bookNamesId;
     }
 
     /**
      * @param bookNameId ID unico per il nome del libro
      */
-    public void setBookNameId(int bookNameId) {
-        this.bookNameId = bookNameId;
+    public void setBookNamesId(int bookNameId) {
+        this.bookNamesId = bookNameId;
     }
 
     /**
