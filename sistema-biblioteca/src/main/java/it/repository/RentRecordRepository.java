@@ -12,8 +12,6 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import it.entity.RentalRecord;
-import it.entity.join.BookRecordJoin;
-import it.entity.join.RentalRecordJoin;
 import it.exception.HistoryNotFoundException;
 import it.mapper.RentRecordRowMapper;
 import it.mapper.response.BookRecordJoinResponseRowMapper;
@@ -287,7 +285,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 	}
 
 	@Override
-	public List<BookRecordJoin> getBookRecords(int bookId) throws HistoryNotFoundException {
+	public List<RentalRecord> getBookRecords(int bookId) throws HistoryNotFoundException {
 	    String sql = """
 	    		SELECT r.book_id, r.rental_id, u.user_name, u.user_last_name, r.booking_date, r.rental_date, r.rental_expired, r.rental_ended, bn.title
 	    		FROM rental_record r
@@ -307,7 +305,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 	    }
 	}
 
-    public List<BookRecordJoin> getUserRecords(int userId) throws HistoryNotFoundException {
+    public List<RentalRecord> getUserRecords(int userId) throws HistoryNotFoundException {
         String sql = """
                 SELECT r.book_id, r.rental_id, u.user_name, u.user_last_name, r.booking_date, r.rental_date, r.rental_expired, r.rental_ended, bn.title
                 FROM rental_record r

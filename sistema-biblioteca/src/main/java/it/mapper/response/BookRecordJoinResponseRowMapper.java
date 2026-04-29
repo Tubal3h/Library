@@ -11,9 +11,9 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
+import it.entity.Book;
+import it.entity.RentalRecord;
 import it.entity.User;
-import it.entity.join.BookRecordJoin;
-import it.entity.join.RentalRecordJoin;
 import it.mapper.UserRowMapper;
 
 /**
@@ -21,25 +21,31 @@ import it.mapper.UserRowMapper;
  * Esegue la mappatura dei risultati delle query aggregate che coinvolgono più tabelle.
  */
 @Component
-public class BookRecordJoinResponseRowMapper implements RowMapper<BookRecordJoin> {
+public class BookRecordJoinResponseRowMapper implements RowMapper<RentalRecord> {
 
     /**
-     * Mappa una riga del ResultSet a un oggetto {@link BookRecordJoin}.
+     * Mappa una riga del ResultSet a un oggetto {@link RentalRecord}.
      *
      * @param rs     ResultSet contenente i dati del libro
      * @param rowNum Numero della riga corrente
-     * @return Oggetto {@link BookRecordJoin} mappato
+     * @return Oggetto {@link RentalRecord} mappato
      * @throws SQLException Se si verifica un errore durante l'accesso ai dati del ResultSet
      */
     @Override
-    public BookRecordJoin mapRow(ResultSet rs, int rowNum) throws SQLException {
-        RentalRecordJoin rentalRecordJoin = RentalRecordJoinResponseRowMapper.map(rs);
+    public RentalRecord mapRow(ResultSet rs, int rowNum) throws SQLException {
+        RentalRecord rentalRecordJoin = RentalRecordJoinResponseRowMapper.map(rs);
         User user = UserRowMapper.map(rs);
+        Book book = BookJoinResponseRowMapper.map(rs);
 
-        BookRecordJoin bookRecordJoin = new BookRecordJoin();
-        bookRecordJoin.setRentalRecordJoin(rentalRecordJoin);
-        bookRecordJoin.setUser(user);
+        RentalRecord rentalRecord = new RentalRecord();
+        rentalRecord.setRentalId(rentalRecordJoin.getRentalId());
+        rentalRecord.setRentalDate(rentalRecordJoin.getRentalDate());
+        rentalRecord.setRentalExpired(rentalRecordJoin.getRentalExpired());
+        rentalRecord.setRentalEnded(rentalRecordJoin.getRentalEnded());
+        rentalRecord.setBookingDate(rentalRecordJoin.getBookingDate());
+        rentalRecord.setUser(user);
+        rentalRecord.setBook(book);
 
-        return bookRecordJoin;
+        return rentalRecord;
     }
 }
