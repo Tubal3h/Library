@@ -98,50 +98,13 @@ public class BookService {
      */
     @Transactional(readOnly = true)
     private List<BookDto> getAllBooks(String userRole) {
-        List<Book> repoBook = bookRepository.getAllBooks();
-        return repoBook.stream()
-            .filter(book -> !userRole.equals("role_user") ||
-                    "disponibilita".equalsIgnoreCase(book.getStatus()))
-            .map(book -> {
-                
-                BookDto bookDto = new BookDto();
-                bookDto.setEdition(new EditionDto());;
-                bookDto.setAuthorDto(
-                    new AuthorDto(
-                        book.getEdition().getAuthor().getAuthorId(),
-                        book.getEdition().getAuthor().getAuthorName(),
-                        book.getEdition().getAuthor().getAuthorLastName()
-                    )
-                );
-                bookDto.setBookDto(
-                    new BookDto(
-                        book.getEdition().getBookName().getBookNamesId(),
-                        book.getEdition().getEditionId(),
-                        book.getStatus()
-                    )
-                );
-                bookDto.setCategoryDto(
-                    new CategoryDto(
-                        book.getEdition().getCategory().getCategoryId(),
-                        book.getEdition().getCategory().getCategoryName()
-                    )
-                );
-                bookDto.setPublisherDto(
-                    new PublisherDto(
-                        book.getEdition().getPublisher().getPublisherId(),
-                        book.getEdition().getPublisher().getPublisherName()
-                    )
-                );
-                bookDto.setPublishingDate(book.getEdition().getPublishingDate());
-                bookDto.setIsbn(book.getEdition().getIsbn());
-                bookDto.setQuantity(book.getEdition().getQuantity());
-
-                BookDto dtoBookJoin = new BookDto();
-                dtoBookJoin.setEdition(bookDto);
-                
-                return dtoBookJoin;
-            })
-            .toList();
+    	List<Book> bookList = bookRepository.getAllBooks();
+    	List<BookDto> bookDtoList = new ArrayList<>();
+    	for(Book b : bookList) {
+    		if(userRole != "role_user" || "disponibilita".equalsIgnoreCase(b.getStatus())) {
+    			
+    		}
+    	}
     }
 
     /**
