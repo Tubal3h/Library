@@ -6,8 +6,8 @@ package it.service;
 
 import org.springframework.stereotype.Service;
 
-import it.dto.LoginDto;
 import it.dto.UserDto;
+import it.dto.request.LoginDto;
 import it.entity.User;
 import it.repository.UserRepository;
 

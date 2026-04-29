@@ -2,8 +2,10 @@ package it.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
 
 import it.configuration.UserSession;
 import it.dto.UserDto;
@@ -25,15 +27,17 @@ public class BookRecordsController {
      * @param redirectAttributes Attributi di redirect
      * @return Redirect al dashboard
      */
-    @GetMapping("/api/navigation/bookRecords/{bookId}")
-    public String bookRecords(@PathVariable(value = "bookId") String bookId, RedirectAttributes redirectAttributes) {
+    @PostMapping("/api/navigation/bookRecords/{bookId}")
+    public String bookRecords(
+        @PathVariable(value = "bookId") String bookId, 
+        RedirectAttributes redirectAttributes) {
         UserDto user = userSession.getUser();
         if (user == null || !"role_admin".equals(user.getUserRole())) {
             return "redirect:/";
         }
         
         userSession.setSection("bookRecords");
-        userSession.setRecordBookId(Integer.parseInt(bookId));
+        redirectAttributes.addFlashAttribute("bookId", bookId);
         return "redirect:/dashboard";
     }
 
@@ -46,14 +50,16 @@ public class BookRecordsController {
      * @return Redirect al dashboard
      */
     @GetMapping("/api/navigation/userRecords/{userId}")
-    public String userRecords(@PathVariable(value = "userId") String userId, RedirectAttributes redirectAttributes) {
+    public String userRecords(
+        @PathVariable(value = "userId") String userId, 
+        RedirectAttributes redirectAttributes) {
         UserDto user = userSession.getUser();
         if (user == null || !"role_admin".equals(user.getUserRole())) {
             return "redirect:/";
         }
         
         userSession.setSection("userRecords");
-        userSession.setRecordUserId(Integer.parseInt(userId));
+        redirectAttributes.addFlashAttribute("userId", userId);
         return "redirect:/dashboard";
     }
 }

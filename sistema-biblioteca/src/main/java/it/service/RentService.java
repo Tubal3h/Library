@@ -12,9 +12,10 @@ import java.time.LocalDate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.dto.BookRecordDto;
 import it.dto.RentDto;
+import it.dto.RentalRecordDto;
 import it.dto.UserDto;
+import it.dto.response.BookRecordDto;
 import it.dto.response.BookRecordsJoinDtoResponse;
 import it.entity.RentalRecord;
 import it.entity.join.RentalRecordJoin;
@@ -147,11 +148,11 @@ public class RentService {
     
 
     @Transactional
-    public void createBookedDate(RentDto rentDto) throws RuntimeException {
+    public void createBookedDate(RentalRecordDto rentDto) throws RuntimeException {
         try {
             RentalRecord rental = new RentalRecord();
-            rental.setUserId(rentDto.getUserId());
-            rental.setBookId(rentDto.getBookId());
+            rental.setUserId(rentDto.getUserDto().getUserId());
+            rental.setBookId(rentDto.getBookDto().getBookId());
             rental.setBookingDate(LocalDate.now());
             rentRepository.createABookedDate(rental);
             rentRepository.updateStatusToLend(rentDto.getBookId());
@@ -163,7 +164,7 @@ public class RentService {
     }
     
     @Transactional
-    public void createRental(RentDto rentDto, Boolean confirmed) throws RuntimeException {
+    public void createRental(RentalRecordDto rentDto, Boolean confirmed) throws RuntimeException {
     	if(rentDto != null) {
     		if(confirmed) {
     			try {
@@ -228,8 +229,8 @@ public class RentService {
      */
     
     @Transactional(readOnly = true)
-    public List<RentDto> getBookListByName(String search, String userRole, int userId) {
-		List<RentDto> myList = new ArrayList<>();
+    public List<RentalRecordDto> getBookListByName(String search, String userRole, int userId) {
+		List<RentalRecordDto> myList = new ArrayList<>();
 		
         if(userRole.equals("role_user")) {
 			myList = getRentedBooksByUserId(userId);
@@ -237,10 +238,10 @@ public class RentService {
             myList = getRentedAllRents();
         }
 		
-        List<RentDto> filteredList = new ArrayList<>();
+        List<RentalRecordDto> filteredList = new ArrayList<>();
 		if(search != null && !search.isBlank()) {
 			String [] arraySearch = search.toLowerCase().trim().split("\\s+");
-			for(RentDto rent : myList) {
+			for(RentalRecordDto rent : myList) {
 				String userName = rent.getUser().getUserName();
 				String userLastName = rent.getUser().getUserLastName();
 				String title = rent.getBookHistory().getTitle();
@@ -275,18 +276,18 @@ public class RentService {
 		}
 	}
     @Transactional(readOnly = true)
-    public List<BookRecordsJoinDtoResponse> getBookRecords(int bookId) throws HistoryNotFoundException {
+    public List<RentalRecordDto> getBookRecords(int bookId) throws HistoryNotFoundException {
         return rentRepository.getBookRecords(bookId);
     }
 
     @Transactional(readOnly = true)
-    public List<BookRecordsJoinDtoResponse> getUserRecords(int userId) throws HistoryNotFoundException {
+    public List<RentalRecordDto> getUserRecords(int userId) throws HistoryNotFoundException {
         return rentRepository.getUserRecords(userId);
     }
 
     @Transactional(readOnly = true)
-    public List<BookRecordsJoinDtoResponse> bookHistory(Integer bookId) throws HistoryNotFoundException {
-        List<BookRecordsJoinDtoResponse> myList = new ArrayList<>();
+    public List<RentalRecordDto> bookHistory(Integer bookId) throws HistoryNotFoundException {
+        List<RentalRecordDto> myList = new ArrayList<>();
         if(bookId != null) {
             myList = rentRepository.getBookRecords(bookId);
         }

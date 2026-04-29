@@ -9,10 +9,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.configuration.UserSession;
-import it.dto.BookRecordDto;
+import it.dto.BookDto;
+import it.dto.BookNameDto;
 import it.dto.EditionDto;
-import it.dto.InsertBookDto;
 import it.dto.UserDto;
+import it.dto.request.InsertBookDto;
 import it.exception.NoBookIdFoundException;
 import it.exception.InsertBookServiceException;
 import it.exception.NoIsbnFoundException;
@@ -40,12 +41,14 @@ public class BookController {
      * @param bookService Servizio per la gestione dei libri
      * @param userSession Componente per la gestione della sessione utente
      */
-    public BookController(	BookService bookService,
-							UserSession userSession,
-							AuthorService authorService,
-							PublisherService publisherService,
-							CategoryService categoryService,
-							EditionService editionService) {
+    public BookController(	
+		BookService bookService,
+		UserSession userSession,
+		AuthorService authorService,
+		PublisherService publisherService,
+		CategoryService categoryService,
+		EditionService editionService
+	) {
         this.bookService = bookService;
         this.userSession = userSession;
 		this.authorService = authorService;
@@ -63,7 +66,7 @@ public class BookController {
 	 *                           vista
 	 * @return Redirect alla sezione delle edizioni
 	 */
-	@GetMapping("/api/addBook")
+	@PostMapping("/api/addBook")
 	public String addBook(
 			@RequestParam(value = "isbn", required = false) String isbn,
 			@RequestParam(value = "bookName", required = false) String bookName,
@@ -105,7 +108,8 @@ public class BookController {
 			return "redirect:/";
 		}
 		try {
-			BookRecordDto bookDto = new BookRecordDto(bookId);
+			BookDto bookDto = new BookDto();
+			bookDto.setBookId(bookId);
 			bookService.deleteBook(bookDto.getBookId());
 			redirectAttributes.addFlashAttribute("popupType", "deleteBook");
 			redirectAttributes.addFlashAttribute("popupBookId", bookId);
@@ -188,8 +192,11 @@ public class BookController {
 
 		try {
 			EditionDto editionDto = new EditionDto();
+			BookNameDto bookNameDto = new BookNameDto();
+			
+			bookNameDto.setBookNameId(bookNameId);
 			editionDto.setEditionId(editionId);
-			editionDto.setBookNameId(bookNameId);
+			editionDto.setBookNameDto(bookNameDto);
 			editionService.updateTitleId(editionDto);
 			
 			redirectAttributes.addFlashAttribute("popupType", "updateTitle");
