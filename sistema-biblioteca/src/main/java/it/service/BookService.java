@@ -3,6 +3,7 @@ package it.service;
 import java.util.ArrayList;
 
 
+
 /* -------------------------------------------------------------------------- */
 /*                                   SERVICE                                  */
 /* -------------------------------------------------------------------------- */
@@ -16,13 +17,22 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.exception.NoBookIdFoundException;
 
+import it.dto.AuthorDto;
 import it.dto.BookDto;
+import it.dto.CategoryDto;
+import it.dto.EditionDto;
+import it.dto.PublisherDto;
+import it.dto.RentalRecordDto;
+import it.dto.UserDto;
+import it.dto.request.InsertBookDto;
 import it.dto.BookNameDto;
-import it.dto.InsertBookDto;
-import it.entity.BookJoin;
-import it.entity.Category;
-import it.entity.BookName;
 import it.entity.Publisher;
+import it.entity.RentalRecord;
+import it.entity.BookName;
+import it.entity.Book;
+import it.entity.Author;
+import it.entity.Category;
+import it.entity.Edition;
 import it.exception.BookNotFoundException;
 import it.exception.InsertAuthorException;
 import it.exception.InsertBookNameException;
@@ -36,6 +46,7 @@ import it.repository.EditionRepository;
 import it.repository.PublisherRepository;
 import it.repository.CategoryRepository;
 import it.exception.NoIsbnFoundException;
+
 
 
 /**
@@ -68,9 +79,15 @@ public class BookService {
 		this.publisherRepository = publisherRepository;
     }
 
-    public List<it.entity.BookName> getAllBookNames() {
-        return bookNameRepository.getAllBookNames();
+    public List<BookNameDto> getAllBookNames() {
+        return bookNameRepository.getAllBookNames()
+                .stream()
+                .map(this::convertToBookNameDto)
+                .toList();
     }
+
+
+
 
     /**
      * Recupera tutti i libri visibili per l'utente in base al suo ruolo.
@@ -82,23 +99,11 @@ public class BookService {
      */
     @Transactional(readOnly = true)
     private List<BookDto> getAllBooks(String userRole) {
-        List<BookJoin> repoBook = bookRepository.getAllBooks();
+        List<Book> repoBook = bookRepository.getAllBooks();
         return repoBook.stream()
             .filter(book -> !userRole.equals("role_user") ||
                     "disponibilita".equalsIgnoreCase(book.getStatus()))
-            .map(book -> {
-                BookDto dto = new BookDto();
-                dto.setEditionId(book.getEditionId());
-                dto.setBookId(book.getBookId());
-                dto.setTitle(book.getBookName());
-                dto.setAuthorFullName(book.getAuthorFullName());
-                dto.setPublisherName(book.getPublisherName());
-                dto.setPublishingDate(book.getPublicationDate());
-                dto.setIsbn(book.getIsbnCode());
-                dto.setCategoryName(book.getCategoryName());
-                dto.setStatus(book.getStatus());
-                return dto;
-            })
+            .map(this::convertToBookDto)
             .toList();
     }
 
@@ -116,17 +121,11 @@ public class BookService {
             .findFirst()
             .orElseThrow(() -> new BookNotFoundException("Libro non trovato con l'ID: " + bookId));
 
-        BookDto dto = new BookDto();
-        dto.setEditionId(book.getEditionId());
-        dto.setBookId(book.getBookId());
-        dto.setTitle(book.getBookName());
-        dto.setAuthorFullName(book.getAuthorFullName());
-        dto.setPublisherName(book.getPublisherName());
-        dto.setPublishingDate(book.getPublicationDate());
-        dto.setIsbn(book.getIsbnCode());
-        dto.setCategoryName(book.getCategoryName());
-        dto.setStatus(book.getStatus());
-        return dto;
+        BookDto bookDto = new BookDto();
+        bookDto.setBookId(book.getBookId());
+        bookDto.setEditionDto(convertToEditionDto(book.getEdition()));
+        bookDto.setStatus(book.getStatus());
+        return bookDto;
     }
 
     /**
@@ -196,7 +195,7 @@ public class BookService {
 		List<BookDto> filteredList = new ArrayList<>();
 		if(search != null && !search.isBlank()) {
 			for(BookDto book : myList) {
-				if(book.getTitle().replaceAll("\\s+","").toLowerCase().contains(search.replaceAll("\\s+","").toLowerCase())) {
+				if(book.getEditionDto().getBookNameDto().getTitle().replaceAll("\\s+","").toLowerCase().contains(search.replaceAll("\\s+","").toLowerCase())) {
 					filteredList.add(book);
 				}
 			}	
@@ -276,25 +275,12 @@ public class BookService {
      * @param includeDeleted Flag per includere anche i libri eliminati
      * @return Lista di BookDto delle copie trovate
      */
-    public List<BookDto> getBooksByEditionId(int editionId, boolean includeDeleted) {
+    public List<RentalRecordDto> getBooksByEditionId(int editionId, boolean includeDeleted) {
         return bookRepository.getBooksByEditionId(editionId, includeDeleted).stream()
-            .map(book -> {
-                BookDto dto = new BookDto();
-                dto.setEditionId(book.getEditionId());
-                dto.setBookId(book.getBookId());
-                dto.setTitle(book.getBookName());
-                dto.setAuthorFullName(book.getAuthorFullName());
-                dto.setPublisherName(book.getPublisherName());
-                dto.setPublishingDate(book.getPublicationDate());
-                dto.setIsbn(book.getIsbnCode());
-                dto.setCategoryName(book.getCategoryName());
-                dto.setStatus(book.getStatus());
-                dto.setUserName(book.getUserName());
-                dto.setUserLastName(book.getUserLastName());
-                return dto;
-            })
+            .map(this::convertToRentalRecordDto)
             .toList();
     }
+
 
 
     @Transactional
@@ -348,4 +334,100 @@ public class BookService {
         BookNameDto.setTitle(bookName.getTitle());
         return BookNameDto;
     }
+
+
+
+    private BookDto convertToBookDto(Book book) {
+        
+        BookDto bookDto = new BookDto();
+        bookDto.setBookId(book.getBookId());
+        bookDto.setEditionDto(convertToEditionDto(book.getEdition()));
+        bookDto.setStatus(book.getStatus());
+        return bookDto;
+    }
+
+    private AuthorDto convertToAuthorDto(Author author) {
+        AuthorDto dto = new AuthorDto();
+        dto.setAuthorId(author.getAuthorId());
+        dto.setAuthorName(author.getAuthorName());
+        dto.setAuthorLastName(author.getAuthorLastName());
+        return dto;
+    }
+
+    private BookNameDto convertToBookNameDto(BookName bookName) {
+        BookNameDto dto = new BookNameDto();
+        dto.setBookNameId(bookName.getBookNameId());
+        dto.setTitle(bookName.getTitle());
+        return dto;
+    }
+
+    private CategoryDto convertToCategoryDto(Category category) {
+        CategoryDto dto = new CategoryDto();
+        dto.setCategoryId(category.getCategoryId());
+        dto.setCategoryName(category.getCategoryName());
+        return dto;
+    }
+
+    private PublisherDto convertToPublisherDto(Publisher publisher) {
+        PublisherDto dto = new PublisherDto();
+        dto.setPublisherId(publisher.getPublisherId());
+        dto.setPublisherName(publisher.getPublisherName());
+        return dto;
+    }
+
+    private EditionDto convertToEditionDto(Edition edition) {
+        EditionDto dto = new EditionDto();
+        dto.setEditionId(edition.getEditionId());
+        dto.setAuthorDto(convertToAuthorDto(edition.getAuthor()));
+        dto.setCategoryDto(convertToCategoryDto(edition.getCategory()));
+        dto.setPublisherDto(convertToPublisherDto(edition.getPublisher()));
+        dto.setPublishingDate(edition.getPublishingDate());
+        dto.setIsbn(edition.getIsbn());
+        dto.setQuantity(edition.getQuantity());
+        return dto;
+    }
+
+    private RentalRecordDto convertToRentalRecordDto(RentalRecord rent) {
+        UserDto user = new UserDto();
+        user.setUserName(rent.getUser().getUserName());
+        user.setUserLastName(rent.getUser().getUserLastName());
+
+        BookNameDto bookNameDto = new BookNameDto();
+        bookNameDto.setTitle(rent.getBook().getEdition().getBookName().getTitle());
+
+        AuthorDto authorDto = new AuthorDto();
+        authorDto.setAuthorName(rent.getBook().getEdition().getAuthor().getAuthorName());
+        authorDto.setAuthorLastName(rent.getBook().getEdition().getAuthor().getAuthorLastName());
+
+        PublisherDto publisherDto = new PublisherDto();
+        publisherDto.setPublisherName(rent.getBook().getEdition().getPublisher().getPublisherName());
+
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setCategoryName(rent.getBook().getEdition().getCategory().getCategoryName());
+
+        EditionDto edition = new EditionDto();
+        edition.setEditionId(rent.getBook().getEdition().getEditionId());
+        edition.setBookNameDto(bookNameDto);
+        edition.setAuthorDto(authorDto);
+        edition.setPublisherDto(publisherDto);
+        edition.setCategoryDto(categoryDto);
+        edition.setPublishingDate(rent.getBook().getEdition().getPublishingDate());
+        edition.setIsbn(rent.getBook().getEdition().getIsbn());
+
+        BookDto book = new BookDto();
+        book.setBookId(rent.getBook().getBookId());
+        book.setEditionDto(edition);
+        book.setStatus(rent.getBook().getStatus());
+
+        RentalRecordDto rentalRecordDto = new RentalRecordDto();
+        rentalRecordDto.setRentalId(rent.getRentalId());
+        rentalRecordDto.setUserDto(user);
+        rentalRecordDto.setBookDto(book);
+        rentalRecordDto.setRentalDate(rent.getRentalDate());
+        rentalRecordDto.setRentalExpired(rent.getRentalExpired());
+        rentalRecordDto.setRentalEnded(rent.getRentalEnded());
+        rentalRecordDto.setBookingDate(rent.getBookingDate());
+        return rentalRecordDto;
+    }
+
 }

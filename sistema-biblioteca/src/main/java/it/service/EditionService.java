@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 
+import it.dto.AuthorDto;
+import it.dto.BookNameDto;
+import it.dto.CategoryDto;
 import it.dto.EditionDto;
-import it.dto.EditionJoinDto;
+import it.dto.PublisherDto;
 import it.entity.Edition;
-import it.entity.EditionJoin;
 import it.repository.EditionRepository;
 
 /**
@@ -32,20 +34,32 @@ public class EditionService {
      * 
      * @return Lista di EditionDto contenente i metadati completi dell'edizione
      */
-    private List<EditionJoinDto> getAllEditions() {
-        List<EditionJoin> editions = editionRepository.getAllEditions();
+    private List<EditionDto> getAllEditions() {
+        List<Edition> editions = editionRepository.getAllEditions();
         return editions.stream().map(edition -> {
-            EditionJoinDto dto = new EditionJoinDto();
-            dto.setEditionId(edition.getEditionId());
-            dto.setBookId(edition.getBookId());
-            dto.setBookName(edition.getBookName());
-            dto.setAuthorName(edition.getAuthor());
-            dto.setPublisherName(edition.getPublisher());
-            dto.setCategoryName(edition.getCategory());
-            dto.setPublicationDate(edition.getPublishingDate());
-            dto.setIsbnCode(edition.getIsbn());
-            dto.setQuantity(edition.getQuantity());
-            return dto;
+            AuthorDto authorDto = new AuthorDto();
+            authorDto.setAuthorName(edition.getAuthor().getAuthorName());
+            authorDto.setAuthorLastName(edition.getAuthor().getAuthorLastName());
+
+            BookNameDto bookNameDto = new BookNameDto();
+            bookNameDto.setTitle(edition.getBookName().getTitle());
+
+            CategoryDto categoryDto = new CategoryDto();
+            categoryDto.setCategoryName(edition.getCategory().getCategoryName());
+            
+            PublisherDto publisherDto = new PublisherDto();
+            publisherDto.setPublisherName(edition.getPublisher().getPublisherName());
+            
+            EditionDto editionDto = new EditionDto();
+            editionDto.setEditionId(edition.getEditionId());
+            editionDto.setBookNameDto(bookNameDto);
+            editionDto.setAuthorDto(authorDto);
+            editionDto.setPublisherDto(publisherDto);
+            editionDto.setCategoryDto(categoryDto);
+            editionDto.setPublishingDate(edition.getPublishingDate());
+            editionDto.setIsbn(edition.getIsbn());
+            editionDto.setQuantity(edition.getQuantity());
+            return editionDto;
         }).toList();
     }
 
@@ -55,18 +69,18 @@ public class EditionService {
      * @param search Il termine di ricerca per il nome del libro
      * @return Lista di EditionDto contenente le informazioni condensate delle edizioni filtrati per nome del libro
      */
-	public List<EditionJoinDto> getEditionListByName(String search) {
-		List<EditionJoinDto> myList = getAllEditions();
-		List<EditionJoinDto> filteredList = new ArrayList<>();
+	public List<EditionDto> getEditionListByName(String search) {
+		List<EditionDto> myList = getAllEditions();
+		List<EditionDto> filteredList = new ArrayList<>();
 		
 		if(search != null && !search.isBlank()) {
 			String [] strings = search.toLowerCase().trim().split("\\s+");
-			for(EditionJoinDto edition : myList) {
-				String title = edition.getBookName();
-				String author = edition.getAuthorName();
-				String category = edition.getCategoryName();
-				String myEdition = edition.getPublisherName();
-				String isbn = edition.getIsbnCode();
+			for(EditionDto edition : myList) {
+				String title = edition.getBookNameDto().getTitle();
+				String author = edition.getAuthorDto().getAuthorName();
+				String category = edition.getCategoryDto().getCategoryName();
+				String myEdition = edition.getPublisherDto().getPublisherName();
+				String isbn = edition.getIsbn();
 				String finalBook = (title + " " + author + " " + myEdition + " " + category + " " + isbn).toLowerCase();
 				boolean allMatch = true;
 				for(String s : strings) {
@@ -90,30 +104,24 @@ public class EditionService {
 		}
 	}
 
-    public void updateTitleId(EditionDto editionDto) {
-        editionRepository.updateBookTitleId(editionDto.getEditionId(), editionDto.getBookNameId());
-    }
-
     public Edition getEditionById(int editionId) {
         return editionRepository.findById(editionId);
     }
 
-    public void updateAuthorId(int editionId, int authorId) {
-        Edition edition = editionRepository.findById(editionId);
-        edition.setAuthorId(authorId);
-        editionRepository.updateAuthorId(edition.getEditionId(), edition.getAuthorId());
+    public void updateTitleId(EditionDto editionDto) {
+        editionRepository.updateBookTitleId(editionDto.getEditionId(), editionDto.getBookNameDto().getBookNameId());
     }
 
-    public void updatePublisherId(int editionId, int publisherId) {
-        Edition edition = editionRepository.findById(editionId);
-        edition.setPublisherId(publisherId);
-        editionRepository.updatePublisherId(edition.getEditionId(), edition.getPublisherId());
+    public void updateAuthorId(EditionDto editionDto) {
+        editionRepository.updateAuthorId(editionDto.getEditionId(), editionDto.getAuthorDto().getAuthorId());
     }
 
-    public void updateCategoryId(int editionId, int categoryId) {
-        Edition edition = editionRepository.findById(editionId);
-        edition.setCategoryId(categoryId);
-        editionRepository.updateCategoryId(edition.getEditionId(), edition.getCategoryId());
+    public void updatePublisherId(EditionDto editionDto) {
+        editionRepository.updatePublisherId(editionDto.getEditionId(), editionDto.getPublisherDto().getPublisherId());
+    }
+
+    public void updateCategoryId(EditionDto editionDto) {
+        editionRepository.updateCategoryId(editionDto.getEditionId(), editionDto.getCategoryDto().getCategoryId());
     }
 
     // private EditionDto convertEditionDto(Edition edition) {

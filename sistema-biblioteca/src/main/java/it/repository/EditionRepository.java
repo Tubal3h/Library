@@ -16,11 +16,10 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import it.entity.Edition;
-import it.entity.EditionJoin;
 import it.exception.InsertEditionException;
 import it.mapper.EditionRowMapper;
+import it.mapper.response.EditionJoinResponseRowMapper;
 import it.repository.interfaces.EditionRepositoryInterface;
-import it.mapper.EditionJoinRowMapper;
 
 /**
  * Repository per la gestione delle edizioni dei libri nel database.
@@ -30,7 +29,7 @@ public class EditionRepository implements EditionRepositoryInterface {
     private final EditionRowMapper editionRowMapper;
     private final JdbcTemplate jdbcTemplate;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
-    private final EditionJoinRowMapper editionJoinRowMapper;
+    private final EditionJoinResponseRowMapper editionJoinRowMapper;
     
     /**
      * Costruttore per EditionRepository.
@@ -39,7 +38,7 @@ public class EditionRepository implements EditionRepositoryInterface {
      * @param editionRowMapper Mapper per convertire i record del database in oggetti Edition
      * @param editionJoinRowMapper Mapper per convertire i record del database in oggetti EditionJoin
      */
-    public EditionRepository(JdbcTemplate jdbcTemplate, EditionRowMapper editionRowMapper, EditionJoinRowMapper editionJoinRowMapper, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public EditionRepository(JdbcTemplate jdbcTemplate, EditionRowMapper editionRowMapper, EditionJoinResponseRowMapper editionJoinRowMapper, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.editionRowMapper = editionRowMapper;
         this.editionJoinRowMapper = editionJoinRowMapper;
@@ -51,14 +50,15 @@ public class EditionRepository implements EditionRepositoryInterface {
      * 
      * @return Lista di tutte le edizioni disponibili nel database
      */
-    public List<EditionJoin> getAllEditions() {
+    public List<Edition> getAllEditions() {
     	String sql = """
     	        SELECT
     	        COUNT(b.book_id) AS quantity,
     	        e.edition_id,
     	        MIN(b.book_id) AS book_id,
     	        bn.title AS book_name,
-    	        CONCAT(a.author_name, ' ', a.author_last_name) AS author_name,
+    	        a.author_name,
+    	        a.author_last_name,
     	        p.publisher_name,
     	        c.category_name,
     	        e.publishing_date,

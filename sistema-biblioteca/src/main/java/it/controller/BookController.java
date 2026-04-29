@@ -10,9 +10,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.configuration.UserSession;
 import it.dto.BookDto;
+import it.dto.BookNameDto;
+import it.dto.CategoryDto;
 import it.dto.EditionDto;
-import it.dto.InsertBookDto;
+import it.dto.PublisherDto;
 import it.dto.UserDto;
+import it.dto.AuthorDto;
+import it.dto.request.InsertBookDto;
 import it.exception.NoBookIdFoundException;
 import it.exception.InsertBookServiceException;
 import it.exception.NoIsbnFoundException;
@@ -40,12 +44,14 @@ public class BookController {
      * @param bookService Servizio per la gestione dei libri
      * @param userSession Componente per la gestione della sessione utente
      */
-    public BookController(	BookService bookService,
-							UserSession userSession,
-							AuthorService authorService,
-							PublisherService publisherService,
-							CategoryService categoryService,
-							EditionService editionService) {
+    public BookController(	
+		BookService bookService,
+		UserSession userSession,
+		AuthorService authorService,
+		PublisherService publisherService,
+		CategoryService categoryService,
+		EditionService editionService
+	) {
         this.bookService = bookService;
         this.userSession = userSession;
 		this.authorService = authorService;
@@ -63,7 +69,7 @@ public class BookController {
 	 *                           vista
 	 * @return Redirect alla sezione delle edizioni
 	 */
-	@GetMapping("/api/addBook")
+	@PostMapping("/api/addBook")
 	public String addBook(
 			@RequestParam(value = "isbn", required = false) String isbn,
 			@RequestParam(value = "bookName", required = false) String bookName,
@@ -105,7 +111,8 @@ public class BookController {
 			return "redirect:/";
 		}
 		try {
-			BookDto bookDto = new BookDto(bookId);
+			BookDto bookDto = new BookDto();
+			bookDto.setBookId(bookId);
 			bookService.deleteBook(bookDto.getBookId());
 			redirectAttributes.addFlashAttribute("popupType", "deleteBook");
 			redirectAttributes.addFlashAttribute("popupBookId", bookId);
@@ -188,8 +195,11 @@ public class BookController {
 
 		try {
 			EditionDto editionDto = new EditionDto();
+			BookNameDto bookNameDto = new BookNameDto();
+			
+			bookNameDto.setBookNameId(bookNameId);
 			editionDto.setEditionId(editionId);
-			editionDto.setBookNameId(bookNameId);
+			editionDto.setBookNameDto(bookNameDto);
 			editionService.updateTitleId(editionDto);
 			
 			redirectAttributes.addFlashAttribute("popupType", "updateTitle");
@@ -226,11 +236,19 @@ public class BookController {
 		
 		try {
 			
-		if(!user.getUserRole().equals("role_admin")) {
-			userSession.setSection("home");
-			return "redirect:/dashboard";
-		}
-			editionService.updateAuthorId(editionId, authorId);
+			if(!user.getUserRole().equals("role_admin")) {
+				userSession.setSection("home");
+				return "redirect:/dashboard";
+			}
+			
+			EditionDto editionDto = new EditionDto();
+			AuthorDto authorDto = new AuthorDto();
+			
+			authorDto.setAuthorId(authorId);
+			editionDto.setEditionId(editionId);
+			editionDto.setAuthorDto(authorDto);
+				
+			editionService.updateAuthorId(editionDto);
 
 			redirectAttributes.addFlashAttribute("popupType", "updateAuthor");
 			redirectAttributes.addFlashAttribute("popupAuthorId", authorId);
@@ -270,7 +288,15 @@ public class BookController {
 				return "redirect:/dashboard";
 			}
 
-			editionService.updatePublisherId(editionId, publisherNameId);
+			EditionDto editionDto = new EditionDto();
+			PublisherDto publisherDto = new PublisherDto();
+			
+			publisherDto.setPublisherId(publisherNameId);
+			editionDto.setEditionId(editionId);
+			editionDto.setPublisherDto(publisherDto);
+			
+			editionService.updatePublisherId(editionDto);
+			
 			redirectAttributes.addFlashAttribute("popupType", "updatePublisher");
 			redirectAttributes.addFlashAttribute("popupPublisherId", publisherNameId);
 			redirectAttributes.addFlashAttribute("popupPublisherName", publisherService.getPublisherById(publisherNameId).getPublisherName());
@@ -307,7 +333,15 @@ public class BookController {
 				return "redirect:/dashboard";
 			}
 
-			editionService.updateCategoryId(editionId, categoryNameId);
+			EditionDto editionDto = new EditionDto();
+			CategoryDto categoryDto = new CategoryDto();
+			
+			categoryDto.setCategoryId(categoryNameId);
+			editionDto.setEditionId(editionId);
+			editionDto.setCategoryDto(categoryDto);
+			
+			editionService.updateCategoryId(editionDto);
+			
 			redirectAttributes.addFlashAttribute("popupType", "updateCategory");
 			redirectAttributes.addFlashAttribute("popupCategoryId", categoryNameId);
 			redirectAttributes.addFlashAttribute("popupCategoryName", categoryService.getCategoryById(categoryNameId).getCategoryName());

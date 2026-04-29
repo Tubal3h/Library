@@ -12,8 +12,8 @@ import java.time.LocalDate;
 public class RentalRecord {
 
     private int rentalId;
-    private int userId;
-    private int bookId;
+    private User user;
+    private Book book;
     private LocalDate bookingDate;
     private LocalDate rentalDate;
     private LocalDate rentalExpired;
@@ -43,11 +43,11 @@ public class RentalRecord {
 		return rentalId;
 	}
 
-	public RentalRecord(int rentalId, int userId, int bookId, LocalDate bookingDate, LocalDate rentalDate,
+	public RentalRecord(int rentalId, User user, Book book, LocalDate bookingDate, LocalDate rentalDate,
 			LocalDate rentalExpired, LocalDate rentalEnded) {
 		this.rentalId = rentalId;
-		this.userId = userId;
-		this.bookId = bookId;
+		this.user = user;
+		this.book = book;
 		this.bookingDate = bookingDate;
 		this.rentalDate = rentalDate;
 		this.rentalExpired = rentalExpired;
@@ -58,20 +58,20 @@ public class RentalRecord {
 		this.rentalId = rentalId;
 	}
 
-	public int getUserId() {
-		return userId;
+	public User getUser() {
+		return user;
 	}
 
-	public void setUserId(int userId) {
-		this.userId = userId;
+	public void setUser(User user) {
+		this.user = user;
 	}
 
-	public int getBookId() {
-		return bookId;
+	public Book getBook() {
+		return book;
 	}
 
-	public void setBookId(int bookId) {
-		this.bookId = bookId;
+	public void setBook(Book book) {
+		this.book = book;
 	}
 
 	public LocalDate getBookingDate() {

@@ -15,9 +15,11 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import it.entity.BookJoin;
+import it.entity.Book;
+import it.entity.RentalRecord;
 import it.exception.InsertBookException;
-import it.mapper.BookJoinRowMapper;
+import it.mapper.response.BookJoinResponseRowMapper;
+import it.mapper.response.BookRecordJoinResponseRowMapper;
 import it.repository.interfaces.BookRepositoryInterface;
 
 /**
@@ -28,7 +30,8 @@ import it.repository.interfaces.BookRepositoryInterface;
 public class BookRepository implements BookRepositoryInterface{
 
     private final JdbcTemplate jdbcTemplate;
-    private final BookJoinRowMapper bookJoinMapper;
+    private final BookJoinResponseRowMapper bookJoinMapper;
+    private final BookRecordJoinResponseRowMapper bookHistoryJoinMapper;
     private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
     
 
@@ -38,22 +41,22 @@ public class BookRepository implements BookRepositoryInterface{
      * @param jdbcTemplate  Il template JDBC per le operazioni sul database
      * @param bookJoinMapper Mapper per convertire i record del database in oggetti BookJoin
      */
-    public BookRepository(JdbcTemplate jdbcTemplate, BookJoinRowMapper bookJoinMapper, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+    public BookRepository(JdbcTemplate jdbcTemplate, BookJoinResponseRowMapper bookJoinMapper, BookRecordJoinResponseRowMapper bookHistoryJoinMapper, NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
         this.jdbcTemplate = jdbcTemplate;
         this.bookJoinMapper = bookJoinMapper;
         this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
-        
+        this.bookHistoryJoinMapper = bookHistoryJoinMapper;
     }
 
     /**
      * Recupera il nome completo dell'autore tramite il suo ID.
      *
      * @param authorId ID dell'autore
-     * @return Nome completo dell'autore (nome + cognome concatenati)
+     * @return Nome e cognome dell'autore
      */
     @Override
     public String getAuthorFullNameByID(int authorId) {
-        String sql = "SELECT CONCAT(author_name, ' ', author_last_name) AS author_full_name FROM author WHERE author_id = ?";
+        String sql = "SELECT author_name, author_last_name FROM author WHERE author_id = ?";
         return jdbcTemplate.queryForObject(sql, String.class, authorId);
     }
 
@@ -118,18 +121,20 @@ public class BookRepository implements BookRepositoryInterface{
      * @return Lista di oggetti {@link BookJoin} con i dati completi di ogni libro
      */
     @Override
-    public List<BookJoin> getAllBooks() {
+    public List<Book> getAllBooks() {
         String sql = """
                 SELECT
                     e.edition_id,
                     b.book_id,
                     bn.title,
-                    CONCAT(a.author_name, ' ', a.author_last_name) AS author_full_name,
+                    a.author_name,
+                    a.author_last_name,
                     p.publisher_name,
                     e.publishing_date,
                     c.category_name,
                     e.isbn,
                     b.status
+
                 FROM books b
                 JOIN edition e ON b.edition_id = e.edition_id
                 JOIN books_names bn ON e.book_name_id = bn.book_name_id
@@ -206,14 +211,15 @@ public class BookRepository implements BookRepositoryInterface{
      * @return Lista di oggetti BookJoin con i dati delle copie associate
      */
     @Override
-    public List<BookJoin> getBooksByEditionId(int editionId, boolean includeDeleted) {
+    public List<RentalRecord> getBooksByEditionId(int editionId, boolean includeDeleted) {
         String filter = includeDeleted ? "" : " AND b.status != 'eliminato'";
         String sql = """
                 SELECT
                     e.edition_id,
                     b.book_id,
-                    bn.title,
-                    CONCAT(a.author_name, ' ', a.author_last_name) AS author_full_name,
+                    bn.title AS book_name,
+                    a.author_name,
+                    a.author_last_name,
                     p.publisher_name,
                     e.publishing_date,
                     c.category_name,
@@ -231,7 +237,7 @@ public class BookRepository implements BookRepositoryInterface{
                 LEFT JOIN users u ON r.users_id = u.users_id
                 WHERE e.edition_id = ?
                 """ + filter;
-        return jdbcTemplate.query(sql, bookJoinMapper, editionId);
+        return jdbcTemplate.query(sql, bookHistoryJoinMapper, editionId);
     }
 
 	@Override

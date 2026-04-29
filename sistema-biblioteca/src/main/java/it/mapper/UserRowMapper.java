@@ -6,6 +6,7 @@ package it.mapper;
 
 import java.sql.ResultSet;
 
+
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -27,16 +28,20 @@ public class UserRowMapper implements RowMapper<User> {
      * @return L'oggetto User mappato dalla riga del database
      * @throws SQLException in caso di errori con il database
      */
-    @Override
-    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public static User map(ResultSet rs) throws SQLException {
         User user = new User();
         user.setUserId(rs.getInt("users_id"));
-        user.setUserName(rs.getString("user_name"));
-        user.setUserLastName(rs.getString("user_last_name"));
         user.setUserEmail(rs.getString("email"));
         user.setUserPassword(rs.getString("pass"));
+        user.setUserName(rs.getString("user_name"));
+        user.setUserLastName(rs.getString("user_last_name"));
         user.setUserRole(rs.getString("roles"));
         return user;
+    }
+
+    @Override
+    public User mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return map(rs);
     }
 }
 

@@ -8,6 +8,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.configuration.UserSession;
 import it.dto.UserDto;
+import it.dto.request.AuthDto;
 import it.service.UserService;
 
 /**
@@ -37,33 +38,29 @@ public class UserController {
      */
     @PostMapping("/api/addUser")
     public String addUser(
-            @RequestParam("userName") String userName,
-            @RequestParam("userLastName") String userLastName,
-            @RequestParam("userRole") String userRole,
+            UserDto userDto,
             RedirectAttributes redirectAttributes) {
 
-        UserDto currentUser = userSession.getUser();
-        if (currentUser == null || !"role_admin".equals(currentUser.getUserRole())) {
+        AuthDto currentUser = userSession.getAuth();
+        if (currentUser == null || !"role_admin".equals(currentUser.getUserDto().getUserRole())) {
             return "redirect:/";
         }
 
         try {
-            UserDto newUser = new UserDto();
-            newUser.setUserName(userName);
-            newUser.setUserLastName(userLastName);
-            String cleanName = userName.toLowerCase().replaceAll("[^a-z0-9àèéìòù]", "");
-            String cleanLastName = userLastName.toLowerCase().replaceAll("[^a-z0-9àèéìòù]", "");
-            newUser.setUserEmail(cleanName + "." + cleanLastName + "@biblioteca.it");
-            newUser.setUserPassword("Password123!");
-            newUser.setUserRole(userRole);
+            AuthDto authDto = new AuthDto();
+            String cleanName = userDto.getUserName().toLowerCase().replaceAll("[^a-z0-9àèéìòù]", "");
+            String cleanLastName = userDto.getUserLastName().toLowerCase().replaceAll("[^a-z0-9àèéìòù]", "");
+            authDto.setUserEmail(cleanName + "." + cleanLastName + "@biblioteca.it");
+            authDto.setUserPassword("Password123!");
+            authDto.setUserDto(userDto);
 
-            userService.createUser(newUser);
+            userService.createUser(authDto);
 
             redirectAttributes.addFlashAttribute("popupType", "addUser");
-            redirectAttributes.addFlashAttribute("popupUserName", userName + " " + userLastName);
-            redirectAttributes.addFlashAttribute("popupUserEmail", newUser.getUserEmail());
+            redirectAttributes.addFlashAttribute("popupUserName", authDto.getUserDto().getUserName() + " " + authDto.getUserDto().getUserLastName());
+            redirectAttributes.addFlashAttribute("popupUserEmail", authDto.getEmail());
             redirectAttributes.addFlashAttribute("popupUserRole",
-                    "role_admin".equalsIgnoreCase(userRole) ? "Amministratore" : "Dipendente");
+                    "role_admin".equalsIgnoreCase(authDto.getUserDto().getUserRole()) ? "Amministratore" : "Dipendente");
         } catch (IllegalArgumentException ex) {
             redirectAttributes.addFlashAttribute("popupType", "error");
             redirectAttributes.addFlashAttribute("popupErrorMessage", ex.getMessage());
@@ -104,19 +101,18 @@ public class UserController {
 
     @PostMapping("/api/changePassword")
     public String changePassword(
-            @RequestParam("email") String email,
             @RequestParam("oldPassword") String oldPassword,
             @RequestParam("newPassword") String newPassword,
             @RequestParam("confirmPassword") String confirmPassword,
             RedirectAttributes redirectAttributes) {
         
-        UserDto currentUser = userSession.getUser();
-        if (currentUser == null || !currentUser.getUserEmail().equals(email)) {
+        AuthDto currentUser = userSession.getAuth();
+        if (currentUser == null ) {
             return "redirect:/";
         }
 
         try {
-            userService.updatePassword(email, oldPassword, newPassword, confirmPassword);
+            userService.updatePassword(currentUser, oldPassword, newPassword, confirmPassword);
             redirectAttributes.addFlashAttribute("popupType", "changePassword");
         } catch (IllegalArgumentException ex) {
             redirectAttributes.addFlashAttribute("popupType", "error");

@@ -26,11 +26,15 @@ public class PublisherRowMapper implements RowMapper<Publisher> {
      * @return Oggetto Publisher mappato dai dati della riga
      * @throws SQLException Se si verifica un errore durante l'accesso ai dati della ResultSet
      */
+    public static Publisher map(ResultSet rs) throws SQLException {
+        Publisher publisher = new Publisher();
+        publisher.setPublisherId(rs.getInt("publisherId"));
+        publisher.setPublisherName(rs.getString("publisherName"));
+        return publisher;
+    }
+
     @Override
     public Publisher mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Publisher publisher = new Publisher();
-        publisher.setPublisherId(rs.getInt("publisher_id"));
-        publisher.setPublisherName(rs.getString("publisher_name"));
-        return publisher;
+        return map(rs);
     }
 }

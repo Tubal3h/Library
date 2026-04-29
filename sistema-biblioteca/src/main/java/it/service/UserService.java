@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.dto.UserDto;
+import it.dto.request.AuthDto;
 import it.entity.User;
 import it.repository.UserRepository;
 
@@ -21,14 +22,16 @@ import it.repository.UserRepository;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final AuthService authService;
 
     /**
      * Costruttore per UserService.
      * 
      * @param userRepository Repository per l'accesso ai dati degli utenti
      */
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, AuthService authService) {
         this.userRepository = userRepository;
+        this.authService = authService;
     }
 
     /**
@@ -44,7 +47,6 @@ public class UserService {
             dto.setUserId(u.getUserId());
             dto.setUserName(u.getUserName());
             dto.setUserLastName(u.getUserLastName());
-            dto.setUserEmail(u.getUserEmail());
             dto.setUserRole(u.getUserRole());
             return dto;
         }).toList();
@@ -76,6 +78,8 @@ public class UserService {
 					filteredList.add(user);
 				}
 			}
+		}else {
+			return myList;
 		}
 		if(filteredList.isEmpty() || filteredList == null) {
 			return myList;
@@ -83,27 +87,6 @@ public class UserService {
 			return filteredList;
 		}
 	}
-
-    /**
-     * Recupera un utente tramite la sua email.
-     * 
-     * @param email L'email dell'utente
-     * @return UserDto dell'utente se trovato, null altrimenti
-     */
-    @Transactional(readOnly = true)
-    public UserDto getUserByEmail(String email) {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            return null;
-        }
-        UserDto dto = new UserDto();
-        dto.setUserId(user.getUserId());
-        dto.setUserName(user.getUserName());
-        dto.setUserEmail(user.getUserEmail());
-        dto.setUserPassword(user.getUserPassword());
-        dto.setUserRole(user.getUserRole());
-        return dto;
-    }
 
     /**
      * Recupera un utente tramite il suo ID.
@@ -121,8 +104,6 @@ public class UserService {
         dto.setUserId(user.getUserId());
         dto.setUserName(user.getUserName());
         dto.setUserLastName(user.getUserLastName());
-        dto.setUserEmail(user.getUserEmail());
-        dto.setUserPassword(user.getUserPassword());
         dto.setUserRole(user.getUserRole());
         return dto;
     }
@@ -146,39 +127,39 @@ public class UserService {
      * @return numero di righe inserite
      */
 
-    public int createUser(UserDto userDto) {
-        validateUser(userDto);
+    public int createUser(AuthDto AuthDto) {
+        validateUser(AuthDto);
 
-        if (userRepository.existsByEmail(userDto.getUserEmail())) {
-            throw new IllegalArgumentException("Esiste già un utente con questa email: " + userDto.getUserEmail());
+        if (userRepository.existsByEmail(AuthDto.getEmail())) {
+            throw new IllegalArgumentException("Esiste già un utente con questa email: " + AuthDto.getEmail());
         }
 
         return userRepository.insertUser(
-                userDto.getUserName().trim(),
-                userDto.getUserLastName().trim(),
-                userDto.getUserEmail().trim().toLowerCase(),
-                userDto.getUserPassword().trim(),
-                userDto.getUserRole().trim().toLowerCase());
+                AuthDto.getUserDto().getUserName().trim(),
+                AuthDto.getUserDto().getUserLastName().trim(),
+                AuthDto.getEmail().trim().toLowerCase(),
+                AuthDto.getPassword().trim(),
+                AuthDto.getUserDto().getUserRole().trim().toLowerCase());
     }
 
-    private void validateUser(UserDto userDto) {
-        if (userDto == null) {
+    private void validateUser(AuthDto authDto) {
+        if (authDto == null) {
             throw new IllegalArgumentException("Dati utente mancanti.");
         }
 
-        if (userDto.getUserName() == null || userDto.getUserName().isBlank()) {
+        if (authDto.getUserDto().getUserName() == null || authDto.getUserDto().getUserName().isBlank()) {
             throw new IllegalArgumentException("Il nome è obbligatorio.");
         }
 
-        if (userDto.getUserLastName() == null || userDto.getUserLastName().isBlank()) {
+        if (authDto.getUserDto().getUserLastName() == null || authDto.getUserDto().getUserLastName().isBlank()) {
             throw new IllegalArgumentException("Il cognome è obbligatorio.");
         }
 
-        if (userDto.getUserPassword() == null || userDto.getUserPassword().isBlank()) {
+        if (authDto.getPassword() == null || authDto.getPassword().isBlank()) {
             throw new IllegalArgumentException("La password è obbligatoria.");
         }
 
-        String role = userDto.getUserRole();
+        String role = authDto.getUserDto().getUserRole();
         if (role == null || role.isBlank()) {
             throw new IllegalArgumentException("Il ruolo è obbligatorio.");
         }
@@ -209,21 +190,21 @@ public class UserService {
      * @param confirmPassword Conferma della nuova password
      */
     @Transactional
-    public void updatePassword(String email, String oldPassword, String newPassword, String confirmPassword) {
+    public void updatePassword(AuthDto authDto, String oldPassword, String newPassword, String confirmPassword) {
         if (newPassword == null || confirmPassword == null || !newPassword.equals(confirmPassword)) {
             throw new IllegalArgumentException("La nuova password e la conferma non coincidono.");
         }
         
-        UserDto user = getUserByEmail(email);
+        AuthDto user = authService.authenticate(authDto);
         if (user == null) {
             throw new IllegalArgumentException("Utente non trovato.");
         }
         
-        if (!user.getUserPassword().equals(oldPassword)) {
+        if (!user.getPassword().equals(oldPassword)) {
             throw new IllegalArgumentException("La password attuale non è corretta.");
         }
         
-        userRepository.updatePassword(email, newPassword);
+        userRepository.updatePassword(authDto.getEmail(), newPassword);
     }
 }
 

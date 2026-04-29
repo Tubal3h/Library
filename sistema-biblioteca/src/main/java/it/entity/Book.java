@@ -8,8 +8,8 @@ package it.entity;
  * Entità che rappresenta un libro nel sistema.
  */
 public class Book {
-    private int book_id;
-    private int edition_id;
+    private int bookId;
+    private Edition edition;
     private String status;
 
     /**
@@ -21,12 +21,12 @@ public class Book {
     /**
      * Costruttore con parametri.
      * 
-     * @param edition_id ID dell'edizione
+     * @param edition ID dell'edizione
      * @param category_id ID della categoria
      * @param status Stato del libro
      */
-    public Book(int edition_id, int category_id, String status) {
-        this.edition_id = edition_id;
+    public Book(Edition edition, String status) {
+        this.edition = edition;
         this.status = status;
     }
 
@@ -34,28 +34,28 @@ public class Book {
      * @return ID del libro
      */
     public int getBookId() {
-        return book_id;
+        return bookId;
     }
 
     /**
      * @param book_id ID del libro
      */
     public void setBookId(int book_id) {
-        this.book_id = book_id;
+        this.bookId = book_id;
     }
 
     /**
      * @return ID dell'edizione
      */
-    public int getEditionId() {
-        return edition_id;
+    public Edition getEdition() {
+        return edition;
     }
 
     /**
-     * @param edition_id ID dell'edizione
+     * @param edition ID dell'edizione
      */
-    public void setEditionId(int edition_id) {
-        this.edition_id = edition_id;
+    public void setEdition(Edition edition) {
+        this.edition = edition;
     }
 
     /**
@@ -74,7 +74,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Books [bookId=" + book_id + ", editionId=" + edition_id + ", status=" + status + "]";
+        return "Books [bookId=" + bookId + ", editionId=" + edition + ", status=" + status + "]";
     }
 }
 

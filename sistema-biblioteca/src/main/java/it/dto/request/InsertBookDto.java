@@ -1,4 +1,4 @@
-package it.dto;
+package it.dto.request;
 
 import java.time.LocalDate;
 
@@ -12,30 +12,24 @@ public class InsertBookDto {
 	@NotBlank
 	private String title;
 	
-	
 	@NotBlank
 	private String isbn;
-	
-	
+		
 	@NotBlank
 	private String authorName;
-	
-	
+
 	@NotBlank
 	private String authorLastName;
 	
 	@NotNull
 	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
 	LocalDate localDate;
-	
-	
+		
 	@NotBlank
 	private String categoryName;
 	
-	
 	@NotBlank
 	private String publisherName;
-	
 	
 	@NotBlank
 	private String email;

@@ -6,11 +6,13 @@ package it.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.configuration.UserSession;
-import it.dto.RentDto;
+import it.dto.RentalRecordDto;
+import it.dto.BookDto;
 import it.dto.UserDto;
 import it.service.RentService;
 
@@ -46,8 +48,11 @@ public class RentController {
      * @return Redirect alla sezione noleggi in caso di successo, o redirect al catalogo con errore
      */
     
-    @GetMapping("/api/acceptLending")
-    public String acceptLengindByAdmin(@RequestParam(value = "bookId", required = false) String bookId) {
+    @PostMapping("/api/acceptLending")
+    public String acceptLengindByAdmin(
+        @RequestParam(value = "bookId", required = false) String bookId,
+        RedirectAttributes redirectAttributes
+    ) {
     	UserDto user = userSession.getUser();
     	userSession.setSection("rents");
     	if(user == null) {
@@ -57,12 +62,12 @@ public class RentController {
     	if(bookId == null || bookId.isEmpty()) {
     		return "redirect:/dashboard";
     	}
-    	
+    	redirectAttributes.addFlashAttribute("bookId", bookId);
     	try {
     		Integer.parseInt(bookId);
     	}catch(NumberFormatException ex) {
     		System.out.println("Errore: bookId non valido - " + bookId);
-            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog&error=invalid_id";
+            return "redirect:/dashboard";
     	}
     	return null;
     }
@@ -79,12 +84,10 @@ public class RentController {
      */
     @GetMapping("/api/borrow")
     public String borrowBook(@RequestParam(value = "bookId", required = false) String bookId, 
-    						 @RequestParam(value = "userId", required = false) String userId,
     						 Boolean confirmed, 
     						 RedirectAttributes redirectAttributes) {
                 
     	int parsedBookId;
-    	int parsedUserId;
     	UserDto user = userSession.getUser();
     	if(bookId == null || bookId.isEmpty()) {
     		return "redirect:/dashboard";
@@ -96,24 +99,21 @@ public class RentController {
             System.out.println("Errore: bookId non valido - " + bookId);
             redirectAttributes.addFlashAttribute("popupType", "error");
             redirectAttributes.addFlashAttribute("popupErrorMessage", "ID non valido.");
-            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog&error=invalid_id";
+            return "redirect:/dashboard";
         }
         
-        try {
-            parsedUserId = Integer.parseInt(userId);
-        } catch (NumberFormatException e) {
-            System.out.println("Errore: user non valido - " + userId);
-            redirectAttributes.addFlashAttribute("popupType", "error");
-            redirectAttributes.addFlashAttribute("popupErrorMessage", "ID non valido.");
-            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog&error=invalid_id";
-        }
+        UserDto userDto = new UserDto();
+        userDto.setUserId(user.getUserId());
         
-        RentDto rent = new RentDto();
-        rent.setBookId(parsedBookId);
-        rent.setUserId(parsedUserId);
+        BookDto bookDto = new BookDto();
+        bookDto.setBookId(parsedBookId);
+        
+        RentalRecordDto rentalRecordDto = new RentalRecordDto();
+        rentalRecordDto.setBookDto(bookDto);
+        rentalRecordDto.setUserDto(userDto);
         
         try {
-        	rentService.createRental(rent, confirmed);
+        	rentService.createRental(rentalRecordDto, confirmed);
         	redirectAttributes.addFlashAttribute("popupType", "rental");
         	redirectAttributes.addFlashAttribute("popupBookId", bookId);
         	redirectAttributes.addFlashAttribute("popupConfirmed", confirmed ? "prestito accettato" : "prestito rifiutato");
@@ -160,15 +160,21 @@ public class RentController {
             System.out.println("Errore: bookId non valido - " + bookId);
             redirectAttributes.addFlashAttribute("popupType", "error");
             redirectAttributes.addFlashAttribute("popupErrorMessage", "ID non valido.");
-            return "redirect:/dashboard?email=" + user.getUserEmail() + "&section=catalog&error=invalid_id";
+            return "redirect:/dashboard";
         }
-        RentDto rental = new RentDto();
-        rental.setUserId(user.getUserId());
-        rental.setBookId(parsedBookId);
 
+        UserDto userDto = new UserDto();
+        userDto.setUserId(user.getUserId());
+        
+        BookDto bookDto = new BookDto();
+        bookDto.setBookId(parsedBookId);
+        
+        RentalRecordDto rentalRecordDto = new RentalRecordDto();
+        rentalRecordDto.setBookDto(bookDto);
+        rentalRecordDto.setUserDto(userDto);
 
         try {
-            rentService.createBookedDate(rental);
+            rentService.createBookedDate(rentalRecordDto);
             redirectAttributes.addFlashAttribute("popupType", "booked");
             redirectAttributes.addFlashAttribute("popupBookId", bookId);
 

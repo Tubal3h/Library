@@ -13,11 +13,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.dto.BookDto;
-import it.dto.RentDto;
+import it.dto.EditionDto;
+import it.dto.RentalRecordDto;
+import it.dto.BookNameDto;
+import it.dto.AuthorDto;
+import it.dto.PublisherDto;
+import it.dto.CategoryDto;
 import it.dto.UserDto;
-import it.dto.response.BookRecordsJoinDtoResponse;
+
 import it.entity.RentalRecord;
-import it.entity.RentalRecordJoin;
+import it.entity.BookName;
+import it.entity.Author;
+import it.entity.Publisher;
+import it.entity.Category;
+import it.entity.Book;
+import it.entity.User;
+import it.entity.Edition;
+
 import it.exception.HistoryNotFoundException;
 import it.repository.RentRecordRepository;
 
@@ -36,7 +48,7 @@ public class RentService {
      * @param rentRepository Repository per i record di noleggio
      */
     public RentService(RentRecordRepository rentRepository) {
-            this.rentRepository = rentRepository;
+        this.rentRepository = rentRepository;
     }
 
     /**
@@ -47,61 +59,25 @@ public class RentService {
      * @return Lista di {@link RentDto} rappresentanti i prestiti attivi dell'utente
      */
     @Transactional(readOnly = true)
-    private List<RentDto> getRentedBooksByUserId(int userId) {
+    private List<RentalRecordDto> getRentedBooksByUserId(int userId) {
         return rentRepository.getActiveRentsByUserId(userId).stream()
-            .map(this::toRentDto)
-            .toList();
+                .map(this::toRentalRecordDto)
+                .toList();
     }
 
     /**
      * Recupera tutti i prestiti attivi nel sistema (per uso amministrativo).
      * Esegue una singola query con JOIN per evitare il problema N+1.
      *
-     * @return Lista di {@link RentDto} rappresentanti tutti i noleggi non ancora conclusi
+     * @return Lista di {@link RentDto} rappresentanti tutti i noleggi non ancora
+     *         conclusi
      */
-    
+
     @Transactional(readOnly = true)
-    private List<RentDto> getRentedAllRents() {
+    private List<RentalRecordDto> getRentedAllRents() {
         return rentRepository.getActiveRents().stream()
-            .map(this::toRentDto)
-            .toList();
-    }
-
-    /**
-     * Converte un'entità {@link RentalRecordJoin} in un DTO {@link RentDto}.
-     * Tutti i dati del libro sono già inclusi nell'entità senza ulteriori query.
-     *
-     * @param rent Record di noleggio aggregato da convertire
-     * @return DTO convertito con i dati del libro inclusi
-     */
-    
-    
-    private RentDto toRentDto(RentalRecordJoin rent) {
-    	UserDto user = new UserDto();
-    	user.setUserName(rent.getUserName());
-    	user.setUserLastName(rent.getUserLastName());
-    	
-    	BookDto book = new BookDto();
-        book.setBookId(rent.getBookId());
-        book.setTitle(rent.getBookName());
-        book.setAuthorFullName(rent.getAuthorFullName());
-        book.setPublisherName(rent.getPublisherName());
-        book.setPublishingDate(rent.getPublicationDate());
-        book.setCategoryName(rent.getCategoryName());
-        book.setIsbn(rent.getIsbnCode());
-        book.setStatus(rent.getStatus());
-
-        RentDto dto = new RentDto();
-        dto.setRentId(rent.getRentalId());
-        dto.setUserId(rent.getUserId());
-        dto.setBookId(rent.getBookId());
-        dto.setBook(book);
-        dto.setUser(user);
-        dto.setRentalDate(rent.getRentalDate());
-        dto.setRentalExpired(rent.getRentalExpired());
-        dto.setRentalEnded(rent.getRentalEnded());
-        dto.setBookingDate(rent.getBookingDate());
-        return dto;
+                .map(this::toRentalRecordDto)
+                .toList();
     }
 
     /**
@@ -109,7 +85,7 @@ public class RentService {
      *
      * @return Numero totale di prestiti non ancora conclusi
      */
-    
+
     @Transactional(readOnly = true)
     public int getTotalRents() {
         return rentRepository.countRents();
@@ -131,7 +107,7 @@ public class RentService {
      * @param userId ID dell'utente
      * @return Numero di prestiti attivi dell'utente specificato
      */
-   
+
     @Transactional(readOnly = true)
     public int getTotalRentsByUserId(int userId) {
         return rentRepository.countRentsByUserId(userId);
@@ -142,58 +118,93 @@ public class RentService {
      * e la scadenza a 14 giorni dalla data corrente.
      *
      * @param rentDto DTO contenente i dati del noleggio (userId, bookId)
-     * @throws RuntimeException se si verifica un errore durante la creazione del noleggio
+     * @throws RuntimeException se si verifica un errore durante la creazione del
+     *                          noleggio
      */
-    
 
     @Transactional
-    public void createBookedDate(RentDto rentDto) throws RuntimeException {
+    public void createBookedDate(RentalRecordDto rentDto) throws RuntimeException {
         try {
+
+            User user = new User();
+            user.setUserId(rentDto.getUserDto().getUserId());
+            user.setUserName(rentDto.getUserDto().getUserName());
+            user.setUserLastName(rentDto.getUserDto().getUserLastName());
+
+            Edition edition = new Edition();
+            edition.setEditionId(rentDto.getBookDto().getEditionDto().getEditionId());
+            edition.setPublishingDate(rentDto.getBookDto().getEditionDto().getPublishingDate());
+
+            BookName bookName = new BookName();
+            bookName.setBookNameId(rentDto.getBookDto().getEditionDto().getBookNameDto().getBookNameId());
+            bookName.setTitle(rentDto.getBookDto().getEditionDto().getBookNameDto().getTitle());
+
+            Author author = new Author();
+            author.setAuthorId(rentDto.getBookDto().getEditionDto().getAuthorDto().getAuthorId());
+            author.setAuthorName(rentDto.getBookDto().getEditionDto().getAuthorDto().getAuthorName());
+            author.setAuthorLastName(rentDto.getBookDto().getEditionDto().getAuthorDto().getAuthorLastName());
+
+            Publisher publisher = new Publisher();
+            publisher.setPublisherId(rentDto.getBookDto().getEditionDto().getPublisherDto().getPublisherId());
+            publisher.setPublisherName(rentDto.getBookDto().getEditionDto().getPublisherDto().getPublisherName());
+
+            Category category = new Category();
+            category.setCategoryId(rentDto.getBookDto().getEditionDto().getCategoryDto().getCategoryId());
+            category.setCategoryName(rentDto.getBookDto().getEditionDto().getCategoryDto().getCategoryName());
+
+            Book book = new Book();
+            book.setBookId(rentDto.getBookDto().getBookId());
+            book.setEdition(edition);
+
             RentalRecord rental = new RentalRecord();
-            rental.setUserId(rentDto.getUserId());
-            rental.setBookId(rentDto.getBookId());
+            rental.setUser(user);
+            rental.setBook(book);
             rental.setBookingDate(LocalDate.now());
             rentRepository.createABookedDate(rental);
-            rentRepository.updateStatusToLend(rentDto.getBookId());
-        
+            rentRepository.updateStatusToLend(rentDto.getBookDto().getBookId());
+
         } catch (Exception e) {
             System.out.println("Eccezione nella repository: " + e.getMessage());
             throw new RuntimeException("impossibile effettuare la prenotazione.");
         }
     }
-    
+
     @Transactional
-    public void createRental(RentDto rentDto, Boolean confirmed) throws RuntimeException {
-    	if(rentDto != null) {
-    		if(confirmed) {
-    			try {
-    				RentalRecord rental = new RentalRecord();
-    				rental.setRentalId(rentDto.getRentId());
-    				rental.setRentalDate(LocalDate.now());
-    				rental.setRentalExpired(LocalDate.now().plusDays(14));;
-    				rentRepository.createRental(rental);
-    				rentRepository.updateRentalStatusOk(rentDto.getBookId());
-    				
-    			}catch(Exception e) {
-    				System.out.println("eccezione aggiunta rentalRecord");
-    				throw new RuntimeException("impossibile effettuare la prenotazione");
-    			}
-    		}else {
-    			try {
-    				RentalRecord rental = new RentalRecord();
-    				rental.setRentalId(rentDto.getRentId());
-    				rental.setBookId(rentDto.getBookId());
-    				rentRepository.deleteRentalById(rental.getRentalId());
-    				rentRepository.updateRentalStatusNotOk(rental.getBookId());
-    			}catch(Exception e) {
-    				System.out.println("eccezione aggiunta delete");
-    			}
-    		}
-    	}
+    public void createRental(RentalRecordDto rentalRecordDto, Boolean confirmed) throws RuntimeException {
+        if (rentalRecordDto != null) {
+            if (confirmed) {
+                try {
+                    RentalRecord rental = new RentalRecord();
+                    rental.setRentalId(rentalRecordDto.getRentalId());
+                    rental.setRentalDate(LocalDate.now());
+                    rental.setRentalExpired(LocalDate.now().plusDays(14));
+                    ;
+                    rentRepository.createRental(rental);
+                    rentRepository.updateRentalStatusOk(rentalRecordDto.getBookDto().getBookId());
+
+                } catch (Exception e) {
+                    System.out.println("eccezione aggiunta rentalRecord");
+                    throw new RuntimeException("impossibile effettuare la prenotazione");
+                }
+            } else {
+                try {
+                    Book book = new Book();
+                    book.setBookId(rentalRecordDto.getBookDto().getBookId());
+                    RentalRecord rental = new RentalRecord();
+                    rental.setRentalId(rentalRecordDto.getRentalId());
+                    rental.setBook(book);
+                    rentRepository.deleteRentalById(rental.getRentalId());
+                    rentRepository.updateRentalStatusNotOk(book.getBookId());
+                } catch (Exception e) {
+                    System.out.println("eccezione aggiunta delete");
+                }
+            }
+        }
     }
-    
+
     /**
      * Segna il libro come consegnato (inizia il prestito).
+     * 
      * @param bookId ID del libro
      * @param rentId ID del noleggio
      */
@@ -206,7 +217,7 @@ public class RentService {
         rentRepository.createRental(rental);
         rentRepository.updateRentalStatusOk(bookId);
     }
-    
+
     /**
      * Aggiorna lo stato di un noleggio registrando la restituzione del libro.
      *
@@ -221,72 +232,137 @@ public class RentService {
     /**
      * Recupera una lista di prestiti filtrata per nome del libro.
      * 
-     * @param search Il termine di ricerca per il nome del libro
+     * @param search   Il termine di ricerca per il nome del libro
      * @param userRole Il ruolo dell'utente che effettua la ricerca
-     * @param userId L'ID dell'utente che effettua la ricerca
-     * @return Lista di RentDto contenente le informazioni condensate dei prestiti filtrati per nome del libro
+     * @param userId   L'ID dell'utente che effettua la ricerca
+     * @return Lista di RentDto contenente le informazioni condensate dei prestiti
+     *         filtrati per nome del libro
      */
-    
+
     @Transactional(readOnly = true)
-    public List<RentDto> getBookListByName(String search, String userRole, int userId) {
-		List<RentDto> myList = new ArrayList<>();
-		
-        if(userRole.equals("role_user")) {
-			myList = getRentedBooksByUserId(userId);
-		}else {
+    public List<RentalRecordDto> getBookListByName(String search, String userRole, int userId) {
+        List<RentalRecordDto> myList = new ArrayList<>();
+
+        if (userRole.equals("role_user")) {
+            myList = getRentedBooksByUserId(userId);
+        } else {
             myList = getRentedAllRents();
         }
-		
-        List<RentDto> filteredList = new ArrayList<>();
-		if(search != null && !search.isBlank()) {
-			String [] arraySearch = search.toLowerCase().trim().split("\\s+");
-			for(RentDto rent : myList) {
-				String userName = rent.getUser().getUserName();
-				String userLastName = rent.getUser().getUserLastName();
-				String title = rent.getBook().getTitle();
-                String bookAuthorFullName = rent.getBook().getAuthorFullName();
-                String bookPublisher = rent.getBook().getPublisherName();
-                String bookCategory = rent.getBook().getCategoryName();
-				String finalString = (userName + " " + userLastName + " " +  title + " " +  bookAuthorFullName + " " +  bookPublisher + " " +  bookCategory).toLowerCase();
-				System.out.println("finalString: " + finalString);
+
+        List<RentalRecordDto> filteredList = new ArrayList<>();
+        if (search != null && !search.isBlank()) {
+            String[] arraySearch = search.toLowerCase().trim().split("\\s+");
+            for (RentalRecordDto rent : myList) {
+                String userName = rent.getUserDto().getUserName();
+                String userLastName = rent.getUserDto().getUserLastName();
+                String title = rent.getBookDto().getEditionDto().getBookNameDto().getTitle();
+                String bookAuthorName = rent.getBookDto().getEditionDto().getAuthorDto().getAuthorName();
+                String bookAuthorLastName = rent.getBookDto().getEditionDto().getAuthorDto().getAuthorLastName();
+                String bookPublisherName = rent.getBookDto().getEditionDto().getPublisherDto().getPublisherName();
+                String bookCategoryName = rent.getBookDto().getEditionDto().getCategoryDto().getCategoryName();
+                String finalString = (userName + " " + userLastName + " " + title + " " + bookAuthorName + " "
+                        + bookAuthorLastName + " " + bookPublisherName + " " + bookCategoryName).toLowerCase();
+                System.out.println("finalString: " + finalString);
                 boolean allMatch = true;
-				for(String s : arraySearch) {
-					System.out.println("nome " + userName);
-					System.out.println("stringa " + arraySearch[0]);
-					if(!finalString.contains(s)) {
-						allMatch = false;
-						break;
-					}
-				}
-				if(allMatch) {					
-					filteredList.add(rent);
-				}	
-			}
-		}else {
-			return myList;
-		}
-		if(filteredList.isEmpty() || filteredList == null) {
-			return myList;
-		}else {
-			return filteredList;
-		}
-	}
-    @Transactional(readOnly = true)
-    public List<BookRecordsJoinDtoResponse> getBookRecords(int bookId) throws HistoryNotFoundException {
-        return rentRepository.getBookRecords(bookId);
+
+                for (String s : arraySearch) {
+                    System.out.println("nome " + userName);
+                    System.out.println("nome autore: ");
+                    System.out.println("stringa " + arraySearch[0]);
+                    if (!(finalString.contains(s))) {
+                        allMatch = false;
+                        break;
+                    }
+                }
+                if (allMatch) {
+                    filteredList.add(rent);
+                }
+            }
+
+        } else {
+            return myList;
+        }
+        if (filteredList.isEmpty() || filteredList == null) {
+            return myList;
+        } else {
+            return filteredList;
+        }
     }
 
     @Transactional(readOnly = true)
-    public List<BookRecordsJoinDtoResponse> getUserRecords(int userId) throws HistoryNotFoundException {
-        return rentRepository.getUserRecords(userId);
+    public List<RentalRecordDto> getBookRecords(int bookId) throws HistoryNotFoundException {
+        
+        return rentRepository.getBookRecords(bookId).stream()
+                .map(this::toRentalRecordDto)
+                .toList();
     }
 
     @Transactional(readOnly = true)
-    public List<BookRecordsJoinDtoResponse> bookHistory(Integer bookId) throws HistoryNotFoundException {
-        List<BookRecordsJoinDtoResponse> myList = new ArrayList<>();
-        if(bookId != null) {
-            myList = rentRepository.getBookRecords(bookId);
+    public List<RentalRecordDto> getUserRecords(int userId) throws HistoryNotFoundException {
+        return rentRepository.getUserRecords(userId).stream()
+                .map(this::toRentalRecordDto)
+                .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<RentalRecordDto> bookHistory(Integer bookId) throws HistoryNotFoundException {
+        List<RentalRecordDto> myList = new ArrayList<>();
+        if (bookId != null) {
+            myList = rentRepository.getBookRecords(bookId).stream()
+                .map(this::toRentalRecordDto)
+                .toList();
         }
         return myList;
     }
+
+        /**
+     * Converte un'entità {@link RentalRecordJoin} in un DTO {@link RentDto}.
+     * Tutti i dati del libro sono già inclusi nell'entità senza ulteriori query.
+     *
+     * @param rent Record di noleggio aggregato da convertire
+     * @return DTO convertito con i dati del libro inclusi
+     */
+    private RentalRecordDto toRentalRecordDto(RentalRecord rent) {
+        UserDto user = new UserDto();
+        user.setUserName(rent.getUser().getUserName());
+        user.setUserLastName(rent.getUser().getUserLastName());
+
+        BookNameDto bookNameDto = new BookNameDto();
+        bookNameDto.setTitle(rent.getBook().getEdition().getBookName().getTitle());
+
+        AuthorDto authorDto = new AuthorDto();
+        authorDto.setAuthorName(rent.getBook().getEdition().getAuthor().getAuthorName());
+        authorDto.setAuthorLastName(rent.getBook().getEdition().getAuthor().getAuthorLastName());
+
+        PublisherDto publisherDto = new PublisherDto();
+        publisherDto.setPublisherName(rent.getBook().getEdition().getPublisher().getPublisherName());
+
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setCategoryName(rent.getBook().getEdition().getCategory().getCategoryName());
+
+        EditionDto edition = new EditionDto();
+        edition.setEditionId(rent.getBook().getEdition().getEditionId());
+        edition.setBookNameDto(bookNameDto);
+        edition.setAuthorDto(authorDto);
+        edition.setPublisherDto(publisherDto);
+        edition.setCategoryDto(categoryDto);
+        edition.setPublishingDate(rent.getBook().getEdition().getPublishingDate());
+        edition.setIsbn(rent.getBook().getEdition().getIsbn());
+
+        BookDto book = new BookDto();
+        book.setBookId(rent.getBook().getBookId());
+        book.setEditionDto(edition);
+        book.setStatus(rent.getBook().getStatus());
+
+        RentalRecordDto rentalRecordDto = new RentalRecordDto();
+        rentalRecordDto.setRentalId(rent.getRentalId());
+        rentalRecordDto.setUserDto(user);
+        rentalRecordDto.setBookDto(book);
+        rentalRecordDto.setRentalDate(rent.getRentalDate());
+        rentalRecordDto.setRentalExpired(rent.getRentalExpired());
+        rentalRecordDto.setRentalEnded(rent.getRentalEnded());
+        rentalRecordDto.setBookingDate(rent.getBookingDate());
+        return rentalRecordDto;
+    }
+
 }

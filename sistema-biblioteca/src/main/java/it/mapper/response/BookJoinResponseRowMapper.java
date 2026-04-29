@@ -1,43 +1,42 @@
-package it.mapper;
+package it.mapper.response;
 
 /* -------------------------------------------------------------------------- */
 /*                                   MAPPER                                   */
 /* -------------------------------------------------------------------------- */
 
 import java.sql.ResultSet;
-
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import it.entity.BookName;
+import it.entity.Book;
 
 /**
- * Mapper per convertire i record del database della tabella books_names in oggetti Entity BookName.
+ * Mapper per convertire i record del database in oggetti DTO BookCatalogDto.
  */
 @Component
-public class BookNameRowMapper implements RowMapper<BookName> {
-
+public class BookJoinResponseRowMapper implements RowMapper<Book> {
+    
     /**
-     * Mappa una riga del ResultSet in un oggetto BookName.
+     * Mappa una riga del ResultSet in un oggetto BookCatalogDto.
      * 
      * @param rs il ResultSet da cui estrarre i dati
      * @param rowNum il numero della riga corrente
-     * @return L'oggetto BookName mappato dalla riga del database
+     * @return L'oggetto BookCatalogDto mappato dalla riga del database
      * @throws SQLException in caso di errori con il database
      */
-    public static BookName map(ResultSet rs) throws SQLException {
-        BookName bookNames = new BookName();
-        bookNames.setBookNameId(rs.getInt("book_name_id"));
-        bookNames.setTitle(rs.getString("title"));
-        return bookNames;
+    public static Book map(ResultSet rs) throws SQLException {
+        Book book = new Book();
+        book.setEdition(EditionJoinResponseRowMapper.map(rs));
+        return book;
     }
 
     @Override
-    public BookName mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
         return map(rs);
     }
+
 }
 
 

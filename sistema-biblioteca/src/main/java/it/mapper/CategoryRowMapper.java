@@ -26,11 +26,15 @@ public class CategoryRowMapper implements RowMapper<Category> {
      * @return Oggetto Category mappato dai dati della riga
      * @throws SQLException Se si verifica un errore durante l'accesso ai dati della ResultSet
      */
+    public static Category map(ResultSet rs) throws SQLException {
+        Category category = new Category();
+        category.setCategoryId(rs.getInt("categoryId"));
+        category.setCategoryName(rs.getString("categoryName"));
+        return category;
+    }
+
     @Override
     public Category mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Category category = new Category();
-        category.setCategoryId(rs.getInt("category_id"));
-        category.setCategoryName(rs.getString("category_name"));
-        return category;
+        return map(rs);
     }
 }
