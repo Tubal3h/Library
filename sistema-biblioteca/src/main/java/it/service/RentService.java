@@ -12,13 +12,21 @@ import java.time.LocalDate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.dto.RentDto;
+import it.dto.BookDto;
+import it.dto.EditionDto;
 import it.dto.RentalRecordDto;
+import it.dto.BookNameDto;
+import it.dto.AuthorDto;
+import it.dto.PublisherDto;
+import it.dto.CategoryDto;
 import it.dto.UserDto;
-import it.dto.response.BookRecordDto;
-import it.dto.response.BookRecordsJoinDtoResponse;
 import it.entity.RentalRecord;
 import it.entity.join.RentalRecordJoin;
+import it.entity.BookName;
+import it.entity.Author;
+import it.entity.Publisher;
+import it.entity.Category;
+import it.entity.Book;
 import it.exception.HistoryNotFoundException;
 import it.repository.RentRecordRepository;
 
@@ -48,9 +56,9 @@ public class RentService {
      * @return Lista di {@link RentDto} rappresentanti i prestiti attivi dell'utente
      */
     @Transactional(readOnly = true)
-    private List<RentDto> getRentedBooksByUserId(int userId) {
+    private List<RentalRecordDto> getRentedBooksByUserId(int userId) {
         return rentRepository.getActiveRentsByUserId(userId).stream()
-            .map(this::toRentDto)
+            .map(this::toRentalRecordDto)
             .toList();
     }
 
@@ -62,9 +70,9 @@ public class RentService {
      */
     
     @Transactional(readOnly = true)
-    private List<RentDto> getRentedAllRents() {
+    private List<RentalRecordDto> getRentedAllRents() {
         return rentRepository.getActiveRents().stream()
-            .map(this::toRentDto)
+            .map(this::toRentalRecordDto)
             .toList();
     }
 
@@ -77,14 +85,35 @@ public class RentService {
      */
     
     
-    private RentDto toRentDto(RentalRecordJoin rent) {
+    private RentalRecordDto toRentalRecordDto(RentalRecord rent) {
     	UserDto user = new UserDto();
-    	user.setUserName(rent.getUserName());
-    	user.setUserLastName(rent.getUserLastName());
+    	user.setUserName(rent.getUser().getUserName());
+    	user.setUserLastName(rent.getUser().getUserLastName());
     	
-    	BookRecordDto book = new BookRecordDto();
-        book.setBookId(rent.getBookId());
-        book.setTitle(rent.getBookName());
+        BookNameDto bookNameDto = new BookNameDto();
+        bookNameDto.setTitle(rent.getBook().getEdition().getBookName().getTitle());
+
+        AuthorDto authorDto = new AuthorDto();
+        authorDto.setAuthorFullName(rent.getBook().getEdition().getAuthor().getAuthorFullName());
+
+        PublisherDto publisherDto = new PublisherDto();
+        publisherDto.setPublisherName(rent.getBook().getEdition().getPublisher().getPublisherName());
+
+        CategoryDto categoryDto = new CategoryDto();
+        categoryDto.setCategoryName(rent.getBook().getEdition().getCategory().getCategoryName());
+
+        EditionDto edition = new EditionDto();
+    	edition.setEditionId(rent.getBook().getEdition().getEditionId());
+    	edition.setBookNameDto(bookNameDto);
+    	edition.setAuthorDto(authorDto);
+    	edition.setPublisherDto(publisherDto);
+    	edition.setCategoryDto(categoryDto);
+    	edition.setPublishingDate(rent.getBook().getEdition().getPublishingDate());
+    	edition.setIsbn(rent.ge);
+
+    	BookDto book = new BookDto();
+        book.setBookId(rent.getBook().getBookId());
+        book.setTitle(rent.getBook().getBookName());
         book.setAuthorFullName(rent.getAuthorFullName());
         book.setPublisherName(rent.getPublisherName());
         book.setPublishingDate(rent.getPublicationDate());

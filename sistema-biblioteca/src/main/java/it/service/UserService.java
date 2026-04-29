@@ -7,7 +7,6 @@ import java.util.ArrayList;
 /* -------------------------------------------------------------------------- */
 
 import java.util.List;
-import it.service.AuthService;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,14 +22,16 @@ import it.repository.UserRepository;
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final AuthService authService;
 
     /**
      * Costruttore per UserService.
      * 
      * @param userRepository Repository per l'accesso ai dati degli utenti
      */
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, AuthService authService) {
         this.userRepository = userRepository;
+        this.authService = authService;
     }
 
     /**
@@ -126,39 +127,39 @@ public class UserService {
      * @return numero di righe inserite
      */
 
-    public int createUser(UserDto userDto, AuthDto AuthDto) {
-        validateUser(userDto);
+    public int createUser(AuthDto AuthDto) {
+        validateUser(AuthDto);
 
-        if (userRepository.existsByEmail(AuthDto.getUserEmail())) {
-            throw new IllegalArgumentException("Esiste già un utente con questa email: " + AuthDto.getUserEmail());
+        if (userRepository.existsByEmail(AuthDto.getEmail())) {
+            throw new IllegalArgumentException("Esiste già un utente con questa email: " + AuthDto.getEmail());
         }
 
         return userRepository.insertUser(
-                userDto.getUserName().trim(),
-                userDto.getUserLastName().trim(),
-                AuthDto.getUserEmail().trim().toLowerCase(),
-                AuthDto.getUserPassword().trim(),
-                userDto.getUserRole().trim().toLowerCase());
+                AuthDto.getUserDto().getUserName().trim(),
+                AuthDto.getUserDto().getUserLastName().trim(),
+                AuthDto.getEmail().trim().toLowerCase(),
+                AuthDto.getPassword().trim(),
+                AuthDto.getUserDto().getUserRole().trim().toLowerCase());
     }
 
-    private void validateUser(UserDto userDto) {
-        if (userDto == null) {
+    private void validateUser(AuthDto authDto) {
+        if (authDto == null) {
             throw new IllegalArgumentException("Dati utente mancanti.");
         }
 
-        if (userDto.getUserName() == null || userDto.getUserName().isBlank()) {
+        if (authDto.getUserDto().getUserName() == null || authDto.getUserDto().getUserName().isBlank()) {
             throw new IllegalArgumentException("Il nome è obbligatorio.");
         }
 
-        if (userDto.getUserLastName() == null || userDto.getUserLastName().isBlank()) {
+        if (authDto.getUserDto().getUserLastName() == null || authDto.getUserDto().getUserLastName().isBlank()) {
             throw new IllegalArgumentException("Il cognome è obbligatorio.");
         }
 
-        if (userDto.getUserPassword() == null || userDto.getUserPassword().isBlank()) {
+        if (authDto.getPassword() == null || authDto.getPassword().isBlank()) {
             throw new IllegalArgumentException("La password è obbligatoria.");
         }
 
-        String role = userDto.getUserRole();
+        String role = authDto.getUserDto().getUserRole();
         if (role == null || role.isBlank()) {
             throw new IllegalArgumentException("Il ruolo è obbligatorio.");
         }
@@ -199,11 +200,11 @@ public class UserService {
             throw new IllegalArgumentException("Utente non trovato.");
         }
         
-        if (!user.getUserPassword().equals(oldPassword)) {
+        if (!user.getPassword().equals(oldPassword)) {
             throw new IllegalArgumentException("La password attuale non è corretta.");
         }
         
-        userRepository.updatePassword(email, newPassword);
+        userRepository.updatePassword(authDto.getEmail(), newPassword);
     }
 }
 

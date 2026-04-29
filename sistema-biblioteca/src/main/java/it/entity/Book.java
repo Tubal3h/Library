@@ -52,10 +52,11 @@ public class Book {
     }
 
     /**
-     * @param editionId ID dell'edizione
+     * @param edition ID dell'edizione
      */
-    public void setEdition(Edition editionId) {
-        this.edition = editionId;
+
+    public void setEdition(Edition edition) {
+        this.edition = edition;
     }
 
     /**

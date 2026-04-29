@@ -38,34 +38,29 @@ public class UserController {
      */
     @PostMapping("/api/addUser")
     public String addUser(
-            @RequestParam("userName") String userName,
-            @RequestParam("userLastName") String userLastName,
-            @RequestParam("userRole") String userRole,
+            UserDto userDto,
             RedirectAttributes redirectAttributes) {
 
-        UserDto currentUser = userSession.getUser();
-        if (currentUser == null || !"role_admin".equals(currentUser.getUserRole())) {
+        AuthDto currentUser = userSession.getAuth();
+        if (currentUser == null || !"role_admin".equals(currentUser.getUserDto().getUserRole())) {
             return "redirect:/";
         }
 
         try {
-            UserDto userDto = new UserDto();
-            AuthDto AuthDto = new AuthDto();
-            userDto.setUserName(userName);
-            userDto.setUserLastName(userLastName);
-            String cleanName = userName.toLowerCase().replaceAll("[^a-z0-9àèéìòù]", "");
-            String cleanLastName = userLastName.toLowerCase().replaceAll("[^a-z0-9àèéìòù]", "");
-            AuthDto.setUserEmail(cleanName + "." + cleanLastName + "@biblioteca.it");
-            AuthDto.setUserPassword("Password123!");
-            userDto.setUserRole(userRole);
+            AuthDto authDto = new AuthDto();
+            String cleanName = userDto.getUserName().toLowerCase().replaceAll("[^a-z0-9àèéìòù]", "");
+            String cleanLastName = userDto.getUserLastName().toLowerCase().replaceAll("[^a-z0-9àèéìòù]", "");
+            authDto.setUserEmail(cleanName + "." + cleanLastName + "@biblioteca.it");
+            authDto.setUserPassword("Password123!");
+            authDto.setUserDto(userDto);
 
-            userService.createUser(userDto, AuthDto);
+            userService.createUser(authDto);
 
             redirectAttributes.addFlashAttribute("popupType", "addUser");
-            redirectAttributes.addFlashAttribute("popupUserName", userName + " " + userLastName);
-            redirectAttributes.addFlashAttribute("popupUserEmail", AuthDto.getEmail());
+            redirectAttributes.addFlashAttribute("popupUserName", authDto.getUserDto().getUserName() + " " + authDto.getUserDto().getUserLastName());
+            redirectAttributes.addFlashAttribute("popupUserEmail", authDto.getEmail());
             redirectAttributes.addFlashAttribute("popupUserRole",
-                    "role_admin".equalsIgnoreCase(userRole) ? "Amministratore" : "Dipendente");
+                    "role_admin".equalsIgnoreCase(authDto.getUserDto().getUserRole()) ? "Amministratore" : "Dipendente");
         } catch (IllegalArgumentException ex) {
             redirectAttributes.addFlashAttribute("popupType", "error");
             redirectAttributes.addFlashAttribute("popupErrorMessage", ex.getMessage());
@@ -106,14 +101,13 @@ public class UserController {
 
     @PostMapping("/api/changePassword")
     public String changePassword(
-            @RequestParam("email") String email,
             @RequestParam("oldPassword") String oldPassword,
             @RequestParam("newPassword") String newPassword,
             @RequestParam("confirmPassword") String confirmPassword,
             RedirectAttributes redirectAttributes) {
         
         AuthDto currentUser = userSession.getAuth();
-        if (currentUser == null || !currentUser.getEmail().equals(email)) {
+        if (currentUser == null ) {
             return "redirect:/";
         }
 
