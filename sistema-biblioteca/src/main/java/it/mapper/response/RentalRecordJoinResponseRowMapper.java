@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 import it.entity.Author;
 import it.entity.BookName;
 import it.entity.Category;
+import it.entity.Edition;
 import it.entity.Publisher;
-import it.entity.join.EditionJoin;
 import it.entity.join.RentalRecordJoin;
 
 /**
@@ -42,7 +42,7 @@ public class RentalRecordJoinResponseRowMapper implements RowMapper<RentalRecord
      * @throws SQLException Se si verifica un errore durante la conversione
      */
     public static RentalRecordJoin map(ResultSet rs) throws SQLException {
-        EditionJoin editionJoin = EditionJoinResponseRowMapper.map(rs);
+        Edition editionJoin = EditionJoinResponseRowMapper.map(rs);
 
         RentalRecordJoin rentalRecordJoin = new RentalRecordJoin();
         rentalRecordJoin.setRentalId(rs.getInt("rentalId"));

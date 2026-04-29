@@ -16,7 +16,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import it.entity.Edition;
-import it.entity.join.EditionJoin;
+import it.entity.Edition;
 import it.exception.InsertEditionException;
 import it.mapper.EditionRowMapper;
 import it.mapper.response.EditionJoinResponseRowMapper;
@@ -51,7 +51,7 @@ public class EditionRepository implements EditionRepositoryInterface {
      * 
      * @return Lista di tutte le edizioni disponibili nel database
      */
-    public List<EditionJoin> getAllEditions() {
+    public List<Edition> getAllEditions() {
     	String sql = """
     	        SELECT
     	        COUNT(b.book_id) AS quantity,

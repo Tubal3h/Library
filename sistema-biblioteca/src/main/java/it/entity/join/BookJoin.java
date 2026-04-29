@@ -1,5 +1,7 @@
 package it.entity.join;
 
+import it.entity.Edition;
+
 /* -------------------------------------------------------------------------- */
 /*                                   ENTITY                                   */
 /* -------------------------------------------------------------------------- */
@@ -11,7 +13,7 @@ package it.entity.join;
  */
 public class BookJoin {
 
-    private EditionJoin edition;
+    private Edition edition;
 
 
     /**
@@ -25,15 +27,15 @@ public class BookJoin {
      * 
      * @param edition
      */
-    public BookJoin(EditionJoin edition) {
+    public BookJoin(Edition edition) {
         this.edition = edition;
     }
 
-    public EditionJoin getEdition() {
+    public Edition getEdition() {
         return edition;
     }
 
-    public void setEdition(EditionJoin edition) {
+    public void setEdition(Edition edition) {
         this.edition = edition; 
     }
     

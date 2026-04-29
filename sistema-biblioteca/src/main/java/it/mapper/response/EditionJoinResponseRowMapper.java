@@ -11,7 +11,7 @@ import it.entity.Book;
 import it.entity.BookName;
 import it.entity.Publisher;
 import it.entity.Category;
-import it.entity.join.EditionJoin;
+import it.entity.Edition;
 import it.mapper.AuthorRowMapper;
 import it.mapper.BookNameRowMapper;
 import it.mapper.BookRowMapper;
@@ -22,7 +22,7 @@ import it.mapper.PublisherRowMapper;
  * Mapper per convertire i record del database in oggetti EditionJoin.
  */
 @Component
-public class EditionJoinResponseRowMapper implements RowMapper<EditionJoin> {
+public class EditionJoinResponseRowMapper implements RowMapper<Edition> {
 
     /**
      * Converte un record del database in un oggetto EditionJoin.
@@ -40,8 +40,8 @@ public class EditionJoinResponseRowMapper implements RowMapper<EditionJoin> {
      * @return Oggetto EditionJoin contenente i dati del record
      * @throws SQLException Se si verifica un errore durante la conversione
      */
-    public static EditionJoin map(ResultSet rs) throws SQLException {
-        EditionJoin editionJoin = new EditionJoin();
+    public static Edition map(ResultSet rs) throws SQLException {
+        Edition editionJoin = new Edition();
         editionJoin.setEditionId(rs.getInt("editionId"));
         editionJoin.setAuthor(AuthorRowMapper.map(rs));
         editionJoin.setBook(BookRowMapper.map(rs));
@@ -55,7 +55,7 @@ public class EditionJoinResponseRowMapper implements RowMapper<EditionJoin> {
     }
 
     @Override
-    public EditionJoin mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public Edition mapRow(ResultSet rs, int rowNum) throws SQLException {
         return map(rs);
     }
 }

@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import it.dto.EditionDto;
 import it.dto.join.EditionJoinDto;
 import it.entity.Edition;
-import it.entity.join.EditionJoin;
+import it.entity.Edition;
 import it.repository.EditionRepository;
 
 /**
@@ -33,7 +33,7 @@ public class EditionService {
      * @return Lista di EditionDto contenente i metadati completi dell'edizione
      */
     private List<EditionJoinDto> getAllEditions() {
-        List<EditionJoin> editions = editionRepository.getAllEditions();
+        List<Edition> editions = editionRepository.getAllEditions();
         return editions.stream().map(edition -> {
             EditionJoinDto dto = new EditionJoinDto();
             dto.setEditionId(edition.getEditionId());

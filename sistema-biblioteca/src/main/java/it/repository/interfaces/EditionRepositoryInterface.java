@@ -4,10 +4,10 @@ import java.time.LocalDate;
 import java.util.List;
 
 import it.entity.Edition;
-import it.entity.join.EditionJoin;
+import it.entity.Edition;
 
 public interface EditionRepositoryInterface {
-	public List<EditionJoin> getAllEditions();
+	public List<Edition> getAllEditions();
 	public Edition findById(int editionId);
 	public void insertEdition(String title, 
 							 String authorName,

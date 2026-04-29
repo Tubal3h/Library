@@ -6,13 +6,15 @@ package it.entity.join;
 
 import java.time.LocalDate;
 
+import it.entity.Edition;
+
 /**
  * Entità che rappresenta un record di noleggio nel sistema.
  */
 public class RentalRecordJoin {
 
 	private int rentalId;
-	private EditionJoin editionJoin;
+	private Edition editionJoin;
 	private LocalDate rentalDate;
 	private LocalDate rentalExpired;
 	private LocalDate rentalEnded;
@@ -23,7 +25,7 @@ public class RentalRecordJoin {
 	
     public RentalRecordJoin(
 		int rentalId,
-		EditionJoin editionJoin,
+		Edition editionJoin,
 		LocalDate rentalDate,
 		LocalDate rentalExpired,
 		LocalDate rentalEnded
@@ -46,11 +48,11 @@ public class RentalRecordJoin {
 		this.rentalId = rentalId;
 	}
 
-	public EditionJoin getEditionJoin() {
+	public Edition getEditionJoin() {
 		return editionJoin;
 	}
 
-	public void setEditionJoin(EditionJoin editionJoin) {
+	public void setEditionJoin(Edition editionJoin) {
 		this.editionJoin = editionJoin;
 	}
 
