@@ -29,8 +29,8 @@ public class UserSession implements Serializable {
     /**
      * @return L'utente attualmente in sessione
      */
-    public UserDto getUser() {
-        return user;
+    public AuthDto getUser() {
+        return auth;
     }
 
     /**

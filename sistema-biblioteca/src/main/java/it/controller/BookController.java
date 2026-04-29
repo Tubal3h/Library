@@ -14,8 +14,8 @@ import it.dto.BookNameDto;
 import it.dto.CategoryDto;
 import it.dto.EditionDto;
 import it.dto.PublisherDto;
-import it.dto.UserDto;
 import it.dto.AuthorDto;
+import it.dto.request.AuthDto;
 import it.dto.request.InsertBookDto;
 import it.exception.NoBookIdFoundException;
 import it.exception.InsertBookServiceException;
@@ -74,8 +74,8 @@ public class BookController {
 			@RequestParam(value = "isbn", required = false) String isbn,
 			@RequestParam(value = "bookName", required = false) String bookName,
 			RedirectAttributes redirectAttributes) {
-		UserDto user = userSession.getUser();
-		if (user == null || !"role_admin".equals(user.getUserRole())) {
+		AuthDto user = userSession.getUser();
+		if (user == null || !"role_admin".equals(user.getUserDto().getUserRole())) {
 			return "redirect:/";
 		}
 		try {
@@ -106,8 +106,8 @@ public class BookController {
 			@RequestParam(value = "bookId", required = false) Integer bookId,
 			@RequestParam(value = "bookName", required = false) String bookName,
 			RedirectAttributes redirectAttributes) {
-		UserDto user = userSession.getUser();
-		if (user == null || !"role_admin".equals(user.getUserRole())) {
+		AuthDto user = userSession.getUser();
+		if (user == null || !"role_admin".equals(user.getUserDto().getUserRole())) {
 			return "redirect:/";
 		}
 		try {
@@ -153,7 +153,7 @@ public class BookController {
 				return "redirect:/dashboard";
 		}
 		
-		UserDto user = userSession.getUser();
+		AuthDto user = userSession.getUser();
 		if (user == null) {
 			return "redirect:/";
 		}
@@ -184,11 +184,11 @@ public class BookController {
 		@RequestParam(value = "editionId") int editionId,
 		@RequestParam(value = "bookNameId") int bookNameId,
 		RedirectAttributes redirectAttributes) {
-		UserDto user = userSession.getUser();
+		AuthDto user = userSession.getUser();
 		if (user == null) {
 			return "redirect:/";
 		}
-		if(!user.getUserRole().equals("role_admin")) {
+		if(!user.getUserDto().getUserRole().equals("role_admin")) {
 			userSession.setSection("home");
 			return "redirect:/dashboard";
 		}	
@@ -228,7 +228,7 @@ public class BookController {
 		@RequestParam(value = "editionId") int editionId,
 		@RequestParam(value = "authorId") int authorId,
 		RedirectAttributes redirectAttributes) {
-		UserDto user = userSession.getUser();
+		AuthDto user = userSession.getUser();
 		if (user == null) {
 			return "redirect:/";
 		}
@@ -236,7 +236,7 @@ public class BookController {
 		
 		try {
 			
-			if(!user.getUserRole().equals("role_admin")) {
+			if(!user.getUserDto().getUserRole().equals("role_admin")) {
 				userSession.setSection("home");
 				return "redirect:/dashboard";
 			}
@@ -275,7 +275,7 @@ public class BookController {
 		@RequestParam(value = "editionId") Integer editionId,
 		@RequestParam(value = "publisherNameId") int publisherNameId,
 		RedirectAttributes redirectAttributes) {
-		UserDto user = userSession.getUser();
+		AuthDto user = userSession.getUser();
 		if (user == null) {
 			return "redirect:/";
 		}
@@ -283,7 +283,7 @@ public class BookController {
 		
 		try {
 
-			if(!user.getUserRole().equals("role_admin")) {
+			if(!user.getUserDto().getUserRole().equals("role_admin")) {
 				userSession.setSection("home");
 				return "redirect:/dashboard";
 			}
@@ -320,7 +320,7 @@ public class BookController {
 		@RequestParam(value = "editionId") int editionId,
 		@RequestParam(value = "categoryNameId") int categoryNameId,
 		RedirectAttributes redirectAttributes) {
-		UserDto user = userSession.getUser();
+		AuthDto user = userSession.getUser();
 		if (user == null) {
 			return "redirect:/";
 		}
@@ -328,7 +328,7 @@ public class BookController {
 		
 		try {
 
-			if(!user.getUserRole().equals("role_admin")) {
+			if(!user.getUserDto().getUserRole().equals("role_admin")) {
 				userSession.setSection("home");
 				return "redirect:/dashboard";
 			}
@@ -363,11 +363,11 @@ public class BookController {
 	public String addBookName(
 		@RequestParam(value = "title") String title,
 		RedirectAttributes redirectAttributes) {
-		UserDto user = userSession.getUser();
+		AuthDto user = userSession.getUser();
 		if (user == null) {
 			return "redirect:/";
 		}
-		if(!user.getUserRole().equals("role_admin")) {
+		if(!user.getUserDto().getUserRole().equals("role_admin")) {
 			userSession.setSection("home");
 			return "redirect:/dashboard";
 		}	
@@ -396,11 +396,11 @@ public class BookController {
 		@RequestParam(value = "authorName") String authorName,
 		@RequestParam(value = "authorLastName") String authorLastName,
 		RedirectAttributes redirectAttributes) {
-		UserDto user = userSession.getUser();
+		AuthDto user = userSession.getUser();
 		if (user == null) {
 			return "redirect:/";
 		}
-		if(!user.getUserRole().equals("role_admin")) {
+		if(!user.getUserDto().getUserRole().equals("role_admin")) {
 			userSession.setSection("home");
 			return "redirect:/dashboard";
 		}	
@@ -428,11 +428,11 @@ public class BookController {
 	public String addPublisher(
 		@RequestParam(value = "publisherName") String publisherName,
 		RedirectAttributes redirectAttributes) {
-		UserDto user = userSession.getUser();
+		AuthDto user = userSession.getUser();
 		if (user == null) {
 			return "redirect:/";
 		}
-		if(!user.getUserRole().equals("role_admin")) {
+		if(!user.getUserDto().getUserRole().equals("role_admin")) {
 			userSession.setSection("home");
 			return "redirect:/dashboard";
 		}	
@@ -459,11 +459,11 @@ public class BookController {
 	public String addCategory(
 		@RequestParam(value = "categoryName") String categoryName,
 		RedirectAttributes redirectAttributes) {
-		UserDto user = userSession.getUser();
+		AuthDto user = userSession.getUser();
 		if (user == null) {
 			return "redirect:/";
 		}
-		if(!user.getUserRole().equals("role_admin")) {
+		if(!user.getUserDto().getUserRole().equals("role_admin")) {
 			userSession.setSection("home");
 			return "redirect:/dashboard";
 		}	

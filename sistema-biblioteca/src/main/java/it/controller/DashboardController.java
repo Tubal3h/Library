@@ -18,6 +18,7 @@ import it.dto.RentalRecordDto;
 import it.dto.BookDto;
 import it.dto.EditionDto;
 import it.dto.UserDto;
+import it.dto.request.AuthDto;
 import it.service.BookService;
 import it.service.RentService;
 import it.service.UserService;
@@ -87,7 +88,7 @@ public class DashboardController {
             @RequestParam(value = "includeDeleted", defaultValue = "false") boolean includeDeleted,
             @RequestParam(value = "search", required = false) String search,
             RedirectAttributes redirectAttributes) {
-        UserDto user = userSession.getUser();
+        AuthDto user = userSession.getUser();
         String section = userSession.getSection();
         if (section == null || section.isEmpty()) {
             section = "home";
@@ -109,9 +110,9 @@ public class DashboardController {
 
         try {
             if ("home".equals(section)) {
-                if ("role_user".equals(user.getUserRole())) {
-                    model.addAttribute("totalRents", rentService.getTotalRentsByUserId(user.getUserId()));
-                } else if ("role_admin".equals(user.getUserRole())) {
+                if ("role_user".equals(user.getUserDto().getUserRole())) {
+                    model.addAttribute("totalRents", rentService.getTotalRentsByUserId(user.getUserDto().getUserId()));
+                } else if ("role_admin".equals(user.getUserDto().getUserRole())) {
                     model.addAttribute("totalUsers", userService.getTotalUsers());
                     model.addAttribute("totalBooks", bookService.getTotalNotElimatedBooks());
                     model.addAttribute("totalRents", rentService.getTotalRents());
@@ -119,27 +120,27 @@ public class DashboardController {
                 }
             }
 
-            if ("users".equals(section) && "role_admin".equals(user.getUserRole())) {
+            if ("users".equals(section) && "role_admin".equals(user.getUserDto().getUserRole())) {
                 model.addAttribute("users", userService.getUserListByName(search));
             }
 
             if ("catalog".equals(section)) {
 
-                model.addAttribute("books", bookService.getBookListByName(search, user.getUserRole()));
+                model.addAttribute("books", bookService.getBookListByName(search, user.getUserDto().getUserRole()));
 
             }
 
             if ("rents".equals(section)) {
-                List<RentalRecordDto> rentedBooks = rentService.getBookListByName(search, user.getUserRole(), user.getUserId());
+                List<RentalRecordDto> rentedBooks = rentService.getBookListByName(search, user.getUserDto().getUserRole(), user.getUserDto().getUserId());
                 model.addAttribute("rentedBooks", rentedBooks);
             }
 
-            if ("edition".equals(section) && "role_admin".equals(user.getUserRole())) {
+            if ("edition".equals(section) && "role_admin".equals(user.getUserDto().getUserRole())) {
                 model.addAttribute("editions", editionService.getEditionListByName(search));
             }
 
             if (("catalog".equals(section) || "edition".equals(section) || "settings".equals(section))
-                    && "role_admin".equals(user.getUserRole())) {
+                    && "role_admin".equals(user.getUserDto().getUserRole())) {
                 model.addAttribute("authors", authorService.getAllAuthors());
                 model.addAttribute("categories", categoryService.getAllCategories());
                 model.addAttribute("publishers", publisherService.getAllPublishers());
@@ -148,7 +149,7 @@ public class DashboardController {
 
             // Sezione Registri (per Libro o per Utente)
             if (("bookRecords".equals(section) || "userRecords".equals(section))
-                    && "role_admin".equals(user.getUserRole())) {
+                    && "role_admin".equals(user.getUserDto().getUserRole())) {
                 if ("bookRecords".equals(section)) {
                     BookDto bookDto = new BookDto();
                     bookDto.setBookId((int) redirectAttributes.getFlashAttributes().get("bookId"));

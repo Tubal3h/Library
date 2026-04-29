@@ -8,7 +8,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import it.configuration.UserSession;
-import it.dto.UserDto;
+import it.dto.request.AuthDto;
 
 @Controller
 public class BookRecordsController {
@@ -31,8 +31,8 @@ public class BookRecordsController {
     public String bookRecords(
         @PathVariable(value = "bookId") String bookId, 
         RedirectAttributes redirectAttributes) {
-        UserDto user = userSession.getUser();
-        if (user == null || !"role_admin".equals(user.getUserRole())) {
+        AuthDto user = userSession.getUser();
+        if (user == null || !"role_admin".equals(user.getUserDto().getUserRole())) {
             return "redirect:/";
         }
         
@@ -53,8 +53,8 @@ public class BookRecordsController {
     public String userRecords(
         @PathVariable(value = "userId") String userId, 
         RedirectAttributes redirectAttributes) {
-        UserDto user = userSession.getUser();
-        if (user == null || !"role_admin".equals(user.getUserRole())) {
+        AuthDto user = userSession.getUser();
+        if (user == null || !"role_admin".equals(user.getUserDto().getUserRole())) {
             return "redirect:/";
         }
         

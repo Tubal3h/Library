@@ -15,7 +15,7 @@ public class UserDto implements Serializable {
     private String userName;
     private String userLastName;
     private String userRole;
-    
+
     /**
      * @return ID dell'utente
      */
@@ -58,7 +58,6 @@ public class UserDto implements Serializable {
         this.userLastName = userLastName;
     }
 
-
     /**
      * @return Ruolo dell'utente
      */
@@ -73,5 +72,3 @@ public class UserDto implements Serializable {
         this.userRole = userRole;
     }
 }
-
-

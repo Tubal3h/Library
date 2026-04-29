@@ -56,37 +56,38 @@ public class UserService {
      * Recupera una lista di utenti filtrata per nome.
      * 
      * @param search Il termine di ricerca per il nome dell'utente
-     * @return Lista di UserDto contenente le informazioni condensate degli utenti filtrati per nome
+     * @return Lista di UserDto contenente le informazioni condensate degli utenti
+     *         filtrati per nome
      */
     public List<UserDto> getUserListByName(String search) {
-		List<UserDto> myList = getAllUsers();
-		List<UserDto> filteredList = new ArrayList<>();
-		if(search != null && !search.isBlank()) {
-			String [] searchString = search.toLowerCase().trim().split("\\s+");
-			for(UserDto user : myList) {
-				String userName = user.getUserName();
-				String userLastName = user.getUserLastName();
-				String fullName = (userName + " " + userLastName).toLowerCase();
-				boolean allMatch = true;
-				for(String s : searchString) {
-					if(!fullName.contains(s)) {
-						allMatch = false;
-						break;
-					}
-				}
-				if(allMatch) {
-					filteredList.add(user);
-				}
-			}
-		}else {
-			return myList;
-		}
-		if(filteredList.isEmpty() || filteredList == null) {
-			return myList;
-		}else {
-			return filteredList;
-		}
-	}
+        List<UserDto> myList = getAllUsers();
+        List<UserDto> filteredList = new ArrayList<>();
+        if (search != null && !search.isBlank()) {
+            String[] searchString = search.toLowerCase().trim().split("\\s+");
+            for (UserDto user : myList) {
+                String userName = user.getUserName();
+                String userLastName = user.getUserLastName();
+                String fullName = (userName + " " + userLastName).toLowerCase();
+                boolean allMatch = true;
+                for (String s : searchString) {
+                    if (!fullName.contains(s)) {
+                        allMatch = false;
+                        break;
+                    }
+                }
+                if (allMatch) {
+                    filteredList.add(user);
+                }
+            }
+        } else {
+            return myList;
+        }
+        if (filteredList.isEmpty() || filteredList == null) {
+            return myList;
+        } else {
+            return filteredList;
+        }
+    }
 
     /**
      * Recupera un utente tramite il suo ID.
@@ -113,7 +114,7 @@ public class UserService {
      * 
      * @return Il numero totale di utenti registrati con ruolo 'role_user'
      */
-    
+
     @Transactional(readOnly = true)
     public int getTotalUsers() {
         int users = userRepository.countUsers();
@@ -184,9 +185,9 @@ public class UserService {
     /**
      * Aggiorna la password dell'utente verificando la password attuale.
      *
-     * @param email Email dell'utente
-     * @param oldPassword Password attuale
-     * @param newPassword Nuova password
+     * @param email           Email dell'utente
+     * @param oldPassword     Password attuale
+     * @param newPassword     Nuova password
      * @param confirmPassword Conferma della nuova password
      */
     @Transactional
@@ -194,17 +195,16 @@ public class UserService {
         if (newPassword == null || confirmPassword == null || !newPassword.equals(confirmPassword)) {
             throw new IllegalArgumentException("La nuova password e la conferma non coincidono.");
         }
-        
+
         AuthDto user = authService.authenticate(authDto);
         if (user == null) {
             throw new IllegalArgumentException("Utente non trovato.");
         }
-        
+
         if (!user.getPassword().equals(oldPassword)) {
             throw new IllegalArgumentException("La password attuale non è corretta.");
         }
-        
+
         userRepository.updatePassword(authDto.getEmail(), newPassword);
     }
 }
-
