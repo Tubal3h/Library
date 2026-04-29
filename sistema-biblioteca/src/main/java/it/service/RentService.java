@@ -109,12 +109,12 @@ public class RentService {
     	edition.setPublisherDto(publisherDto);
     	edition.setCategoryDto(categoryDto);
     	edition.setPublishingDate(rent.getBook().getEdition().getPublishingDate());
-    	edition.setIsbn(rent.ge);
+    	edition.setIsbn(rent.getBook().getEdition().getIsbn());
 
     	BookDto book = new BookDto();
         book.setBookId(rent.getBook().getBookId());
-        book.setTitle(rent.getBook().getBookName());
-        book.setAuthorFullName(rent.getAuthorFullName());
+        book.setEditionDto(edition);
+        book.setStatus(rent.getBook().getStatus());
         book.setPublisherName(rent.getPublisherName());
         book.setPublishingDate(rent.getPublicationDate());
         book.setCategoryName(rent.getCategoryName());

@@ -18,11 +18,11 @@ public class BookDto {
         this.status = status;
     }
     
-    public EditionDto getEdition() {
+    public EditionDto getEditionDto() {
         return editionDto;
     }
 
-    public void setEdition(EditionDto editionDto) {
+    public void setEditionDto(EditionDto editionDto) {
         this.editionDto = editionDto;
     }
 
