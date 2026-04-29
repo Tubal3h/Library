@@ -6,6 +6,7 @@ package it.repository;
 
 import java.util.List;
 
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -16,7 +17,7 @@ import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import it.entity.join.BookRecordJoin;
-import it.entity.join.BookJoin;
+import it.entity.Book;
 import it.exception.InsertBookException;
 import it.mapper.response.BookJoinResponseRowMapper;
 import it.mapper.response.BookRecordJoinResponseRowMapper;
@@ -121,7 +122,7 @@ public class BookRepository implements BookRepositoryInterface{
      * @return Lista di oggetti {@link BookJoin} con i dati completi di ogni libro
      */
     @Override
-    public List<BookJoin> getAllBooks() {
+    public List<Book> getAllBooks() {
         String sql = """
                 SELECT
                     e.edition_id,

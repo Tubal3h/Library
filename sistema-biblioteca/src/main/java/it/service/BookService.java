@@ -25,9 +25,9 @@ import it.dto.PublisherDto;
 import it.dto.RentalRecordDto;
 import it.dto.request.InsertBookDto;
 import it.dto.BookNameDto;
-import it.entity.BookNames;
+import it.entity.BookName;
 import it.entity.Publisher;
-import it.entity.join.BookJoin;
+import it.entity.Book;
 import it.exception.BookNotFoundException;
 import it.exception.InsertAuthorException;
 import it.exception.InsertBookNameException;
@@ -84,7 +84,7 @@ public class BookService {
      * @param bookNames Oggetto {@link BookNames} da convertire
      * @return Oggetto {@link BookNameDto} convertito
      */
-    private BookNameDto convertToBookNamesDto(BookNames bookNames) {
+    private BookNameDto convertToBookNamesDto(BookName bookNames) {
         return new BookNameDto(bookNames.getBookNamesId(), bookNames.getTitle());
     }
 
@@ -98,46 +98,46 @@ public class BookService {
      */
     @Transactional(readOnly = true)
     private List<BookDto> getAllBooks(String userRole) {
-        List<BookJoin> repoBook = bookRepository.getAllBooks();
+        List<Book> repoBook = bookRepository.getAllBooks();
         return repoBook.stream()
             .filter(book -> !userRole.equals("role_user") ||
-                    "disponibilita".equalsIgnoreCase(book.getEdition().getBook().getStatus()))
+                    "disponibilita".equalsIgnoreCase(book.getStatus()))
             .map(book -> {
                 
-                EditionDto editionJoinDto = new EditionDto();
-                editionJoinDto.setEditionId(book.getEdition().getEditionId());
-                editionJoinDto.setAuthorDto(
+                BookDto bookDto = new BookDto();
+                bookDto.setEdition(new EditionDto());;
+                bookDto.setAuthorDto(
                     new AuthorDto(
                         book.getEdition().getAuthor().getAuthorId(),
                         book.getEdition().getAuthor().getAuthorName(),
                         book.getEdition().getAuthor().getAuthorLastName()
                     )
                 );
-                editionJoinDto.setBookDto(
+                bookDto.setBookDto(
                     new BookDto(
-                        book.getEdition().getBook().getBookId(),
-                        book.getEdition().getBook().getEditionId(),
-                        book.getEdition().getBook().getStatus()
+                        book.getEdition().getBookName().getBookNamesId(),
+                        book.getEdition().getEditionId(),
+                        book.getStatus()
                     )
                 );
-                editionJoinDto.setCategoryDto(
+                bookDto.setCategoryDto(
                     new CategoryDto(
                         book.getEdition().getCategory().getCategoryId(),
                         book.getEdition().getCategory().getCategoryName()
                     )
                 );
-                editionJoinDto.setPublisherDto(
+                bookDto.setPublisherDto(
                     new PublisherDto(
                         book.getEdition().getPublisher().getPublisherId(),
                         book.getEdition().getPublisher().getPublisherName()
                     )
                 );
-                editionJoinDto.setPublishingDate(book.getEdition().getPublishingDate());
-                editionJoinDto.setIsbn(book.getEdition().getIsbn());
-                editionJoinDto.setQuantity(book.getEdition().getQuantity());
+                bookDto.setPublishingDate(book.getEdition().getPublishingDate());
+                bookDto.setIsbn(book.getEdition().getIsbn());
+                bookDto.setQuantity(book.getEdition().getQuantity());
 
                 BookDto dtoBookJoin = new BookDto();
-                dtoBookJoin.setEdition(editionJoinDto);
+                dtoBookJoin.setEdition(bookDto);
                 
                 return dtoBookJoin;
             })

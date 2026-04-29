@@ -16,8 +16,6 @@ public class EditionDto {
     private int quantity;
 
 
-    
-
     /**
      * Costruttore vuoto per EditionDto.
      */

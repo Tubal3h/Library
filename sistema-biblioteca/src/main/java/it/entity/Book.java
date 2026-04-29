@@ -38,23 +38,23 @@ public class Book {
     }
 
     /**
-     * @param book_id ID del libro
+     * @param bookId ID del libro
      */
-    public void setBookId(int book_id) {
-        this.bookId = book_id;
+    public void setBookId(int bookId) {
+        this.bookId = bookId;
     }
 
     /**
      * @return ID dell'edizione
      */
-    public Edition getEditionId() {
+    public Edition getEdition() {
         return edition;
     }
 
     /**
      * @param editionId ID dell'edizione
      */
-    public void setEditionId(Edition editionId) {
+    public void setEdition(Edition editionId) {
         this.edition = editionId;
     }
 
