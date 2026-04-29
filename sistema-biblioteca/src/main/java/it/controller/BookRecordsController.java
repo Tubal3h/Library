@@ -27,9 +27,9 @@ public class BookRecordsController {
      * @param redirectAttributes Attributi di redirect
      * @return Redirect al dashboard
      */
-    @PostMapping("/api/navigation/bookRecords/{bookId}")
+    @GetMapping("/api/navigation/bookRecords/{bookId}")
     public String bookRecords(
-        @PathVariable(value = "bookId") String bookId, 
+        @PathVariable(value = "bookId") int bookId, 
         RedirectAttributes redirectAttributes) {
         AuthDto user = userSession.getUser();
         if (user == null || !"role_admin".equals(user.getUserDto().getUserRole())) {
@@ -51,7 +51,7 @@ public class BookRecordsController {
      */
     @GetMapping("/api/navigation/userRecords/{userId}")
     public String userRecords(
-        @PathVariable(value = "userId") String userId, 
+        @PathVariable(value = "userId") int userId, 
         RedirectAttributes redirectAttributes) {
         AuthDto user = userSession.getUser();
         if (user == null || !"role_admin".equals(user.getUserDto().getUserRole())) {

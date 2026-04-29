@@ -154,33 +154,46 @@ public class DashboardController {
             if (("bookRecords".equals(section) || "userRecords".equals(section))
                     && "role_admin".equals(user.getUserDto().getUserRole())) {
                 if ("bookRecords".equals(section)) {
-                    BookDto bookDto = new BookDto();
-                    bookDto.setBookId((int) redirectAttributes.getFlashAttributes().get("bookId"));
-                    
-                    if (bookDto.getBookId() != 0) {
-                        List<RentalRecordDto> records = rentService.getBookRecords(bookDto.getBookId());
+                    Object bookIdObj = model.asMap().get("bookId");
+                    Integer bookId = null;
+                    if (bookIdObj instanceof Integer) {
+                        bookId = (Integer) bookIdObj;
+                    } else if (bookIdObj instanceof String) {
+                        bookId = Integer.parseInt((String) bookIdObj);
+                    }
+
+                    if (bookId != null && bookId != 0) {
+                        List<RentalRecordDto> records = rentService.getBookRecords(bookId);
                         model.addAttribute("bookRecords", records);
+                        
+                        BookDto bookDto = new BookDto();
+                        bookDto.setBookId(bookId);
 
                         // Titolo dinamico per il registro del libro
                         try {
-                            bookDto = bookService.getBookById(bookDto.getBookId());
-                            model.addAttribute("targetRecordName", "Registro: " + bookDto.getEditionDto().getBookNameDto().getTitle() + " #" + bookDto.getBookId());
+                            bookDto = bookService.getBookById(bookId);
+                            model.addAttribute("targetRecordName", "Registro: " + bookDto.getEditionDto().getBookNameDto().getTitle() + " #" + bookId);
                         } catch (Exception e) {
-                            model.addAttribute("targetRecordName", "Registro Libro #" + bookDto.getBookId());
+                            model.addAttribute("targetRecordName", "Registro Libro #" + bookId);
                         }
                     }
                 } else {
-                    UserDto userDto = new UserDto();
-                    userDto.setUserId((int) redirectAttributes.getFlashAttributes().get("userId"));
-                    
-                    if (userDto.getUserId() != 0) {
-                        List<RentalRecordDto> records = rentService.getUserRecords(userDto.getUserId());
+                    Object userIdObj = model.asMap().get("userId");
+                    Integer userId = null;
+                    if (userIdObj instanceof Integer) {
+                        userId = (Integer) userIdObj;
+                    } else if (userIdObj instanceof String) {
+                        userId = Integer.parseInt((String) userIdObj);
+                    }
+
+                    if (userId != null && userId != 0) {
+                        List<RentalRecordDto> records = rentService.getUserRecords(userId);
                         System.out.println("[DEBUG] DashboardController - Record trovati: "
                                 + (records != null ? records.size() : "NULL"));
                         model.addAttribute("bookRecords", records);
 
                         // Titolo dinamico per il registro dell'utente
-                        UserDto targetUser = userService.getUserById(userDto.getUserId());
+                        UserDto targetUser = userService.getUserById(userId);
                         if (targetUser != null) {
                             model.addAttribute("targetRecordName",
                                     "Dipendente: " + targetUser.getUserName() + " " + targetUser.getUserLastName());
