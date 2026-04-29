@@ -60,13 +60,14 @@
                 </div>
             </a>
 
-            <div class="card2 flex flex-column gap-2">
+            <!-- Container Books Tot/Available/Rents-->
+            <div class=" card2 flex flex-column gap-2">
                 <!-- Card 2: Books totali -->
                 <a th:href="@{/api/navigation/catalog}"
-                    class="card glass radius-12 p-3 shadow-card flex flex-column border-none">
+                    class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                     <div class="flex justify-between align-center mb-2">
                         <span class="opacity-70 font-size-medium uppercase fw-700">Manuali</span>
-                        <i class="fa-solid fa-book text-brand"></i>
+                        <i class="fa-solid fa-book "></i>
                     </div>
                     <div class="flex align-end gap-1">
                         <span class="text-3xl fw-700" th:text="${totalBooks}">totalBooks</span>
@@ -90,7 +91,7 @@
                     class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                     <div class="flex justify-between align-center mb-2">
                         <span class="opacity-70 text-xs uppercase fw-700">In Prestito</span>
-                        <i class="fa-solid fa-hand-holding-hand text-warning"></i>
+                        <i class="fa-solid fa-book-open-reader text-warning"></i>
                     </div>
                     <div class="flex align-end gap-2">
                         <span class="text-3xl fw-700" th:text="${totalRents}">totalRents</span>
@@ -104,7 +105,7 @@
                 class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
                     <span class="opacity-70 font-size-medium uppercase fw-700">Manuali Prenotati</span>
-                    <i class="fa-solid fa-clock text-info"></i>
+                    <i class="fa-solid fa-clock text-info" style="color: #2e10d9"></i>
                 </div>
                 <div class="flex align-end gap-2">
                     <span class="text-3xl fw-700" th:text="${totalBooksBooked}">totalBooksBooked</span>
@@ -122,7 +123,7 @@
                 class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
                     <span class="opacity-70 font-size-small uppercase fw-700">Libri Prestati</span>
-                    <i class="fa-solid fa-hand-holding-hand text-warning"></i>
+                    <i class="fa-solid fa-book-open-reader text-warning"></i>
                 </div>
                 <div class="flex align-end gap-2">
                     <span class="text-3xl fw-700" th:text="${totalRents}"></span>
@@ -136,17 +137,17 @@
         <div th:if="${section == 'profile'}" class="mt-6 animate-fade-in-up opacity-0 delay-2">
             <div class="card glass radius-12 p-5 shadow-card border-none" style="max-width: 550px; margin: 0 auto;">
                 <div class="flex align-center gap-4 mb-8">
-                    <div class="icon-box-accent radius-12 p-3 flex center shadow-soft"
+                    <div class="icon-box-accent radius-12 p-1 flex center shadow-soft"
                         style="background: rgba(245, 166, 35, 0.15); color: var(--color-accent); width: 60px; height: 60px;">
                         <i class="fa-solid fa-shield-halved text-2xl"></i>
                     </div>
                     <div>
-                        <h3 class="text-2xl fw-700 m-0 text-brand">Sicurezza Account</h3>
+                        <h3 class="text-3xl fw-700 m-0 text-brand">Sicurezza Account</h3>
                         <p class="opacity-70 text-nm mt-1">Gestisci la tua password e proteggi il tuo profilo</p>
                     </div>
                 </div>
 
-                <form th:action="@{/api/changePassword}" method="post" class="flex flex-column gap-5">
+                <form th:action="@{/api/changePassword}" method="post" class="flex flex-column gap-2">
                     <input type="hidden" name="email" th:value="${user.userEmail}">
                     
                     <div class="input-group">
@@ -171,8 +172,8 @@
                     </div>
 
                     <div class="mt-4">
-                        <button type="submit" class="btn-update-password flex align-center justify-center gap-3">
-                            <i class="fa-solid fa-paper-plane"></i> Aggiorna Credenziali
+                        <button type="submit" class="btn-update-password text-nm flex align-center justify-center gap-3">
+                            <i></i> Aggiorna Credenziali
                         </button>
                     </div>
                 </form>

@@ -3,7 +3,7 @@
     USERS FRAGMENT (USERS.HTML)
     -------------------------------------------------------------------------
     Visualizza l'elenco degli utenti registrati nel sistema.
-    Mostra il ruolo (User/Admin), il nome completo, l'email e l'ID univoco.
+    Mostra il ruolo (Amministratore/Dipendente), il nome completo, l'email e l'ID univoco.
     Solo gli amministratori possono visualizzare ed eseguire azioni su questa lista.
 -->
 <th:block th:fragment="users">
@@ -32,12 +32,12 @@
             </div>
 
             <!-- Metadati: Email e User ID -->
-            <div class="card-meta mt-auto flex align-center gap-4 opacity-50">
-                <div class="flex align-center gap-2 ">
+            <div class="card-meta mt-auto flex align-center gap-4 opacity-80">
+                <div class="flex align-center gap-1 ">
                     <i class="fa-solid fa-envelope text-NM text-brand"></i>
                     <span th:text="${user.userEmail}">Email</span>
                 </div>
-                <div class="flex align-center gap-2 ">
+                <div class="flex align-center gap-1 ">
                     <i class="fa-solid fa-id-badge text-NM text-brand"></i>
                     <span th:text="'User ID: ' + ${user.userId}" class="font-mono">ID</span>
                 </div>

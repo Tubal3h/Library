@@ -18,35 +18,52 @@ function openEditEntityFullPopup(type, config) {
     });
 }
 
+/** Gestione conferma modifica entità (Settings) */
 function openEditBookNamePopup(id, val) {
-    openEditEntityFullPopup('Titolo', { title: 'Modifica Titolo Opera', panelId: 'updateTitleContent', formId: 'updateTitleForm', entityName: val });
+    openEditEntityFullPopup('Titolo', { title: 'Modifica...', panelId: 'updateTitleContent', formId: 'updateTitleForm', entityName: val });
     document.getElementById('updateTitleId').value = id;
     document.getElementById('updateTitleInput').value = val;
 }
 
 function openEditAuthorFullPopup(id, n, l) {
-    openEditEntityFullPopup('Autore', { title: 'Modifica Autore', panelId: 'updateAuthorContent', formId: 'updateAuthorForm', entityName: `${n} ${l}` });
+    openEditEntityFullPopup('Autore', { title: 'Modifica...', panelId: 'updateAuthorContent', formId: 'updateAuthorForm', entityName: `${n} ${l}` });
     document.getElementById('updateAuthorId').value = id;
     document.getElementById('updateAuthorNameInput').value = n;
     document.getElementById('updateAuthorLastNameInput').value = l;
 }
 
 function openEditPublisherFullPopup(id, val) {
-    openEditEntityFullPopup('Editore', { title: 'Modifica Editore', panelId: 'updatePublisherContent', formId: 'updatePublisherForm', entityName: val });
+    openEditEntityFullPopup('Editore', { title: 'Modifica...', panelId: 'updatePublisherContent', formId: 'updatePublisherForm', entityName: val });
     document.getElementById('updatePublisherId').value = id;
     document.getElementById('updatePublisherInput').value = val;
 }
 
 function openEditCategoryFullPopup(id, val) {
-    openEditEntityFullPopup('Categoria', { title: 'Modifica Categoria', panelId: 'updateCategoryContent', formId: 'updateCategoryForm', entityName: val });
+    openEditEntityFullPopup('Categoria', { title: 'Modifica...', panelId: 'updateCategoryContent', formId: 'updateCategoryForm', entityName: val });
     document.getElementById('updateCategoryId').value = id;
     document.getElementById('updateCategoryInput').value = val;
 }
 
-function triggerConfirmDeleteBookName(el) { openConfirmPopup('delete', el.dataset.title, 'Verrà eliminato il titolo e tutte le sue edizioni correlate!', `/api/deleteBookName?bookNameId=${el.dataset.id}`); }
-function triggerConfirmDeleteAuthor(el) { openConfirmPopup('delete', el.dataset.title, 'Verrà eliminato l\'autore e tutti i suoi libri correlati!', `/api/deleteAuthor?authorId=${el.dataset.id}`); }
-function triggerConfirmDeletePublisher(el) { openConfirmPopup('delete', el.dataset.title, 'Verrà eliminato l\'editore e tutti i suoi libri correlati!', `/api/deletePublisher?publisherId=${el.dataset.id}`); }
-function triggerConfirmDeleteCategory(el) { openConfirmPopup('delete', el.dataset.title, 'Verrà eliminata la categoria e tutti i suoi libri correlati!', `/api/deleteCategory?categoryId=${el.dataset.id}`); }
+/** Gestione conferma eliminazione entità (Settings) [DA IMPLEMENTARE!!]*/
+function triggerConfirmDeleteBookName(el) { 
+    openConfirmPopup('delete', el.dataset.title, 'Verrano eliminate tutte le copie del manuale', `/api/deleteBookName?bookNameId=${el.dataset.id}`);
+
+}
+
+function triggerConfirmDeleteAuthor(el) {
+    openConfirmPopup('delete', el.dataset.title, 'L\'autore verrà eliminato e tutti i manuali correlati!', `/api/deleteAuthor?authorId=${el.dataset.id}`);
+
+}
+
+function triggerConfirmDeletePublisher(el) {
+    openConfirmPopup('delete', el.dataset.title, 'L\'editore verrà eliminato e tutti i manuali correlati!', `/api/deletePublisher?publisherId=${el.dataset.id}`);
+
+}
+
+function triggerConfirmDeleteCategory(el) {
+    openConfirmPopup('delete', el.dataset.title, 'La categoria verrà eliminata e tutti i manuali correlati!', `/api/deleteCategory?categoryId=${el.dataset.id}`);
+
+}
 
 // Esponi globalmente
 window.openEditBookNamePopup = openEditBookNamePopup;

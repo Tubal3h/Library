@@ -1,11 +1,11 @@
 <div th:fragment="addPanels">
     <!-- Add Title -->
     <div id="addTitleContent" class="none animate-fade-in-up">
-        <p class="mb-6 opacity-70 text-lg ">Inserisci un nuovo titolo per un'opera.</p>
+        <p class="mb-6 opacity-70 text-lg ">Inserisci il titolo per un nuovo manuale.</p>
         <form id="addTitleForm" th:action="@{/api/addBookName}" method="post">
             <div class="input-group">
-                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block ">Titolo Opera</label>
-                <input type="text" name="title" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Es: Programmare..." required>
+                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block ">Titolo manuale</label>
+                <input type="text" name="title" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Es: Programmare in..." required>
             </div>
         </form>
     </div>
@@ -32,7 +32,7 @@
         <p class="mb-6 opacity-70 text-lg ">Inserisci il nome del nuovo editore.</p>
         <form id="addPublisherForm" th:action="@{/api/addPublisher}" method="post">
             <div class="input-group">
-                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block ">Nome Editore</label>
+                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block ">Nome editore</label>
                 <input type="text" name="publisherName" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Es: Apogeo" required>
             </div>
         </form>
@@ -43,7 +43,7 @@
         <p class="mb-6 opacity-70 text-lg ">Inserisci il nome della nuova categoria.</p>
         <form id="addCategoryForm" th:action="@{/api/addCategory}" method="post">
             <div class="input-group">
-                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block ">Nome Categoria</label>
+                <label class="text-xs uppercase fw-700 opacity-60 mb-2 block ">Nome categoria</label>
                 <input type="text" name="categoryName" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Es: Java" required>
             </div>
         </form>

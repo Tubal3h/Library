@@ -1,7 +1,7 @@
 <div th:fragment="updatePanels">
     <!-- Update Title -->
     <div id="updateTitleContent" class="none animate-fade-in-up">
-        <p class="mb-6 opacity-70 text-sm ">Modifica il nome dell'opera nel catalogo.</p>
+        <p class="mb-6 opacity-70 text-xl ">Stai modificando il titolo del manuale selezionato.</p>
         <form id="updateTitleForm" th:action="@{/api/updateBookNameName}" method="post">
             <input type="hidden" name="bookNameId" id="updateTitleId">
             <div class="input-group">
@@ -13,7 +13,7 @@
 
     <!-- Update Author -->
     <div id="updateAuthorContent" class="none animate-fade-in-up">
-        <p class="mb-6 opacity-70 text-sm ">Modifica i dati dell'autore selezionato.</p>
+        <p class="mb-6 opacity-70 text-xl ">Stai modificando i dati dell'autore selezionato.</p>
         <form id="updateAuthorForm" th:action="@{/api/updateAuthorName}" method="post">
             <input type="hidden" name="authorId" id="updateAuthorId">
             <div class="flex flex-column gap-5">
@@ -31,7 +31,7 @@
 
     <!-- Update Publisher -->
     <div id="updatePublisherContent" class="none animate-fade-in-up">
-        <p class="mb-6 opacity-70 text-sm ">Modifica il nome dell'editore nel catalogo.</p>
+        <p class="mb-6 opacity-70 text-xl ">Stai modificando il nome dell'editore selezionato.</p>
         <form id="updatePublisherForm" th:action="@{/api/updatePublisherName}" method="post">
             <input type="hidden" name="publisherId" id="updatePublisherId">
             <div class="input-group">
@@ -43,7 +43,7 @@
 
     <!-- Update Category -->
     <div id="updateCategoryContent" class="none animate-fade-in-up">
-        <p class="mb-6 opacity-70 text-sm ">Modifica il nome della categoria nel catalogo.</p>
+        <p class="mb-6 opacity-70 text-xl ">Stai modificando il nome della categoria selezionata.</p>
         <form id="updateCategoryForm" th:action="@{/api/updateCategoryName}" method="post">
             <input type="hidden" name="categoryId" id="updateCategoryId">
             <div class="input-group">
