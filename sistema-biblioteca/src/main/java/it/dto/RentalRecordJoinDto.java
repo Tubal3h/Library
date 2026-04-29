@@ -1,9 +1,8 @@
-package it.dto.join;
+package it.dto;
 
 import java.time.LocalDate;
 
 import it.dto.EditionDto;
-import it.dto.UserDto;
 
 public class RentalRecordJoinDto {
     private int rentalId;

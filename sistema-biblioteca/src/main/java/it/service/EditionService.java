@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import it.dto.EditionDto;
-import it.dto.join.EditionJoinDto;
+import it.dto.EditionDto;
 import it.entity.Edition;
 import it.entity.Edition;
 import it.repository.EditionRepository;
@@ -32,10 +32,10 @@ public class EditionService {
      * 
      * @return Lista di EditionDto contenente i metadati completi dell'edizione
      */
-    private List<EditionJoinDto> getAllEditions() {
+    private List<EditionDto> getAllEditions() {
         List<Edition> editions = editionRepository.getAllEditions();
         return editions.stream().map(edition -> {
-            EditionJoinDto dto = new EditionJoinDto();
+            EditionDto dto = new EditionDto();
             dto.setEditionId(edition.getEditionId());
             dto.setBookId(edition.getBookId());
             dto.setBookName(edition.getBookName());
@@ -55,13 +55,13 @@ public class EditionService {
      * @param search Il termine di ricerca per il nome del libro
      * @return Lista di EditionDto contenente le informazioni condensate delle edizioni filtrati per nome del libro
      */
-	public List<EditionJoinDto> getEditionListByName(String search) {
-		List<EditionJoinDto> myList = getAllEditions();
-		List<EditionJoinDto> filteredList = new ArrayList<>();
+	public List<EditionDto> getEditionListByName(String search) {
+		List<EditionDto> myList = getAllEditions();
+		List<EditionDto> filteredList = new ArrayList<>();
 		
 		if(search != null && !search.isBlank()) {
 			String [] strings = search.toLowerCase().trim().split("\\s+");
-			for(EditionJoinDto edition : myList) {
+			for(EditionDto edition : myList) {
 				String title = edition.getBookName();
 				String author = edition.getAuthorName();
 				String category = edition.getCategoryName();

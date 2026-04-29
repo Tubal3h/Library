@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.configuration.UserSession;
+import it.dto.BookRecordDto;
 import it.dto.EditionDto;
 import it.dto.InsertBookDto;
 import it.dto.UserDto;
-import it.dto.join.BookRecordJoinDto;
 import it.exception.NoBookIdFoundException;
 import it.exception.InsertBookServiceException;
 import it.exception.NoIsbnFoundException;
@@ -105,7 +105,7 @@ public class BookController {
 			return "redirect:/";
 		}
 		try {
-			BookRecordJoinDto bookDto = new BookRecordJoinDto(bookId);
+			BookRecordDto bookDto = new BookRecordDto(bookId);
 			bookService.deleteBook(bookDto.getBookId());
 			redirectAttributes.addFlashAttribute("popupType", "deleteBook");
 			redirectAttributes.addFlashAttribute("popupBookId", bookId);

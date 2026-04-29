@@ -1,4 +1,4 @@
-package it.dto.join;
+package it.dto;
 
 /* -------------------------------------------------------------------------- */
 /*                                     DTO                                    */
@@ -9,7 +9,7 @@ import java.time.LocalDate;
 /**
  * Data Transfer Object per la visualizzazione dei libri nel catalogo.
  */
-public class BookRecordJoinDto {
+public class BookRecordDto {
     private int editionId;
     private int bookId;
     private String title;
@@ -29,7 +29,7 @@ public class BookRecordJoinDto {
     /**
      * Costruttore di default.
      */
-    public BookRecordJoinDto() {
+    public BookRecordDto() {
     }
     
     /**
@@ -37,7 +37,7 @@ public class BookRecordJoinDto {
      */
 
     
-    public BookRecordJoinDto(int editionId, int bookId, String title, String authorFullName, LocalDate publishingDate, String publisherName, String isbnCode, String categoryName, String status) {
+    public BookRecordDto(int editionId, int bookId, String title, String authorFullName, LocalDate publishingDate, String publisherName, String isbnCode, String categoryName, String status) {
         this.editionId = editionId;
         this.bookId = bookId;
         this.title = title;
@@ -65,7 +65,7 @@ public class BookRecordJoinDto {
     	this.authorLastName = authorLastName;
     }
 
-    public BookRecordJoinDto(int bookId) {
+    public BookRecordDto(int bookId) {
     	this.bookId = bookId;
     }
 
