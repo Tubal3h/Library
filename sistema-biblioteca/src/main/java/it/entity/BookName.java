@@ -7,14 +7,14 @@ package it.entity;
 /**
  * Entità che rappresenta il titolo di un libro nel sistema.
  */
-public class BookNames {
-    private int bookNamesId;
+public class BookName {
+    private int bookNameId;
     private String title;
 
     /**
      * Costruttore di default.
      */
-    public BookNames() {
+    public BookName() {
     }
 
     /**
@@ -22,8 +22,8 @@ public class BookNames {
      * 
      * @param title Titolo del libro
      */
-    public BookNames(int bookNameId,String title) {
-        this.bookNamesId = bookNameId;
+    public BookName(int bookNameId,String title) {
+        this.bookNameId = bookNameId;
         this.title = title;
     }
 
@@ -31,14 +31,14 @@ public class BookNames {
      * @return ID unico per il nome del libro
      */
     public int getBookNamesId() {
-        return bookNamesId;
+        return bookNameId;
     }
 
     /**
      * @param bookNameId ID unico per il nome del libro
      */
     public void setBookNamesId(int bookNameId) {
-        this.bookNamesId = bookNameId;
+        this.bookNameId = bookNameId;
     }
 
     /**

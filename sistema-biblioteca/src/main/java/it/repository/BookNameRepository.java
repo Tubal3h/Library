@@ -14,7 +14,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-import it.entity.BookNames;
+import it.entity.BookName;
 import it.exception.InsertBookNameException;
 import it.mapper.BookNameRowMapper;
 import it.repository.interfaces.BookNameRepositoryInterface;
@@ -46,7 +46,7 @@ public class BookNameRepository implements BookNameRepositoryInterface {
      *
      * @return Lista di tutti i titoli dei libri presenti nel database
      */
-    public List<BookNames> getAllBookNames() {
+    public List<BookName> getAllBookNames() {
         String sql = "SELECT * FROM books_names";
         return jdbcTemplate.query(sql, bookNameRowMapper);
     }
@@ -57,7 +57,7 @@ public class BookNameRepository implements BookNameRepositoryInterface {
      * @param titleId ID del titolo
      * @return Titolo del libro corrispondente all'ID
      */
-    public BookNames getBookNameById(int titleId) {
+    public BookName getBookNameById(int titleId) {
         String sql = "SELECT * FROM books_names WHERE book_name_id = ?";
         
         return jdbcTemplate.queryForObject(sql, bookNameRowMapper, titleId);
@@ -100,7 +100,7 @@ public class BookNameRepository implements BookNameRepositoryInterface {
      * @param title Nome del libro
      * @return Lista dei titoli dei libri corrispondenti al nome
      */
-    public List<BookNames> getBookNamesByTitle(String title) {
+    public List<BookName> getBookNamesByTitle(String title) {
         String sql = "SELECT * FROM books_names WHERE title = ?";
         return jdbcTemplate.query(sql, bookNameRowMapper, title);
     }

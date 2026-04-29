@@ -197,7 +197,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
     		INSERT INTO rental_record (users_id, book_id, booking_date)
     		VALUES (?, ?, ?)
     		""";
-    	jdbcTemplate.update(sql, rental.getUserId(), rental.getBookId(), rental.getBookingDate());
+    	jdbcTemplate.update(sql, rental.getUser().getUserId(), rental.getBook().getBookId(), rental.getBookingDate());
     }
     
 

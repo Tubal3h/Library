@@ -11,13 +11,13 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import it.entity.BookNames;
+import it.entity.BookName;
 
 /**
  * Mapper per convertire i record del database della tabella books_names in oggetti Entity BookName.
  */
 @Component
-public class BookNameRowMapper implements RowMapper<BookNames> {
+public class BookNameRowMapper implements RowMapper<BookName> {
 
     /**
      * Mappa una riga del ResultSet in un oggetto BookName.
@@ -27,15 +27,15 @@ public class BookNameRowMapper implements RowMapper<BookNames> {
      * @return L'oggetto BookName mappato dalla riga del database
      * @throws SQLException in caso di errori con il database
      */
-    public static BookNames map(ResultSet rs) throws SQLException {
-        BookNames bookNames = new BookNames();
-        bookNames.setBookNamesId(rs.getInt("bookNameId"));
+    public static BookName map(ResultSet rs) throws SQLException {
+        BookName bookNames = new BookName();
+        bookNames.setBookNamesId(rs.getInt("book_name_id"));
         bookNames.setTitle(rs.getString("title"));
         return bookNames;
     }
 
     @Override
-    public BookNames mapRow(ResultSet rs, int rowNum) throws SQLException {
+    public BookName mapRow(ResultSet rs, int rowNum) throws SQLException {
         return map(rs);
     }
 }

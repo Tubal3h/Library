@@ -1,20 +1,15 @@
 package it.mapper.response;
 
 import java.sql.ResultSet;
+
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import it.entity.Author;
-import it.entity.Book;
-import it.entity.BookName;
-import it.entity.Publisher;
-import it.entity.Category;
 import it.entity.Edition;
 import it.mapper.AuthorRowMapper;
 import it.mapper.BookNameRowMapper;
-import it.mapper.BookRowMapper;
 import it.mapper.CategoryRowMapper;
 import it.mapper.PublisherRowMapper;
 
@@ -44,7 +39,6 @@ public class EditionJoinResponseRowMapper implements RowMapper<Edition> {
         Edition editionJoin = new Edition();
         editionJoin.setEditionId(rs.getInt("editionId"));
         editionJoin.setAuthor(AuthorRowMapper.map(rs));
-        editionJoin.setBook(BookRowMapper.map(rs));
         editionJoin.setBookName(BookNameRowMapper.map(rs));
         editionJoin.setCategory(CategoryRowMapper.map(rs));
         editionJoin.setPublisher(PublisherRowMapper.map(rs));

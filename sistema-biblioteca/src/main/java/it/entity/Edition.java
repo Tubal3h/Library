@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class Edition {
     private int editionId;
     private Author author;
-    private BookNames bookNames;
+    private BookName bookName;
     private Category category;
     private Publisher publisher;
     private LocalDate publishingDate;
@@ -39,7 +39,7 @@ public class Edition {
     public Edition(
         int editionId, 
         Author author,  
-        BookNames bookNames, 
+        BookName bookName, 
         Category category, 
         Publisher publisher, 
         LocalDate publishingDate, 
@@ -48,6 +48,7 @@ public class Edition {
     ) {
         this.editionId = editionId;
         this.author = author;
+        this.bookName = bookName;
         this.publisher = publisher;
         this.category = category;
         this.publishingDate = publishingDate;
@@ -85,8 +86,8 @@ public class Edition {
      * 
      * @return Nome del libro
      */
-    public BookNames getBookNames() {
-        return bookNames;
+    public BookName getBookName() {
+        return bookName;
     }
     
     /**
@@ -94,8 +95,8 @@ public class Edition {
      * 
      * @param book_name Nome del libro
      */
-    public void setBookName(BookNames bookNames) {
-        this.bookNames = bookNames;
+    public void setBookName(BookName bookName) {
+        this.bookName = bookName;
     }
     
     /**
@@ -213,7 +214,7 @@ public class Edition {
      */
     @Override
     public String toString() {
-        return "Edition [editionId=" + editionId + ", bookName=" + bookNames + ", author=" + author
+        return "Edition [editionId=" + editionId + ", bookName=" + bookName + ", author=" + author
                 + ", publisher=" + publisher + ", category=" + category + ", publishingDate="
                 + publishingDate + ", isbn=" + isbn + ", quantity=" + quantity + "]";
     }

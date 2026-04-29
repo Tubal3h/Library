@@ -58,19 +58,19 @@ public class RentalRecord {
 		this.rentalId = rentalId;
 	}
 
-	public User getUserId() {
+	public User getUser() {
 		return user;
 	}
 
-	public void setUserId(User user) {
+	public void setUser(User user) {
 		this.user = user;
 	}
 
-	public Book getBookId() {
+	public Book getBook() {
 		return book;
 	}
 
-	public void setBookId(Book book) {
+	public void setBook(Book book) {
 		this.book = book;
 	}
 

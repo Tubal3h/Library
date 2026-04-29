@@ -5,6 +5,7 @@ package it.mapper.response;
 /* -------------------------------------------------------------------------- */
 
 import java.sql.ResultSet;
+
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
