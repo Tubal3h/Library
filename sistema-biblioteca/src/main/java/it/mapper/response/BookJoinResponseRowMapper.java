@@ -10,13 +10,13 @@ import java.sql.SQLException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
-import it.entity.join.BookJoin;
+import it.entity.Book;
 
 /**
  * Mapper per convertire i record del database in oggetti DTO BookCatalogDto.
  */
 @Component
-public class BookJoinResponseRowMapper implements RowMapper<BookJoin> {
+public class BookJoinResponseRowMapper implements RowMapper<Book> {
     
     /**
      * Mappa una riga del ResultSet in un oggetto BookCatalogDto.
@@ -26,15 +26,17 @@ public class BookJoinResponseRowMapper implements RowMapper<BookJoin> {
      * @return L'oggetto BookCatalogDto mappato dalla riga del database
      * @throws SQLException in caso di errori con il database
      */
-    @Override
-    public BookJoin mapRow(ResultSet rs, int rowNum) throws SQLException {
-
-        BookJoin bookJoin = new BookJoin();
-        bookJoin.setEdition(EditionJoinResponseRowMapper.map(rs));
-
-        return bookJoin;
-
+    public static Book map(ResultSet rs) throws SQLException {
+        Book book = new Book();
+        book.setEdition(EditionJoinResponseRowMapper.map(rs));
+        return book;
     }
+
+    @Override
+    public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
+        return map(rs);
+    }
+
 }
 
 
