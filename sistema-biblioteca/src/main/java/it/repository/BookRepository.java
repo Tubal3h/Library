@@ -15,8 +15,8 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-import it.entity.join.BookRecordJoin;
-import it.entity.join.BookJoin;
+import it.entity.Book;
+import it.entity.RentalRecord;
 import it.exception.InsertBookException;
 import it.mapper.response.BookJoinResponseRowMapper;
 import it.mapper.response.BookRecordJoinResponseRowMapper;
@@ -121,7 +121,7 @@ public class BookRepository implements BookRepositoryInterface{
      * @return Lista di oggetti {@link BookJoin} con i dati completi di ogni libro
      */
     @Override
-    public List<BookJoin> getAllBooks() {
+    public List<Book> getAllBooks() {
         String sql = """
                 SELECT
                     e.edition_id,
@@ -211,7 +211,7 @@ public class BookRepository implements BookRepositoryInterface{
      * @return Lista di oggetti BookJoin con i dati delle copie associate
      */
     @Override
-    public List<BookRecordJoin> getBooksByEditionId(int editionId, boolean includeDeleted) {
+    public List<RentalRecord> getBooksByEditionId(int editionId, boolean includeDeleted) {
         String filter = includeDeleted ? "" : " AND b.status != 'eliminato'";
         String sql = """
                 SELECT

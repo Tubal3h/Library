@@ -136,7 +136,7 @@ public class RentService {
             edition.setPublishingDate(rentDto.getBookDto().getEditionDto().getPublishingDate());
 
             BookName bookName = new BookName();
-            bookName.setBookNamesId(rentDto.getBookDto().getEditionDto().getBookNameDto().getBookNameId());
+            bookName.setBookNameId(rentDto.getBookDto().getEditionDto().getBookNameDto().getBookNameId());
             bookName.setTitle(rentDto.getBookDto().getEditionDto().getBookNameDto().getTitle());
 
             Author author = new Author();
