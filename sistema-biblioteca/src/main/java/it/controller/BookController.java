@@ -69,7 +69,7 @@ public class BookController {
 	 *                           vista
 	 * @return Redirect alla sezione delle edizioni
 	 */
-	@PostMapping("/api/addBook")
+	@GetMapping("/api/addBook")
 	public String addBook(
 			@RequestParam(value = "isbn", required = false) String isbn,
 			@RequestParam(value = "bookName", required = false) String bookName,
