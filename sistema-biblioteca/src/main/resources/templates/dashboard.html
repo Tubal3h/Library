@@ -23,7 +23,7 @@
                 <button th:if="${user.userDto.userRole == 'role_admin' && section == 'edition'}"
                     class="btn-create btn-sm shadow-soft" onclick="openAddEditionPopup()" title="Aggiungi Edizione">
                     <i class="fa-solid fa-plus"></i>
-                    <span class="btn-label">Aggiungi Edizione</span>
+                    <span class="btn-label">Aggiungi una nuova Edizione</span>
                 </button>
 
                 <!-- Aggiungi nuovo dipendente -->
@@ -80,7 +80,7 @@
                         <i class="fa-solid fa-check-to-slot text-success"></i>
                     </div>
                     <div class="flex align-end gap-1">
-                        <span class="text-3xl fw-700" th:text="${totalBooks - totalRents}">availableBooks</span>
+                        <span class="text-2xl fw-700" th:text="${totalBooks - totalRents}">availableBooks</span>
                     </div>
                 </a>
 
@@ -92,7 +92,7 @@
                         <i class="fa-solid fa-book-open-reader text-warning"></i>
                     </div>
                     <div class="flex align-end gap-2">
-                        <span class="text-3xl fw-700" th:text="${totalRents}">totalRents</span>
+                        <span class="text-2xl fw-700" th:text="${totalRents}">totalRents</span>
                     </div>
                 </a>
             </div>

@@ -69,7 +69,7 @@
                 <i class="fa-solid fa-clock" style="color: #D98F10;"></i> Prenotati
             </button>
             <button type="button" class="filter-chip" data-filter="in-prestito" onclick="filterBookCopies(this)">
-                <i class="fa-solid fa-book-open-reader" style="color: var(--color-error);"></i> In Prestito
+                <i class="fa-solid fa-book-open-reader" style="color: var(--color-error);"></i> In Prestito a
             </button>
             <button type="button" class="filter-chip" data-filter="eliminato" onclick="filterBookCopies(this)">
                 <i class="fa-solid fa-trash-can opacity-50"></i> Eliminati
@@ -95,9 +95,12 @@
                             <div class="status-pill" th:classappend="${#strings.replace(book.bookDto.status, ' ', '-')}">
                                 <i th:if="${book.bookDto.status == 'disponibilita'}" class="fa-solid fa-circle-check"></i>
                                 <i th:if="${book.bookDto.status == 'prenotato'}" class="fa-solid fa-clock"></i>
-                                <i th:if="${book.bookDto.status == 'in prestito'}" class="fa-solid fa-book-open-reader"></i>
+                                <i th:if="${book.bookDto.status == 'in prestito' && book.rentalExpired >= T(java.time.LocalDate).now()}" class="fa-solid fa-book-open-reader"></i>
+                                <i th:if="${book.bookDto.status == 'scaduto'}" class="fa-solid fa-triangle-exclamation"></i>
                                 <i th:if="${book.bookDto.status == 'eliminato'}" class="fa-solid fa-trash-can"></i>
-                                <span th:text="${book.bookDto.status}">STATO</span>
+                                <i class="fa-solid fa-triangle-exclamation" th:if="${book.rentalExpired < T(java.time.LocalDate).now()}"></i>
+                                <span class="" th:if="${book.rentalExpired < T(java.time.LocalDate).now()}" th:text="${'Scaduto'}"></span>
+                                <span th:if="${book.rentalExpired >= T(java.time.LocalDate).now()}" th:text="${book.bookDto.status}">STATO</span>
                             </div>
                         </td>
                         <td class="p-4">
