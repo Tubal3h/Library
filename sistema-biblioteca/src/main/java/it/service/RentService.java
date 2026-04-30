@@ -125,46 +125,22 @@ public class RentService {
     @Transactional
     public void createBookedDate(RentalRecordDto rentDto) throws RuntimeException {
         try {
-
             User user = new User();
             user.setUserId(rentDto.getUserDto().getUserId());
-            user.setUserName(rentDto.getUserDto().getUserName());
-            user.setUserLastName(rentDto.getUserDto().getUserLastName());
-
-            Edition edition = new Edition();
-            edition.setEditionId(rentDto.getBookDto().getEditionDto().getEditionId());
-            edition.setPublishingDate(rentDto.getBookDto().getEditionDto().getPublishingDate());
-
-            BookName bookName = new BookName();
-            bookName.setBookNameId(rentDto.getBookDto().getEditionDto().getBookNameDto().getBookNameId());
-            bookName.setTitle(rentDto.getBookDto().getEditionDto().getBookNameDto().getTitle());
-
-            Author author = new Author();
-            author.setAuthorId(rentDto.getBookDto().getEditionDto().getAuthorDto().getAuthorId());
-            author.setAuthorName(rentDto.getBookDto().getEditionDto().getAuthorDto().getAuthorName());
-            author.setAuthorLastName(rentDto.getBookDto().getEditionDto().getAuthorDto().getAuthorLastName());
-
-            Publisher publisher = new Publisher();
-            publisher.setPublisherId(rentDto.getBookDto().getEditionDto().getPublisherDto().getPublisherId());
-            publisher.setPublisherName(rentDto.getBookDto().getEditionDto().getPublisherDto().getPublisherName());
-
-            Category category = new Category();
-            category.setCategoryId(rentDto.getBookDto().getEditionDto().getCategoryDto().getCategoryId());
-            category.setCategoryName(rentDto.getBookDto().getEditionDto().getCategoryDto().getCategoryName());
 
             Book book = new Book();
             book.setBookId(rentDto.getBookDto().getBookId());
-            book.setEdition(edition);
 
             RentalRecord rental = new RentalRecord();
             rental.setUser(user);
             rental.setBook(book);
             rental.setBookingDate(LocalDate.now());
+            
             rentRepository.createABookedDate(rental);
             rentRepository.updateStatusToLend(rentDto.getBookDto().getBookId());
 
         } catch (Exception e) {
-            System.out.println("Eccezione nella repository: " + e.getMessage());
+            System.out.println("Eccezione nella creazione prenotazione: " + e.getMessage());
             throw new RuntimeException("impossibile effettuare la prenotazione.");
         }
     }
@@ -172,7 +148,7 @@ public class RentService {
     @Transactional
     public void createRental(RentalRecordDto rentalRecordDto, Boolean confirmed) throws RuntimeException {
         if (rentalRecordDto != null) {
-            if (confirmed) {
+            if (confirmed != null && confirmed) {
                 try {
                     RentalRecord rental = new RentalRecord();
                     rental.setRentalId(rentalRecordDto.getRentalId());

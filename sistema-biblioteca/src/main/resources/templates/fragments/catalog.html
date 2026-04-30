@@ -65,7 +65,7 @@
         <div class="card-action-column p-4 flex flex-column justify-center align-center border-l">
             <button type="button" th:if="${user.userDto.userRole == 'role_user' && book.status == 'disponibilita'}"
                 th:data-title="${book.editionDto.bookNameDto.title}"
-                th:data-url="@{/api/borrow(email=${user.email}, bookId=${book.bookId}, bookTitle=${book.editionDto.bookNameDto.title})}"
+                th:data-url="@{/api/booked(bookId=${book.bookId}, bookTitle=${book.editionDto.bookNameDto.title})}"
                 onclick="triggerConfirmRent(this)"
                 class="w-100 btn-modern-action pointer transition shadow-soft">
                 <span>Prenota</span>
