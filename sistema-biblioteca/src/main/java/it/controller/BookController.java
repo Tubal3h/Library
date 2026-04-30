@@ -69,7 +69,7 @@ public class BookController {
 	 *                           vista
 	 * @return Redirect alla sezione delle edizioni
 	 */
-	@PostMapping("/api/addBook")
+	@GetMapping("/api/addBook")
 	public String addBook(
 			@RequestParam(value = "isbn", required = false) String isbn,
 			@RequestParam(value = "bookName", required = false) String bookName,
@@ -149,7 +149,7 @@ public class BookController {
 			
 		if(bindingResult.hasErrors()) {
 				redirectAttributes.addFlashAttribute("popupType", "error");
-				redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
+				redirectAttributes.addFlashAttribute("popupErrorMessage", "tutti i campi devono essere riempiti");
 				return "redirect:/dashboard";
 		}
 		

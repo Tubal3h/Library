@@ -13,7 +13,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.dto.UserDto;
 import it.dto.request.AuthDto;
+import it.entity.RentalRecord;
 import it.entity.User;
+import it.exception.DeleteUserByIdException;
+import it.exception.NoDeleteUserServiceException;
+import it.repository.RentRecordRepository;
 import it.repository.UserRepository;
 
 /**
@@ -23,15 +27,16 @@ import it.repository.UserRepository;
 public class UserService {
     private final UserRepository userRepository;
     private final AuthService authService;
-
+    private final RentRecordRepository rentRepository;
     /**
      * Costruttore per UserService.
      * 
      * @param userRepository Repository per l'accesso ai dati degli utenti
      */
-    public UserService(UserRepository userRepository, AuthService authService) {
+    public UserService(UserRepository userRepository, AuthService authService, RentRecordRepository rentRepository) {
         this.userRepository = userRepository;
         this.authService = authService;
+        this.rentRepository = rentRepository;
     }
 
     /**
@@ -180,8 +185,24 @@ public class UserService {
      * @return numero di righe eliminate
      */
     @Transactional
-    public int deleteUserById(String userId) {
-        return userRepository.deleteUserById(userId);
+    public int deleteUserById(String userId) throws NoDeleteUserServiceException  {
+        if(userId != null && !userId.isBlank()) {
+        	int IntegerUserId = Integer.parseInt(userId);
+        	List<RentalRecord> rentalList = rentRepository.getActiveRentsByUserId(IntegerUserId);
+        	for(RentalRecord r : rentalList) {
+        		if(r.getBook().getStatus().equalsIgnoreCase("in prestito")) {
+        			throw new NoDeleteUserServiceException("attenzione l'utente ha dei noleggi");
+        		}
+        	}
+        }else {
+        	throw new NoDeleteUserServiceException("l'utente non e' stato trovato");
+        }
+        
+        try {
+        	return userRepository.deleteUserById(userId);
+        }catch(DeleteUserByIdException ex) {
+        	throw new NoDeleteUserServiceException(ex.getMessage());
+        }
     }
 
     /**
