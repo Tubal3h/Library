@@ -79,8 +79,8 @@ public class UserController {
             @RequestParam(value = "userName", required = false) String userName,
             RedirectAttributes redirectAttributes) {
         
-        UserDto currentUser = userSession.getUser();
-        if (currentUser == null || !"role_admin".equals(currentUser.getUserRole())) {
+        AuthDto currentUser = userSession.getAuth();
+        if (currentUser == null || !"role_admin".equals(currentUser.getUserDto().getUserRole())) {
             return "redirect:/";
         }
 

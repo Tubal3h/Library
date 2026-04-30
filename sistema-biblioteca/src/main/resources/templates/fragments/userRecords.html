@@ -45,13 +45,13 @@
                         
                         <!-- ID Libro -->
                         <div class="table-cell col-id">
-                            <span class="badge-mono" th:text="${record.bookId}">000</span>
+                            <span class="badge-mono" th:text="${record.bookDto.bookId}">000</span>
                         </div>
 
                         <!-- Titolo Libro -->
                         <div class="table-cell col-book">
                             <div class="book-info">
-                                <span class="book-title-cell fw-700" th:text="${record.bookTitle}">Il Signore degli Anelli</span>
+                                <span class="book-title-cell fw-700" th:text="${record.bookDto.editionDto.bookNameDto.title}">Il Signore degli Anelli</span>
                             </div>
                         </div>
 

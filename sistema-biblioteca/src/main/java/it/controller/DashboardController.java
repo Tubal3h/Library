@@ -18,6 +18,7 @@ import it.dto.RentalRecordDto;
 import it.dto.BookDto;
 import it.dto.EditionDto;
 import it.dto.UserDto;
+import it.dto.request.AuthDto;
 import it.service.BookService;
 import it.service.RentService;
 import it.service.UserService;
@@ -87,7 +88,10 @@ public class DashboardController {
             @RequestParam(value = "includeDeleted", defaultValue = "false") boolean includeDeleted,
             @RequestParam(value = "search", required = false) String search,
             RedirectAttributes redirectAttributes) {
-        UserDto user = userSession.getUser();
+        AuthDto user = userSession.getUser();
+        if (user == null) {
+            return "redirect:/";
+        }
         String section = userSession.getSection();
         if (section == null || section.isEmpty()) {
             section = "home";
@@ -109,9 +113,9 @@ public class DashboardController {
 
         try {
             if ("home".equals(section)) {
-                if ("role_user".equals(user.getUserRole())) {
-                    model.addAttribute("totalRents", rentService.getTotalRentsByUserId(user.getUserId()));
-                } else if ("role_admin".equals(user.getUserRole())) {
+                if ("role_user".equals(user.getUserDto().getUserRole())) {
+                    model.addAttribute("totalRents", rentService.getTotalRentsByUserId(user.getUserDto().getUserId()));
+                } else if ("role_admin".equals(user.getUserDto().getUserRole())) {
                     model.addAttribute("totalUsers", userService.getTotalUsers());
                     model.addAttribute("totalBooks", bookService.getTotalNotElimatedBooks());
                     model.addAttribute("totalRents", rentService.getTotalRents());
@@ -119,27 +123,27 @@ public class DashboardController {
                 }
             }
 
-            if ("users".equals(section) && "role_admin".equals(user.getUserRole())) {
+            if ("users".equals(section) && "role_admin".equals(user.getUserDto().getUserRole())) {
                 model.addAttribute("users", userService.getUserListByName(search));
             }
 
             if ("catalog".equals(section)) {
 
-                model.addAttribute("books", bookService.getBookListByName(search, user.getUserRole()));
+                model.addAttribute("books", bookService.getBookListByName(search, user.getUserDto().getUserRole()));
 
             }
 
             if ("rents".equals(section)) {
-                List<RentalRecordDto> rentedBooks = rentService.getBookListByName(search, user.getUserRole(), user.getUserId());
+                List<RentalRecordDto> rentedBooks = rentService.getBookListByName(search, user.getUserDto().getUserRole(), user.getUserDto().getUserId());
                 model.addAttribute("rentedBooks", rentedBooks);
             }
 
-            if ("edition".equals(section) && "role_admin".equals(user.getUserRole())) {
+            if ("edition".equals(section) && "role_admin".equals(user.getUserDto().getUserRole())) {
                 model.addAttribute("editions", editionService.getEditionListByName(search));
             }
 
             if (("catalog".equals(section) || "edition".equals(section) || "settings".equals(section))
-                    && "role_admin".equals(user.getUserRole())) {
+                    && "role_admin".equals(user.getUserDto().getUserRole())) {
                 model.addAttribute("authors", authorService.getAllAuthors());
                 model.addAttribute("categories", categoryService.getAllCategories());
                 model.addAttribute("publishers", publisherService.getAllPublishers());
@@ -148,35 +152,48 @@ public class DashboardController {
 
             // Sezione Registri (per Libro o per Utente)
             if (("bookRecords".equals(section) || "userRecords".equals(section))
-                    && "role_admin".equals(user.getUserRole())) {
+                    && "role_admin".equals(user.getUserDto().getUserRole())) {
                 if ("bookRecords".equals(section)) {
-                    BookDto bookDto = new BookDto();
-                    bookDto.setBookId((int) redirectAttributes.getFlashAttributes().get("bookId"));
-                    
-                    if (bookDto.getBookId() != 0) {
-                        List<RentalRecordDto> records = rentService.getBookRecords(bookDto.getBookId());
+                    Object bookIdObj = model.asMap().get("bookId");
+                    Integer bookId = null;
+                    if (bookIdObj instanceof Integer) {
+                        bookId = (Integer) bookIdObj;
+                    } else if (bookIdObj instanceof String) {
+                        bookId = Integer.parseInt((String) bookIdObj);
+                    }
+
+                    if (bookId != null && bookId != 0) {
+                        List<RentalRecordDto> records = rentService.getBookRecords(bookId);
                         model.addAttribute("bookRecords", records);
+                        
+                        BookDto bookDto = new BookDto();
+                        bookDto.setBookId(bookId);
 
                         // Titolo dinamico per il registro del libro
                         try {
-                            bookDto = bookService.getBookById(bookDto.getBookId());
-                            model.addAttribute("targetRecordName", "Registro: " + bookDto.getEditionDto().getBookNameDto().getTitle() + " #" + bookDto.getBookId());
+                            bookDto = bookService.getBookById(bookId);
+                            model.addAttribute("targetRecordName", "Registro: " + bookDto.getEditionDto().getBookNameDto().getTitle() + " #" + bookId);
                         } catch (Exception e) {
-                            model.addAttribute("targetRecordName", "Registro Libro #" + bookDto.getBookId());
+                            model.addAttribute("targetRecordName", "Registro Libro #" + bookId);
                         }
                     }
                 } else {
-                    UserDto userDto = new UserDto();
-                    userDto.setUserId((int) redirectAttributes.getFlashAttributes().get("userId"));
-                    
-                    if (userDto.getUserId() != 0) {
-                        List<RentalRecordDto> records = rentService.getUserRecords(userDto.getUserId());
+                    Object userIdObj = model.asMap().get("userId");
+                    Integer userId = null;
+                    if (userIdObj instanceof Integer) {
+                        userId = (Integer) userIdObj;
+                    } else if (userIdObj instanceof String) {
+                        userId = Integer.parseInt((String) userIdObj);
+                    }
+
+                    if (userId != null && userId != 0) {
+                        List<RentalRecordDto> records = rentService.getUserRecords(userId);
                         System.out.println("[DEBUG] DashboardController - Record trovati: "
                                 + (records != null ? records.size() : "NULL"));
                         model.addAttribute("bookRecords", records);
 
                         // Titolo dinamico per il registro dell'utente
-                        UserDto targetUser = userService.getUserById(userDto.getUserId());
+                        UserDto targetUser = userService.getUserById(userId);
                         if (targetUser != null) {
                             model.addAttribute("targetRecordName",
                                     "Dipendente: " + targetUser.getUserName() + " " + targetUser.getUserLastName());

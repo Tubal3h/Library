@@ -20,7 +20,7 @@ public class BookRowMapper implements RowMapper<Book> {
 
     public static Book map(ResultSet rs) throws SQLException {
         Book book = new Book();
-        book.setBookId(rs.getInt("bookId"));
+        book.setBookId(rs.getInt("book_id"));
         book.setStatus(rs.getString("status"));
         return book;
     }

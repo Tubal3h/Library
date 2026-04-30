@@ -14,8 +14,23 @@ public class UserDto implements Serializable {
     private int userId;
     private String userName;
     private String userLastName;
+    private String userEmail;
     private String userRole;
-    
+
+    /**
+     * @return Email dell'utente
+     */
+    public String getUserEmail() {
+        return userEmail;
+    }
+
+    /**
+     * @param userEmail Email dell'utente
+     */
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
     /**
      * @return ID dell'utente
      */
@@ -58,7 +73,6 @@ public class UserDto implements Serializable {
         this.userLastName = userLastName;
     }
 
-
     /**
      * @return Ruolo dell'utente
      */
@@ -73,5 +87,3 @@ public class UserDto implements Serializable {
         this.userRole = userRole;
     }
 }
-
-

@@ -12,24 +12,22 @@
     <main class="dashboard-wrapper flex flex-column gap-1 w-100 h-100">
         <!-- Header -->
         <header class="dashboard-header flex justify-between align-center mb-2 animate-fade-in-up opacity-0">
-            <div class="flex justify-content align-end">
-
-                <h3 class="fw-700">Ciao, <span th:text="${user.userName}">User</span></h3>
-                <p th:text="${user.userRole == 'role_admin' ? ', benvenuto nella dashboard Admin.' : ',  benvenuto nella tua dashboard.'}"
+            <div class="header-titles">
+                <h3 class="fw-700">Ciao, <span th:text="${user.userDto.userName}">User</span></h3>
+                <p th:text="${user.userDto.userRole == 'role_admin' ? ', benvenuto nella dashboard Admin.' : ',  benvenuto nella tua dashboard.'}"
                     class="opacity-70"> benvenuto nella tua dashboard.</p>
-                </span>
             </div>
             <div class="header-actions flex align-center gap-2">
 
                 <!-- Aggiungi nuova edizione -->
-                <button th:if="${user.userRole == 'role_admin' && section == 'edition'}"
+                <button th:if="${user.userDto.userRole == 'role_admin' && section == 'edition'}"
                     class="btn-create btn-sm shadow-soft" onclick="openAddEditionPopup()" title="Aggiungi Edizione">
                     <i class="fa-solid fa-plus"></i>
                     <span class="btn-label">Aggiungi Edizione</span>
                 </button>
 
                 <!-- Aggiungi nuovo dipendente -->
-                <button th:if="${user.userRole == 'role_admin' && section == 'users'}"
+                <button th:if="${user.userDto.userRole == 'role_admin' && section == 'users'}"
                     class="btn-create btn-sm shadow-soft" onclick="openAddUserPopup()" title="Aggiungi Dipendente">
                     <i class="fa-solid fa-plus"></i>
                     <span class="btn-label">Aggiungi un nuovo dipendente</span>
@@ -45,7 +43,7 @@
         </header>
 
         <!-- Sezione Home per admin-->
-        <div th:if="${section == 'home' && user.userRole == 'role_admin'}"
+        <div th:if="${section == 'home' && user.userDto.userRole == 'role_admin'}"
             class="dashboard-grid grid flex nowrap gap-3 animate-fade-in-up opacity-0 delay-1">
 
             <!-- Card 1: Users totali -->
@@ -63,7 +61,7 @@
             <!-- Container Books Tot/Available/Rents-->
             <div class=" card2 flex flex-column gap-2">
                 <!-- Card 2: Books totali -->
-                <a th:href="@{/api/navigation/catalog}"
+                <a th:href="@{/api/navigation/edition}"
                     class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                     <div class="flex justify-between align-center mb-2">
                         <span class="opacity-70 font-size-medium uppercase fw-700">Manuali</span>
@@ -75,7 +73,7 @@
                 </a>
 
                 <!-- Card 3: Books disponibili -->
-                <a th:href="@{/api/navigation/catalog}"
+                <a th:href="@{/api/navigation/edition}"
                     class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                     <div class="flex justify-between align-center mb-2">
                         <span class="opacity-70 text-xs uppercase fw-700">Disponibili</span>
@@ -115,7 +113,7 @@
         </div>
 
         <!-- Sezione Home per user-->
-        <div th:if="${section == 'home' && user.userRole == 'role_user'}"
+        <div th:if="${section == 'home' && user.userDto.userRole == 'role_user'}"
             class="dashboard-grid flex flex-wrap gap-3 animate-fade-in-up opacity-0 delay-1">
 
             <!-- Card 1: Borrowed Books -->
@@ -148,7 +146,7 @@
                 </div>
 
                 <form th:action="@{/api/changePassword}" method="post" class="flex flex-column gap-2">
-                    <input type="hidden" name="email" th:value="${user.userEmail}">
+                    <input type="hidden" name="email" th:value="${user.email}">
                     
                     <div class="input-group">
                         <label class="text-nm uppercase fw-700 opacity-75 mb-1 block ">Password Attuale</label>
@@ -215,7 +213,7 @@
         </div>
 
         <!-- Sezione registri libri -->
-        <div th:if="${section == 'bookRecords' && user.userRole == 'role_admin'}"
+        <div th:if="${section == 'bookRecords' && user.userDto.userRole == 'role_admin'}"
             class="grid gap-3 animate-fade-in-up opacity-0 delay-1">
             <div th:replace="~{fragments/bookRecords :: bookRecords}"
                 class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
@@ -223,7 +221,7 @@
         </div>
 
         <!-- Sezione registri utenti -->
-        <div th:if="${section == 'userRecords' && user.userRole == 'role_admin'}"
+        <div th:if="${section == 'userRecords' && user.userDto.userRole == 'role_admin'}"
             class="grid gap-3 animate-fade-in-up opacity-0 delay-1">
             <div th:replace="~{fragments/userRecords :: userRecords}"
                 class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">

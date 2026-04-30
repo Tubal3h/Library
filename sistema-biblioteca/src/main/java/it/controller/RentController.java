@@ -14,6 +14,7 @@ import it.configuration.UserSession;
 import it.dto.RentalRecordDto;
 import it.dto.BookDto;
 import it.dto.UserDto;
+import it.dto.request.AuthDto;
 import it.service.RentService;
 
 /**
@@ -53,7 +54,7 @@ public class RentController {
         @RequestParam(value = "bookId", required = false) String bookId,
         RedirectAttributes redirectAttributes
     ) {
-    	UserDto user = userSession.getUser();
+    	AuthDto user = userSession.getUser();
     	userSession.setSection("rents");
     	if(user == null) {
     		return "redirect:/";
@@ -88,7 +89,10 @@ public class RentController {
     						 RedirectAttributes redirectAttributes) {
                 
     	int parsedBookId;
-    	UserDto user = userSession.getUser();
+    	AuthDto user = userSession.getUser();
+    	if (user == null) {
+    		return "redirect:/";
+    	}
     	if(bookId == null || bookId.isEmpty()) {
     		return "redirect:/dashboard";
     	}
@@ -103,7 +107,7 @@ public class RentController {
         }
         
         UserDto userDto = new UserDto();
-        userDto.setUserId(user.getUserId());
+        userDto.setUserId(user.getUserDto().getUserId());
         
         BookDto bookDto = new BookDto();
         bookDto.setBookId(parsedBookId);
@@ -143,7 +147,7 @@ public class RentController {
             @RequestParam(value = "bookId", required = false) String bookId,
             RedirectAttributes redirectAttributes
         ) {
-        UserDto user = userSession.getUser();
+        AuthDto user = userSession.getUser();
         userSession.setSection("rents");  
         if (user == null) {
             return "redirect:/";
@@ -164,7 +168,7 @@ public class RentController {
         }
 
         UserDto userDto = new UserDto();
-        userDto.setUserId(user.getUserId());
+        userDto.setUserId(user.getUserDto().getUserId());
         
         BookDto bookDto = new BookDto();
         bookDto.setBookId(parsedBookId);
@@ -204,7 +208,7 @@ public class RentController {
             @RequestParam(value = "bookTitle", required = false) String bookTitle,
             RedirectAttributes redirectAttributes
         ) {
-        UserDto user = userSession.getUser();
+        AuthDto user = userSession.getUser();
         userSession.setSection("rents");  
 
         if (user == null) {
@@ -253,7 +257,7 @@ public class RentController {
             @RequestParam(value = "bookTitle", required = false) String bookTitle,
             RedirectAttributes redirectAttributes
         ) {
-        UserDto user = userSession.getUser();
+        AuthDto user = userSession.getUser();
         userSession.setSection("rents");
 
         if (user == null) {

@@ -8,7 +8,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
 import it.configuration.UserSession;
-import it.dto.UserDto;
+import it.dto.request.AuthDto;
 
 @Controller
 public class BookRecordsController {
@@ -27,12 +27,12 @@ public class BookRecordsController {
      * @param redirectAttributes Attributi di redirect
      * @return Redirect al dashboard
      */
-    @PostMapping("/api/navigation/bookRecords/{bookId}")
+    @GetMapping("/api/navigation/bookRecords/{bookId}")
     public String bookRecords(
-        @PathVariable(value = "bookId") String bookId, 
+        @PathVariable(value = "bookId") int bookId, 
         RedirectAttributes redirectAttributes) {
-        UserDto user = userSession.getUser();
-        if (user == null || !"role_admin".equals(user.getUserRole())) {
+        AuthDto user = userSession.getUser();
+        if (user == null || !"role_admin".equals(user.getUserDto().getUserRole())) {
             return "redirect:/";
         }
         
@@ -51,10 +51,10 @@ public class BookRecordsController {
      */
     @GetMapping("/api/navigation/userRecords/{userId}")
     public String userRecords(
-        @PathVariable(value = "userId") String userId, 
+        @PathVariable(value = "userId") int userId, 
         RedirectAttributes redirectAttributes) {
-        UserDto user = userSession.getUser();
-        if (user == null || !"role_admin".equals(user.getUserRole())) {
+        AuthDto user = userSession.getUser();
+        if (user == null || !"role_admin".equals(user.getUserDto().getUserRole())) {
             return "redirect:/";
         }
         

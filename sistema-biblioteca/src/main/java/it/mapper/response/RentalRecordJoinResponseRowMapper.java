@@ -38,13 +38,13 @@ public class RentalRecordJoinResponseRowMapper implements RowMapper<RentalRecord
         User user = UserRowMapper.map(rs);
 
         RentalRecord rentalRecord = new RentalRecord();
-        rentalRecord.setRentalId(rs.getInt("rentalId"));
+        rentalRecord.setRentalId(rs.getInt("rental_id"));
         rentalRecord.setBook(book);
         rentalRecord.setUser(user);
-        rentalRecord.setRentalDate(rs.getDate("rentalDate") != null ? rs.getDate("rentalDate").toLocalDate() : null);
-        rentalRecord.setRentalExpired(rs.getDate("rentalExpired") != null ? rs.getDate("rentalExpired").toLocalDate() : null);
-        rentalRecord.setRentalEnded(rs.getDate("rentalEnded") != null ? rs.getDate("rentalEnded").toLocalDate() : null);
-        rentalRecord.setBookingDate(rs.getDate("bookingDate") != null ? rs.getDate("bookingDate").toLocalDate() : null);
+        rentalRecord.setRentalDate(rs.getDate("rental_date") != null ? rs.getDate("rental_date").toLocalDate() : null);
+        rentalRecord.setRentalExpired(rs.getDate("rental_expired") != null ? rs.getDate("rental_expired").toLocalDate() : null);
+        rentalRecord.setRentalEnded(rs.getDate("rental_ended") != null ? rs.getDate("rental_ended").toLocalDate() : null);
+        rentalRecord.setBookingDate(rs.getDate("booking_date") != null ? rs.getDate("booking_date").toLocalDate() : null);
 
         return rentalRecord;
     }

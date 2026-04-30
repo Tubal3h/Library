@@ -12,11 +12,13 @@
                 <span>Manuali</span>
             </a>
             <div class="header-content">
-                <span class="header-subtitle uppercase  text-xs opacity-50 mb-1 block">Archivio Storico</span>
-                <h2 class="text-4xl fw-800 text-gradient-brand leading-tight" th:text="${targetRecordName ?: 'Registro Libro'}">Registro Libro</h2>
+                <span class="header-subtitle uppercase tracking-widest text-xs opacity-50 mb-1 block">Archivio
+                    Storico</span>
+                <h2 class="text-4xl fw-800 text-gradient-brand leading-tight"
+                    th:text="${targetRecordName ?: 'Registro Libro'}">Registro Libro</h2>
             </div>
         </div>
-        
+
         <div class="header-stats flex gap-4 hide-mobile">
             <div class="stat-pill glass">
                 <span class="stat-label">Totale Record</span>
@@ -38,22 +40,24 @@
                 </div>
 
                 <div class="table-body">
-                    <div th:each="record, iter : ${bookRecords}" 
-                         class="table-row animate-row"
-                         th:classappend="${record.rentalEnded == null ? 'row-active' : ''}"
-                         th:style="'--row-index: ' + ${iter.index}">
-                        
+                    <div th:each="record, iter : ${bookRecords}" class="table-row animate-row"
+                        th:classappend="${record.rentalEnded == null ? 'row-active' : ''}"
+                        th:style="'--row-index: ' + ${iter.index}">
+
                         <!-- ID Libro -->
                         <div class="table-cell col-id">
-                            <span class="badge-mono" th:text="${record.bookId}">000</span>
+                            <span class="badge-mono" th:text="${record.bookDto.bookId}">000</span>
                         </div>
-
+ 
                         <!-- Utente -->
                         <div class="table-cell col-user">
                             <div class="user-info">
-                                <div class="user-avatar" th:text="${(!#strings.isEmpty(record.userName) ? #strings.substring(record.userName,0,1) : '') + (!#strings.isEmpty(record.userLastName) ? #strings.substring(record.userLastName,0,1) : '')}">JD</div>
+                                <div class="user-avatar"
+                                    th:text="${(!#strings.isEmpty(record.userDto.userName) ? #strings.substring(record.userDto.userName,0,1) : '') + (!#strings.isEmpty(record.userDto.userLastName) ? #strings.substring(record.userDto.userLastName,0,1) : '')}">
+                                    JD</div>
                                 <div class="user-details">
-                                    <span class="user-fullname" th:text="${record.userName + ' ' + record.userLastName}">John Doe</span>
+                                    <span class="user-fullname"
+                                        th:text="${record.userDto.userName + ' ' + record.userDto.userLastName}">John Doe</span>
                                     <span class="user-role-label">Socio</span>
                                 </div>
                             </div>
@@ -69,12 +73,16 @@
                             <div class="date-range">
                                 <div class="date-item start">
                                     <i class="fa-solid fa-calendar-check"></i>
-                                    <span th:text="${record.rentalDate != null ? #temporals.format(record.rentalDate, 'dd MMM yyyy') : #temporals.format(record.bookingDate, 'dd MMM yyyy')} ?: 'N/D'">-</span>
+                                    <span
+                                        th:text="${record.rentalDate != null ? #temporals.format(record.rentalDate, 'dd MMM yyyy') : #temporals.format(record.bookingDate, 'dd MMM yyyy')} ?: 'N/D'">-</span>
                                 </div>
                                 <div class="date-arrow"><i class="fa-solid fa-arrow-right-long"></i></div>
-                                <div class="date-item end" th:classappend="${record.rentalEnded != null ? 'ended' : ''}">
-                                    <i th:class="${record.rentalEnded != null ? 'fa-solid fa-calendar-xmark' : 'fa-solid fa-clock'}"></i>
-                                    <span th:text="${record.rentalEnded != null ? #temporals.format(record.rentalEnded, 'dd MMM yyyy') : (record.rentalExpired != null ? #temporals.format(record.rentalExpired, 'dd MMM yyyy') : '---')}">---</span>
+                                <div class="date-item end"
+                                    th:classappend="${record.rentalEnded != null ? 'ended' : ''}">
+                                    <i
+                                        th:class="${record.rentalEnded != null ? 'fa-solid fa-calendar-xmark' : 'fa-solid fa-clock'}"></i>
+                                    <span
+                                        th:text="${record.rentalEnded != null ? #temporals.format(record.rentalEnded, 'dd MMM yyyy') : (record.rentalExpired != null ? #temporals.format(record.rentalExpired, 'dd MMM yyyy') : '---')}">---</span>
                                 </div>
                             </div>
                         </div>
@@ -82,12 +90,14 @@
                         <!-- Stato -->
                         <div class="table-cell col-status">
                             <!-- Stato Prenotato (Richiesta effettuata ma non ancora consegnato) -->
-                            <div th:if="${record.rentalDate == null && record.rentalEnded == null}" class="status-indicator pending">
+                            <div th:if="${record.rentalDate == null && record.rentalEnded == null}"
+                                class="status-indicator pending">
                                 <i class="fa-solid fa-clock"></i>
                                 <span class="status-text">Prenotato</span>
                             </div>
                             <!-- Stato In Corso (Consegnato) -->
-                            <div th:if="${record.rentalDate != null && record.rentalEnded == null}" class="status-indicator active">
+                            <div th:if="${record.rentalDate != null && record.rentalEnded == null}"
+                                class="status-indicator active">
                                 <span class="pulse-dot"></span>
                                 <span class="status-text">In Corso</span>
                             </div>

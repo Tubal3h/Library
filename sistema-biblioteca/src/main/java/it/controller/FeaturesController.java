@@ -3,11 +3,12 @@ package it.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.configuration.UserSession;
-import it.dto.UserDto;
+import it.dto.request.AuthDto;
 
 @Controller
 public class FeaturesController {
@@ -30,7 +31,7 @@ public class FeaturesController {
     public String search(
         @PathVariable(value = "search", required = false) String search,
         RedirectAttributes redirectAttributes) {
-        UserDto user = userSession.getUser();
+        AuthDto user = userSession.getUser();
         if (user == null) {
             return "redirect:/";
         }
@@ -45,11 +46,11 @@ public class FeaturesController {
      * @param model   il modello per la vista
      * @return Redirect al dashboard con la sezione aggiornata
      */
-    @PostMapping("/api/navigation/{section}")
+    @GetMapping("/api/navigation/{section}")
     public String navigate(
         @PathVariable(value = "section") String section,
         Model model) {
-        UserDto user = userSession.getUser();
+        AuthDto user = userSession.getUser();
         System.out.println("Section: " + section);
         if (user == null) {
             return "redirect:/";
@@ -57,7 +58,7 @@ public class FeaturesController {
         if (section == null || section.isEmpty()) {
             return "redirect:/dashboard";
         }
-        if (user.getUserRole().equals("role_user")) {
+        if (user.getUserDto().getUserRole().equals("role_user")) {
             if (section.equals("users") || section.equals("edition")) {
                 section = "home";
             }
