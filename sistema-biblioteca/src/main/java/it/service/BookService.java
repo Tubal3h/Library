@@ -17,18 +17,16 @@ import org.springframework.transaction.annotation.Transactional;
 
 import it.exception.NoBookIdFoundException;
 
-import it.dto.AuthorDto;
+import it.utils.ConvertTo;
+
 import it.dto.BookDto;
-import it.dto.CategoryDto;
-import it.dto.EditionDto;
-import it.dto.PublisherDto;
 import it.dto.RentalRecordDto;
-import it.dto.request.InsertBookDto;
 import it.dto.BookNameDto;
-import it.entity.BookName;
-import it.entity.Category;
+import it.dto.request.InsertBookDto;
 import it.entity.Publisher;
+import it.entity.BookName;
 import it.entity.Book;
+import it.entity.Category;
 import it.exception.BookNotFoundException;
 import it.exception.InsertAuthorException;
 import it.exception.InsertBookNameException;
@@ -58,6 +56,7 @@ public class BookService {
     private final AuthorRepository authorRepository;
     private final CategoryRepository categoryRepository;
     private final PublisherRepository publisherRepository;
+    private final ConvertTo convertTo;
 
     /**
      * Costruttore per BookService.
@@ -66,28 +65,24 @@ public class BookService {
      * 
      */
     public BookService(BookRepository bookRepository, EditionRepository editionRepository, BookNameRepository bookNameRepository,
-    				   AuthorRepository authorRepository, CategoryRepository categoryRepository, PublisherRepository publisherRepository) {
+    				   AuthorRepository authorRepository, CategoryRepository categoryRepository, PublisherRepository publisherRepository,
+    				   ConvertTo convertTo) {
         this.bookRepository = bookRepository;
 		this.editionRepository = editionRepository;
 		this.bookNameRepository = bookNameRepository;
 		this.authorRepository = authorRepository;
 		this.categoryRepository = categoryRepository;
 		this.publisherRepository = publisherRepository;
+		this.convertTo = convertTo;
     }
 
     public List<BookNameDto> getAllBookNames() {
-        return bookNameRepository.getAllBookNames();
+        return bookNameRepository.getAllBookNames()
+                .stream()
+                .map(convertTo::convertToBookNameDto)
+                .toList();
     }
 
-    /**
-     * Converte un oggetto {@link BookNames} in un {@link BookNameDto}.
-     * 
-     * @param bookNames Oggetto {@link BookNames} da convertire
-     * @return Oggetto {@link BookNameDto} convertito
-     */
-    private BookNameDto convertToBookNamesDto(BookName bookNames) {
-        return new BookNameDto(bookNames.getBookNamesId(), bookNames.getTitle());
-    }
 
     /**
      * Recupera tutti i libri visibili per l'utente in base al suo ruolo.
@@ -99,10 +94,12 @@ public class BookService {
      */
     @Transactional(readOnly = true)
     private List<BookDto> getAllBooks(String userRole) {
-    	List<Book> bookList = bookRepository.getAllBooks();
-    	for(Book b : bookList) {
-)
-    	}
+        List<Book> repoBook = bookRepository.getAllBooks();
+        return repoBook.stream()
+            .filter(book -> !userRole.equals("role_user") ||
+                    "disponibilita".equalsIgnoreCase(book.getStatus()))
+            .map(convertTo::convertToBookDto)
+            .toList();
     }
 
     /**
@@ -119,18 +116,11 @@ public class BookService {
             .findFirst()
             .orElseThrow(() -> new BookNotFoundException("Libro non trovato con l'ID: " + bookId));
 
-        BookDto dto = new BookDto();
-        dto.setEditionId(book.getEditionId());
-        dto.setBookId(book.getBookId());
-        dto.setTitle(book.getBookName());
-        dto.setAuthorName(book.getAuthorName());
-        dto.setAuthorLastName(book.getAuthorLastName());
-        dto.setPublisherName(book.getPublisherName());
-        dto.setPublishingDate(book.getPublicationDate());
-        dto.setIsbn(book.getIsbnCode());
-        dto.setCategoryName(book.getCategoryName());
-        dto.setStatus(book.getStatus());
-        return dto;
+        BookDto bookDto = new BookDto();
+        bookDto.setBookId(book.getBookId());
+        bookDto.setEditionDto(convertTo.convertToEditionDto(book.getEdition()));
+        bookDto.setStatus(book.getStatus());
+        return bookDto;
     }
 
     /**
@@ -200,7 +190,7 @@ public class BookService {
 		List<BookDto> filteredList = new ArrayList<>();
 		if(search != null && !search.isBlank()) {
 			for(BookDto book : myList) {
-				if(book.getEdition().getBookNameDto().getTitle().replaceAll("\\s+","").toLowerCase().contains(search.replaceAll("\\s+","").toLowerCase())) {
+				if(book.getEditionDto().getBookNameDto().getTitle().replaceAll("\\s+","").toLowerCase().contains(search.replaceAll("\\s+","").toLowerCase())) {
 					filteredList.add(book);
 				}
 			}	
@@ -282,22 +272,7 @@ public class BookService {
      */
     public List<RentalRecordDto> getBooksByEditionId(int editionId, boolean includeDeleted) {
         return bookRepository.getBooksByEditionId(editionId, includeDeleted).stream()
-            .map(book -> {
-                RentalRecordDto dto = new RentalRecordDto();
-                dto.setEditionId(book.getEditionId());
-                dto.setBookId(book.getBookId());
-                dto.setTitle(book.getBookName());
-                dto.setAuthorName(book.getAuthorName());
-                dto.setAuthorLastName(book.getAuthorLastName());
-                dto.setPublisherName(book.getPublisherName());
-                dto.setPublishingDate(book.getPublicationDate());
-                dto.setIsbn(book.getIsbnCode());
-                dto.setCategoryName(book.getCategoryName());
-                dto.setStatus(book.getStatus());
-                dto.setUserName(book.getUserName());
-                dto.setUserLastName(book.getUserLastName());
-                return dto;
-            })
+            .map(convertTo::convertToRentalRecordDto)
             .toList();
     }
 
