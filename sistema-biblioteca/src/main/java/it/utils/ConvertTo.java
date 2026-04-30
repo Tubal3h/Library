@@ -63,6 +63,7 @@ public class ConvertTo {
     public EditionDto convertToEditionDto(Edition edition) {
         EditionDto dto = new EditionDto();
         dto.setEditionId(edition.getEditionId());
+        dto.setBookNameDto(convertToBookNameDto(edition.getBookName()));
         dto.setAuthorDto(convertToAuthorDto(edition.getAuthor()));
         dto.setCategoryDto(convertToCategoryDto(edition.getCategory()));
         dto.setPublisherDto(convertToPublisherDto(edition.getPublisher()));
