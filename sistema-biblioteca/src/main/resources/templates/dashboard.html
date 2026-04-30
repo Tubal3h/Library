@@ -14,8 +14,8 @@
         <header class="dashboard-header flex justify-between align-center mb-2 animate-fade-in-up opacity-0">
             <div class="header-titles">
                 <h3 class="fw-700">Ciao, <span th:text="${user.userDto.userName}">User</span></h3>
-                <p th:text="${user.userDto.userRole == 'role_admin' ? ', benvenuto nella dashboard Admin.' : ',  benvenuto nella tua dashboard.'}"
-                    class="opacity-70"> benvenuto nella tua dashboard.</p>
+                <p th:text="${user.userDto.userRole == 'role_admin' ? 'Benvenuto nella dashboard Admin.' : ',  benvenuto nella tua dashboard.'}"
+                    class="opacity-70"> Benvenuto nella tua dashboard.</p>
             </div>
             <div class="header-actions flex align-center gap-2">
 
