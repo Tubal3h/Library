@@ -95,13 +95,18 @@
                                 <i class="fa-solid fa-clock"></i>
                                 <span class="status-text">Prenotato</span>
                             </div>
-                            <!-- Stato In Corso (Consegnato) -->
-                            <div th:if="${record.rentalDate != null && record.rentalEnded == null}"
+                            <!-- Stato In Corso (In prestito) -->
+                            <div th:if="${record.rentalDate != null && record.rentalEnded == null && (record.rentalExpired == null || record.rentalExpired >= T(java.time.LocalDate).now())}"
                                 class="status-indicator active">
                                 <span class="pulse-dot"></span>
-                                <span class="status-text">In Corso</span>
+                                <span class="status-text">In Prestito</span>
                             </div>
-                            
+                            <!-- Stato Scaduto (In prestito ma non restituito entro la data di scadenza) -->
+                            <div th:if="${record.rentalDate != null && record.rentalEnded == null && record.rentalExpired != null && record.rentalExpired < T(java.time.LocalDate).now()}"
+                                class="status-indicator overdue">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <span class="status-text">Scaduto</span>
+                            </div>
                             <!-- Stato Concluso (Restituito) -->
                             <div th:if="${record.rentalEnded != null}" class="status-indicator completed">
                                 <i class="fa-solid fa-circle-check"></i>
