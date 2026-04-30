@@ -27,23 +27,13 @@ public class BookJoinResponseRowMapper implements RowMapper<Book> {
      * @return L'oggetto BookCatalogDto mappato dalla riga del database
      * @throws SQLException in caso di errori con il database
      */
-<<<<<<< HEAD
-    @Override
-    public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
 
-        Book book = new Book();
-        book.setEdition(EditionJoinResponseRowMapper.map(rs));
-
-        return book;
-
-=======
     public static Book map(ResultSet rs) throws SQLException {
         Book book = new Book();
         book.setBookId(rs.getInt("book_id"));
         book.setStatus(rs.getString("status"));
         book.setEdition(EditionJoinResponseRowMapper.map(rs));
         return book;
->>>>>>> db0141d310098044398ca7b76a7bca1344b8f6d3
     }
 
     @Override

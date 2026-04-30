@@ -26,6 +26,7 @@ import it.dto.RentalRecordDto;
 import it.dto.request.InsertBookDto;
 import it.dto.BookNameDto;
 import it.entity.BookName;
+import it.entity.Category;
 import it.entity.Publisher;
 import it.entity.Book;
 import it.exception.BookNotFoundException;

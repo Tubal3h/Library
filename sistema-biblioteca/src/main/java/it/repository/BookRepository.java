@@ -16,13 +16,10 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
-<<<<<<< HEAD
-import it.entity.join.BookRecordJoin;
-import it.entity.Book;
-=======
+
 import it.entity.Book;
 import it.entity.RentalRecord;
->>>>>>> db0141d310098044398ca7b76a7bca1344b8f6d3
+
 import it.exception.InsertBookException;
 import it.mapper.response.BookJoinResponseRowMapper;
 import it.mapper.response.BookRecordJoinResponseRowMapper;
@@ -64,7 +61,7 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Nome e cognome dell'autore
      */
     @Override
-    public String getAuthorFullNameByID(int authorId) {
+    public String getAuthorFullNameById(int authorId) {
         String sql = "SELECT author_name, author_last_name FROM author WHERE author_id = ?";
         return jdbcTemplate.queryForObject(sql, String.class, authorId);
     }
@@ -76,7 +73,7 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Nome della casa editrice
      */
     @Override
-    public String getPublisherNameByID(int publisherId) {
+    public String getPublisherNameById(int publisherId) {
         String sql = "SELECT publisher_name FROM publisher WHERE publisher_id = ?";
         return jdbcTemplate.queryForObject(sql, String.class, publisherId);
     }
@@ -88,7 +85,7 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Codice ISBN corrispondente
      */
     @Override
-    public String getIsbnCodeByID(int isbnId) {
+    public String getIsbnCodeById(int isbnId) {
         String sql = "SELECT code FROM isbn WHERE isbn_id = ?";
         return jdbcTemplate.queryForObject(sql, String.class, isbnId);
     }
@@ -100,7 +97,7 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Nome della categoria
      */
     @Override
-    public String getCategoryNameByID(int categoryId) {
+    public String getCategoryNameById(int categoryId) {
         String sql = "SELECT category_name FROM category WHERE category_id = ?";
         return jdbcTemplate.queryForObject(sql, String.class, categoryId);
     }
