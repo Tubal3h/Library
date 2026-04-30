@@ -30,14 +30,14 @@ public class BookName {
     /**
      * @return ID unico per il nome del libro
      */
-    public int getBookNamesId() {
+    public int getBookNameId() {
         return bookNameId;
     }
 
     /**
      * @param bookNameId ID unico per il nome del libro
      */
-    public void setBookNamesId(int bookNameId) {
+    public void setBookNameId(int bookNameId) {
         this.bookNameId = bookNameId;
     }
 

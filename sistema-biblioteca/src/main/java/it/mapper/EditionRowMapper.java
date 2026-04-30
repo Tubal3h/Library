@@ -34,7 +34,7 @@ public class EditionRowMapper implements RowMapper<Edition> {
     public Edition mapRow(ResultSet rs, int rowNum) throws SQLException {
         
     	BookName bookName= new BookName();
-        bookName.setBookNamesId(rs.getInt("book_name_id"));
+        bookName.setBookNameId(rs.getInt("book_name_id"));
         
         Author author = new Author();
         author.setAuthorId(rs.getInt("author_id"));
@@ -52,4 +52,4 @@ public class EditionRowMapper implements RowMapper<Edition> {
         return edition;
     }
 }
-
+

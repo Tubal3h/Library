@@ -160,7 +160,7 @@ public class DashboardController {
                         // Titolo dinamico per il registro del libro
                         try {
                             bookDto = bookService.getBookById(bookDto.getBookId());
-                            model.addAttribute("targetRecordName", "Registro: " + bookDto.getEdition().getBookNameDto().getTitle() + " #" + bookDto.getBookId());
+                            model.addAttribute("targetRecordName", "Registro: " + bookDto.getEditionDto().getBookNameDto().getTitle() + " #" + bookDto.getBookId());
                         } catch (Exception e) {
                             model.addAttribute("targetRecordName", "Registro Libro #" + bookDto.getBookId());
                         }
@@ -179,7 +179,7 @@ public class DashboardController {
                         UserDto targetUser = userService.getUserById(userDto.getUserId());
                         if (targetUser != null) {
                             model.addAttribute("targetRecordName",
-                                    "Registro: " + targetUser.getUserName() + " " + targetUser.getUserLastName());
+                                    "Dipendente: " + targetUser.getUserName() + " " + targetUser.getUserLastName());
                         }
                     }
                 }
@@ -197,7 +197,7 @@ public class DashboardController {
                 model.addAttribute("popupIncludeDeleted", includeDeleted);
 
                 if (!popupBooks.isEmpty()) {
-                    model.addAttribute("popupEditionTitle", popupBooks.get(0).getBookDto().getEdition().getBookNameDto().getTitle() + " #" + editionId);
+                    model.addAttribute("popupEditionTitle", popupBooks.get(0).getBookDto().getEditionDto().getBookNameDto().getTitle() + " #" + editionId);
                 } else {
                     model.addAttribute("popupEditionTitle", "Edizione #" + editionId);
                 }

@@ -35,6 +35,7 @@ public class AuthService {
      * @return L'oggetto User se le credenziali sono corrette, null altrimenti
      */
     public AuthDto authenticate(AuthDto authDto) {
+        System.out.println("Autenticazione utente: " + authDto.getEmail());
         User user = userRepository.findByEmail(authDto.getEmail());
         UserDto userDto = new UserDto();
         userDto.setUserName(user.getUserName());

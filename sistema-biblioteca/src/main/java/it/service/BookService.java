@@ -99,11 +99,8 @@ public class BookService {
     @Transactional(readOnly = true)
     private List<BookDto> getAllBooks(String userRole) {
     	List<Book> bookList = bookRepository.getAllBooks();
-    	List<BookDto> bookDtoList = new ArrayList<>();
     	for(Book b : bookList) {
-    		if(userRole != "role_user" || "disponibilita".equalsIgnoreCase(b.getStatus())) {
-    			
-    		}
+)
     	}
     }
 

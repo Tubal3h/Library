@@ -29,7 +29,7 @@ public class BookNameRowMapper implements RowMapper<BookName> {
      */
     public static BookName map(ResultSet rs) throws SQLException {
         BookName bookNames = new BookName();
-        bookNames.setBookNamesId(rs.getInt("book_name_id"));
+        bookNames.setBookNameId(rs.getInt("book_name_id"));
         bookNames.setTitle(rs.getString("title"));
         return bookNames;
     }

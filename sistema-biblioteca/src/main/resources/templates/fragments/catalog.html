@@ -29,7 +29,7 @@
 
                 </div>
                 <div class="flex align-center gap-1">
-                    <div class="category-label font-mono italic tracking-widest opacity-80 uppercase"
+                    <div class="category-label font-mono italic  opacity-80 uppercase"
                         th:text="${book.categoryName}">CATEGORIA</div>
                     <i th:if="${user.userRole == 'role_admin'}" 
                        class="fa-solid fa-tag cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
@@ -69,7 +69,7 @@
             <div th:if="${user.userRole == 'role_admin'}" class="flex align-center mb-3 status-context"
                 th:classappend="${book.status == 'disponibilita' ? 'status-vibrant-active' : 'status-vibrant-pending'}">
 
-                <div class="glass-indicator radius-10 text-nm tracking-widest flex align-center gap-1">
+                <div class="glass-indicator radius-10 text-nm  flex align-center gap-1">
                     <span th:if="${book.status.equals('disponibilita')}">Disponibile</span>
                     <span th:if="${book.status.equals('in prestito')}">In Prestito</span>
                     <span th:if="${book.status.equals('eliminato')}">Eliminato</span>
@@ -115,7 +115,7 @@
 
                 </div>
                 <div class="flex align-center gap-1">
-                    <div class="category-label font-mono italic tracking-widest opacity-80 uppercase"
+                    <div class="category-label font-mono italic  opacity-80 uppercase"
                         th:text="${edition.categoryName}">CATEGORIA</div>
                     <i th:if="${user.userRole == 'role_admin'}" 
                        class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
@@ -152,7 +152,7 @@
 
         <div class="card-action-column p-2 flex flex-column justify-center align-center border-l gap-1">
             <div class="mb-1 status-context status-vibrant-active">
-                <div class="glass-indicator radius-8 font-size-xs tracking-widest flex align-center p-2 px-8">
+                <div class="glass-indicator radius-8 font-size-xs  flex align-center p-2 px-8">
                     <span class="fw-700" th:text="'Quantità: ' + ${edition.quantity}"></span>
                 </div>
             </div>
