@@ -51,7 +51,7 @@ function initSuccessPopup(type, data) {
             }
         },
         deliveredRent: { id: 'deliveredRentContent', idField: 'deliveredBookTitle', dataField: 'title' },
-        booked: { id: 'bookedRentContent', idField: 'bookedBookTitle', dataField: 'popupBookTitle' },
+        booked: { id: 'bookedRentContent', idField: 'bookedBookTitle', dataField: 'title' },
         error: { id: 'errorContent', fn: () => document.getElementById('errorMessage').innerText = data.errorMessage || "Errore sconosciuto." }
     };
 
