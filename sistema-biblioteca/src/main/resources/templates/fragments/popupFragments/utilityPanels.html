@@ -87,7 +87,7 @@
                     </tr>
                 </thead>
                 <tbody id="viewBooksListContainer" th:fragment="bookCopiesList">
-                    <tr th:each="book : ${popupBooks != null ? popupBooks : books}" class="text-center border-b hover-bg-light transition">
+                    <tr th:each="book : ${popupBooks}" class="text-center border-b hover-bg-light transition">
                         <td class="p-4 font-mono fw-600 text-brand">
                             <a th:href="@{'/api/navigation/bookRecords/' + ${book.bookDto.bookId}}" class="hover-underline">#[[${book.bookDto.bookId}]]</a>
                         </td>
