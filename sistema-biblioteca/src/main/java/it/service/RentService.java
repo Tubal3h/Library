@@ -12,14 +12,9 @@ import java.time.LocalDate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.dto.BookDto;
-import it.dto.EditionDto;
+import it.utils.ConvertTo;
+
 import it.dto.RentalRecordDto;
-import it.dto.BookNameDto;
-import it.dto.AuthorDto;
-import it.dto.PublisherDto;
-import it.dto.CategoryDto;
-import it.dto.UserDto;
 
 import it.entity.RentalRecord;
 import it.entity.Book;
@@ -36,6 +31,7 @@ import it.repository.RentRecordRepository;
 public class RentService {
 
     private final RentRecordRepository rentRepository;
+    private final ConvertTo convertTo;
 
     /**
      * Costruttore per RentService.
@@ -44,6 +40,7 @@ public class RentService {
      */
     public RentService(RentRecordRepository rentRepository) {
         this.rentRepository = rentRepository;
+        this.convertTo = new ConvertTo();
     }
 
     /**
@@ -56,7 +53,7 @@ public class RentService {
     @Transactional(readOnly = true)
     private List<RentalRecordDto> getRentedBooksByUserId(int userId) {
         return rentRepository.getActiveRentsByUserId(userId).stream()
-                .map(this::toRentalRecordDto)
+                .map(convertTo::convertToRentalRecordDto)
                 .toList();
     }
 
@@ -71,7 +68,7 @@ public class RentService {
     @Transactional(readOnly = true)
     private List<RentalRecordDto> getRentedAllRents() {
         return rentRepository.getActiveRents().stream()
-                .map(this::toRentalRecordDto)
+                .map(convertTo::convertToRentalRecordDto)
                 .toList();
     }
 
@@ -264,14 +261,14 @@ public class RentService {
     public List<RentalRecordDto> getBookRecords(int bookId) throws HistoryNotFoundException {
         
         return rentRepository.getBookRecords(bookId).stream()
-                .map(this::toRentalRecordDto)
+                .map(convertTo::convertToRentalRecordDto)
                 .toList();
     }
 
     @Transactional(readOnly = true)
     public List<RentalRecordDto> getUserRecords(int userId) throws HistoryNotFoundException {
         return rentRepository.getUserRecords(userId).stream()
-                .map(this::toRentalRecordDto)
+                .map(convertTo::convertToRentalRecordDto)
                 .toList();
     }
 
@@ -280,60 +277,10 @@ public class RentService {
         List<RentalRecordDto> myList = new ArrayList<>();
         if (bookId != null) {
             myList = rentRepository.getBookRecords(bookId).stream()
-                .map(this::toRentalRecordDto)
+                .map(convertTo::convertToRentalRecordDto)
                 .toList();
         }
         return myList;
-    }
-
-        /**
-     * Converte un'entità {@link RentalRecordJoin} in un DTO {@link RentDto}.
-     * Tutti i dati del libro sono già inclusi nell'entità senza ulteriori query.
-     *
-     * @param rent Record di noleggio aggregato da convertire
-     * @return DTO convertito con i dati del libro inclusi
-     */
-    private RentalRecordDto toRentalRecordDto(RentalRecord rent) {
-        UserDto user = new UserDto();
-        user.setUserName(rent.getUser().getUserName());
-        user.setUserLastName(rent.getUser().getUserLastName());
-
-        BookNameDto bookNameDto = new BookNameDto();
-        bookNameDto.setTitle(rent.getBook().getEdition().getBookName().getTitle());
-
-        AuthorDto authorDto = new AuthorDto();
-        authorDto.setAuthorName(rent.getBook().getEdition().getAuthor().getAuthorName());
-        authorDto.setAuthorLastName(rent.getBook().getEdition().getAuthor().getAuthorLastName());
-
-        PublisherDto publisherDto = new PublisherDto();
-        publisherDto.setPublisherName(rent.getBook().getEdition().getPublisher().getPublisherName());
-
-        CategoryDto categoryDto = new CategoryDto();
-        categoryDto.setCategoryName(rent.getBook().getEdition().getCategory().getCategoryName());
-
-        EditionDto edition = new EditionDto();
-        edition.setEditionId(rent.getBook().getEdition().getEditionId());
-        edition.setBookNameDto(bookNameDto);
-        edition.setAuthorDto(authorDto);
-        edition.setPublisherDto(publisherDto);
-        edition.setCategoryDto(categoryDto);
-        edition.setPublishingDate(rent.getBook().getEdition().getPublishingDate());
-        edition.setIsbn(rent.getBook().getEdition().getIsbn());
-
-        BookDto book = new BookDto();
-        book.setBookId(rent.getBook().getBookId());
-        book.setEditionDto(edition);
-        book.setStatus(rent.getBook().getStatus());
-
-        RentalRecordDto rentalRecordDto = new RentalRecordDto();
-        rentalRecordDto.setRentalId(rent.getRentalId());
-        rentalRecordDto.setUserDto(user);
-        rentalRecordDto.setBookDto(book);
-        rentalRecordDto.setRentalDate(rent.getRentalDate());
-        rentalRecordDto.setRentalExpired(rent.getRentalExpired());
-        rentalRecordDto.setRentalEnded(rent.getRentalEnded());
-        rentalRecordDto.setBookingDate(rent.getBookingDate());
-        return rentalRecordDto;
     }
 
 }

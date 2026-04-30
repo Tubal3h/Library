@@ -56,8 +56,11 @@
                                     th:text="${(!#strings.isEmpty(record.userDto.userName) ? #strings.substring(record.userDto.userName,0,1) : '') + (!#strings.isEmpty(record.userDto.userLastName) ? #strings.substring(record.userDto.userLastName,0,1) : '')}">
                                     JD</div>
                                 <div class="user-details">
-                                    <span class="user-fullname"
-                                        th:text="${record.userDto.userName + ' ' + record.userDto.userLastName}">John Doe</span>
+                                    <a class="hover-underline" th:href="@{'/api/navigation/userRecords/' + ${record.userDto.userId}}">
+                                        <span class="user-fullname"
+                                            th:text="${record.userDto.userName + ' ' + record.userDto.userLastName}">John Doe
+                                        </span>
+                                    </a>
                                     <span class="user-role-label">Socio</span>
                                 </div>
                             </div>
