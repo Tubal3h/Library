@@ -22,13 +22,8 @@ import it.dto.CategoryDto;
 import it.dto.UserDto;
 
 import it.entity.RentalRecord;
-import it.entity.BookName;
-import it.entity.Author;
-import it.entity.Publisher;
-import it.entity.Category;
 import it.entity.Book;
 import it.entity.User;
-import it.entity.Edition;
 
 import it.exception.HistoryNotFoundException;
 import it.repository.RentRecordRepository;
