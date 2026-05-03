@@ -16,6 +16,9 @@ import it.entity.Category;
  * RowMapper per la mappatura dei risultati del database in oggetti {@link Category}.
  */
 @Component
+/**
+ * Mapper per convertire i record del database in oggetti di tipo CategoryRowMapper.
+ */
 public class CategoryRowMapper implements RowMapper<Category> {
 
     /**

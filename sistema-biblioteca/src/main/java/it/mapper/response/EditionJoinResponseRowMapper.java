@@ -17,6 +17,9 @@ import it.mapper.PublisherRowMapper;
  * Mapper per convertire i record del database in oggetti EditionJoin.
  */
 @Component
+/**
+ * Mapper per convertire i record del database in oggetti di tipo EditionJoinResponseRowMapper.
+ */
 public class EditionJoinResponseRowMapper implements RowMapper<Edition> {
 
     /**

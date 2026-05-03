@@ -16,6 +16,9 @@ import it.entity.Author;
  * Mapper per convertire i record del database della tabella author in oggetti Entity Author.
  */
 @Component
+/**
+ * Mapper per convertire i record del database in oggetti di tipo AuthorRowMapper.
+ */
 public class AuthorRowMapper implements RowMapper<Author> {
 
     public static Author map(ResultSet rs) throws SQLException {

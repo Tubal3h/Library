@@ -5,6 +5,9 @@ import java.time.LocalDate;
 /**
  * Classe che rappresenta un'edizione di un libro con i dati delle tabelle collegate.
  */
+/**
+ * Data Transfer Object per la gestione dei dati di EditionDto.
+ */
 public class EditionDto {
     private int editionId;
     private AuthorDto authorDto;

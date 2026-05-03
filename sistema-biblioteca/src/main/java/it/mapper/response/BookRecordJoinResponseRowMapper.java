@@ -21,6 +21,9 @@ import it.mapper.UserRowMapper;
  * Esegue la mappatura dei risultati delle query aggregate che coinvolgono più tabelle.
  */
 @Component
+/**
+ * Mapper per convertire i record del database in oggetti di tipo BookRecordJoinResponseRowMapper.
+ */
 public class BookRecordJoinResponseRowMapper implements RowMapper<RentalRecord> {
 
     /**

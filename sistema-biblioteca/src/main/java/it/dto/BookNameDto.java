@@ -1,5 +1,8 @@
 package it.dto;
 
+/**
+ * Data Transfer Object per la gestione dei dati di BookNameDto.
+ */
 public class BookNameDto {
     private int bookNameId;
     private String title;

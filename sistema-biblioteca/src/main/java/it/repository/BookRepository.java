@@ -113,6 +113,11 @@ public class BookRepository implements BookRepositoryInterface {
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
+    /**
+     * Conta il numero di libri non ancora eliminati dal sistema.
+     *
+     * @return Numero di libri con stato diverso da 'eliminato'
+     */
     public int countAllNotEliminatedBookss() {
         String sql = "SELECT COUNT(*) FROM books WHERE status != 'eliminato'";
 
@@ -271,6 +276,11 @@ public class BookRepository implements BookRepositoryInterface {
         return jdbcTemplate.query(sql, bookHistoryJoinMapper, editionId);
     }
 
+    /**
+     * Conta il numero di libri non eliminati dal sistema.
+     *
+     * @return Numero totale di libri attivi
+     */
     @Override
     public int countAllNotEliminatedBooks() {
         String query = "SELECT COUNT(*) FROM books WHERE status != 'eliminato'";

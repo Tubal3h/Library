@@ -290,33 +290,71 @@ public class BookService {
     }
 
 
+    /**
+     * Aggiorna il titolo di un libro esistente.
+     *
+     * @param bookNameId ID del record del titolo da aggiornare
+     * @param editionTitle Nuovo titolo da assegnare
+     */
     @Transactional
     public void updateBookTitle(int bookNameId, String editionTitle) { 
         bookNameRepository.updateBookTitle(bookNameId, editionTitle);
     }
 
+    /**
+     * Inserisce un nuovo titolo e restituisce il suo ID generato.
+     *
+     * @param title Il titolo da inserire
+     * @return L'ID del titolo inserito
+     * @throws InsertBookNameException se l'inserimento fallisce
+     */
     @Transactional
     public int insertAndGetBookNameId(String title) throws InsertBookNameException {
         bookNameRepository.insertBookByTitle(title);
         return getBookNameId(title);
     }
 
+    /**
+     * Inserisce un nuovo autore nel sistema.
+     *
+     * @param authorName Nome dell'autore
+     * @param authorLastName Cognome dell'autore
+     * @throws InsertAuthorException se l'inserimento fallisce
+     */
     @Transactional
     public void insertAuthor(String authorName, String authorLastName) throws InsertAuthorException {
         authorRepository.insertAuthor(authorName, authorLastName);
     }
 
+    /**
+     * Inserisce una nuova casa editrice nel sistema.
+     *
+     * @param publisherName Nome della casa editrice
+     * @throws InsertPublisherException se l'inserimento fallisce
+     */
     @Transactional
     public void insertPublisher(String publisherName) throws InsertPublisherException {
         publisherRepository.insertPublisher(publisherName);
     }
 
+    /**
+     * Inserisce una nuova categoria nel sistema.
+     *
+     * @param categoryName Nome della categoria
+     * @throws InsertCategoryException se l'inserimento fallisce
+     */
     @Transactional
     public void insertCategory(String categoryName) throws InsertCategoryException {
         categoryRepository.insertCategory(categoryName);
     }
 
 
+    /**
+     * Verifica se un titolo di libro è già presente nel database, escludendo l'ID specificato.
+     *
+     * @param bookNameDto DTO contenente il titolo da verificare e l'ID da escludere
+     * @return true se il titolo esiste già, false altrimenti
+     */
     @Transactional
     public boolean isBookNamePresent(BookNameDto bookNameDto) {
         return bookNameRepository.getBookNamesByTitle(bookNameDto.getTitle()).stream()
@@ -325,6 +363,12 @@ public class BookService {
                 .isPresent();
     }
     
+    /**
+     * Recupera l'ID di un titolo tramite il suo nome.
+     *
+     * @param title Titolo del libro da cercare
+     * @return ID del titolo trovato
+     */
     @Transactional
     public int getBookNameId(String title) {
         return bookNameRepository.getBookNamesByTitle(title).stream()
@@ -333,6 +377,12 @@ public class BookService {
     }
 
 
+    /**
+     * Recupera i dettagli di un titolo tramite il suo ID.
+     *
+     * @param bookNameId ID del record del titolo
+     * @return {@link BookNameDto} con i dettagli del titolo
+     */
     @Transactional(readOnly = true)
     public BookNameDto getBookNameById(int bookNameId) {
         BookName bookName = bookNameRepository.getBookNameById(bookNameId);

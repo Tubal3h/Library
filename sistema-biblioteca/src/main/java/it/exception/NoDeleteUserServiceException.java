@@ -1,5 +1,8 @@
 package it.exception;
 
+/**
+ * Eccezione personalizzata per gestire l'errore: NoDeleteUserServiceException.
+ */
 public class NoDeleteUserServiceException extends Exception {
 
 	/**

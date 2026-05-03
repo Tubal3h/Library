@@ -8,6 +8,9 @@ package it.exception;
  * Eccezione lanciata quando un libro non viene trovato nel sistema.
  * Estende {@link RuntimeException} per essere non controllata.
  */
+/**
+ * Eccezione personalizzata per gestire l'errore: BookNotFoundException.
+ */
 public class BookNotFoundException extends RuntimeException {
 
     /**

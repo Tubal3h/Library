@@ -7,6 +7,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
+/**
+ * Data Transfer Object per la gestione dei dati di InsertBookDto.
+ */
 public class InsertBookDto {
 	
 	@NotBlank

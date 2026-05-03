@@ -5,7 +5,8 @@ package it.entity;
 /* -------------------------------------------------------------------------- */
 
 /**
- * Entità che rappresenta il titolo di un libro nel sistema.
+ * Rappresenta l'anagrafica dei titoli dei libri nel sistema.
+ * Viene utilizzata per centralizzare i titoli ed evitare ridondanze tra diverse edizioni.
  */
 public class BookName {
     private int bookNameId;

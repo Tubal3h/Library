@@ -1,5 +1,8 @@
 package it.exception;
 
+/**
+ * Eccezione personalizzata per gestire l'errore: NoEditionIdFoundException.
+ */
 public class NoEditionIdFoundException extends Exception {
     private int id;
     
