@@ -191,11 +191,11 @@ public class UserService {
         	List<RentalRecord> rentalList = rentRepository.getActiveRentsByUserId(IntegerUserId);
         	for(RentalRecord r : rentalList) {
         		if(r.getBook().getStatus().equalsIgnoreCase("in prestito")) {
-        			throw new NoDeleteUserServiceException("attenzione l'utente ha dei noleggi");
+        			throw new NoDeleteUserServiceException("Il dipendente ha dei manuali in prestito.");
         		}
         	}
         }else {
-        	throw new NoDeleteUserServiceException("l'utente non e' stato trovato");
+        	throw new NoDeleteUserServiceException("L'utente non e' stato trovato");
         }
         
         try {
