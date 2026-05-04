@@ -149,7 +149,7 @@ public class BookController {
 			
 		if(bindingResult.hasErrors()) {
 				redirectAttributes.addFlashAttribute("popupType", "error");
-				redirectAttributes.addFlashAttribute("popupErrorMessage", "errore ci sono dei campi vuoti");
+				redirectAttributes.addFlashAttribute("popupErrorMessage", "tutti i campi devono essere riempiti");
 				return "redirect:/dashboard";
 		}
 		

@@ -8,6 +8,9 @@ import it.dto.UserDto;
 /**
  * Data Transfer Object per le credenziali di login.
  */
+/**
+ * Data Transfer Object per la gestione dei dati di AuthDto.
+ */
 public class AuthDto {
     private UserDto userDto;
     private String email;

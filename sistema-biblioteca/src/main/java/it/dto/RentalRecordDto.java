@@ -3,6 +3,9 @@ package it.dto;
 import java.time.LocalDate;
 
 
+/**
+ * Data Transfer Object per la gestione dei dati di RentalRecordDto.
+ */
 public class RentalRecordDto {
     private int rentalId;
     private BookDto bookDto;

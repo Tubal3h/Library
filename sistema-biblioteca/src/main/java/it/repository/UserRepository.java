@@ -5,10 +5,13 @@ package it.repository;
 /* -------------------------------------------------------------------------- */
 
 import it.entity.User;
+import it.exception.DeleteUserByIdException;
 import it.mapper.UserRowMapper;
 import it.repository.interfaces.UserRepositoryInterface;
 
 import java.util.List;
+
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -97,12 +100,14 @@ public class UserRepository implements UserRepositoryInterface{
      * @param userId ID dell'utente da eliminare
      * @return numero di righe eliminate
      */
-    public int deleteUserById(String userId) {
+    public int deleteUserById(String userId) throws DeleteUserByIdException{
         String sql = "DELETE FROM users WHERE users_id = ?";
         try {
             return jdbcTemplate.update(sql, Integer.parseInt(userId));
         } catch (NumberFormatException e) {
             return 0;
+        } catch (DataAccessException ex ) {
+        	throw new DeleteUserByIdException("impossibile eliminare l'utente");
         }
     }
 
@@ -118,6 +123,12 @@ public class UserRepository implements UserRepositoryInterface{
         return jdbcTemplate.update(sql, newPassword, email);
     }
 
+    /**
+     * Ricerca un utente tramite il suo ID univoco.
+     *
+     * @param userId ID dell'utente da cercare
+     * @return L'oggetto {@link User} se trovato, null altrimenti
+     */
     @Override
     public User findById(int userId) {
         String sql = "SELECT * FROM users WHERE users_id = ?";

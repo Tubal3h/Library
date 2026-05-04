@@ -18,6 +18,9 @@ import it.entity.User;
  * Mapper per convertire i record del database della tabella users in oggetti Entity User.
  */
 @Component
+/**
+ * Mapper per convertire i record del database in oggetti di tipo UserRowMapper.
+ */
 public class UserRowMapper implements RowMapper<User> {
     
     /**

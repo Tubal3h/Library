@@ -20,6 +20,9 @@ import it.entity.Publisher;
  * Mapper per convertire i record del database della tabella edition in oggetti Entity Edition.
  */
 @Component
+/**
+ * Mapper per convertire i record del database in oggetti di tipo EditionRowMapper.
+ */
 public class EditionRowMapper implements RowMapper<Edition> {
     
     /**

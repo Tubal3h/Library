@@ -6,6 +6,7 @@ package it.repository;
 
 import java.util.List;
 
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -15,8 +16,10 @@ import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
+
 import it.entity.Book;
 import it.entity.RentalRecord;
+
 import it.exception.InsertBookException;
 import it.mapper.response.BookJoinResponseRowMapper;
 import it.mapper.response.BookRecordJoinResponseRowMapper;
@@ -58,7 +61,7 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Nome e cognome dell'autore
      */
     @Override
-    public String getAuthorFullNameByID(int authorId) {
+    public String getAuthorFullNameById(int authorId) {
         String sql = "SELECT author_name, author_last_name FROM author WHERE author_id = ?";
         return jdbcTemplate.queryForObject(sql, String.class, authorId);
     }
@@ -70,7 +73,7 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Nome della casa editrice
      */
     @Override
-    public String getPublisherNameByID(int publisherId) {
+    public String getPublisherNameById(int publisherId) {
         String sql = "SELECT publisher_name FROM publisher WHERE publisher_id = ?";
         return jdbcTemplate.queryForObject(sql, String.class, publisherId);
     }
@@ -82,7 +85,7 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Codice ISBN corrispondente
      */
     @Override
-    public String getIsbnCodeByID(int isbnId) {
+    public String getIsbnCodeById(int isbnId) {
         String sql = "SELECT code FROM isbn WHERE isbn_id = ?";
         return jdbcTemplate.queryForObject(sql, String.class, isbnId);
     }
@@ -94,7 +97,7 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Nome della categoria
      */
     @Override
-    public String getCategoryNameByID(int categoryId) {
+    public String getCategoryNameById(int categoryId) {
         String sql = "SELECT category_name FROM category WHERE category_id = ?";
         return jdbcTemplate.queryForObject(sql, String.class, categoryId);
     }
@@ -110,6 +113,11 @@ public class BookRepository implements BookRepositoryInterface {
         return jdbcTemplate.queryForObject(sql, Integer.class);
     }
 
+    /**
+     * Conta il numero di libri non ancora eliminati dal sistema.
+     *
+     * @return Numero di libri con stato diverso da 'eliminato'
+     */
     public int countAllNotEliminatedBookss() {
         String sql = "SELECT COUNT(*) FROM books WHERE status != 'eliminato'";
 
@@ -199,15 +207,20 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Numero di record inseriti
      */
     @Override
-    public void insertBookByTitle(String title) throws InsertBookException {
+    public void insertBookByTitleAndIsbn(String title, String isbn) throws InsertBookException {
+      
+    	System.out.println("titoloBookRepo: " + title);
+    	
         String insertBook = "INSERT INTO books (edition_id, status)\r\n"
-                + "VALUES((SELECT edition_id FROM edition INNER JOIN books_names ON edition.book_name_id = books_names.book_name_id WHERE title = :title),\r\n"
+                + "VALUES((SELECT edition_id FROM edition INNER JOIN books_names ON edition.book_name_id = books_names.book_name_id WHERE title = :title AND edition.isbn = :isbn),\r\n"
                 + "('disponibilita'))";
 
-        SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("title", title);
+        SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("title", title)
+        															 .addValue("isbn", isbn);
         try {
             namedParameterJdbcTemplate.update(insertBook, sqlParameter);
         } catch (DataAccessException ex) {
+        	System.out.println(ex.toString());
             throw new InsertBookException("errore nell'inserimento della copia");
         }
     }
@@ -263,6 +276,11 @@ public class BookRepository implements BookRepositoryInterface {
         return jdbcTemplate.query(sql, bookHistoryJoinMapper, editionId);
     }
 
+    /**
+     * Conta il numero di libri non eliminati dal sistema.
+     *
+     * @return Numero totale di libri attivi
+     */
     @Override
     public int countAllNotEliminatedBooks() {
         String query = "SELECT COUNT(*) FROM books WHERE status != 'eliminato'";

@@ -5,6 +5,7 @@ package it.mapper.response;
 /* -------------------------------------------------------------------------- */
 
 import java.sql.ResultSet;
+
 import java.sql.SQLException;
 
 import org.springframework.jdbc.core.RowMapper;
@@ -16,6 +17,9 @@ import it.entity.Book;
  * Mapper per convertire i record del database in oggetti DTO BookCatalogDto.
  */
 @Component
+/**
+ * Mapper per convertire i record del database in oggetti di tipo BookJoinResponseRowMapper.
+ */
 public class BookJoinResponseRowMapper implements RowMapper<Book> {
     
     /**
@@ -26,6 +30,7 @@ public class BookJoinResponseRowMapper implements RowMapper<Book> {
      * @return L'oggetto BookCatalogDto mappato dalla riga del database
      * @throws SQLException in caso di errori con il database
      */
+
     public static Book map(ResultSet rs) throws SQLException {
         Book book = new Book();
         book.setBookId(rs.getInt("book_id"));

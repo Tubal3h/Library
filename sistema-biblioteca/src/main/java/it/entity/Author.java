@@ -5,7 +5,8 @@ package it.entity;
 /* -------------------------------------------------------------------------- */
 
 /**
- * Entità che rappresenta un autore nel sistema.
+ * Rappresenta un autore all'interno del sistema bibliotecario.
+ * Contiene informazioni anagrafiche come nome e cognome.
  */
 public class Author {
     private int authorId;

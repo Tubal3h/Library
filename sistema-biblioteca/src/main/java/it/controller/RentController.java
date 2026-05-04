@@ -87,7 +87,7 @@ public class RentController {
     public String borrowBook(@RequestParam(value = "bookId", required = false) String bookId, 
     						 Boolean confirmed, 
     						 RedirectAttributes redirectAttributes) {
-                
+                System.out.println("BookId: " + bookId + " Confirmed: " + confirmed);
     	int parsedBookId;
     	AuthDto user = userSession.getUser();
     	if (user == null) {
@@ -145,6 +145,7 @@ public class RentController {
     @GetMapping("/api/booked")
     public String bookedBook(
             @RequestParam(value = "bookId", required = false) String bookId,
+            @RequestParam(value = "bookTitle", required = false) String bookTitle,
             RedirectAttributes redirectAttributes
         ) {
         AuthDto user = userSession.getUser();
@@ -181,6 +182,7 @@ public class RentController {
             rentService.createBookedDate(rentalRecordDto);
             redirectAttributes.addFlashAttribute("popupType", "booked");
             redirectAttributes.addFlashAttribute("popupBookId", bookId);
+            redirectAttributes.addFlashAttribute("popupBookTitle", bookTitle != null ? bookTitle : "");
 
         } catch (Exception e) {
             System.out.println("Errore: impossibile noleggiare il libro - " + bookId);

@@ -87,7 +87,7 @@
                     </tr>
                 </thead>
                 <tbody id="viewBooksListContainer" th:fragment="bookCopiesList">
-                    <tr th:each="book : ${popupBooks != null ? popupBooks : books}" class="text-center border-b hover-bg-light transition">
+                    <tr th:each="book : ${popupBooks}" class="text-center border-b hover-bg-light transition">
                         <td class="p-4 font-mono fw-600 text-brand">
                             <a th:href="@{'/api/navigation/bookRecords/' + ${book.bookDto.bookId}}" class="hover-underline">#[[${book.bookDto.bookId}]]</a>
                         </td>
@@ -95,8 +95,8 @@
                             <div class="status-pill" th:classappend="${#strings.replace(book.bookDto.status, ' ', '-')}">
                                 <i th:if="${book.bookDto.status == 'disponibilita'}" class="fa-solid fa-circle-check"></i>
                                 <i th:if="${book.bookDto.status == 'prenotato'}" class="fa-solid fa-clock"></i>
-                                <i th:if="${book.bookDto.status == 'in prestito' && book.rentalExpired >= T(java.time.LocalDate).now()}" class="fa-solid fa-book-open-reader"></i>
-                                <i th:if="${book.bookDto.status == 'scaduto'}" class="fa-solid fa-triangle-exclamation"></i>
+                                <i th:if="${book.bookDto.status == 'in prestito'}" class="fa-solid fa-book-open-reader"></i>
+                                <i th:if="${book.rentalExpired > T(java.time.LocalDate).now()}" class="fa-solid fa-triangle-exclamation"></i>
                                 <i th:if="${book.bookDto.status == 'eliminato'}" class="fa-solid fa-trash-can"></i>
                                 <i class="fa-solid fa-triangle-exclamation" th:if="${book.rentalExpired < T(java.time.LocalDate).now()}"></i>
                                 <span th:if="${book.rentalExpired < T(java.time.LocalDate).now()}" th:text="${'Scaduto'}"></span>

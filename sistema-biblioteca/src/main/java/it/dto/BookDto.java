@@ -1,5 +1,12 @@
 package it.dto;
 
+/**
+ * Oggetto di trasferimento dati per un libro.
+ * Utilizzato per esporre le informazioni del libro e della sua edizione agli strati esterni.
+ */
+/**
+ * Data Transfer Object per la gestione dei dati di BookDto.
+ */
 public class BookDto {
     private int bookId;
     private EditionDto editionDto;

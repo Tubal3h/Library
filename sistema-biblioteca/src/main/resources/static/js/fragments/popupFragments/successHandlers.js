@@ -14,33 +14,44 @@ function initSuccessPopup(type, data) {
     };
 
     const map = {
-        addEdition: { id: 'addEditionSuccessContent', fn: () => {
-            document.getElementById('addEditionSuccessBookTitle').innerText = data.title || "";
-            document.getElementById('addEditionSuccessBookIsbn').innerText = data.isbn || "";
-        }},
-        addCopy: { id: 'addCopyContent', fn: () => {
-            document.getElementById('addCopyBookTitle').innerText = data.title || "";
-            document.getElementById('addCopyBookId').innerText = data.id || "";
-        }},
-        addAuthor: { id: 'addAuthorSuccessContent', fn: () => {
-            document.getElementById('addAuthorSuccessName').innerText = data.authorName || "";
-            document.getElementById('addAuthorSuccessLastName').innerText = data.authorLastName || "";
-        }},
+        addEdition: {
+            id: 'addEditionSuccessContent', fn: () => {
+                document.getElementById('addEditionSuccessBookTitle').innerText = data.title || "";
+                document.getElementById('addEditionSuccessBookIsbn').innerText = data.isbn || "";
+            }
+        },
+        addCopy: {
+            id: 'addCopyContent', fn: () => {
+                document.getElementById('addCopyBookTitle').innerText = data.title || "";
+                document.getElementById('addCopyBookId').innerText = data.id || "";
+            }
+        },
+        addAuthor: {
+            id: 'addAuthorSuccessContent', fn: () => {
+                document.getElementById('addAuthorSuccessName').innerText = data.authorName || "";
+                document.getElementById('addAuthorSuccessLastName').innerText = data.authorLastName || "";
+            }
+        },
         addPublisher: { id: 'addPublisherSuccessContent', idField: 'addPublisherSuccessName', dataField: 'publisherName' },
         addBookName: { id: 'addTitleSuccessContent', idField: 'addTitleSuccessName', dataField: 'title' },
         addCategory: { id: 'addCategorySuccessContent', idField: 'addCategorySuccessName', dataField: 'categoryName' },
         updateTitle: { id: 'updateTitleSuccessContent', idField: 'updateTitleBookName', dataField: 'title' },
-        updateAuthor: { id: 'updateAuthorSuccessContent', fn: () => {
-            document.getElementById('updateAuthorName').innerText = data.authorName || "";
-            document.getElementById('updateAuthorLastName').innerText = data.authorLastName || "";
-        }},
+        updateAuthor: {
+            id: 'updateAuthorSuccessContent', fn: () => {
+                document.getElementById('updateAuthorName').innerText = data.authorName || "";
+                document.getElementById('updateAuthorLastName').innerText = data.authorLastName || "";
+            }
+        },
         updatePublisher: { id: 'updatePublisherSuccessContent', idField: 'updatePublisherName', dataField: 'publisherName' },
         updateCategory: { id: 'updateCategorySuccessContent', idField: 'updateCategoryName', dataField: 'categoryName' },
-        deleteBook: { id: 'deleteBookContent', fn: () => {
-            document.getElementById('deleteBookTitle').innerText = data.title || "";
-            document.getElementById('deleteBookId').innerText = data.id || "";
-        }},
+        deleteBook: {
+            id: 'deleteBookContent', fn: () => {
+                document.getElementById('deleteBookTitle').innerText = data.title || "";
+                document.getElementById('deleteBookId').innerText = data.id || "";
+            }
+        },
         deliveredRent: { id: 'deliveredRentContent', idField: 'deliveredBookTitle', dataField: 'title' },
+        booked: { id: 'bookedRentContent', idField: 'bookedBookTitle', dataField: 'title' },
         error: { id: 'errorContent', fn: () => document.getElementById('errorMessage').innerText = data.errorMessage || "Errore sconosciuto." }
     };
 
@@ -55,7 +66,7 @@ function initSuccessPopup(type, data) {
 
 function openConfirmPopup(action, titleTxt, message, confirmUrl, method = 'GET') {
     const isDelete = action === 'delete';
-    
+
     Popup.open({
         title: 'Richiesta Conferma',
         icon: isDelete ? 'fa-trash-can' : 'fa-circle-question',
@@ -98,6 +109,7 @@ function triggerConfirmDeleteUser(el) { openConfirmPopup('delete', el.dataset.ti
 function triggerConfirmAdd(el) { openConfirmPopup('add', el.dataset.title, 'Si aggiungerà una nuova copia per questa edizione', el.dataset.url); }
 function triggerConfirmDelivered(el) { openConfirmPopup('delivered', el.dataset.title, 'Il manuale verrà reso disponibile', el.dataset.url); }
 function triggerConfirmReturned(el) { openConfirmPopup('returned', el.dataset.title, 'Il manuale verrà segnato come restituito', el.dataset.url); }
+function triggerConfirmRent(el) { openConfirmPopup('rent', el.dataset.title, 'Vuoi noleggiare questo manuale?', el.dataset.url); }
 
 // Esponi globalmente
 window.initSuccessPopup = initSuccessPopup;
@@ -107,3 +119,6 @@ window.triggerConfirmDeleteUser = triggerConfirmDeleteUser;
 window.triggerConfirmAdd = triggerConfirmAdd;
 window.triggerConfirmDelivered = triggerConfirmDelivered;
 window.triggerConfirmReturned = triggerConfirmReturned;
+window.triggerConfirmRent = triggerConfirmRent;
+
+console.log("successHandlers.js loaded");

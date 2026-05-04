@@ -9,6 +9,9 @@ import java.io.Serializable;
 /**
  * Data Transfer Object per i dati dell'utente.
  */
+/**
+ * Data Transfer Object per la gestione dei dati di UserDto.
+ */
 public class UserDto implements Serializable {
     private static final long serialVersionUID = 1L;
     private int userId;

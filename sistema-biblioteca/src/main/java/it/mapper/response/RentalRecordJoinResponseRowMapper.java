@@ -23,6 +23,9 @@ import it.mapper.UserRowMapper;
  * aggiuntive per i dati del libro associato al noleggio.
  */
 @Component
+/**
+ * Mapper per convertire i record del database in oggetti di tipo RentalRecordJoinResponseRowMapper.
+ */
 public class RentalRecordJoinResponseRowMapper implements RowMapper<RentalRecord> {
 
     /**

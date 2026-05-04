@@ -17,6 +17,9 @@ import it.entity.BookName;
  * Mapper per convertire i record del database della tabella books_names in oggetti Entity BookName.
  */
 @Component
+/**
+ * Mapper per convertire i record del database in oggetti di tipo BookNameRowMapper.
+ */
 public class BookNameRowMapper implements RowMapper<BookName> {
 
     /**

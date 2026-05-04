@@ -9,6 +9,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import it.configuration.UserSession;
 import it.dto.UserDto;
 import it.dto.request.AuthDto;
+import it.exception.NoDeleteUserServiceException;
 import it.service.UserService;
 
 /**
@@ -90,9 +91,9 @@ public class UserController {
             redirectAttributes.addFlashAttribute("popupType", "deleteUser");
             redirectAttributes.addFlashAttribute("popupUserId", userId);
             redirectAttributes.addFlashAttribute("popupUserName", userName);
-        } catch (Exception ex) {
+        } catch (NoDeleteUserServiceException ex) {
             redirectAttributes.addFlashAttribute("popupType", "error");
-            redirectAttributes.addFlashAttribute("popupErrorMessage", "Impossibile eliminare il dipendente.");
+            redirectAttributes.addFlashAttribute("popupErrorMessage", ex.getMessage());
         }
         
         userSession.setSection("users");

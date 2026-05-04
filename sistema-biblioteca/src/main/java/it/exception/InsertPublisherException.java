@@ -1,5 +1,8 @@
 package it.exception;
 
+/**
+ * Eccezione personalizzata per gestire l'errore: InsertPublisherException.
+ */
 public class InsertPublisherException extends RuntimeException {
 
 	/**

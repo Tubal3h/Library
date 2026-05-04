@@ -1,5 +1,8 @@
 package it.exception;
 
+/**
+ * Eccezione personalizzata per gestire l'errore: InsertEditionException.
+ */
 public class InsertEditionException extends RuntimeException{
 
 	/**
