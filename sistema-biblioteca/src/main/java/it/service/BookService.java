@@ -189,11 +189,26 @@ public class BookService {
 		List<BookDto> myList = getAllBooks(userRole);
 		List<BookDto> filteredList = new ArrayList<>();
 		if(search != null && !search.isBlank()) {
+			String [] searchArray = search.toLowerCase().split("\\s+");
 			for(BookDto book : myList) {
-				if(book.getEditionDto().getBookNameDto().getTitle().replaceAll("\\s+","").toLowerCase().contains(search.replaceAll("\\s+","").toLowerCase())) {
+				String title = book.getEditionDto().getBookNameDto().getTitle().trim();
+				String authorName = book.getEditionDto().getAuthorDto().getAuthorName().trim();
+				String authorLastName = book.getEditionDto().getAuthorDto().getAuthorLastName().trim();
+				String category = book.getEditionDto().getCategoryDto().getCategoryName().trim();
+				String publisher = book.getEditionDto().getPublisherDto().getPublisherName().trim();
+				String finalString = (title + " " + authorName + " " + authorLastName + " " + category + " " + publisher).toLowerCase().trim();
+				boolean allRight = true;
+				for(String s : searchArray) {
+					if(!finalString.contains(s)) {
+						allRight = false;
+					}
+				}
+				if(allRight) {
 					filteredList.add(book);
 				}
 			}	
+		}else {
+			return myList;
 		}
 		if(filteredList.isEmpty() || filteredList == null) {
 			return myList;
