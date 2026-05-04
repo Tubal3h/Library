@@ -5,7 +5,8 @@ package it.entity;
 /* -------------------------------------------------------------------------- */
 
 /**
- * Entità che rappresenta un libro nel sistema.
+ * Rappresenta una singola copia fisica di un libro (esemplare) nel sistema.
+ * Ogni libro è associato a una specifica edizione e ha uno stato (es. disponibile, prestato).
  */
 public class Book {
     private int bookId;

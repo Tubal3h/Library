@@ -77,11 +77,12 @@ public class EditionService {
 			String [] strings = search.toLowerCase().trim().split("\\s+");
 			for(EditionDto edition : myList) {
 				String title = edition.getBookNameDto().getTitle();
-				String author = edition.getAuthorDto().getAuthorName();
+				String authorName = edition.getAuthorDto().getAuthorName();
+				String authorLastName = edition.getAuthorDto().getAuthorLastName();
 				String category = edition.getCategoryDto().getCategoryName();
 				String myEdition = edition.getPublisherDto().getPublisherName();
 				String isbn = edition.getIsbn();
-				String finalBook = (title + " " + author + " " + myEdition + " " + category + " " + isbn).toLowerCase();
+				String finalBook = (title + " " + authorName + " " + authorLastName + " " + myEdition + " " + category + " " + isbn).toLowerCase();
 				boolean allMatch = true;
 				for(String s : strings) {
 					if(!(finalBook.contains(s))) {

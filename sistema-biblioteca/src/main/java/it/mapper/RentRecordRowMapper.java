@@ -19,6 +19,9 @@ import it.entity.User;
  * Mapper per convertire i record del database della tabella rental_record in oggetti Entity RentalRecord.
  */
 @Component
+/**
+ * Mapper per convertire i record del database in oggetti di tipo RentRecordRowMapper.
+ */
 public class RentRecordRowMapper implements RowMapper<RentalRecord> {
 
     /**

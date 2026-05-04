@@ -27,9 +27,9 @@
 
     <div class="records-view-container">
         <!-- Tabella Desktop -->
-        <div class="premium-table-wrapper glass radius-24 shadow-xl overflow-hidden animate-fade-in-up delay-2">
+        <div class="premium-table-wrapper glass radius-12 shadow-xl overflow-hidden animate-fade-in-up delay-2">
             <div class="records-table">
-                <div class="table-header">
+                <div class="table-header center">
                     <div class="header-col col-id">ID Libro</div>
                     <div class="header-col col-book">Titolo Libro</div>
                     <div class="header-col col-rent">ID Noleggio</div>
@@ -44,24 +44,22 @@
                          th:style="'--row-index: ' + ${iter.index}">
                         
                         <!-- ID Libro -->
-                        <div class="table-cell col-id">
+                        <div class=" col-id center">
                             <span class="badge-mono" th:text="${record.bookDto.bookId}">000</span>
                         </div>
 
                         <!-- Titolo Libro -->
-                        <div class="table-cell col-book">
-                            <div class="book-info">
-                                <span class="book-title-cell fw-700" th:text="${record.bookDto.editionDto.bookNameDto.title}">Il Signore degli Anelli</span>
-                            </div>
+                        <div class=" col-book center">
+                            <span class="fw-700" th:text="${record.bookDto.editionDto.bookNameDto.title}">Il Signore degli Anelli</span>
                         </div>
 
                         <!-- ID Noleggio -->
-                        <div class="table-cell col-rent">
+                        <div class=" col-rent center">
                             <span class="rent-id" th:text="'#' + ${record.rentalId}">#123</span>
                         </div>
 
                         <!-- Periodo -->
-                        <div class="table-cell col-dates">
+                        <div class=" col-dates center">
                             <div class="date-range">
                                 <div class="date-item start">
                                     <i class="fa-solid fa-calendar-check"></i>
@@ -76,14 +74,14 @@
                         </div>
 
                         <!-- Stato -->
-                        <div class="table-cell col-status">
+                        <div class=" col-status center">
                             <!-- Stato Prenotato -->
-                            <div th:if="${record.rentalDate == null && record.rentalEnded == null}" class="status-indicator pending">
+                            <div th:if="${record.rentalDate == null && record.rentalEnded == null}" class="status-indicator active">
                                 <i class="fa-solid fa-clock"></i>
                                 <span class="status-text">Prenotato</span>
                             </div>
                             <!-- Stato In Corso -->
-                            <div th:if="${record.rentalDate != null && record.rentalEnded == null}" class="status-indicator active">
+                            <div th:if="${record.rentalDate != null && record.rentalEnded == null}" class="status-indicator pending">
                                 <span class="pulse-dot"></span>
                                 <span class="status-text">In Corso</span>
                             </div>
@@ -94,16 +92,16 @@
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Empty State Integrato nella tabella -->
-                    <div th:if="${#lists.isEmpty(bookRecords)}" class="table-empty-state">
-                        <div class="empty-content p-16 text-center">
-                            <div class="empty-illustration mb-6">
-                                <i class="fa-solid fa-receipt text-6xl opacity-10"></i>
-                            </div>
-                            <h3 class="text-xl fw-700 opacity-60 mb-2">nessun prestito registrato</h3>
-                            <p class="text-nm opacity-40">L'utente non ha ancora effettuato prestiti.</p>
+                <!-- Empty State Integrato nella tabella -->
+                <div th:if="${#lists.isEmpty(bookRecords)}" class="table-empty-state">
+                    <div class="empty-content p-16 text-center">
+                        <div class="empty-illustration mb-6">
+                            <i class="fa-solid fa-receipt text-6xl opacity-10"></i>
                         </div>
+                        <h3 class="text-xl fw-700 opacity-60 mb-2">Nessun prestito registrato</h3>
+                        <p class="text-nm opacity-40">L'utente non ha ancora richiesto manuali.</p>
                     </div>
                 </div>
             </div>

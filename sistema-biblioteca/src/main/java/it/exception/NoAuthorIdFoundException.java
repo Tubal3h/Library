@@ -1,5 +1,8 @@
 package it.exception;
 
+/**
+ * Eccezione personalizzata per gestire l'errore: NoAuthorIdFoundException.
+ */
 public class NoAuthorIdFoundException extends Exception {
 
     /**

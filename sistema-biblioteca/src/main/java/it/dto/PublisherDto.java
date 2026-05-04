@@ -1,5 +1,8 @@
 package it.dto;
 
+/**
+ * Data Transfer Object per la gestione dei dati di PublisherDto.
+ */
 public class PublisherDto {
     private int publisherId;
     private String publisherName;

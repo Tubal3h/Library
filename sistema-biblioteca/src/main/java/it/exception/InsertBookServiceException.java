@@ -1,5 +1,8 @@
 package it.exception;
 
+/**
+ * Eccezione personalizzata per gestire l'errore: InsertBookServiceException.
+ */
 public class InsertBookServiceException extends RuntimeException {
 
 	/**

@@ -17,6 +17,9 @@ import it.entity.Book;
  * Mapper per convertire i record del database in oggetti DTO BookCatalogDto.
  */
 @Component
+/**
+ * Mapper per convertire i record del database in oggetti di tipo BookJoinResponseRowMapper.
+ */
 public class BookJoinResponseRowMapper implements RowMapper<Book> {
     
     /**

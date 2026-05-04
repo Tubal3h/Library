@@ -1,5 +1,8 @@
 package it.dto;
 
+/**
+ * Data Transfer Object per la gestione dei dati di AuthorDto.
+ */
 public class AuthorDto {
     private int authorId;
     private String authorName;

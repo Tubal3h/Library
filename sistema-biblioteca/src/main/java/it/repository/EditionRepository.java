@@ -124,6 +124,9 @@ public class EditionRepository implements EditionRepositoryInterface {
 	public void insertEdition(String title, String authorName, String authorLastName, String publisher,
 			LocalDate publishingDate, String category,
 			String isbn) throws InsertEditionException {
+				
+				System.out.println("Titolo: " + title);
+		
 		String insertEdition = "INSERT INTO edition (book_name_id, author_id, publisher_id, publishing_date, category_id, isbn)\r\n"
 				+ "VALUES((SELECT book_name_id FROM books_names WHERE title = :title),\r\n"
 				+ "(SELECT author_id FROM author WHERE author_name = :authorName AND author_last_name = :authorLastName),\r\n"
@@ -140,9 +143,10 @@ public class EditionRepository implements EditionRepositoryInterface {
 				.addValue("category", category)
 				.addValue("isbn", isbn);
 		try {
-			namedParameterJdbcTemplate.update(insertEdition, sqlParameter);
+			int n = namedParameterJdbcTemplate.update(insertEdition, sqlParameter);
+			System.out.println("risultato edition:" + n);
 		} catch (DataAccessException ex) {
-			System.out.println(ex.getMessage());
+			System.out.println(ex.toString());
 			throw new InsertEditionException("errore nell'inserimento dell'edizione del libro");
 		}
 	}

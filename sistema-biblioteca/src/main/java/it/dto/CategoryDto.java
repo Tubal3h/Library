@@ -1,5 +1,8 @@
 package it.dto;
 
+/**
+ * Data Transfer Object per la gestione dei dati di CategoryDto.
+ */
 public class CategoryDto {
     private int categoryId;
     private String categoryName;

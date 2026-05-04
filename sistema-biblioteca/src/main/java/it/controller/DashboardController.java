@@ -162,6 +162,10 @@ public class DashboardController {
                         bookId = Integer.parseInt((String) bookIdObj);
                     }
 
+                    if (bookId == null || bookId == 0) {
+                        bookId = userSession.getRecordBookId();
+                    }
+
                     if (bookId != null && bookId != 0) {
                         List<RentalRecordDto> records = rentService.getBookRecords(bookId);
                         model.addAttribute("bookRecords", records);
@@ -184,6 +188,10 @@ public class DashboardController {
                         userId = (Integer) userIdObj;
                     } else if (userIdObj instanceof String) {
                         userId = Integer.parseInt((String) userIdObj);
+                    }
+
+                    if (userId == null || userId == 0) {
+                        userId = userSession.getRecordUserId();
                     }
 
                     if (userId != null && userId != 0) {

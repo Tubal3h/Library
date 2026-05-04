@@ -16,6 +16,9 @@ import it.entity.Publisher;
  * RowMapper per la mappatura dei risultati del database in oggetti {@link Publisher}.
  */
 @Component
+/**
+ * Mapper per convertire i record del database in oggetti di tipo PublisherRowMapper.
+ */
 public class PublisherRowMapper implements RowMapper<Publisher> {
 
     /**

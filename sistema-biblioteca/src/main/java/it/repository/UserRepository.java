@@ -123,6 +123,12 @@ public class UserRepository implements UserRepositoryInterface{
         return jdbcTemplate.update(sql, newPassword, email);
     }
 
+    /**
+     * Ricerca un utente tramite il suo ID univoco.
+     *
+     * @param userId ID dell'utente da cercare
+     * @return L'oggetto {@link User} se trovato, null altrimenti
+     */
     @Override
     public User findById(int userId) {
         String sql = "SELECT * FROM users WHERE users_id = ?";

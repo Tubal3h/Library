@@ -12,7 +12,7 @@
     <main class="dashboard-wrapper flex flex-column gap-1 w-100 h-100">
         <!-- Header -->
         <header class="dashboard-header flex justify-between align-center mb-2 animate-fade-in-up opacity-0">
-            <div class="header-titles">
+            <div class="header-titles flex align-end">
                 <h3 class="fw-700">Ciao, <span th:text="${user.userDto.userName}">User</span></h3>
                 <p th:text="${user.userDto.userRole == 'role_admin' ? 'Benvenuto nella dashboard Admin.' : ',  benvenuto nella tua dashboard.'}"
                     class="opacity-70"> Benvenuto nella tua dashboard.</p>
@@ -120,12 +120,12 @@
             <a th:href="@{/api/navigation/rents}"
                 class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
                 <div class="flex justify-between align-center mb-2">
-                    <span class="opacity-70 font-size-small uppercase fw-700">Libri Prestati</span>
+                    <span class="opacity-70 text-nm uppercase fw-700">Libri in prestito</span>
                     <i class="fa-solid fa-book-open-reader text-warning"></i>
                 </div>
                 <div class="flex align-end gap-2">
                     <span class="text-3xl fw-700" th:text="${totalRents}"></span>
-                    <span class="opacity-50 font-size-small mb-1">In prestito</span>
+                    <span class="opacity-50 text-nm mb-1">in carico</span>
                 </div>
             </a>
 
@@ -141,7 +141,7 @@
                     </div>
                     <div>
                         <h3 class="text-3xl fw-700 m-0 text-brand">Sicurezza Account</h3>
-                        <p class="opacity-70 text-nm mt-1">Gestisci la tua password e proteggi il tuo profilo</p>
+                        <p class="opacity-70 text-lg mt-1">Gestisci la tua password e proteggi il tuo profilo</p>
                     </div>
                 </div>
 
