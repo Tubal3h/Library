@@ -8,7 +8,7 @@ function initSuccessPopup(type, data) {
         title: type === 'error' ? 'Errore' : 'Operazione Riuscita',
         icon: type === 'error' ? 'fa-circle-exclamation' : 'fa-circle-check',
         iconClass: type === 'error' ? 'icon-bg-error' : 'icon-bg-success',
-        confirmText: 'Ottimo',
+        confirmText: 'Chiudi',
         showCancel: false,
         onConfirm: () => Popup.close()
     };
@@ -104,12 +104,12 @@ function openConfirmPopup(action, titleTxt, message, confirmUrl, method = 'GET')
 }
 
 // Trigger veloci
-function triggerConfirmDelete(el) { openConfirmPopup('delete', el.dataset.title, 'Questa copia verrà eliminata dalla libreria', el.dataset.url); }
-function triggerConfirmDeleteUser(el) { openConfirmPopup('delete', el.dataset.title, 'Il seguente dipendente verrà eliminato dal sistema', el.dataset.url); }
-function triggerConfirmAdd(el) { openConfirmPopup('add', el.dataset.title, 'Si aggiungerà una nuova copia per questa edizione', el.dataset.url); }
-function triggerConfirmDelivered(el) { openConfirmPopup('delivered', el.dataset.title, 'Il manuale verrà reso disponibile', el.dataset.url); }
-function triggerConfirmReturned(el) { openConfirmPopup('returned', el.dataset.title, 'Il manuale verrà segnato come restituito', el.dataset.url); }
-function triggerConfirmRent(el) { openConfirmPopup('rent', el.dataset.title, 'Vuoi noleggiare questo manuale?', el.dataset.url); }
+function triggerConfirmDelete(el) { openConfirmPopup('delete', el.dataset.title, 'Questa copia verrà eliminata dalla libreria!', el.dataset.url); }
+function triggerConfirmDeleteUser(el) { openConfirmPopup('delete', el.dataset.title, 'Il seguente dipendente verrà eliminato dal sistema!', el.dataset.url); }
+function triggerConfirmAdd(el) { openConfirmPopup('add', el.dataset.title, 'Si aggiungerà una nuova copia per questa edizione.', el.dataset.url); }
+function triggerConfirmDelivered(el) { openConfirmPopup('delivered', el.dataset.title, 'Il manuale verrà dato in carico al richiedente.', el.dataset.url); }
+function triggerConfirmReturned(el) { openConfirmPopup('returned', el.dataset.title, 'Il manuale tornerà disponibile.', el.dataset.url); }
+function triggerConfirmRent(el) { openConfirmPopup('rent', el.dataset.title, 'Vuoi prendere in prestito questo manuale?', el.dataset.url); }
 
 // Esponi globalmente
 window.initSuccessPopup = initSuccessPopup;
