@@ -252,7 +252,7 @@
 }
 
 .status-indicator.overdue {
-    background: rgba(239, 83, 80, 0.1);
+    background: rgba(237, 43, 40, 0.1);
     color: var(--color-error);
     border: 1px solid rgba(239, 83, 80, 0.2);
 }
@@ -260,7 +260,7 @@
 .pulse-dot {
     width: 8px;
     height: 8px;
-    background: var(--record-accent);
+    background: var(--record-warning);
     border-radius: 50%;
     position: relative;
     animation: pulse 2s infinite;

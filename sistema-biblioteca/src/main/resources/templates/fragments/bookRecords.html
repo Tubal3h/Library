@@ -45,12 +45,12 @@
                         th:style="'--row-index: ' + ${iter.index}">
 
                         <!-- ID Libro -->
-                        <div class="table-cell col-id">
+                        <div class=" col-id">
                             <span class="badge-mono" th:text="${record.bookDto.bookId}">000</span>
                         </div>
  
                         <!-- Utente -->
-                        <div class="table-cell col-user">
+                        <div class=" col-user">
                             <div class="user-info">
                                 <div class="user-avatar"
                                     th:text="${(!#strings.isEmpty(record.userDto.userName) ? #strings.substring(record.userDto.userName,0,1) : '') + (!#strings.isEmpty(record.userDto.userLastName) ? #strings.substring(record.userDto.userLastName,0,1) : '')}">
@@ -64,12 +64,12 @@
                         </div>
 
                         <!-- ID Noleggio -->
-                        <div class="table-cell col-rent">
+                        <div class=" col-rent">
                             <span class="rent-id" th:text="'#' + ${record.rentalId}">#123</span>
                         </div>
 
                         <!-- Periodo -->
-                        <div class="table-cell col-dates">
+                        <div class=" col-dates">
                             <div class="date-range">
                                 <div class="date-item start">
                                     <i class="fa-solid fa-calendar-check"></i>
@@ -88,7 +88,7 @@
                         </div>
 
                         <!-- Stato -->
-                        <div class="table-cell col-status">
+                        <div class=" col-status">
                             <!-- Stato Prenotato (Richiesta effettuata ma non ancora consegnato) -->
                             <div th:if="${record.rentalDate == null && record.rentalEnded == null}"
                                 class="status-indicator pending">
@@ -121,7 +121,7 @@
                             <div class="empty-illustration mb-6">
                                 <i class="fa-solid fa-receipt text-6xl opacity-10"></i>
                             </div>
-                            <h3 class="text-xl fw-700 opacity-60 mb-2">nessun prestito registrato</h3>
+                            <h3 class="text-xl fw-700 opacity-60 mb-2">Nessun prestito registrato</h3>
                             <p class="text-nm opacity-40">Non ci sono movimenti nello storico di questo libro.</p>
                         </div>
                     </div>
