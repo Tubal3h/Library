@@ -9,7 +9,7 @@ public interface PublisherRepositoryInterface {
 	
 	public List<Publisher> getAllPublishers();
 	public void insertPublisherByPubliserName(String publisherName) throws InsertPublisherException;
-	public int updatePublisher(Publisher publisher);
+	public void updatePublisher(Publisher publisher);
 	public int deletePublisher(Publisher publisher);
 	public Boolean isPublisherPresent(Publisher publisher);
 }

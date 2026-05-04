@@ -97,14 +97,13 @@ public class PublisherRepository implements PublisherRepositoryInterface{
      * Aggiorna un publisher nel database.
      * 
      * @param publisher Il publisher da aggiornare
-     * @return Il numero di publisher aggiornati
      */
-    public int updatePublisher(Publisher publisher) {
+    public void updatePublisher(Publisher publisher) {
         String sql = "UPDATE publisher SET publisher_name = :publisherName WHERE publisher_id = :publisherId";
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("publisherName", publisher.getPublisherName())
                 .addValue("publisherId", publisher.getPublisherId());
-        return namedParameterJdbcTemplate.update(sql, parameterSource);
+        namedParameterJdbcTemplate.update(sql, parameterSource);
     }
 
     /**

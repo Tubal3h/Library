@@ -2,6 +2,7 @@ package it.repository.interfaces;
 
 import java.util.List;
 
+import it.dto.BookNameDto;
 import it.entity.BookName;
 import it.exception.InsertBookNameException;
 
@@ -11,6 +12,6 @@ public interface BookNameRepositoryInterface {
 	public BookName getBookNameById(int titleId);
 	public Boolean isTitleOnDb(String title);
 	public void insertBookByTitle(String title) throws InsertBookNameException;
-	public void updateBookTitle(int editionId, String editionTitle); 
+	public void updateBookTitle(BookNameDto bookNameDto); 
 	public List<BookName> getBookNamesByTitle(String title);
 }

@@ -12,7 +12,20 @@ function openEditEntityFullPopup(type, config) {
         onConfirm: () => {
             const form = document.getElementById(config.formId);
             if (form && form.checkValidity()) {
-                openConfirmPopup('edit', config.entityName, `Vuoi salvare le modifiche a questo ${type}?`, () => form.submit());
+                // Legge i valori dal form per mostrare "Da → A"
+                const inputs = form.querySelectorAll('input[type="text"]');
+                let newValueParts = [];
+                inputs.forEach(inp => { if (inp.value.trim()) newValueParts.push(inp.value.trim()); });
+                const newValue = newValueParts.join(' ');
+                openConfirmPopup(
+                    'edit',
+                    null,
+                    `Vuoi salvare le modifiche a questo ${type}?`,
+                    () => form.submit(),
+                    'GET',
+                    config.entityName,   // oldValue = nome corrente (passato all'apertura)
+                    newValue             // newValue = valore digitato nel form
+                );
             } else if (form) form.reportValidity();
         }
     });

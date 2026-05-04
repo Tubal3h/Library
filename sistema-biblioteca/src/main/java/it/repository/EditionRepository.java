@@ -151,6 +151,12 @@ public class EditionRepository implements EditionRepositoryInterface {
 		}
 	}
 
+	/**
+	 * Aggiorna il book name id di un'edizione.
+	 * @param editionId l'id dell'edizione
+	 * @param bookNameId l'id del book name
+	 */
+
 	@Override
 	public void updateBookTitleId(int editionId, int bookNameId) {
 		String sql = "UPDATE edition SET book_name_id = :bookNameId WHERE edition_id = :editionId";

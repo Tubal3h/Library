@@ -138,6 +138,17 @@ public class RentService {
     }
 
     @Transactional
+    public void removeReservation(int bookId, int rentId) throws RuntimeException {
+        try {
+            rentRepository.deleteRentalById(rentId);
+            rentRepository.updateRentalStatusNotOk(bookId);
+        } catch (Exception e) {
+            System.out.println("Eccezione nella rimozione della prenotazione: " + e.getMessage());
+            throw new RuntimeException("impossibile rimuovere la prenotazione.");
+        }
+    }
+
+    @Transactional
     public void createRental(RentalRecordDto rentalRecordDto, Boolean confirmed) throws RuntimeException {
         if (rentalRecordDto != null) {
             if (confirmed != null && confirmed) {

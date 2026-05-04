@@ -14,7 +14,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
-
+import it.dto.BookNameDto;
 import it.entity.BookName;
 import it.exception.InsertBookNameException;
 import it.mapper.BookNameRowMapper;
@@ -83,15 +83,14 @@ public class BookNameRepository implements BookNameRepositoryInterface {
     }
 
     /**
-     * Aggiorna il titolo di un libro.
+     * Aggiorna il titolo.
      *
-     * @param bookNameId ID del libro
-     * @param title Titolo del libro
+     * @param bookNameDto DTO del titolo da aggiornare
      */
 
-    public void updateBookTitle(int bookNameId, String title) {
+    public void updateBookTitle(BookNameDto bookNameDto) {
         String updateBook = "UPDATE books_names SET title = :title WHERE book_name_id = :book_name_id";
-        SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("title", title).addValue("book_name_id", bookNameId);
+        SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("title", bookNameDto.getTitle()).addValue("book_name_id", bookNameDto.getBookNameId());
         namedParameterJdbcTemplate.update(updateBook, sqlParameters);
     }
 

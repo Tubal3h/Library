@@ -1,44 +1,91 @@
-<div th:fragment="settings" class="animate-fade-in">
-    <div class="mb-4 pl-2">
-        <h3 class="text-3xl fw-700 text-brand mb-2">Gestione dati libreria aziendale.</h3>
-        <p class="opacity-60 text-lg">Gestisci le entità principali della biblioteca: Titoli, Autori, Editori e Categorie.</p>
+<div th:fragment="settings" class="settings-wrapper animate-fade-in">
+
+    <!-- Page Header -->
+    <div class="settings-page-header">
+        <div class="settings-page-header-inner">
+            <div class="settings-page-title-group">
+                <div class="settings-page-icon">
+                    <i class="fa-solid fa-sliders"></i>
+                </div>
+                <div>
+                    <h2 class="settings-page-title">Gestione Libreria</h2>
+                    <p class="settings-page-subtitle">Gestisci Titoli, Autori, Editori e Categorie della tua biblioteca.</p>
+                </div>
+            </div>
+            <!-- Stats bar -->
+            <div class="settings-stats-bar">
+                <div class="settings-stat-chip stat-titles">
+                    <i class="fa-solid fa-book-bookmark"></i>
+                    <span th:text="${bookNames.size()}">0</span>
+                    <span class="stat-label">Titoli</span>
+                </div>
+                <div class="settings-stat-chip stat-authors">
+                    <i class="fa-solid fa-user-pen"></i>
+                    <span th:text="${authors.size()}">0</span>
+                    <span class="stat-label">Autori</span>
+                </div>
+                <div class="settings-stat-chip stat-publishers">
+                    <i class="fa-solid fa-building-columns"></i>
+                    <span th:text="${publishers.size()}">0</span>
+                    <span class="stat-label">Editori</span>
+                </div>
+                <div class="settings-stat-chip stat-categories">
+                    <i class="fa-solid fa-tags"></i>
+                    <span th:text="${categories.size()}">0</span>
+                    <span class="stat-label">Categorie</span>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <div class="settings-grid">
+    <!-- Tab Bar -->
+    <div class="settings-tab-bar">
+        <button class="settings-tab active" data-target="tab-titles" onclick="switchSettingsTab(this, 'tab-titles')">
+            <i class="fa-solid fa-book-bookmark"></i>
+            <span>Titoli manuali</span>
+        </button>
+        <button class="settings-tab" data-target="tab-authors" onclick="switchSettingsTab(this, 'tab-authors')">
+            <i class="fa-solid fa-user-pen"></i>
+            <span>Autori</span>
+        </button>
+        <button class="settings-tab" data-target="tab-publishers" onclick="switchSettingsTab(this, 'tab-publishers')">
+            <i class="fa-solid fa-building-columns"></i>
+            <span>Editori</span>
+        </button>
+        <button class="settings-tab" data-target="tab-categories" onclick="switchSettingsTab(this, 'tab-categories')">
+            <i class="fa-solid fa-tags"></i>
+            <span>Categorie</span>
+        </button>
+    </div>
 
-        <!-- Sezione Titoli (Book Names) -->
-        <div class="settings-card card-titles radius-12 shadow-soft">
-            <div class="settings-header flex justify-between align-center">
-                <div class="flex align-center" >
-                    <div class="icon-wrapper">
-                        <i class="fa-solid fa-book-bookmark"></i>
-                    </div>
-                    <div>
-                        <h3 class="settings-card-title">Titoli manuali</h3>
-                        <p class="settings-card-subtitle" th:text="${bookNames.size() + ' titoli registrati'}"></p>
-                    </div>  
+    <!-- Tab Panels -->
+    <div class="settings-panels">
+
+        <!-- ─── TITOLI ─── -->
+        <div id="tab-titles" class="settings-panel active card-titles">
+            <div class="panel-toolbar">
+                <div class="panel-search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" class="panel-search-input" placeholder="Cerca titolo..."
+                           onkeyup="filterSettingsList(this, 'titles-list')">
                 </div>
-                <button class="btn-modern-action px-4 py-2 radius-8 pointer" onclick="openAddTitlePopup()">
-                    <i class="fa-solid fa-plus"></i> Nuovo
+                <button class="btn-panel-add" onclick="openAddTitlePopup()">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Nuovo titolo</span>
                 </button>
             </div>
-            <div class="settings-search-container">
-                <div class="settings-search-wrapper">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" class="settings-search-input" placeholder="Cerca titolo..."
-                        onkeyup="filterSettingsList(this, 'titles-list')">
-                </div>
-            </div>
             <div class="settings-list" id="titles-list">
-                <div th:each="bn : ${bookNames}" class="settings-item" th:data-search="${bn.title.toLowerCase()}">
+                <div th:each="bn : ${bookNames}" class="settings-item"
+                     th:data-search="${bn.title.toLowerCase()}">
                     <div class="settings-item-info">
                         <span class="settings-item-name" th:text="${bn.title}">Titolo</span>
                         <span class="settings-item-id" th:text="'ID: #' + ${bn.bookNameId}">ID</span>
                     </div>
                     <div class="settings-actions">
-                        <button class="btn-icon-settings" th:data-id="${bn.bookNameId}" th:data-title="${bn.title}"
-                            onclick="openEditBookNamePopup(this.getAttribute('data-id'), this.getAttribute('data-title'))"
-                            title="Modifica">
+                        <button class="btn-icon-settings"
+                                th:data-id="${bn.bookNameId}" th:data-title="${bn.title}"
+                                onclick="openEditBookNamePopup(this.getAttribute('data-id'), this.getAttribute('data-title'))"
+                                title="Modifica">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                     </div>
@@ -50,42 +97,34 @@
             </div>
         </div>
 
-        <!-- Sezione Autori -->
-        <div class="settings-card card-authors radius-12 shadow-soft">
-            <div class="settings-header flex justify-between align-center">
-                <div class="flex align-center">
-                    <div class="icon-wrapper">
-                        <i class="fa-solid fa-user-pen"></i>
-                    </div>
-                    <div>
-                        <h3 class="settings-card-title">Autori</h3>
-                        <p class="settings-card-subtitle" th:text="${authors.size() + ' autori registrati'}"></p>
-                    </div>
-                </div>
-                <button class="btn-modern-action px-4 py-2 radius-8 pointer" onclick="openAddAuthorPopup()">
-                    <i class="fa-solid fa-plus"></i> Nuovo
-                </button>
-            </div>
-            <div class="settings-search-container">
-                <div class="settings-search-wrapper">
+        <!-- ─── AUTORI ─── -->
+        <div id="tab-authors" class="settings-panel card-authors">
+            <div class="panel-toolbar">
+                <div class="panel-search-wrapper">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" class="settings-search-input" placeholder="Cerca autore..."
-                        onkeyup="filterSettingsList(this, 'authors-list')">
+                    <input type="text" class="panel-search-input" placeholder="Cerca autore..."
+                           onkeyup="filterSettingsList(this, 'authors-list')">
                 </div>
+                <button class="btn-panel-add" onclick="openAddAuthorPopup()">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Nuovo autore</span>
+                </button>
             </div>
             <div class="settings-list" id="authors-list">
                 <div th:each="author : ${authors}" class="settings-item"
-                    th:data-search="${(author.authorName + ' ' + author.authorLastName).toLowerCase()}">
+                     th:data-search="${(author.authorName + ' ' + author.authorLastName).toLowerCase()}">
                     <div class="settings-item-info">
                         <span class="settings-item-name"
-                            th:text="${author.authorName + ' ' + author.authorLastName}">Autore</span>
+                              th:text="${author.authorName + ' ' + author.authorLastName}">Autore</span>
                         <span class="settings-item-id" th:text="'ID: #' + ${author.authorId}">ID</span>
                     </div>
                     <div class="settings-actions">
-                        <button class="btn-icon-settings" th:data-id="${author.authorId}"
-                            th:data-name="${author.authorName}" th:data-lastname="${author.authorLastName}"
-                            onclick="openEditAuthorFullPopup(this.getAttribute('data-id'), this.getAttribute('data-name'), this.getAttribute('data-lastname'))"
-                            title="Modifica">
+                        <button class="btn-icon-settings"
+                                th:data-id="${author.authorId}"
+                                th:data-name="${author.authorName}"
+                                th:data-lastname="${author.authorLastName}"
+                                onclick="openEditAuthorFullPopup(this.getAttribute('data-id'), this.getAttribute('data-name'), this.getAttribute('data-lastname'))"
+                                title="Modifica">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                     </div>
@@ -97,41 +136,32 @@
             </div>
         </div>
 
-        <!-- Sezione Editori -->
-        <div class="settings-card card-publishers radius-12 shadow-soft">
-            <div class="settings-header flex justify-between align-center">
-                <div class="flex align-center">
-                    <div class="icon-wrapper">
-                        <i class="fa-solid fa-building-columns"></i>
-                    </div>
-                    <div>
-                        <h3 class="settings-card-title">Editori</h3>
-                        <p class="settings-card-subtitle" th:text="${publishers.size() + ' editori registrati'}"></p>
-                    </div>
-                </div>
-                <button class="btn-modern-action px-4 py-2 radius-8 pointer" onclick="openAddPublisherPopup()">
-                    <i class="fa-solid fa-plus"></i> Nuovo
-                </button>
-            </div>
-            <div class="settings-search-container">
-                <div class="settings-search-wrapper">
+        <!-- ─── EDITORI ─── -->
+        <div id="tab-publishers" class="settings-panel card-publishers">
+            <div class="panel-toolbar">
+                <div class="panel-search-wrapper">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" class="settings-search-input" placeholder="Cerca editore..."
-                        onkeyup="filterSettingsList(this, 'publishers-list')">
+                    <input type="text" class="panel-search-input" placeholder="Cerca editore..."
+                           onkeyup="filterSettingsList(this, 'publishers-list')">
                 </div>
+                <button class="btn-panel-add" onclick="openAddPublisherPopup()">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Nuovo editore</span>
+                </button>
             </div>
             <div class="settings-list" id="publishers-list">
                 <div th:each="pub : ${publishers}" class="settings-item"
-                    th:data-search="${pub.publisherName.toLowerCase()}">
+                     th:data-search="${pub.publisherName.toLowerCase()}">
                     <div class="settings-item-info">
                         <span class="settings-item-name" th:text="${pub.publisherName}">Editore</span>
                         <span class="settings-item-id" th:text="'ID: #' + ${pub.publisherId}">ID</span>
                     </div>
                     <div class="settings-actions">
-                        <button class="btn-icon-settings" th:data-id="${pub.publisherId}"
-                            th:data-name="${pub.publisherName}"
-                            onclick="openEditPublisherFullPopup(this.getAttribute('data-id'), this.getAttribute('data-name'))"
-                            title="Modifica">
+                        <button class="btn-icon-settings"
+                                th:data-id="${pub.publisherId}"
+                                th:data-name="${pub.publisherName}"
+                                onclick="openEditPublisherFullPopup(this.getAttribute('data-id'), this.getAttribute('data-name'))"
+                                title="Modifica">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                     </div>
@@ -143,51 +173,43 @@
             </div>
         </div>
 
-        <!-- Sezione Categorie -->
-        <div class="settings-card card-categories radius-12 shadow-soft">
-            <div class="settings-header flex justify-between align-center">
-                <div class="flex align-center">
-                    <div class="icon-wrapper">
-                        <i class="fa-solid fa-tags"></i>
-                    </div>
-                    <div>
-                        <h3 class="settings-card-title">Categorie</h3>
-                        <p class="settings-card-subtitle" th:text="${categories.size() + ' categorie registrate'}"></p>
-                    </div>
-                </div>
-                <button class="btn-modern-action px-4 py-2 radius-8 pointer" onclick="openAddCategoryPopup()">
-                    <i class="fa-solid fa-plus"></i> Nuova
-                </button>
-            </div>
-            <div class="settings-search-container">
-                <div class="settings-search-wrapper">
+        <!-- ─── CATEGORIE ─── -->
+        <div id="tab-categories" class="settings-panel card-categories">
+            <div class="panel-toolbar">
+                <div class="panel-search-wrapper">
                     <i class="fa-solid fa-magnifying-glass"></i>
-                    <input type="text" class="settings-search-input" placeholder="Cerca categoria..."
-                        onkeyup="filterSettingsList(this, 'categories-list')">
+                    <input type="text" class="panel-search-input" placeholder="Cerca categoria..."
+                           onkeyup="filterSettingsList(this, 'categories-list')">
                 </div>
+                <button class="btn-panel-add" onclick="openAddCategoryPopup()">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Nuova categoria</span>
+                </button>
             </div>
             <div class="settings-list" id="categories-list">
                 <div th:each="cat : ${categories}" class="settings-item"
-                    th:data-search="${cat.categoryName.toLowerCase()}">
+                     th:data-search="${cat.categoryName.toLowerCase()}">
                     <div class="settings-item-info">
                         <span class="settings-item-name" th:text="${cat.categoryName}">Categoria</span>
                         <span class="settings-item-id" th:text="'ID: #' + ${cat.categoryId}">ID</span>
                     </div>
                     <div class="settings-actions">
-                        <button class="btn-icon-settings" th:data-id="${cat.categoryId}"
-                            th:data-name="${cat.categoryName}"
-                            onclick="openEditCategoryFullPopup(this.getAttribute('data-id'), this.getAttribute('data-name'))"
-                            title="Modifica">
+                        <button class="btn-icon-settings"
+                                th:data-id="${cat.categoryId}"
+                                th:data-name="${cat.categoryName}"
+                                onclick="openEditCategoryFullPopup(this.getAttribute('data-id'), this.getAttribute('data-name'))"
+                                title="Modifica">
                             <i class="fa-solid fa-pen-to-square"></i>
                         </button>
                     </div>
                 </div>
                 <div th:if="${categories.isEmpty()}" class="settings-empty">
                     <i class="fa-solid fa-tags-slash"></i>
-                    <p>Nessun categoria registrata.</p>
+                    <p>Nessuna categoria registrata.</p>
                 </div>
             </div>
         </div>
 
     </div>
+
 </div>

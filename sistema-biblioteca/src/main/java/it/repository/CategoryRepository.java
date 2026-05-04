@@ -72,16 +72,17 @@ public class CategoryRepository implements CategoryRepositoryInterface{
      * Aggiorna il nome di una categoria nel database.
      * 
      * @param category La categoria da aggiornare
-     * @return Il numero di righe modificate (dovrebbe essere 1 se l'aggiornamento ha successo)
+     * 
+     * @throws Exception Se si verifica un'eccezione durante l'aggiornamento
      */
 
     @Override
-    public int updateCategory(Category category) {
+    public void updateCategory(Category category) {
         String sql = "UPDATE category SET category_name = :category_name WHERE category_id = :category_id";
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("category_name", category.getCategoryName())
                 .addValue("category_id", category.getCategoryId());
-        return namedParameterJdbcTemplate.update(sql, parameterSource);
+        namedParameterJdbcTemplate.update(sql, parameterSource);
     }
 
     /**

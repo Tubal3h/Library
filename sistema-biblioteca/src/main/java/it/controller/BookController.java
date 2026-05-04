@@ -174,8 +174,8 @@ public class BookController {
 	/**
      * Aggiorna il titolo di un libro.
      *
-     * @param bookNameId ID del libro
-     * @param title      Nuovo titolo del libro
+     * @param editionId ID dell'edizione
+     * @param bookNameId ID del titolo
      * @param redirectAttributes Attributi di redirect per passare messaggi alla vista
      * @return Redirect alla sezione delle edizioni con i parametri necessari
      */
@@ -346,6 +346,133 @@ public class BookController {
 			redirectAttributes.addFlashAttribute("popupType", "updateCategory");
 			redirectAttributes.addFlashAttribute("popupCategoryId", categoryNameId);
 			redirectAttributes.addFlashAttribute("popupCategoryName", categoryService.getCategoryById(categoryNameId).getCategoryName());
+		} catch (Exception ex) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
+		}
+		return "redirect:/dashboard";
+	}
+	
+	/**
+	 * Aggiorna il titolo.
+	 *
+	 * @param bookNameDto Titolo da aggiornare
+	 * @param redirectAttributes Attributi di redirect per passare messaggi alla vista
+	 * @return Redirect alla sezione delle edizioni con i parametri necessari
+	 */
+	@PostMapping("/api/updateBookName")
+	public String updateBookName(
+		@ModelAttribute BookNameDto bookNameDto,
+		RedirectAttributes redirectAttributes) {
+		AuthDto user = userSession.getUser();
+		if (user == null) {
+			return "redirect:/";
+		}
+		if(!user.getUserDto().getUserRole().equals("role_admin")) {
+			userSession.setSection("home");
+			return "redirect:/dashboard";
+		}
+
+		try {
+			bookService.updateBookTitle(bookNameDto);
+			redirectAttributes.addFlashAttribute("popupType", "updateTitle");
+			redirectAttributes.addFlashAttribute("popupBookTitle", bookNameDto.getTitle());
+		} catch (InsertBookServiceException ex) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
+		}
+
+		return "redirect:/dashboard";
+	}
+		
+	/**
+	 * Aggiorna il nome di un autore.
+	 *
+	 * @param authorDto Autore da aggiornare
+	 * @param redirectAttributes Attributi di redirect per passare messaggi alla vista
+	 * @return Redirect alla sezione delle edizioni con i parametri necessari
+	 */
+	@PostMapping("/api/updateAuthorFullName")
+	public String updateAuthorFullName(
+		@ModelAttribute AuthorDto authorDto,
+		RedirectAttributes redirectAttributes) {
+		AuthDto user = userSession.getUser();
+		if (user == null) {
+			return "redirect:/";
+		}
+		if(!user.getUserDto().getUserRole().equals("role_admin")) {
+			userSession.setSection("home");
+			return "redirect:/dashboard";
+		}
+
+		try {
+			authorService.updateAuthor(authorDto);
+			redirectAttributes.addFlashAttribute("popupType", "updateAuthor");
+			redirectAttributes.addFlashAttribute("popupAuthorName", authorDto.getAuthorName());
+			redirectAttributes.addFlashAttribute("popupAuthorLastName", authorDto.getAuthorLastName());
+		} catch (InsertBookServiceException ex) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
+		}
+
+		return "redirect:/dashboard";
+	}
+
+	/**
+	 * Aggiorna il nome di una casa editrice.
+	 *
+	 * @param publisherDto Casa editrice da aggiornare
+	 * @param redirectAttributes Attributi di redirect per passare messaggi alla vista
+	 * @return Redirect alla sezione delle edizioni con i parametri necessari
+	 */
+	@PostMapping("/api/updatePublisherName")
+	public String updatePublisherName(
+		@ModelAttribute PublisherDto publisherDto,
+		RedirectAttributes redirectAttributes) {
+		AuthDto user = userSession.getUser();
+		if (user == null) {
+			return "redirect:/";
+		}
+		if(!user.getUserDto().getUserRole().equals("role_admin")) {
+			userSession.setSection("home");
+			return "redirect:/dashboard";
+		}
+		
+		try {
+			publisherService.updatePublisher(publisherDto);
+			redirectAttributes.addFlashAttribute("popupType", "updatePublisher");
+			redirectAttributes.addFlashAttribute("popupPublisherName", publisherDto.getPublisherName());
+		} catch (Exception ex) {
+			redirectAttributes.addFlashAttribute("popupType", "error");
+			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
+		}
+		return "redirect:/dashboard";
+	}
+
+	/**
+	 * Aggiorna il nome di una categoria.
+	 *
+	 * @param categoryDto Categoria da aggiornare
+	 * @param redirectAttributes Attributi di redirect per passare messaggi alla vista
+	 * @return Redirect alla sezione delle edizioni con i parametri necessari
+	 */
+	@PostMapping("/api/updateCategoryName")
+	public String updateCategoryName(
+		@ModelAttribute CategoryDto categoryDto,
+		RedirectAttributes redirectAttributes) {
+		AuthDto user = userSession.getUser();
+		if (user == null) {
+			return "redirect:/";
+		}
+		if(!user.getUserDto().getUserRole().equals("role_admin")) {
+			userSession.setSection("home");
+			return "redirect:/dashboard";
+		}
+		
+		try {
+			categoryService.updateCategory(categoryDto);
+			redirectAttributes.addFlashAttribute("popupType", "updateCategory");
+			redirectAttributes.addFlashAttribute("popupCategoryName", categoryDto.getCategoryName());
 		} catch (Exception ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());

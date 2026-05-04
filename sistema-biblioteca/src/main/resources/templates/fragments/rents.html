@@ -131,6 +131,14 @@
                     class="w-100 btn-modern-action pointer transition shadow-soft">
                     <span>Riconsegnato</span>
                 </button>
+                <button type="button"
+                    th:if="${rent.bookDto != null && rent.bookDto.status == 'prenotato' && user.userDto.userRole == 'role_user'}"
+                    th:data-title="${rent.bookDto.editionDto.bookNameDto.title}"
+                    th:data-url="@{/api/removeReservation(bookID=${rent.bookDto.bookId}, rentID=${rent.rentalId}, bookTitle=${rent.bookDto.editionDto.bookNameDto.title})}"
+                    onclick="triggerConfirmRemoveReservation(this)"
+                    class="w-100 btn-modern-action pointer transition shadow-soft">
+                    <span>Annulla prenotazione</span>
+                </button>
             </div>
         </div>
     </div>

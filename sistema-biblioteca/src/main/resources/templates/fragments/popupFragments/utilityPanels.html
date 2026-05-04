@@ -4,6 +4,21 @@
         <h3 id="confirmTitle" class="text-2xl fw-700 text-brand mb-2">Attenzione</h3>
         <p id="confirmMessage" class="opacity-70 text-xl  px-6">Confermi l'operazione?</p>
         <div id="confirmDetails" class="mt-4 p-4 radius-12 bg-darkgrey text-xl opacity-80" style="display: none;"></div>
+
+        <!-- Blocco Da → A (solo per modifiche con valore vecchio/nuovo) -->
+        <div id="confirmChangeBlock" class="mt-5 flex flex-column gap-3 align-center" style="display: none !important;">
+            <div class="confirm-change-row">
+                <span class="confirm-change-label opacity-50 text-xs uppercase fw-700">Valore attuale</span>
+                <span id="confirmOldValue" class="confirm-change-value text-nm fw-600 opacity-80"></span>
+            </div>
+            <div class="confirm-change-arrow">
+                <i class="fa-solid fa-arrow-down text-brand opacity-60"></i>
+            </div>
+            <div class="confirm-change-row">
+                <span class="confirm-change-label opacity-50 text-xs uppercase fw-700">Nuovo valore</span>
+                <span id="confirmNewValue" class="confirm-change-value text-nm fw-700 text-brand"></span>
+            </div>
+        </div>
     </div>
 
     <!-- Error -->

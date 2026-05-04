@@ -2,11 +2,11 @@
     <!-- Update Title -->
     <div id="updateTitleContent" class="none animate-fade-in-up">
         <p class="mb-6 opacity-70 text-xl ">Stai modificando il titolo del manuale selezionato.</p>
-        <form id="updateTitleForm" th:action="@{/api/updateBookNameName}" method="post">
+        <form id="updateTitleForm" th:action="@{/api/updateBookName}" method="post">
             <input type="hidden" name="bookNameId" id="updateTitleId">
             <div class="input-group">
                 <label class="text-xs uppercase fw-700 opacity-60 mb-2 block ">Nuovo Titolo</label>
-                <input type="text" name="newTitle" id="updateTitleInput" class="w-100 p-4 radius-12 border-none font-size-small" required>
+                <input type="text" name="title" id="updateTitleInput" class="w-100 p-4 radius-12 border-none font-size-small" required>
             </div>
         </form>
     </div>
@@ -14,16 +14,16 @@
     <!-- Update Author -->
     <div id="updateAuthorContent" class="none animate-fade-in-up">
         <p class="mb-6 opacity-70 text-xl ">Stai modificando i dati dell'autore selezionato.</p>
-        <form id="updateAuthorForm" th:action="@{/api/updateAuthorName}" method="post">
+        <form id="updateAuthorForm" th:action="@{/api/updateAuthorFullName}" method="post">
             <input type="hidden" name="authorId" id="updateAuthorId">
             <div class="flex flex-column gap-5">
                 <div class="input-group">
                     <label class="text-xs uppercase fw-700 opacity-60 mb-2 block ">Nuovo Nome</label>
-                    <input type="text" name="newName" id="updateAuthorNameInput" class="w-100 p-4 radius-12 border-none font-size-small" required>
+                    <input type="text" name="authorName" id="updateAuthorNameInput" class="w-100 p-4 radius-12 border-none font-size-small" required>
                 </div>
                 <div class="input-group">
                     <label class="text-xs uppercase fw-700 opacity-60 mb-2 block ">Nuovo Cognome</label>
-                    <input type="text" name="newLastName" id="updateAuthorLastNameInput" class="w-100 p-4 radius-12 border-none font-size-small" required>
+                    <input type="text" name="authorLastName" id="updateAuthorLastNameInput" class="w-100 p-4 radius-12 border-none font-size-small" required>
                 </div>
             </div>
         </form>
@@ -36,7 +36,7 @@
             <input type="hidden" name="publisherId" id="updatePublisherId">
             <div class="input-group">
                 <label class="text-xs uppercase fw-700 opacity-60 mb-2 block ">Nuovo Nome Editore</label>
-                <input type="text" name="newName" id="updatePublisherInput" class="w-100 p-4 radius-12 border-none font-size-small" required>
+                <input type="text" name="publisherName" id="updatePublisherInput" class="w-100 p-4 radius-12 border-none font-size-small" required>
             </div>
         </form>
     </div>
@@ -48,7 +48,7 @@
             <input type="hidden" name="categoryId" id="updateCategoryId">
             <div class="input-group">
                 <label class="text-xs uppercase fw-700 opacity-60 mb-2 block ">Nuovo Nome Categoria</label>
-                <input type="text" name="newName" id="updateCategoryInput" class="w-100 p-4 radius-12 border-none font-size-small" required>
+                <input type="text" name="categoryName" id="updateCategoryInput" class="w-100 p-4 radius-12 border-none font-size-small" required>
             </div>
         </form>
     </div>

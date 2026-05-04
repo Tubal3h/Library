@@ -308,12 +308,11 @@ public class BookService {
     /**
      * Aggiorna il titolo di un libro esistente.
      *
-     * @param bookNameId ID del record del titolo da aggiornare
-     * @param editionTitle Nuovo titolo da assegnare
+     * @param bookNameDto DTO del titolo da aggiornare
      */
     @Transactional
-    public void updateBookTitle(int bookNameId, String editionTitle) { 
-        bookNameRepository.updateBookTitle(bookNameId, editionTitle);
+    public void updateBookTitle(BookNameDto bookNameDto) { 
+        bookNameRepository.updateBookTitle(bookNameDto);
     }
 
     /**

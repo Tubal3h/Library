@@ -81,12 +81,11 @@ public class CategoryService {
      * Aggiorna una categoria nel database.
      * 
      * @param categoryDto Il DTO con i dati della categoria da aggiornare
-     * @return Il numero di righe interessate
      */
     @Transactional
-    public int updateCategory(CategoryDto categoryDto) {
+    public void updateCategory(CategoryDto categoryDto) {
         Category category = toCategory(categoryDto);
-        return categoryRepository.updateCategory(category);
+        categoryRepository.updateCategory(category);
     }
 
     /**

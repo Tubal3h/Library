@@ -52,6 +52,9 @@ function initSuccessPopup(type, data) {
             }
         },
         deliveredRent: { id: 'deliveredRentContent', idField: 'deliveredBookTitle', dataField: 'title' },
+        delivered: { id: 'deliveredRentContent', idField: 'deliveredBookTitle', dataField: 'title' },
+        returned: { id: 'returnedRentContent', idField: 'returnedBookTitle', dataField: 'title' },
+        removeReservation: { id: 'removeReservationContent', idField: 'removeReservationBookTitle', dataField: 'title' },
         booked: { id: 'bookedRentContent', idField: 'bookedBookTitle', dataField: 'title' },
         error: { id: 'errorContent', fn: () => document.getElementById('errorMessage').innerText = data.errorMessage || "Errore sconosciuto." }
     };
@@ -65,7 +68,7 @@ function initSuccessPopup(type, data) {
     }
 }
 
-function openConfirmPopup(action, titleTxt, message, confirmUrl, method = 'GET') {
+function openConfirmPopup(action, titleTxt, message, confirmUrl, method = 'GET', oldValue = null, newValue = null) {
     const isDelete = action === 'delete';
 
     Popup.open({
@@ -102,6 +105,19 @@ function openConfirmPopup(action, titleTxt, message, confirmUrl, method = 'GET')
         details.innerText = titleTxt;
         details.style.display = titleTxt ? 'block' : 'none';
     }
+
+    // Blocco Da → A (valore precedente / nuovo)
+    const changeBlock = document.getElementById('confirmChangeBlock');
+    if (changeBlock) {
+        if (oldValue !== null && newValue !== null) {
+            document.getElementById('confirmOldValue').innerText = oldValue;
+            document.getElementById('confirmNewValue').innerText = newValue;
+            changeBlock.style.removeProperty('display');
+            changeBlock.style.display = 'flex';
+        } else {
+            changeBlock.style.display = 'none';
+        }
+    }
 }
 
 // Trigger veloci
@@ -111,6 +127,7 @@ function triggerConfirmAdd(el) { openConfirmPopup('add', el.dataset.title, 'Si a
 function triggerConfirmDelivered(el) { openConfirmPopup('delivered', el.dataset.title, 'Il manuale verrà dato in carico al richiedente.', el.dataset.url); }
 function triggerConfirmReturned(el) { openConfirmPopup('returned', el.dataset.title, 'Il manuale tornerà disponibile.', el.dataset.url); }
 function triggerConfirmRent(el) { openConfirmPopup('rent', el.dataset.title, 'Vuoi prendere in prestito questo manuale?', el.dataset.url); }
+function triggerConfirmRemoveReservation(el) { openConfirmPopup('delete', el.dataset.title, 'Vuoi annullare la prenotazione per questo libro?', el.dataset.url); }
 
 // Esponi globalmente
 window.initSuccessPopup = initSuccessPopup;
@@ -121,5 +138,6 @@ window.triggerConfirmAdd = triggerConfirmAdd;
 window.triggerConfirmDelivered = triggerConfirmDelivered;
 window.triggerConfirmReturned = triggerConfirmReturned;
 window.triggerConfirmRent = triggerConfirmRent;
+window.triggerConfirmRemoveReservation = triggerConfirmRemoveReservation;
 
 console.log("successHandlers.js loaded");

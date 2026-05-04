@@ -116,7 +116,9 @@ function openEditFieldPopup(fieldType, id, currentValue, useSelect = false) {
         cfg.confirmTitle,
         cfg.messageFn(currentValue, textValue),
         cfg.confirmUrlFn(id, selectedId),
-        'POST'
+        'POST',
+        currentValue,
+        textValue
       );
     }
   });
