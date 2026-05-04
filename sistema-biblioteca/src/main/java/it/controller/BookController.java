@@ -158,10 +158,11 @@ public class BookController {
 			return "redirect:/";
 		}
 		try {
-			bookService.insertBook(insertBookDto);
+			int bookId = bookService.insertBook(insertBookDto);
 			redirectAttributes.addFlashAttribute("popupType", "addEdition");
 			redirectAttributes.addFlashAttribute("popupBookTitle", insertBookDto.getTitle());
 			redirectAttributes.addFlashAttribute("popupBookIsbn", insertBookDto.getIsbn());
+			redirectAttributes.addFlashAttribute("popupBookId", bookId);
 		} catch (InsertBookServiceException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());

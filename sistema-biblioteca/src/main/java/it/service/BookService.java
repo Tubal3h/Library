@@ -236,7 +236,7 @@ public class BookService {
      */
 	
 	@Transactional
-	public void insertBook(InsertBookDto insertBookDto) throws InsertBookServiceException {
+	public int insertBook(InsertBookDto insertBookDto) throws InsertBookServiceException {
 		String authorFullName = insertBookDto.getAuthorName().concat(" ").concat(insertBookDto.getAuthorLastName());
 		System.out.println("author full name: " + authorFullName);
 		System.out.println("title: " + insertBookDto.getTitle());
@@ -282,8 +282,8 @@ public class BookService {
 		    );
 		    List<Edition> myList = editionRepository.getAllEditions();
 		    myList.forEach(e -> {System.out.println(e.getEditionId() + " " + e.getBookName().getTitle() + " " + e.getBookName().getBookNameId());});
-		    bookRepository.insertBookByTitleAndIsbn(insertBookDto.getTitle().trim(), insertBookDto.getIsbn().trim());
-
+		    int bookId = bookRepository.insertBookByTitleAndIsbn(insertBookDto.getTitle().trim(), insertBookDto.getIsbn().trim());
+		    return bookId;
 		} catch(RuntimeException ex) {
 		    System.out.println(ex.toString());
 		    throw new InsertBookServiceException(ex.getMessage());

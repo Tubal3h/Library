@@ -17,6 +17,6 @@ public interface BookRepositoryInterface {
 	public List<Book> getAllBooks();
 	public int insertBookByIsbn(String isbn);
 	public int deleteBookById(int id);
-	public void insertBookByTitleAndIsbn(String title, String isbn) throws InsertBookNameException;
+	public int insertBookByTitleAndIsbn(String title, String isbn) throws InsertBookNameException;
 	public List<RentalRecord> getBooksByEditionId(int editionId, boolean includeDeleted);
 }

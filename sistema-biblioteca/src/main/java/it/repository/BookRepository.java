@@ -207,7 +207,7 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Numero di record inseriti
      */
     @Override
-    public void insertBookByTitleAndIsbn(String title, String isbn) throws InsertBookException {
+    public int insertBookByTitleAndIsbn(String title, String isbn) throws InsertBookException {
       
     	System.out.println("titoloBookRepo: " + title);
     	
@@ -218,7 +218,10 @@ public class BookRepository implements BookRepositoryInterface {
         SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("title", title)
         															 .addValue("isbn", isbn);
         try {
-            namedParameterJdbcTemplate.update(insertBook, sqlParameter);
+            KeyHolder keyHolder = new GeneratedKeyHolder();
+        	namedParameterJdbcTemplate.update(insertBook, sqlParameter, keyHolder, new String[]{"book_id"});
+            return keyHolder.getKey().intValue();
+        	
         } catch (DataAccessException ex) {
         	System.out.println(ex.toString());
             throw new InsertBookException("errore nell'inserimento della copia");
