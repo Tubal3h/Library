@@ -129,10 +129,15 @@ function openPopup(action, bookId, titleTxt, authorTxt, categoryTxt, publisherTx
 
 // Supporto Autocomplete Generico
 const Autocomplete = {
+    instances: [],
+    _initialized: false,
     init(inputId, dropdownId, dataSourceId, onSelect) {
         const input = document.getElementById(inputId);
         const dropdown = document.getElementById(dropdownId);
         if (!input || !dropdown) return;
+
+        // Add to instances to manage globally
+        this.instances.push({ input, dropdown });
 
         input.oninput = (e) => {
             const q = e.target.value.trim().toLowerCase();
@@ -153,11 +158,20 @@ const Autocomplete = {
             dropdown.style.display = 'block';
         };
 
-        document.addEventListener('click', (e) => {
-            if (!input.contains(e.target) && !dropdown.contains(e.target)) this.hide(dropdown);
-        });
+        // Setup global mousedown listener once to handle "click outside" for all autocompletes
+        if (!this._initialized) {
+            document.addEventListener('mousedown', (e) => {
+                this.instances.forEach(({ input, dropdown }) => {
+                    if (!input.contains(e.target) && !dropdown.contains(e.target)) {
+                        this.hide(dropdown);
+                    }
+                });
+            });
+            this._initialized = true;
+        }
     },
     hide(el) { 
+        if (!el) return;
         el.classList.add('none');
         el.style.display = 'none'; 
         el.innerHTML = ''; 
