@@ -94,16 +94,16 @@
                         <td class="p-4">
                             <div class="status-pill" th:classappend="${#strings.replace(book.bookDto.status, ' ', '-')}">
                                 <i th:if="${book.bookDto.status == 'disponibilita' && book.rentalExpired == null}" class="fa-solid fa-circle-check"></i>
-                                <span th:if="${book.bookDto.status == 'disponibilita' && book.rentalExpired == null}" th:text="${book.bookDto.status}">STATO</span>
+                                <span th:if="${book.bookDto.status == 'disponibilita' && book.rentalExpired == null}" th:text="${'Disponibile'}">STATO</span>
 
                                 <i th:if="${book.bookDto.status == 'prenotato' && book.bookingDate != null}" class="fa-solid fa-clock"></i>
-                                <span th:if="${book.bookDto.status == 'prenotato' && book.bookingDate != null}" th:text="${book.bookDto.status}">STATO</span>
+                                <span th:if="${book.bookDto.status == 'prenotato' && book.bookingDate != null}" th:text="${'Prenotato'}">STATO</span>
 
                                 <i th:if="${book.bookDto.status == 'in prestito' && book.rentalExpired >= T(java.time.LocalDate).now()}" class="fa-solid fa-book-open-reader"></i>
-                                <span th:if="${book.bookDto.status == 'in prestito' && book.rentalExpired >= T(java.time.LocalDate).now()}" th:text="${book.bookDto.status}">STATO</span>
+                                <span th:if="${book.bookDto.status == 'in prestito' && book.rentalExpired >= T(java.time.LocalDate).now()}" th:text="${'In Prestito'}">STATO</span>
 
                                 <i th:if="${book.bookDto.status == 'eliminato'}" class="fa-solid fa-trash-can"></i>
-                                <span th:if="${book.bookDto.status == 'eliminato'}" th:text="${book.bookDto.status}">STATO</span>
+                                <span th:if="${book.bookDto.status == 'eliminato'}" th:text="${'Eliminato'}">STATO</span>
 
                                 <i class="fa-solid fa-triangle-exclamation" th:if="${book.bookDto.status == 'in prestito' && book.rentalExpired < T(java.time.LocalDate).now()}"></i>
                                 <span th:if="${book.bookDto.status == 'in prestito' && book.rentalExpired < T(java.time.LocalDate).now()}" th:text="${'Scaduto'}"></span>
