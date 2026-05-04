@@ -18,7 +18,8 @@ function initSuccessPopup(type, data) {
             id: 'addEditionSuccessContent', fn: () => {
                 document.getElementById('addEditionSuccessBookTitle').innerText = data.title || "";
                 document.getElementById('addEditionSuccessBookIsbn').innerText = data.isbn || "";
-            }
+				document.getElementById('addEditionSuccessBookId').innerText = data.id || "";
+			}
         },
         addCopy: {
             id: 'addCopyContent', fn: () => {
