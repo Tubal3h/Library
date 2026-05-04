@@ -352,6 +352,12 @@ public class BookController {
 		}
 		return "redirect:/dashboard";
 	}
+	/** 
+	 * Sezione per l'aggiornamento di titolo, autore, casa editrice e categoria.
+	 * Ogni metodo gestisce l'aggiornamento di un attributo specifico (titolo, autore, casa editrice, categoria) di un'edizione di un libro.
+	 * I metodi verificano che l'utente sia autenticato e abbia il ruolo di amministratore prima di procedere con l'aggiornamento.
+	 * In caso di successo, viene impostato un messaggio di successo da visualizzare nella vista; in caso di errore, viene impostato un messaggio di errore da visualizzare nella vista.
+	*/
 	
 	/**
 	 * Aggiorna il titolo.
@@ -479,6 +485,14 @@ public class BookController {
 		}
 		return "redirect:/dashboard";
 	}
+
+	/**
+	 * Sezione per l'aggiunta di nuovi titoli, autori, case editrici e categorie.
+	 * Ogni metodo gestisce l'aggiunta di un nuovo elemento specifico (titolo, autore, casa editrice, categoria) al sistema.
+	 * I metodi verificano che l'utente sia autenticato e abbia il ruolo di amministratore prima di procedere con l'aggiunta.
+	 * In caso di successo, viene impostato un messaggio di successo da visualizzare nella vista; in caso di errore, viene impostato un messaggio di errore da visualizzare nella vista.
+	*/
+
 
 	/**
 	 * Aggiunge un nuovo titolo di libro.
