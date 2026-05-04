@@ -84,7 +84,7 @@ body {
     max-width: 440px;
     max-height: 90vh;
     padding: clamp(24px, 5vh, 48px) clamp(20px, 5vw, 40px);
-    border-radius: 24px;
+    border-radius: 12px;
     position: relative;
     box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
     z-index: 1;
@@ -263,4 +263,4 @@ body {
     [data-theme="dark"] #login-card {
         background: rgba(28, 28, 28, 0.85);
     }
-}
+}

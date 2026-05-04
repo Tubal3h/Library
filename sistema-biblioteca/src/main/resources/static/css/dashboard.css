@@ -422,7 +422,7 @@
     user-select: none;
     background: rgba(var(--color-brand-rgb), 0.05);
     padding: 8px 16px;
-    border-radius: 999px;
+    border-radius: 24px;
     border: 1px solid rgba(var(--color-text-rgb), 0.1);
     transition: all 0.3s ease;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
@@ -446,7 +446,7 @@
     width: 48px;
     height: 24px;
     background: rgba(var(--color-text-rgb), 0.1);
-    border-radius: 20px;
+    border-radius: 12px;
     border: 1px solid rgba(var(--color-text-rgb), 0.1);
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
