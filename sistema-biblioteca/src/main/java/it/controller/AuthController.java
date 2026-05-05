@@ -61,6 +61,7 @@ public class AuthController {
     			authDto = authService.authenticate(loginDto);
     			
     		}else {
+    			
     			return "redirect:/?error=invalid_credentials";
     		}
     	}else {

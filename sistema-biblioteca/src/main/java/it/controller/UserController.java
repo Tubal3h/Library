@@ -1,7 +1,9 @@
 package it.controller;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -9,8 +11,10 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import it.configuration.UserSession;
 import it.dto.UserDto;
 import it.dto.request.AuthDto;
+import it.dto.request.ChangePasswordDto;
 import it.exception.NoDeleteUserServiceException;
 import it.service.UserService;
+import jakarta.validation.Valid;
 
 /**
  * Controller per la gestione dei profili utente lato amministratore.
@@ -102,18 +106,23 @@ public class UserController {
 
     @PostMapping("/api/changePassword")
     public String changePassword(
-            @RequestParam("oldPassword") String oldPassword,
-            @RequestParam("newPassword") String newPassword,
-            @RequestParam("confirmPassword") String confirmPassword,
-            RedirectAttributes redirectAttributes) {
+    		@Valid @ModelAttribute ChangePasswordDto changePasswordDto,
+            BindingResult bindingResult,
+    		RedirectAttributes redirectAttributes) {
         
         AuthDto currentUser = userSession.getAuth();
         if (currentUser == null ) {
             return "redirect:/";
         }
-
+        
+        if(bindingResult.hasErrors()) {
+        	String message = bindingResult.getAllErrors().getFirst().getDefaultMessage();
+        	redirectAttributes.addFlashAttribute("popupErrorMessage", message);
+        	return "redirect:/dashboard";
+        }
+        
         try {
-            userService.updatePassword(currentUser, oldPassword, newPassword, confirmPassword);
+            userService.updatePassword(currentUser, changePasswordDto);
             redirectAttributes.addFlashAttribute("popupType", "changePassword");
         } catch (IllegalArgumentException ex) {
             redirectAttributes.addFlashAttribute("popupType", "error");
