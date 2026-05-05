@@ -3,7 +3,7 @@
     BOOK RECORDS FRAGMENT (BOOKRECORDS.HTML)
     -------------------------------------------------------------------------
 -->
-<div class="dashboard-grid" th:fragment="bookRecords">
+<div class="dashboard-grid flex-column w-100" th:fragment="bookRecords">
     <!-- Header della Sezione -->
     <header class="dashboard-header flex justify-between align-center mb-8 animate-fade-in-up">
         <div class="flex align-center gap-5">
@@ -27,7 +27,7 @@
         </div>
     </header>
 
-    <div class="records-view-container">
+    <div class="records-view-container w-100">
         <!-- Tabella Desktop -->
         <div class="premium-table-wrapper glass radius-12 shadow-xl overflow-hidden animate-fade-in-up delay-2">
             <div class="records-table">
@@ -119,8 +119,8 @@
                     </div>
 
                     <!-- Empty State Integrato nella tabella -->
-                    <div th:if="${#lists.isEmpty(bookRecords)}" class="table-empty-state">
-                        <div class="empty-content p-16 text-center">
+                    <div th:if="${#lists.isEmpty(bookRecords)}" class="table-empty-state flex center w-100">
+                        <div class="empty-content p-12 text-center">
                             <div class="empty-illustration mb-6">
                                 <i class="fa-solid fa-receipt text-6xl opacity-10"></i>
                             </div>
