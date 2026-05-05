@@ -11,6 +11,7 @@ const DOM = {
     iconBox: () => document.getElementById('popupIcon')?.parentElement,
     confirmBtn: () => document.getElementById('popupConfirmBtn'),
     cancelBtn: () => document.querySelector('.btn-link-action'),
+    closeBtn: () => document.querySelector('.btn-icon-close'),
     footer: () => document.querySelector('.popup-footer'),
     body: () => document.getElementById('popupBody')
 };
@@ -24,12 +25,12 @@ const PANELS = [
     'updateAuthorSuccessContent', 'updatePublisherSuccessContent', 'updateCategorySuccessContent',
     'addUserSuccessContent', 'returnedRentContent', 'deliveredRentContent', 'bookedRentContent',
     'deleteBookContent', 'deleteUserContent', 'confirmContent', 'errorContent',
-    'addUserContent', 'viewBooksEditionContent'
+    'addUserContent', 'viewBooksEditionContent', 'changePasswordSuccessContent'
 ];
 
 const Popup = {
     open(config) {
-        const { title, icon, iconClass, panelId, confirmText, onConfirm, showCancel = true, footerVisible = true, size = 'medium' } = config;
+        const { title, icon, iconClass, panelId, confirmText, onConfirm, showCancel = true, footerVisible = true, size = 'medium', hideClose = false } = config;
 
         this.hideAllPanels();
         
@@ -50,6 +51,7 @@ const Popup = {
 
         if (DOM.footer()) DOM.footer().classList.toggle('none', !footerVisible);
         if (DOM.cancelBtn()) DOM.cancelBtn().classList.toggle('none', !showCancel);
+        if (DOM.closeBtn()) DOM.closeBtn().classList.toggle('none', hideClose);
         
         if (DOM.confirmBtn()) {
             DOM.confirmBtn().innerText = confirmText || 'Conferma';

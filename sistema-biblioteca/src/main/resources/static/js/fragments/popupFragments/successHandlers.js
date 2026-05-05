@@ -56,12 +56,32 @@ function initSuccessPopup(type, data) {
         returned: { id: 'returnedRentContent', idField: 'returnedBookTitle', dataField: 'title' },
         removeReservation: { id: 'removeReservationContent', idField: 'removeReservationBookTitle', dataField: 'title' },
         booked: { id: 'bookedRentContent', idField: 'bookedBookTitle', dataField: 'title' },
+        changePassword: { 
+            id: 'changePasswordSuccessContent',
+            config: {
+                confirmText: 'Logout',
+                hideClose: true,
+                onConfirm: () => {
+                    const form = document.createElement('form');
+                    form.method = 'POST';
+                    form.action = '/api/logout';
+                    document.body.appendChild(form);
+                    form.submit();
+                }
+            }
+        },
         error: { id: 'errorContent', fn: () => document.getElementById('errorMessage').innerText = data.errorMessage || "Errore sconosciuto." }
     };
 
     const item = map[type];
     if (item) {
         config.panelId = item.id;
+        
+        // Merge extra config from item
+        if (item.config) {
+            Object.assign(config, item.config);
+        }
+
         Popup.open(config);
         if (item.fn) item.fn();
         else if (item.idField) document.getElementById(item.idField).innerText = data[item.dataField] || "";

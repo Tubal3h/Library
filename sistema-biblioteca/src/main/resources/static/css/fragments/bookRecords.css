@@ -251,7 +251,8 @@
     color: var(--record-success);
 }
 
-.status-indicator.overdue {
+.status-indicator.overdue,
+.status-indicator.expired {
     background: rgba(237, 43, 40, 0.1);
     color: var(--color-error);
     border: 1px solid rgba(239, 83, 80, 0.2);
@@ -261,6 +262,15 @@
     width: 8px;
     height: 8px;
     background: var(--record-warning);
+    border-radius: 50%;
+    position: relative;
+    animation: pulse 2s infinite;
+}
+
+.pulse-dot-booked {
+    width: 8px;
+    height: 8px;
+    background: rgba(79, 31, 237, 0.1);
     border-radius: 50%;
     position: relative;
     animation: pulse 2s infinite;

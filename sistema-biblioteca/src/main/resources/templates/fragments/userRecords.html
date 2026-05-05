@@ -3,7 +3,7 @@
     USER RECORDS FRAGMENT (USERRECORDS.HTML)
     -------------------------------------------------------------------------
 -->
-<div class="dashboard-grid" th:fragment="userRecords">
+<div class="dashboard-grid flex-column w-100" th:fragment="userRecords">
     <!-- Header della Sezione -->
     <header class="dashboard-header flex justify-between align-center gap-5 mb-8 animate-fade-in-up">
         <div class="flex align-center gap-5">
@@ -25,7 +25,7 @@
         </div>
     </header>
 
-    <div class="records-view-container">
+    <div class="records-view-container w-100">
         <!-- Tabella Desktop -->
         <div class="premium-table-wrapper glass radius-12 shadow-xl overflow-hidden animate-fade-in-up delay-2">
             <div class="records-table">
@@ -49,8 +49,10 @@
                         </div>
 
                         <!-- Titolo Libro -->
-                        <div class=" col-book center">
-                            <span class="fw-700" th:text="${record.bookDto.editionDto.bookNameDto.title}">Il Signore degli Anelli</span>
+                        <div  class=" col-book center">
+                            <a th:href="@{/dashboard(section='edition',editionId=${record.bookDto.editionDto.editionId}, action='viewCopies', includeDeleted=true)}">
+                                <span class="fw-700" th:text="${record.bookDto.editionDto.bookNameDto.title}">Il Signore degli Anelli</span>
+                            </a>
                         </div>
 
                         <!-- ID Noleggio -->
@@ -75,33 +77,37 @@
 
                         <!-- Stato -->
                         <div class=" col-status center">
-                            <!-- Stato Prenotato -->
-                            <div th:if="${record.rentalDate == null && record.rentalEnded == null}" class="status-indicator active">
+                            <!-- Stato Prenotato (Richiesta effettuata ma non ancora consegnato) -->
+                            <div th:if="${record.rentalDate == null && record.rentalEnded == null}" class="status-indicator pending">
                                 <i class="fa-solid fa-clock"></i>
                                 <span class="status-text">Prenotato</span>
                             </div>
-                            <!-- Stato In Corso -->
-                            <div th:if="${record.rentalDate != null && record.rentalEnded == null}" class="status-indicator pending">
+                            <!-- Stato In Corso (In prestito) -->
+                            <div th:if="${record.rentalDate != null && record.rentalEnded == null && (record.rentalExpired == null || record.rentalExpired >= T(java.time.LocalDate).now())}" class="status-indicator active">
                                 <span class="pulse-dot"></span>
                                 <span class="status-text">In Corso</span>
                             </div>
-                            <!-- Stato Concluso -->
+                            <!-- Stato Scaduto (In prestito ma non restituito entro la data di scadenza) -->
+                            <div th:if="${record.rentalDate != null && record.rentalEnded == null && record.rentalExpired != null && record.rentalExpired < T(java.time.LocalDate).now()}" class="status-indicator expired">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                                <span class="status-text">Scaduto</span>
+                            </div>
+                            <!-- Stato Concluso (Restituito) -->
                             <div th:if="${record.rentalEnded != null}" class="status-indicator completed">
                                 <i class="fa-solid fa-circle-check"></i>
                                 <span class="status-text">Concluso</span>
                             </div>
                         </div>
                     </div>
-                </div>
-
-                <!-- Empty State Integrato nella tabella -->
-                <div th:if="${#lists.isEmpty(bookRecords)}" class="table-empty-state">
-                    <div class="empty-content p-16 text-center">
-                        <div class="empty-illustration mb-6">
-                            <i class="fa-solid fa-receipt text-6xl opacity-10"></i>
+                    <!-- Empty State Integrato nella tabella -->
+                    <div th:if="${#lists.isEmpty(bookRecords)}" class="table-empty-state flex center w-100">
+                        <div class="empty-content p-12 text-center">
+                            <div class="empty-illustration mb-6">
+                                <i class="fa-solid fa-receipt text-6xl opacity-10"></i>
+                            </div>
+                            <h3 class="text-xl fw-700 opacity-60 mb-2">Nessun prestito registrato</h3>
+                            <p class="text-nm opacity-40">L'utente non ha ancora richiesto manuali.</p>
                         </div>
-                        <h3 class="text-xl fw-700 opacity-60 mb-2">Nessun prestito registrato</h3>
-                        <p class="text-nm opacity-40">L'utente non ha ancora richiesto manuali.</p>
                     </div>
                 </div>
             </div>
