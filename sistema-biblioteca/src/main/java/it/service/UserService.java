@@ -11,6 +11,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import it.dto.ChangePasswordDto;
 import it.dto.UserDto;
 import it.dto.request.AuthDto;
 import it.entity.RentalRecord;
@@ -214,8 +215,8 @@ public class UserService {
      * @param confirmPassword Conferma della nuova password
      */
     @Transactional
-    public void updatePassword(AuthDto authDto, String oldPassword, String newPassword, String confirmPassword) {
-        if (newPassword == null || confirmPassword == null || !newPassword.equals(confirmPassword)) {
+    public void updatePassword(AuthDto authDto, ChangePasswordDto changePasswordDto) {
+        if (changePasswordDto.getNewPassword() == null || changePasswordDto.getConfirmPassword() == null || !changePasswordDto.getNewPassword().equals(changePasswordDto.getConfirmPassword())) {
             throw new IllegalArgumentException("La nuova password e la conferma non coincidono.");
         }
 
@@ -224,10 +225,10 @@ public class UserService {
             throw new IllegalArgumentException("Utente non trovato.");
         }
 
-        if (!user.getPassword().equals(oldPassword)) {
+        if (!user.getPassword().equals(changePasswordDto.getOldPassword())) {
             throw new IllegalArgumentException("La password attuale non è corretta.");
         }
 
-        userRepository.updatePassword(authDto.getEmail(), newPassword);
+        userRepository.updatePassword(authDto.getEmail(), changePasswordDto.getNewPassword());
     }
 }

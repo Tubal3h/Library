@@ -281,8 +281,10 @@ public class BookService {
 		        insertBookDto.getIsbn().trim()
 		    );
 		    List<Edition> myList = editionRepository.getAllEditions();
+		    
 		    myList.forEach(e -> {System.out.println(e.getEditionId() + " " + e.getBookName().getTitle() + " " + e.getBookName().getBookNameId());});
 		    int bookId = bookRepository.insertBookByTitleAndIsbn(insertBookDto.getTitle().trim(), insertBookDto.getIsbn().trim());
+		    
 		    return bookId;
 		} catch(RuntimeException ex) {
 		    System.out.println(ex.toString());

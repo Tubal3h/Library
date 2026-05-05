@@ -147,7 +147,7 @@ public class EditionRepository implements EditionRepositoryInterface {
 			System.out.println("risultato edition:" + n);
 		} catch (DataAccessException ex) {
 			System.out.println(ex.toString());
-			throw new InsertEditionException("errore nell'inserimento dell'edizione del libro");
+			throw new InsertEditionException("errore nell'inserimento dell'edizione del libro isbn esistente");
 		}
 	}
 
