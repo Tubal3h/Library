@@ -251,7 +251,8 @@
     color: var(--record-success);
 }
 
-.status-indicator.overdue {
+.status-indicator.overdue,
+.status-indicator.expired {
     background: rgba(237, 43, 40, 0.1);
     color: var(--color-error);
     border: 1px solid rgba(239, 83, 80, 0.2);
