@@ -162,9 +162,6 @@ public class DashboardController {
                         bookId = Integer.parseInt((String) bookIdObj);
                     }
 
-                    if (bookId == null || bookId == 0) {
-                        bookId = userSession.getRecordBookId();
-                    }
 
                     if (bookId != null && bookId != 0) {
                         List<RentalRecordDto> records = rentService.getBookRecords(bookId);
