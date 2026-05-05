@@ -84,6 +84,12 @@
                     <label class="font-mono fw-600" title="Codice ISBN" th:text="${rent.bookDto.editionDto.isbn}">ISBN</label>
                 </div>
 
+                <div th:if="${user.userDto.userRole == 'role_admin' and rent.bookDto != null}"
+                    class="flex align-center font-size-small">
+                    <i class="fa-solid fa-hashtag text-sm text-brand pr-1"></i>
+                    <label class="font-mono fw-600" title="ID Libro" th:text="${rent.bookDto.bookId}">ID Libro</label>
+                </div>
+
                 <!-- ID Utente (Utile per gli Admin) -->
                 <div th:if="${user.userDto.userRole == 'role_admin'}" class="flex align-center font-size-small">
                     <i class="fa-solid fa-user text-sm text-brand pr-1"></i>
