@@ -3,15 +3,15 @@
 /* -------------------------------------------------------------------------- */
 
 :root {
-    --record-accent: #6366f1;
-    --record-success: #10b981;
+    --record-accent: #1b1fd8;
+    --record-success: #12ca52;
     --record-warning: #f59e0b;
     --record-glass: rgba(255, 255, 255, 0.7);
     --record-border: rgba(255, 255, 255, 0.4);
 }
 
 .records-view-container {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
     padding-bottom: 4rem;
 }
@@ -237,13 +237,13 @@
 }
 
 .status-indicator.active {
-    background: rgba(99, 102, 241, 0.1);
-    color: var(--record-accent);
+    background: rgba(248, 157, 52, 0.1);
+    color: var(--record-warning);
 }
 
 .status-indicator.pending {
-    background: rgba(245, 166, 35, 0.1);
-    color: var(--record-warning);
+    background: rgba(88, 35, 245, 0.1);
+    color: var(--record-accent);
 }
 
 .status-indicator.completed {
@@ -277,7 +277,7 @@
 }
 
 @keyframes pulse {
-    0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7); }
+    0% { box-shadow: 0 0 0 0 rgba(241, 163, 99, 0.7); }
     70% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }
     100% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0); }
 }
