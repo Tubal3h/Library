@@ -11,9 +11,9 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.dto.ChangePasswordDto;
 import it.dto.UserDto;
 import it.dto.request.AuthDto;
+import it.dto.request.ChangePasswordDto;
 import it.entity.RentalRecord;
 import it.entity.User;
 import it.exception.DeleteUserByIdException;
