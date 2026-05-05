@@ -106,6 +106,18 @@ public class RentService {
     }
 
     /**
+     * Recupera il numero di copie prenotate per un utente specifico.
+     *
+     * @param userId ID dell'utente
+     * @return Numero di copie prenotate dall'utente specificato
+     */
+
+    @Transactional(readOnly = true)
+    public int getTotalBooksBookedByUserId(int userId) {
+        return rentRepository.countBooksBookedByUserId(userId);
+    }
+
+    /**
      * Crea un nuovo noleggio impostando la data odierna come inizio
      * e la scadenza a 14 giorni dalla data corrente.
      *

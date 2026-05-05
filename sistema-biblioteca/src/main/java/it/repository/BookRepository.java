@@ -286,7 +286,7 @@ public class BookRepository implements BookRepositoryInterface {
      */
     @Override
     public int countAllNotEliminatedBooks() {
-        String query = "SELECT COUNT(*) FROM books WHERE status != 'eliminato'";
+        String query = "SELECT COUNT(*) FROM books WHERE status = 'disponibilita'";
         return jdbcTemplate.queryForObject(query, Integer.class);
     }
 }

@@ -129,6 +129,19 @@
                 </div>
             </a>
 
+            <!-- Card 2: Prenotazioni Pending -->
+            <a th:href="@{/api/navigation/rents}"
+                class="card glass radius-12 p-3 shadow-card flex flex-column justify-between border-none">
+                <div class="flex justify-between align-center mb-2">
+                    <span class="opacity-70 text-nm uppercase fw-700">Le tue prenotazioni</span>
+                    <i class="fa-solid fa-clock text-info"></i>
+                </div>
+                <div class="flex align-end gap-2">
+                    <span class="text-3xl fw-700" th:text="${totalBooksBooked}"></span>
+                    <span class="opacity-50 text-nm mb-1">in attesa</span>
+                </div>
+            </a>
+
         </div>
 
         <!-- Sezione Impostazioni Profilo in Home -->

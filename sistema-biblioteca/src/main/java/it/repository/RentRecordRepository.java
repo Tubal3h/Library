@@ -93,7 +93,18 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
      * @return Numero di noleggi attivi dell'utente specificato
      */
     public int countRentsByUserId(int userId) {
-        String sql = "SELECT COUNT(*) FROM rental_record where users_id = ? and rental_ended is null";
+        String sql = "SELECT COUNT(*) FROM rental_record where users_id = ? and rental_expired is not null and rental_ended is null";
+        return jdbcTemplate.queryForObject(sql, Integer.class, userId);
+    }
+
+    /**
+     * Conta il numero di copie prenotate per un utente specifico.
+     *
+     * @param userId ID dell'utente
+     * @return Numero di copie prenotate dall'utente specificato
+     */
+    public int countBooksBookedByUserId(int userId) {
+        String sql = "SELECT COUNT(*) FROM rental_record where users_id = ? and booking_date is not null and rental_expired is null and rental_ended is null";
         return jdbcTemplate.queryForObject(sql, Integer.class, userId);
     }
 

@@ -115,6 +115,7 @@ public class DashboardController {
             if ("home".equals(section)) {
                 if ("role_user".equals(user.getUserDto().getUserRole())) {
                     model.addAttribute("totalRents", rentService.getTotalRentsByUserId(user.getUserDto().getUserId()));
+                    model.addAttribute("totalBooksBooked", rentService.getTotalBooksBookedByUserId(user.getUserDto().getUserId()));
                 } else if ("role_admin".equals(user.getUserDto().getUserRole())) {
                     model.addAttribute("totalUsers", userService.getTotalUsers());
                     model.addAttribute("totalBooks", bookService.getTotalNotElimatedBooks());
