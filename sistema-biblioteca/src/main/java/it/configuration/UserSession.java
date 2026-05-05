@@ -18,7 +18,6 @@ public class UserSession implements Serializable {
 
     private AuthDto auth;
     private String section = "home";
-    private Integer recordBookId;
     private Integer recordUserId;
 
     @Autowired
@@ -79,20 +78,12 @@ public class UserSession implements Serializable {
     public void logout() {
         this.auth = null;
         this.section = "home";
-        this.recordBookId = null;
         this.recordUserId = null;
         if (session != null) {
             session.invalidate();
         }
     }
 
-    public Integer getRecordBookId() {
-        return recordBookId;
-    }
-
-    public void setRecordBookId(Integer recordBookId) {
-        this.recordBookId = recordBookId;
-    }
 
     public Integer getRecordUserId() {
         return recordUserId;
