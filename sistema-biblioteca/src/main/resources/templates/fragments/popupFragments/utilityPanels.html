@@ -138,7 +138,9 @@
                             <div th:if="${book.userDto.userName != null}" class="flex align-center gap-2">
                                 <div class="avatar-xs bg-surface-2 radius-50 flex center font-size-xs fw-700 text-brand" 
                                      th:text="${(!#strings.isEmpty(book.userDto.userName) ? #strings.substring(book.userDto.userName,0,1) : '') + (!#strings.isEmpty(book.userDto.userLastName) ? #strings.substring(book.userDto.userLastName,0,1) : '')}">US</div>
-                                <span class="text-sm fw-600 opacity-80" th:text="${book.userDto.userName + ' ' + book.userDto.userLastName}">Nome Cognome</span>
+                                <a th:href="@{/api/navigation/userRecords/} + ${book.userDto.userId}">
+                                    <span class="text-sm fw-600 opacity-80" th:text="${book.userDto.userName + ' ' + book.userDto.userLastName}">Nome Cognome</span>
+                                </a>
                             </div>
                             <span th:if="${book.userDto.userName == null}" class="opacity-30 text-xs">---</span>
                         </td>
