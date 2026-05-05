@@ -150,23 +150,41 @@
                     
                     <div class="input-group">
                         <label class="text-nm uppercase fw-700 opacity-75 mb-1 block ">Password Attuale</label>
-                        <input type="password" name="oldPassword" required
-                            class="w-100 p-4 radius-12 border-none font-size-small bg-darkgrey"
-                            placeholder="Inserisci la tua password attuale">
+                        <div class="input-field-container">
+                            <i class="fa-solid fa-lock input-icon-left"></i>
+                            <input type="password" name="oldPassword" required
+                                class="input-premium radius-12"
+                                placeholder="Inserisci la tua password attuale">
+                            <button type="button" class="password-toggle" onclick="togglePassword(this)">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
                     
                     <div class="input-group">
                         <label class="text-nm uppercase fw-700 opacity-75 mb-2 block ">Nuova Password</label>
-                        <input type="password" name="newPassword" required
-                            class="w-100 p-4 radius-12 border-none font-size-small bg-darkgrey"
-                            placeholder="Inserisci la nuova password">
+                        <div class="input-field-container">
+                            <i class="fa-solid fa-lock input-icon-left"></i>
+                            <input type="password" name="newPassword" required
+                                class="input-premium radius-12"
+                                placeholder="Inserisci la nuova password">
+                            <button type="button" class="password-toggle" onclick="togglePassword(this)">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
                     
                     <div class="input-group">
                         <label class="text-nm uppercase fw-700 opacity-75 mb-2 block ">Conferma Nuova Password</label>
-                        <input type="password" name="confirmPassword" required
-                            class="w-100 p-4 radius-12 border-none font-size-small bg-darkgrey"
-                            placeholder="Ripeti la nuova password">
+                        <div class="input-field-container">
+                            <i class="fa-solid fa-lock input-icon-left"></i>
+                            <input type="password" name="confirmPassword" required
+                                class="input-premium radius-12"
+                                placeholder="Ripeti la nuova password">
+                            <button type="button" class="password-toggle" onclick="togglePassword(this)">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="mt-4">
@@ -230,8 +248,8 @@
 
 
 
+        <script th:src="@{/js/dashboard.js}"></script>
     </main>
-    <script th:src="@{/js/dashboard.js}"></script>
 </body>
 
 </html>
