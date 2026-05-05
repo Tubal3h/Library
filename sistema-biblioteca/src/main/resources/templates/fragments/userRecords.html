@@ -49,8 +49,10 @@
                         </div>
 
                         <!-- Titolo Libro -->
-                        <div class=" col-book center">
-                            <span class="fw-700" th:text="${record.bookDto.editionDto.bookNameDto.title}">Il Signore degli Anelli</span>
+                        <div  class=" col-book center">
+                            <a th:href="@{/dashboard(section='edition',editionId=${record.bookDto.editionDto.editionId}, action='viewCopies', includeDeleted=true)}">
+                                <span class="fw-700" th:text="${record.bookDto.editionDto.bookNameDto.title}">Il Signore degli Anelli</span>
+                            </a>
                         </div>
 
                         <!-- ID Noleggio -->
