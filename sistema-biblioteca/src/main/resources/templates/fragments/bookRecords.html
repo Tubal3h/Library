@@ -101,7 +101,7 @@
                             <!-- Stato In Corso (In prestito) -->
                             <div th:if="${record.rentalDate != null && record.rentalEnded == null && (record.rentalExpired == null || record.rentalExpired >= T(java.time.LocalDate).now())}"
                                 class="status-indicator active">
-                                <span class="pulse-dot"></span>
+                                <span class="pulse-dot-booked"></span>
                                 <span class="status-text">In Prestito</span>
                             </div>
                             <!-- Stato Scaduto (In prestito ma non restituito entro la data di scadenza) -->
