@@ -267,6 +267,15 @@
     animation: pulse 2s infinite;
 }
 
+.pulse-dot-booked {
+    width: 8px;
+    height: 8px;
+    background: rgba(79, 31, 237, 0.1);
+    border-radius: 50%;
+    position: relative;
+    animation: pulse 2s infinite;
+}
+
 @keyframes pulse {
     0% { box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.7); }
     70% { box-shadow: 0 0 0 10px rgba(99, 102, 241, 0); }

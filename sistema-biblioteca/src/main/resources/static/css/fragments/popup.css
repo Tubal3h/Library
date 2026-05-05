@@ -408,8 +408,8 @@
 }
 
 .status-pill.prenotato {
-    background: rgba(245, 166, 35, 0.1);
-    color: #D98F10;
+    background: rgba(74, 35, 245, 0.1);
+    color: #4610d9;
     border: 1px solid rgba(245, 166, 35, 0.2);
 }
 

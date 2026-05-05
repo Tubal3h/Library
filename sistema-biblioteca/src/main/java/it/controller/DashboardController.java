@@ -219,7 +219,7 @@ public class DashboardController {
                 model.addAttribute("popupIncludeDeleted", includeDeleted);
 
                 if (!popupBooks.isEmpty()) {
-                    model.addAttribute("popupEditionTitle", popupBooks.get(0).getBookDto().getEditionDto().getBookNameDto().getTitle() + " #" + editionId);
+                    model.addAttribute("popupEditionTitle", popupBooks.get(0).getBookDto().getEditionDto().getBookNameDto().getTitle());
                 } else {
                     model.addAttribute("popupEditionTitle", "Edizione #" + editionId);
                 }
