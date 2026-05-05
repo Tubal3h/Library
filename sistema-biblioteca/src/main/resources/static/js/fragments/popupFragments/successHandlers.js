@@ -148,6 +148,7 @@ function triggerConfirmDelivered(el) { openConfirmPopup('delivered', el.dataset.
 function triggerConfirmReturned(el) { openConfirmPopup('returned', el.dataset.title, 'Il manuale tornerà disponibile.', el.dataset.url); }
 function triggerConfirmRent(el) { openConfirmPopup('rent', el.dataset.title, 'Vuoi prendere in prestito questo manuale?', el.dataset.url); }
 function triggerConfirmRemoveReservation(el) { openConfirmPopup('delete', el.dataset.title, 'Vuoi annullare la prenotazione per questo libro?', el.dataset.url); }
+function triggerConfirmRejectReservation(el) { openConfirmPopup('delete', el.dataset.title, 'Vuoi rifiutare il prestito per questo libro?', el.dataset.url); }
 
 // Esponi globalmente
 window.initSuccessPopup = initSuccessPopup;
@@ -159,5 +160,6 @@ window.triggerConfirmDelivered = triggerConfirmDelivered;
 window.triggerConfirmReturned = triggerConfirmReturned;
 window.triggerConfirmRent = triggerConfirmRent;
 window.triggerConfirmRemoveReservation = triggerConfirmRemoveReservation;
+window.triggerConfirmRejectReservation = triggerConfirmRejectReservation;
 
 console.log("successHandlers.js loaded");

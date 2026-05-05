@@ -120,15 +120,15 @@
                     th:data-title="${rent.bookDto.editionDto.bookNameDto.title}"
                     th:data-url="@{/api/delivered(bookID=${rent.bookDto.bookId}, rentID=${rent.rentalId}, bookTitle=${rent.bookDto.editionDto.bookNameDto.title})}"
                     onclick="triggerConfirmDelivered(this)"
-                    class="w-100 btn-modern-action pointer transition shadow-soft">
-                    <span>Conferma prestito</span>
+                    class="w-100 btn-modern-action pointer transition shadow-soft m-2">
+                    <span>Conferma</span>
                 </button>
                 <button type="button"
                     th:if="${rent.bookDto != null && rent.bookDto.status == 'in prestito' && user.userDto.userRole == 'role_admin'}"
                     th:data-title="${rent.bookDto.editionDto.bookNameDto.title}"
                     th:data-url="@{/api/returned(bookID=${rent.bookDto.bookId}, rentID=${rent.rentalId}, bookTitle=${rent.bookDto.editionDto.bookNameDto.title})}"
                     onclick="triggerConfirmReturned(this)"
-                    class="w-100 btn-modern-action pointer transition shadow-soft">
+                    class="w-100 btn-modern-action pointer transition shadow-soft m-2">
                     <span>Riconsegnato</span>
                 </button>
                 <button type="button"
@@ -136,8 +136,16 @@
                     th:data-title="${rent.bookDto.editionDto.bookNameDto.title}"
                     th:data-url="@{/api/removeReservation(bookID=${rent.bookDto.bookId}, rentID=${rent.rentalId}, bookTitle=${rent.bookDto.editionDto.bookNameDto.title})}"
                     onclick="triggerConfirmRemoveReservation(this)"
-                    class="w-100 btn-modern-action pointer transition shadow-soft">
+                    class="w-100 btn-modern-action pointer transition shadow-soft m-2">
                     <span>Annulla prenotazione</span>
+                </button>
+                <button type="button"
+                    th:if="${rent.bookDto != null && rent.bookDto.status == 'prenotato' && user.userDto.userRole == 'role_admin'}"
+                    th:data-title="${rent.bookDto.editionDto.bookNameDto.title}"
+                    th:data-url="@{/api/removeReservation(bookID=${rent.bookDto.bookId}, rentID=${rent.rentalId}, bookTitle=${rent.bookDto.editionDto.bookNameDto.title})}"
+                    onclick="triggerConfirmRejectReservation(this)"
+                    class="w-100 btn-modern-action pointer transition shadow-soft m-2">
+                    <span>Rifiuta</span>
                 </button>
             </div>
         </div>

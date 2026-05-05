@@ -24,7 +24,7 @@ const PANELS = [
     'addPublisherSuccessContent', 'addCategorySuccessContent', 'updateTitleSuccessContent',
     'updateAuthorSuccessContent', 'updatePublisherSuccessContent', 'updateCategorySuccessContent',
     'addUserSuccessContent', 'returnedRentContent', 'deliveredRentContent', 'bookedRentContent',
-    'deleteBookContent', 'deleteUserContent', 'confirmContent', 'errorContent',
+    'deleteBookContent', 'deleteUserContent', 'confirmContent', 'errorContent', 'removeReservationContent',
     'addUserContent', 'viewBooksEditionContent', 'changePasswordSuccessContent'
 ];
 
