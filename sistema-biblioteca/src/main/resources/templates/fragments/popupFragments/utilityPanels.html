@@ -44,11 +44,21 @@
                         <input type="text" id="addUserLastNameInput" name="userLastName" class="w-100 p-4 radius-12 border-none font-size-small" placeholder="Rossi" required oninput="updateAddUserEmailPreview()">
                     </div>
                 </div>
-                <div class="input-group">
-                    <label class="text-nm uppercase fw-700 opacity-60 mb-1 block ">Mail Aziendale</label>
-                    <div class="add-user-preview-field radius-12">
-                        <i class="fa-solid fa-envelope add-user-preview-icon"></i>
-                        <span id="addUserEmailPreview" class="add-user-preview-text font-mono">nome.cognome@biblioteca.it</span>
+                <div class=" flex justify-between">
+                    <div>
+                        <label class="text-nm uppercase fw-700 opacity-60 mb-1 block ">Mail Aziendale</label>
+                        <div class="add-user-preview-field radius-12">
+                            <i class="fa-solid fa-envelope add-user-preview-icon"></i>
+                            <span id="addUserEmailPreview" class="add-user-preview-text font-mono">nome.cognome@biblioteca.it</span>   
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <label class="text-nm uppercase fw-700 opacity-60 mb-1 block ">Password Provvisoria</label>
+                        <div class="add-user-preview-field radius-12 flex justify-end">
+                            <i class="fa-solid fa-key add-user-preview-icon p-1"></i>
+                            <span>Password123!</span>
+                        </div>
                     </div>
                 </div>
                 <div class="input-group">
