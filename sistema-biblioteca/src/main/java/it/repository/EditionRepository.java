@@ -16,7 +16,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import it.entity.Edition;
-import it.exception.InsertEditionException;
+import it.exception.Repository.EditionException;
 import it.mapper.EditionRowMapper;
 import it.mapper.response.EditionJoinResponseRowMapper;
 import it.repository.interfaces.EditionRepositoryInterface;
@@ -54,7 +54,7 @@ public class EditionRepository implements EditionRepositoryInterface {
 	 * 
 	 * @return Lista di tutte le edizioni disponibili nel database
 	 */
-	public List<Edition> getAllEditions() {
+	public List<Edition> getAllEditions() throws EditionException{
 		String sql = """
 				SELECT
 				    COUNT(b.book_id) AS quantity,
@@ -92,8 +92,12 @@ public class EditionRepository implements EditionRepositoryInterface {
 				    e.publishing_date,
 				    e.isbn
 				""";
-
-		return jdbcTemplate.query(sql, editionJoinRowMapper);
+		try {
+			return jdbcTemplate.query(sql, editionJoinRowMapper);
+		} catch (DataAccessException e) {
+			System.out.println("eccezione get all editions: " + e.getMessage());
+			throw new EditionException().throwExceptionIfNotFound();
+		}
 	}
 
 	/**
@@ -102,9 +106,15 @@ public class EditionRepository implements EditionRepositoryInterface {
 	 * @param editionId l'ID dell'edizione
 	 * @return L'oggetto Edition corrispondente all'ID fornito
 	 */
-	public Edition findById(int editionId) {
+	public Edition findById(int editionId) throws EditionException{
 		String sql = "SELECT * FROM edition WHERE edition_id = ?";
-		return jdbcTemplate.queryForObject(sql, editionRowMapper, editionId);
+		
+		try {
+			return jdbcTemplate.queryForObject(sql, editionRowMapper, editionId);
+		} catch (DataAccessException e) {
+			new EditionException().throwExceptionIfEditionIdIsInvalid(editionId);
+			throw new EditionException("Nessuna edizione trovata");
+		}
 	}
 
 	/**
@@ -121,9 +131,14 @@ public class EditionRepository implements EditionRepositoryInterface {
 	 * @return Numero di righe inserite
 	 */
 	@Override
-	public void insertEdition(String title, String authorName, String authorLastName, String publisher,
-			LocalDate publishingDate, String category,
-			String isbn) throws InsertEditionException {
+	public void insertEdition(
+		String title, 
+		String authorName, 
+		String authorLastName, 
+		String publisher,
+		LocalDate publishingDate, 
+		String category,
+		String isbn) throws EditionException {
 				
 				System.out.println("Titolo: " + title);
 		
@@ -147,7 +162,7 @@ public class EditionRepository implements EditionRepositoryInterface {
 			System.out.println("risultato edition:" + n);
 		} catch (DataAccessException ex) {
 			System.out.println(ex.toString());
-			throw new InsertEditionException("errore nell'inserimento dell'edizione del libro isbn esistente");
+			new EditionException().throwExceptionIfIsbnIsInvalid(isbn);
 		}
 	}
 
@@ -156,36 +171,68 @@ public class EditionRepository implements EditionRepositoryInterface {
 	 * @param editionId l'id dell'edizione
 	 * @param bookNameId l'id del book name
 	 */
-
 	@Override
-	public void updateBookTitleId(int editionId, int bookNameId) {
+	public void updateBookTitleId(int editionId, int bookNameId) throws EditionException{
 		String sql = "UPDATE edition SET book_name_id = :bookNameId WHERE edition_id = :editionId";
 		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("bookNameId", bookNameId)
 				.addValue("editionId", editionId);
-		namedParameterJdbcTemplate.update(sql, sqlParameter);
+		try {
+			namedParameterJdbcTemplate.update(sql, sqlParameter);
+		} catch (DataAccessException ex) {
+			System.out.println(ex.toString());
+			throw new EditionException().throwExceptionIfBookTitleIdIsInvalid(editionId, bookNameId);
+		}
 	}
 
+	/**
+	 * Aggiorna l'author id di un'edizione.
+	 * @param editionId l'id dell'edizione
+	 * @param authorId l'id dell'autore
+	 */
 	@Override
-	public void updateAuthorId(int editionId, int authorId) {
+	public void updateAuthorId(int editionId, int authorId) throws EditionException{
 		String sql = "UPDATE edition SET author_id = :authorId WHERE edition_id = :editionId";
 		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("authorId", authorId)
 				.addValue("editionId", editionId);
-		namedParameterJdbcTemplate.update(sql, sqlParameter);
+		try{
+			namedParameterJdbcTemplate.update(sql, sqlParameter);
+		}catch(DataAccessException ex){
+			System.out.println(ex.toString());
+			throw new EditionException().throwExceptionIfBookAuthorIdIsInvalid(editionId, authorId);
+		}
 	}
-
+	/**
+	 * Aggiorna il publisher id di un'edizione.
+	 * @param editionId l'id dell'edizione
+	 * @param publisherId l'id del publisher
+	 */
 	@Override
-	public void updatePublisherId(int editionId, int publisherId) {
+	public void updatePublisherId(int editionId, int publisherId) throws EditionException{
 		String sql = "UPDATE edition SET publisher_id = :publisherId WHERE edition_id = :editionId";
 		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("publisherId", publisherId)
 				.addValue("editionId", editionId);
-		namedParameterJdbcTemplate.update(sql, sqlParameter);
+		try{
+			namedParameterJdbcTemplate.update(sql, sqlParameter);
+		}catch(DataAccessException ex){
+			System.out.println(ex.toString());
+			throw new EditionException().throwExceptionIfBookPublisherIdIsInvalid(editionId, publisherId);
+		}
 	}
-
+	/**
+	 * Aggiorna la category id di un'edizione.
+	 * @param editionId l'id dell'edizione
+	 * @param categoryId l'id della categoria
+	 */
 	@Override
-	public void updateCategoryId(int editionId, int categoryId) {
+	public void updateCategoryId(int editionId, int categoryId) throws EditionException{
 		String sql = "UPDATE edition SET category_id = :categoryId WHERE edition_id = :editionId";
 		SqlParameterSource sqlParameter = new MapSqlParameterSource().addValue("categoryId", categoryId)
 				.addValue("editionId", editionId);
-		namedParameterJdbcTemplate.update(sql, sqlParameter);
+		try{
+			namedParameterJdbcTemplate.update(sql, sqlParameter);
+		}catch(DataAccessException ex){
+			System.out.println(ex.toString());
+			throw new EditionException().throwExceptionIfBookCategoryIdIsInvalid(editionId, categoryId);
+		}
 	}
 }

@@ -3,7 +3,7 @@ package it.repository.interfaces;
 import java.util.List;
 
 import it.entity.Publisher;
-import it.exception.InsertPublisherException;
+import it.exception.Repository.InsertPublisherException;
 
 public interface PublisherRepositoryInterface {
 	

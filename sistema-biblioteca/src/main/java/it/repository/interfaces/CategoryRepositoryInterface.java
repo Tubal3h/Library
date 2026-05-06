@@ -3,7 +3,7 @@ package it.repository.interfaces;
 import java.util.List;
 
 import it.entity.Category;
-import it.exception.InsertCategoryException;
+import it.exception.Repository.InsertCategoryException;
 
 public interface CategoryRepositoryInterface {
 	public List<Category> getAllCategories();

@@ -4,7 +4,7 @@ import java.util.List;
 
 import it.dto.BookNameDto;
 import it.entity.BookName;
-import it.exception.InsertBookNameException;
+import it.exception.Repository.InsertBookNameException;
 
 public interface BookNameRepositoryInterface {
 	

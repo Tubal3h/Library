@@ -19,8 +19,7 @@ import org.springframework.stereotype.Repository;
 
 import it.entity.Book;
 import it.entity.RentalRecord;
-
-import it.exception.InsertBookException;
+import it.exception.Repository.InsertBookException;
 import it.mapper.response.BookJoinResponseRowMapper;
 import it.mapper.response.BookRecordJoinResponseRowMapper;
 import it.repository.interfaces.BookRepositoryInterface;

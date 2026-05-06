@@ -10,6 +10,8 @@ import it.dto.CategoryDto;
 import it.dto.EditionDto;
 import it.dto.PublisherDto;
 import it.entity.Edition;
+import it.exception.Repository.EditionException;
+import it.exception.Service.NotEditionFoundServiceException;
 import it.repository.EditionRepository;
 
 /**
@@ -34,7 +36,8 @@ public class EditionService {
      * 
      * @return Lista di EditionDto contenente i metadati completi dell'edizione
      */
-    private List<EditionDto> getAllEditions() {
+    private List<EditionDto> getAllEditions() throws NotEditionFoundServiceException{
+        try {
         List<Edition> editions = editionRepository.getAllEditions();
         return editions.stream().map(edition -> {
             AuthorDto authorDto = new AuthorDto();
@@ -61,6 +64,10 @@ public class EditionService {
             editionDto.setQuantity(edition.getQuantity());
             return editionDto;
         }).toList();
+        } catch (EditionException e) {
+            throw new NotEditionFoundServiceException(e.getMessage());
+        }
+
     }
 
     /**
@@ -69,8 +76,10 @@ public class EditionService {
      * @param search Il termine di ricerca per il nome del libro
      * @return Lista di EditionDto contenente le informazioni condensate delle edizioni filtrati per nome del libro
      */
-	public List<EditionDto> getEditionListByName(String search) {
-		List<EditionDto> myList = getAllEditions();
+	public List<EditionDto> getEditionListByName(String search) throws NotEditionFoundServiceException {
+		
+        try {
+        List<EditionDto> myList = getAllEditions();
 		List<EditionDto> filteredList = new ArrayList<>();
 		
 		if(search != null && !search.isBlank()) {
@@ -103,6 +112,9 @@ public class EditionService {
 		}else {
 			return filteredList;
 		}
+        } catch (NotEditionFoundServiceException e) {
+            throw new NotEditionFoundServiceException(e.getMessage());
+        }
 	}
 
     public Edition getEditionById(int editionId) {
