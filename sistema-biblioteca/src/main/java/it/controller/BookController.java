@@ -17,9 +17,11 @@ import it.configuration.UserSession;
 import it.dto.AuthorDto;
 import it.dto.request.AuthDto;
 import it.dto.request.InsertBookDto;
+import it.exception.repository.EditionException;
 import it.exception.repository.NoBookIdFoundException;
-import it.exception.repository.NoIsbnFoundException;
-import it.exception.service.InsertBookServiceException;
+import it.exception.service.AuthorServiceException;
+import it.exception.service.BookServiceException;
+import it.exception.service.PublisherServiceException;
 import it.service.AuthorService;
 import it.service.BookService;
 import it.service.PublisherService;
@@ -84,7 +86,7 @@ public class BookController {
 			redirectAttributes.addFlashAttribute("popupBookIsbn", isbn);
 			redirectAttributes.addFlashAttribute("popupBookTitle", bookName);
 			redirectAttributes.addFlashAttribute("popupBookId", newBookId);
-		} catch (NoIsbnFoundException ex) {
+		} catch (BookServiceException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("errorMessage ", ex.getMessage());
 		}
@@ -117,7 +119,7 @@ public class BookController {
 			redirectAttributes.addFlashAttribute("popupType", "deleteBook");
 			redirectAttributes.addFlashAttribute("popupBookId", bookId);
 			redirectAttributes.addFlashAttribute("popupBookTitle", bookName);
-		} catch (NoBookIdFoundException ex) {
+		} catch (BookServiceException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.getMessage());
 		}
@@ -163,7 +165,7 @@ public class BookController {
 			redirectAttributes.addFlashAttribute("popupBookTitle", insertBookDto.getTitle());
 			redirectAttributes.addFlashAttribute("popupBookIsbn", insertBookDto.getIsbn());
 			redirectAttributes.addFlashAttribute("popupBookId", bookId);
-		} catch (InsertBookServiceException ex) {
+		} catch (BookServiceException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
 		}
@@ -383,7 +385,7 @@ public class BookController {
 			bookService.updateBookTitle(bookNameDto);
 			redirectAttributes.addFlashAttribute("popupType", "updateTitle");
 			redirectAttributes.addFlashAttribute("popupBookTitle", bookNameDto.getTitle());
-		} catch (InsertBookServiceException ex) {
+		} catch (BookServiceException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
 		}
@@ -416,7 +418,7 @@ public class BookController {
 			redirectAttributes.addFlashAttribute("popupType", "updateAuthor");
 			redirectAttributes.addFlashAttribute("popupAuthorName", authorDto.getAuthorName());
 			redirectAttributes.addFlashAttribute("popupAuthorLastName", authorDto.getAuthorLastName());
-		} catch (InsertBookServiceException ex) {
+		} catch (AuthorServiceException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
 		}
@@ -448,7 +450,7 @@ public class BookController {
 			publisherService.updatePublisher(publisherDto);
 			redirectAttributes.addFlashAttribute("popupType", "updatePublisher");
 			redirectAttributes.addFlashAttribute("popupPublisherName", publisherDto.getPublisherName());
-		} catch (Exception ex) {
+		} catch (PublisherServiceException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
 		}
@@ -517,7 +519,7 @@ public class BookController {
 			bookService.insertAndGetBookNameId(title);
 			redirectAttributes.addFlashAttribute("popupType", "addBookName");
 			redirectAttributes.addFlashAttribute("popupBookTitle", title);
-		} catch (InsertBookServiceException ex) {
+		} catch (BookServiceException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
 		}
@@ -551,7 +553,7 @@ public class BookController {
 			redirectAttributes.addFlashAttribute("popupType", "addAuthor");
 			redirectAttributes.addFlashAttribute("popupAuthorName", authorName);
 			redirectAttributes.addFlashAttribute("popupAuthorLastName", authorLastName);
-		} catch (InsertBookServiceException ex) {
+		} catch (BookServiceException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
 		}
@@ -582,7 +584,7 @@ public class BookController {
 			bookService.insertPublisher(publisherName);
 			redirectAttributes.addFlashAttribute("popupType", "addPublisher");
 			redirectAttributes.addFlashAttribute("popupPublisherName", publisherName);
-		} catch (InsertBookServiceException ex) {
+		} catch (BookServiceException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
 		}
@@ -613,7 +615,7 @@ public class BookController {
 			bookService.insertCategory(categoryName);
 			redirectAttributes.addFlashAttribute("popupType", "addCategory");
 			redirectAttributes.addFlashAttribute("popupCategoryName", categoryName);
-		} catch (InsertBookServiceException ex) {
+		} catch (BookServiceException ex) {
 			redirectAttributes.addFlashAttribute("popupType", "error");
 			redirectAttributes.addFlashAttribute("popupErrorMessage", ex.toString());
 		}
