@@ -192,7 +192,7 @@ public class BookService {
      * @return Il numero di righe aggiornate (1 se successo)
      * @throws NoBookIdFoundException se l'ID non è fornito o non è trovato
      */
-	@SuppressWarnings("null")
+	// @SuppressWarnings("null")
 	@Transactional
 	public int deleteBook(Integer id) throws BookServiceException {
 		int res = 0;

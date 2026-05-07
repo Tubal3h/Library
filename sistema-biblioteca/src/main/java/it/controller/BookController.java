@@ -17,8 +17,6 @@ import it.configuration.UserSession;
 import it.dto.AuthorDto;
 import it.dto.request.AuthDto;
 import it.dto.request.InsertBookDto;
-import it.exception.repository.EditionException;
-import it.exception.repository.NoBookIdFoundException;
 import it.exception.service.AuthorServiceException;
 import it.exception.service.BookServiceException;
 import it.exception.service.PublisherServiceException;

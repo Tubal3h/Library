@@ -2,7 +2,12 @@ package it.exception.service;
 
 public class PublisherServiceException extends RuntimeException {
 
-    public PublisherServiceException(String message) {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5207542683661607914L;
+
+	public PublisherServiceException(String message) {
         super(message);
     }
 
