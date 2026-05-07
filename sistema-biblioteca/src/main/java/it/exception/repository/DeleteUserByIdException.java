@@ -1,4 +1,4 @@
-package it.exception.Repository;
+package it.exception.repository;
 
 /**
  * Eccezione personalizzata per gestire l'errore: DeleteUserByIdException.

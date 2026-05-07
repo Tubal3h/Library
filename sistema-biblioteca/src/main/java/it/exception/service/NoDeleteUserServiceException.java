@@ -1,4 +1,4 @@
-package it.exception.Service;
+package it.exception.service;
 
 /**
  * Eccezione personalizzata per gestire l'errore: NoDeleteUserServiceException.

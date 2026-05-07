@@ -1,4 +1,4 @@
-package it.exception.Repository;
+package it.exception.repository;
 
 
 public class EditionException extends RuntimeException {

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 
 
+
 /* -------------------------------------------------------------------------- */
 /*                                   SERVICE                                  */
 /* -------------------------------------------------------------------------- */
@@ -32,14 +33,15 @@ import it.repository.BookRepository;
 import it.repository.EditionRepository;
 import it.repository.PublisherRepository;
 import it.repository.CategoryRepository;
-import it.exception.Repository.BookNotFoundException;
-import it.exception.Repository.InsertAuthorException;
-import it.exception.Repository.InsertBookNameException;
-import it.exception.Repository.InsertCategoryException;
-import it.exception.Repository.InsertPublisherException;
-import it.exception.Repository.NoBookIdFoundException;
-import it.exception.Repository.NoIsbnFoundException;
-import it.exception.Service.InsertBookServiceException;
+import it.exception.QueryIsNullOrNegativeExcepetion;
+import it.exception.repository.AuthorRepositoryException;
+import it.exception.repository.BookNamesRepositoryException;
+import it.exception.repository.BookNotFoundException;
+import it.exception.repository.BookRepositoryException;
+import it.exception.repository.CategoryRepositoryException;
+import it.exception.repository.NoBookIdFoundException;
+import it.exception.repository.PublisherExceptionRepository;
+import it.exception.service.BookServiceException;
 
 
 
@@ -76,11 +78,15 @@ public class BookService {
 		this.convertTo = convertTo;
     }
 
-    public List<BookNameDto> getAllBookNames() {
-        return bookNameRepository.getAllBookNames()
-                .stream()
-                .map(convertTo::convertToBookNameDto)
-                .toList();
+    public List<BookNameDto> getAllBookNames() throws BookServiceException {
+        try {
+        	return bookNameRepository.getAllBookNames()
+        			.stream()
+        			.map(convertTo::convertToBookNameDto)
+        			.toList();
+        }catch(BookNamesRepositoryException ex) {
+        	throw new BookServiceException(ex.getMessage());
+        }
     }
 
 
@@ -93,13 +99,17 @@ public class BookService {
      * @return Lista di {@link BookDto} dei libri accessibili all'utente
      */
     @Transactional(readOnly = true)
-    private List<BookDto> getAllBooks(String userRole) {
-        List<Book> repoBook = bookRepository.getAllBooks();
-        return repoBook.stream()
-            .filter(book -> !userRole.equals("role_user") ||
-                    "disponibilita".equalsIgnoreCase(book.getStatus()))
-            .map(convertTo::convertToBookDto)
-            .toList();
+    private List<BookDto> getAllBooks(String userRole) throws BookServiceException {
+        try {
+        	List<Book> repoBook = bookRepository.getAllBooks();
+        	return repoBook.stream()
+        			.filter(book -> !userRole.equals("role_user") ||
+        					"disponibilita".equalsIgnoreCase(book.getStatus()))
+        			.map(convertTo::convertToBookDto)
+        			.toList();
+        }catch(BookRepositoryException ex) {
+        	throw new BookServiceException(ex.getMessage());
+        }
     }
 
     /**
@@ -110,17 +120,21 @@ public class BookService {
      * @throws BookNotFoundException se nessun libro corrisponde all'ID specificato
      */
     @Transactional(readOnly = true)
-    public BookDto getBookById(int bookId) {
-        var book = bookRepository.getAllBooks().stream()
-            .filter(b -> b.getBookId() == bookId)
-            .findFirst()
-            .orElseThrow(() -> new BookNotFoundException("Libro non trovato con l'ID: " + bookId));
+    public BookDto getBookById(int bookId) throws BookServiceException {
+       try {
+    	   var book = bookRepository.getAllBooks().stream()
+    			   .filter(b -> b.getBookId() == bookId)
+    			   .findFirst()
+    			   .orElseThrow(() -> new RuntimeException("testo un'eccezione"));
+    	   BookDto bookDto = new BookDto();
+    	   bookDto.setBookId(book.getBookId());
+    	   bookDto.setEditionDto(convertTo.convertToEditionDto(book.getEdition()));
+    	   bookDto.setStatus(book.getStatus());
+    	   return bookDto;
+       }catch(BookRepositoryException ex) {
+    	   throw new BookServiceException(ex.getMessage());
+       }
 
-        BookDto bookDto = new BookDto();
-        bookDto.setBookId(book.getBookId());
-        bookDto.setEditionDto(convertTo.convertToEditionDto(book.getEdition()));
-        bookDto.setStatus(book.getStatus());
-        return bookDto;
     }
 
     /**
@@ -129,13 +143,23 @@ public class BookService {
      * @return Numero totale di libri nel database
      */
     @Transactional(readOnly = true)
-    public int getTotalCountBooks() {
-        return bookRepository.countAllBooks();
+    public int getTotalCountBooks() throws BookServiceException{
+        try {
+			return bookRepository.countAllBooks();
+		} catch (BookRepositoryException e) {
+			throw new BookServiceException(e.getMessage());
+		} catch (QueryIsNullOrNegativeExcepetion e) {
+			throw new BookServiceException(e.getMessage());
+		}
     }
     
-    @Transactional(readOnly = true)
-    public int getTotalNotElimatedBooks() {
-    	return bookRepository.countAllNotEliminatedBooks();
+    @Transactional(readOnly = true) 
+    public int getTotalNotElimatedBooks() throws BookServiceException{
+    	try{
+    		return bookRepository.countAllNotEliminatedBooks();
+    	}catch(BookRepositoryException | QueryIsNullOrNegativeExcepetion ex) {
+    		throw new BookServiceException(ex.getMessage());
+    	}
     }
     /**
      * Aggiunge una nuova copia fisica di un libro al sistema tramite il suo ISBN.
@@ -147,12 +171,15 @@ public class BookService {
      */
 	// @SuppressWarnings("null")
 	@Transactional
-	public int addBook(String isbn) throws NoIsbnFoundException {
+	public int addBook(String isbn) throws BookServiceException {
 		int res = 0;
-		if(isbn != null && !isbn.isEmpty()) {
-			res = bookRepository.insertBookByIsbn(isbn);
-		}else {
-			throw new NoIsbnFoundException("attenzione isbn non trovato");
+		if(isbn == null || isbn.isEmpty()) {
+			throw new BookServiceException("isbn non valido");
+		}
+		try {
+			res = bookRepository.insertBookByIsbn(isbn);	
+		}catch(BookRepositoryException ex) {
+			throw new BookServiceException(ex.getMessage());
 		}
 		return res;
 	}
@@ -167,12 +194,15 @@ public class BookService {
      */
 	@SuppressWarnings("null")
 	@Transactional
-	public int deleteBook(Integer id) throws NoBookIdFoundException {
+	public int deleteBook(Integer id) throws BookServiceException {
 		int res = 0;
-		if(id != null || id != 0) {
-			res = bookRepository.deleteBookById(id);
-		}else {
-			throw new NoBookIdFoundException(id);
+		if(id == null || id <= 0) {
+			throw new BookServiceException("id non valido");
+		}
+		try {
+			res = bookRepository.deleteBookById(id);	
+		}catch(BookRepositoryException ex) {
+			throw new BookServiceException(ex.getMessage());
 		}
 		return res;
 	}
@@ -185,7 +215,7 @@ public class BookService {
      * @return Lista di BookDto contenente le informazioni condensate dei libri filtrati per nome del libro
      */
 	
-	public List<BookDto> getBookListByName(String search, String userRole) {
+	public List<BookDto> getBookListByName(String search, String userRole) throws BookServiceException{
 		List<BookDto> myList = getAllBooks(userRole);
 		List<BookDto> filteredList = new ArrayList<>();
 		if(search != null && !search.isBlank()) {
@@ -235,7 +265,7 @@ public class BookService {
      */
 	
 	@Transactional
-	public int insertBook(InsertBookDto insertBookDto) throws InsertBookServiceException {
+	public int insertBook(InsertBookDto insertBookDto) throws BookServiceException {
 		String authorFullName = insertBookDto.getAuthorName().concat(" ").concat(insertBookDto.getAuthorLastName());
 		System.out.println("author full name: " + authorFullName);
 		System.out.println("title: " + insertBookDto.getTitle());
@@ -285,9 +315,9 @@ public class BookService {
 		    int bookId = bookRepository.insertBookByTitleAndIsbn(insertBookDto.getTitle().trim(), insertBookDto.getIsbn().trim());
 		    
 		    return bookId;
-		} catch(RuntimeException ex) {
+		} catch(BookNamesRepositoryException | QueryIsNullOrNegativeExcepetion ex) {
 		    System.out.println(ex.toString());
-		    throw new InsertBookServiceException(ex.getMessage());
+		    throw new BookServiceException(ex.getMessage());
 		}
 	}
 	
@@ -312,8 +342,12 @@ public class BookService {
      * @param bookNameDto DTO del titolo da aggiornare
      */
     @Transactional
-    public void updateBookTitle(BookNameDto bookNameDto) { 
-        bookNameRepository.updateBookTitle(bookNameDto);
+    public void updateBookTitle(BookNameDto bookNameDto) throws BookServiceException { 
+        try {
+        	bookNameRepository.updateBookTitle(bookNameDto);   	
+        }catch(BookNamesRepositoryException ex) {
+        	throw new BookServiceException(ex.getMessage());
+        }
     }
 
     /**
@@ -324,8 +358,12 @@ public class BookService {
      * @throws InsertBookNameException se l'inserimento fallisce
      */
     @Transactional
-    public int insertAndGetBookNameId(String title) throws InsertBookNameException {
-        bookNameRepository.insertBookByTitle(title);
+    public int insertAndGetBookNameId(String title) throws BookServiceException {
+        try{
+        	bookNameRepository.insertBookByTitle(title);
+        }catch(BookNamesRepositoryException ex) {
+        	throw new BookServiceException(ex.getMessage());
+        }
         return getBookNameId(title);
     }
 
@@ -337,8 +375,12 @@ public class BookService {
      * @throws InsertAuthorException se l'inserimento fallisce
      */
     @Transactional
-    public void insertAuthor(String authorName, String authorLastName) throws InsertAuthorException {
-        authorRepository.insertAuthor(authorName, authorLastName);
+    public void insertAuthor(String authorName, String authorLastName) throws BookServiceException {
+        try {
+        	authorRepository.insertAuthor(authorName, authorLastName);
+        }catch(AuthorRepositoryException ex) {
+        	 throw new BookServiceException(ex.getMessage());
+        }
     }
 
     /**
@@ -348,8 +390,12 @@ public class BookService {
      * @throws InsertPublisherException se l'inserimento fallisce
      */
     @Transactional
-    public void insertPublisher(String publisherName) throws InsertPublisherException {
-        publisherRepository.insertPublisher(publisherName);
+    public void insertPublisher(String publisherName) throws BookServiceException {
+        try {
+        	publisherRepository.insertPublisher(publisherName);
+        }catch(PublisherExceptionRepository ex) {
+        	throw new BookServiceException(ex.getMessage());
+        }
     }
 
     /**
@@ -359,8 +405,13 @@ public class BookService {
      * @throws InsertCategoryException se l'inserimento fallisce
      */
     @Transactional
-    public void insertCategory(String categoryName) throws InsertCategoryException {
-        categoryRepository.insertCategory(categoryName);
+    public void insertCategory(String categoryName) throws BookServiceException {
+        try {
+        	categoryRepository.insertCategory(categoryName);
+        	
+        }catch(CategoryRepositoryException ex) {
+        	throw new BookServiceException(ex.getMessage());
+        }
     }
 
 
@@ -371,11 +422,15 @@ public class BookService {
      * @return true se il titolo esiste già, false altrimenti
      */
     @Transactional
-    public boolean isBookNamePresent(BookNameDto bookNameDto) {
-        return bookNameRepository.getBookNamesByTitle(bookNameDto.getTitle()).stream()
-                .filter(b -> b.getBookNameId() != bookNameDto.getBookNameId())
-                .findFirst()
-                .isPresent();
+    public boolean isBookNamePresent(BookNameDto bookNameDto) throws BookServiceException {
+        try {
+        	return bookNameRepository.getBookNamesByTitle(bookNameDto.getTitle()).stream()
+        			.filter(b -> b.getBookNameId() != bookNameDto.getBookNameId())
+        			.findFirst()
+        			.isPresent();
+        }catch(BookNamesRepositoryException ex) {
+        	throw new BookServiceException(ex.getMessage());
+        }
     }
     
     /**
@@ -385,10 +440,14 @@ public class BookService {
      * @return ID del titolo trovato
      */
     @Transactional
-    public int getBookNameId(String title) {
-        return bookNameRepository.getBookNamesByTitle(title).stream()
-                .findFirst()
-                .get().getBookNameId();
+    public int getBookNameId(String title) throws BookServiceException {
+        try {
+        	return bookNameRepository.getBookNamesByTitle(title).stream()
+        			.findFirst()
+        			.get().getBookNameId();
+        }catch(BookNamesRepositoryException ex) {
+        	throw new BookServiceException(ex.getMessage());
+        }
     }
 
 
@@ -399,11 +458,15 @@ public class BookService {
      * @return {@link BookNameDto} con i dettagli del titolo
      */
     @Transactional(readOnly = true)
-    public BookNameDto getBookNameById(int bookNameId) {
-        BookName bookName = bookNameRepository.getBookNameById(bookNameId);
-        BookNameDto BookNameDto = new BookNameDto();
-        BookNameDto.setBookNameId(bookName.getBookNameId());
-        BookNameDto.setTitle(bookName.getTitle());
-        return BookNameDto;
+    public BookNameDto getBookNameById(int bookNameId) throws BookServiceException {
+        try {
+        	BookName bookName = bookNameRepository.getBookNameById(bookNameId);
+        	BookNameDto BookNameDto = new BookNameDto();
+        	BookNameDto.setBookNameId(bookName.getBookNameId());
+        	BookNameDto.setTitle(bookName.getTitle());
+        	return BookNameDto;
+        }catch(BookNamesRepositoryException ex) {
+        	throw new BookServiceException(ex.getMessage());
+        }
     }
 }

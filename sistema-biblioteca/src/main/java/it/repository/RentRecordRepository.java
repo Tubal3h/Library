@@ -12,7 +12,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import it.entity.RentalRecord;
-import it.exception.Repository.HistoryNotFoundException;
+import it.exception.repository.HistoryNotFoundException;
 import it.mapper.RentRecordRowMapper;
 import it.mapper.response.BookRecordJoinResponseRowMapper;
 import it.mapper.response.RentalRecordJoinResponseRowMapper;

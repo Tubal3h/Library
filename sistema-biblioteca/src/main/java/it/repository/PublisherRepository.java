@@ -6,6 +6,7 @@ package it.repository;
 
 import java.util.List;
 
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -14,7 +15,8 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import it.entity.Publisher;
-import it.exception.Repository.InsertPublisherException;
+import it.exception.QueryIsNullOrNegativeExcepetion;
+import it.exception.repository.PublisherExceptionRepository;
 import it.mapper.PublisherRowMapper;
 import it.repository.interfaces.PublisherRepositoryInterface;
 
@@ -43,9 +45,13 @@ public class PublisherRepository implements PublisherRepositoryInterface{
      * 
      * @return Lista di tutte le case editrici presenti nel database
      */
-    public List<Publisher> getAllPublishers() {
+    public List<Publisher> getAllPublishers() throws PublisherExceptionRepository {
         String sql = "SELECT * FROM publisher";
-        return jdbcTemplate.query(sql, publisherRowMapper);
+        try {
+        	return jdbcTemplate.query(sql, publisherRowMapper);	
+        }catch(DataAccessException ex) {
+        	throw new PublisherExceptionRepository("attenzione publisher non trovati");
+        }
     }
 
     /**
@@ -54,10 +60,14 @@ public class PublisherRepository implements PublisherRepositoryInterface{
      * @param id L'ID del publisher da recuperare
      * @return Il publisher corrispondente
      */
-    public Publisher getPublisherById(int id) {
+    public Publisher getPublisherById(int id) throws PublisherExceptionRepository{
         String sql = "SELECT * FROM publisher WHERE publisher_id = :publisherId";
         SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("publisherId", id);
-        return namedParameterJdbcTemplate.queryForObject(sql, parameterSource, publisherRowMapper);
+        try {
+        	return namedParameterJdbcTemplate.queryForObject(sql, parameterSource, publisherRowMapper);
+        }catch(DataAccessException ex) {
+        	throw new PublisherExceptionRepository("attenzione publisher non trovato");
+        }
     }
 
     /**
@@ -67,13 +77,13 @@ public class PublisherRepository implements PublisherRepositoryInterface{
      * @return Il numero di publisher aggiunti
      * @throws InsertPublisherException Se si verifica un errore nell'inserimento
      */
-    public void insertPublisherByPubliserName(String publisherName) throws InsertPublisherException {
+    public void insertPublisherByPubliserName(String publisherName) throws PublisherExceptionRepository {
     	String insert = "INSERT INTO publisher (publisher_name) VALUES (:publisherName)";
     	SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("publisherName", publisherName);
     	try {
     		namedParameterJdbcTemplate.update(insert, parameterSource);		
     	}catch(DataAccessException ex) {
-    		throw new InsertPublisherException("errore nell'inserimento del publisher");
+    		throw new PublisherExceptionRepository("errore nell'inserimento del publisher");
     	}
     }
 
@@ -83,14 +93,22 @@ public class PublisherRepository implements PublisherRepositoryInterface{
      * @param publisherName Il nome del publisher da verificare
      * @return True se il publisher esiste, false altrimenti
      */
-    public Boolean isPublisherPresent(Publisher publisher) {
+    public Boolean isPublisherPresent(Publisher publisher) throws PublisherExceptionRepository, QueryIsNullOrNegativeExcepetion{
         if(publisher.getPublisherName() == null || publisher.getPublisherName().isEmpty()) {
             throw new IllegalArgumentException("Il nome del publisher non può essere vuoto");
         }
         String sql = "SELECT COUNT(*) FROM publisher WHERE publisher_name = :publisherName";
         SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("publisherName", publisher.getPublisherName());
-        Integer count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);
-        return count != null && count > 0;
+        Integer count = null; 
+        try {
+        	count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);
+        	if(count == null || count < 0) {
+        		throw new QueryIsNullOrNegativeExcepetion("errore grave nel trovare il publisher");
+        	}
+        	return true;
+        }catch(DataAccessException ex) {
+        	throw new PublisherExceptionRepository("publisher non presente");
+        }
     }
 
     /**
@@ -98,12 +116,16 @@ public class PublisherRepository implements PublisherRepositoryInterface{
      * 
      * @param publisher Il publisher da aggiornare
      */
-    public void updatePublisher(Publisher publisher) {
+    public void updatePublisher(Publisher publisher) throws PublisherExceptionRepository{
         String sql = "UPDATE publisher SET publisher_name = :publisherName WHERE publisher_id = :publisherId";
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("publisherName", publisher.getPublisherName())
                 .addValue("publisherId", publisher.getPublisherId());
-        namedParameterJdbcTemplate.update(sql, parameterSource);
+        try {
+        	namedParameterJdbcTemplate.update(sql, parameterSource); 	
+        }catch(DataAccessException ex) {
+        	throw new PublisherExceptionRepository("impossibile aggiornare il publisher");
+        }
     }
 
     /**
@@ -112,20 +134,25 @@ public class PublisherRepository implements PublisherRepositoryInterface{
      * @param publisher Il publisher da eliminare
      * @return Il numero di publisher eliminati
      */
-    public int deletePublisher(Publisher publisher) {
+    public int deletePublisher(Publisher publisher) throws PublisherExceptionRepository {
         String sql = "DELETE FROM publisher WHERE publisher_id = :publisherId";
         SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("publisherId",
                 publisher.getPublisherId());
-        return namedParameterJdbcTemplate.update(sql, parameterSource);
+        try {
+        	return namedParameterJdbcTemplate.update(sql, parameterSource);
+        	
+        }catch(DataAccessException ex) {
+        	throw new PublisherExceptionRepository("impossibile elimare il publisher");
+        }
     }
 
-    public void insertPublisher(String publisherName) throws InsertPublisherException {
+    public void insertPublisher(String publisherName) throws PublisherExceptionRepository {
         String insert = "INSERT INTO publisher (publisher_name) VALUES (:publisherName)";
         SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("publisherName", publisherName);
         try {
             namedParameterJdbcTemplate.update(insert, parameterSource);
         }catch(DataAccessException ex) {
-            throw new InsertPublisherException("errore nell'inserimento del publisher");
+            throw new PublisherExceptionRepository("errore nell'inserimento del publisher");
         }
     }
 }

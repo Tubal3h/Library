@@ -3,7 +3,7 @@ package it.repository.interfaces;
 import java.util.List;
 
 import it.entity.RentalRecord;
-import it.exception.Repository.HistoryNotFoundException;
+import it.exception.repository.HistoryNotFoundException;
 
 public interface RentRecordRepositoryInterface {
 	public List<RentalRecord> getAllRents();

@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import it.configuration.UserSession;
 import it.dto.request.AuthDto;
-import it.entity.configuration.UserSession;
 
 /**
  * Controller per la gestione dell'autenticazione degli utenti (login e logout).
