@@ -40,7 +40,6 @@ import it.exception.repository.BookNotFoundException;
 import it.exception.repository.BookRepositoryException;
 import it.exception.repository.CategoryRepositoryException;
 import it.exception.repository.NoBookIdFoundException;
-import it.exception.repository.NoIsbnFoundException;
 import it.exception.repository.PublisherExceptionRepository;
 import it.exception.service.BookServiceException;
 
@@ -172,12 +171,15 @@ public class BookService {
      */
 	// @SuppressWarnings("null")
 	@Transactional
-	public int addBook(String isbn) throws NoIsbnFoundException {
+	public int addBook(String isbn) throws BookServiceException {
 		int res = 0;
-		if(isbn != null && !isbn.isEmpty()) {
-			res = bookRepository.insertBookByIsbn(isbn);
-		}else {
-			throw new NoIsbnFoundException("attenzione isbn non trovato");
+		if(isbn == null || isbn.isEmpty()) {
+			throw new BookServiceException("isbn non valido");
+		}
+		try {
+			res = bookRepository.insertBookByIsbn(isbn);	
+		}catch(BookRepositoryException ex) {
+			throw new BookServiceException(ex.getMessage());
 		}
 		return res;
 	}
@@ -192,12 +194,15 @@ public class BookService {
      */
 	@SuppressWarnings("null")
 	@Transactional
-	public int deleteBook(Integer id) throws NoBookIdFoundException {
+	public int deleteBook(Integer id) throws BookServiceException {
 		int res = 0;
-		if(id != null || id != 0) {
-			res = bookRepository.deleteBookById(id);
-		}else {
-			throw new NoBookIdFoundException(id);
+		if(id == null || id <= 0) {
+			throw new BookServiceException("id non valido");
+		}
+		try {
+			res = bookRepository.deleteBookById(id);	
+		}catch(BookRepositoryException ex) {
+			throw new BookServiceException(ex.getMessage());
 		}
 		return res;
 	}
@@ -210,7 +215,7 @@ public class BookService {
      * @return Lista di BookDto contenente le informazioni condensate dei libri filtrati per nome del libro
      */
 	
-	public List<BookDto> getBookListByName(String search, String userRole) {
+	public List<BookDto> getBookListByName(String search, String userRole) throws BookServiceException{
 		List<BookDto> myList = getAllBooks(userRole);
 		List<BookDto> filteredList = new ArrayList<>();
 		if(search != null && !search.isBlank()) {
@@ -337,8 +342,12 @@ public class BookService {
      * @param bookNameDto DTO del titolo da aggiornare
      */
     @Transactional
-    public void updateBookTitle(BookNameDto bookNameDto) { 
-        bookNameRepository.updateBookTitle(bookNameDto);
+    public void updateBookTitle(BookNameDto bookNameDto) throws BookServiceException { 
+        try {
+        	bookNameRepository.updateBookTitle(bookNameDto);   	
+        }catch(BookNamesRepositoryException ex) {
+        	throw new BookServiceException(ex.getMessage());
+        }
     }
 
     /**
