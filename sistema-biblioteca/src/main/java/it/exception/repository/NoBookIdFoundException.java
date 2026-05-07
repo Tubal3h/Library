@@ -16,6 +16,6 @@ public class NoBookIdFoundException extends Exception {
 	}
 	
 	public String toString() {
-		return "id " + id + " non trovato: ";
+		return "id " + id + " non trovato.";
 	}
 }

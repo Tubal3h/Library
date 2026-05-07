@@ -12,6 +12,6 @@ public class AuthorRepositoryException extends RuntimeException {
 	}
 	
 	public AuthorRepositoryException(int id) {
-		super("autore con il seguente id non trovato: " + id);
+		super("Autore con il seguente id " + id + " non trovato.");
 	}
 }

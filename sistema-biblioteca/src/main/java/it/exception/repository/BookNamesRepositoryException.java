@@ -12,6 +12,6 @@ public class BookNamesRepositoryException extends RuntimeException {
 	}	
 	
 	public BookNamesRepositoryException(int id) {
-		super("titolo non trovato con il seguente id: " +id);
+		super("Titolo con il seguente id " + id + " non trovato.");
 	}
 }
