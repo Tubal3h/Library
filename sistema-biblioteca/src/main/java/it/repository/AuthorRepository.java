@@ -6,8 +6,8 @@ package it.repository;
 
 import java.util.List;
 
+
 import org.springframework.dao.DataAccessException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -15,10 +15,10 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import it.entity.Author;
-import it.exception.InsertAuthorException;
 import it.exception.IsAuthorPresentException;
 import it.exception.SelectAllAuthorException;
 import it.exception.UpdateAuthorException;
+import it.exception.repository.InsertAuthorException;
 import it.mapper.AuthorRowMapper;
 import it.repository.interfaces.AuthorRepositoryInterface;
 

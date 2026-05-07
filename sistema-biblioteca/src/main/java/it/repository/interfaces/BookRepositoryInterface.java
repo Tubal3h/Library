@@ -5,7 +5,7 @@ import java.util.List;
 
 import it.entity.Book;
 import it.entity.RentalRecord;
-import it.exception.InsertBookNameException;
+import it.exception.repository.InsertBookNameException;
 
 public interface BookRepositoryInterface {
 	public String getAuthorFullNameById(int authorId);

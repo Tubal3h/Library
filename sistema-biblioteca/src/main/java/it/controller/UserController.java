@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import it.configuration.UserSession;
 import it.dto.UserDto;
 import it.dto.request.AuthDto;
 import it.dto.request.ChangePasswordDto;
-import it.exception.NoDeleteUserServiceException;
+import it.entity.configuration.UserSession;
+import it.exception.service.NoDeleteUserServiceException;
 import it.service.UserService;
 import jakarta.validation.Valid;
 

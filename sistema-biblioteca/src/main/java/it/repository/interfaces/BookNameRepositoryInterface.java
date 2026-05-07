@@ -2,10 +2,11 @@ package it.repository.interfaces;
 
 import java.util.List;
 
+
 import it.dto.BookNameDto;
 import it.entity.BookName;
-import it.exception.InsertBookNameException;
 import it.exception.SelectAllBookNamesException;
+import it.exception.repository.InsertBookNameException;
 
 public interface BookNameRepositoryInterface {
 	

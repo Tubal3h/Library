@@ -15,8 +15,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import it.exception.NoBookIdFoundException;
-
 import it.utils.ConvertTo;
 
 import it.dto.BookDto;
@@ -28,19 +26,20 @@ import it.entity.BookName;
 import it.entity.Book;
 import it.entity.Category;
 import it.entity.Edition;
-import it.exception.BookNotFoundException;
-import it.exception.InsertAuthorException;
-import it.exception.InsertBookNameException;
-import it.exception.InsertBookServiceException;
-import it.exception.InsertCategoryException;
-import it.exception.InsertPublisherException;
 import it.repository.AuthorRepository;
 import it.repository.BookNameRepository;
 import it.repository.BookRepository;
 import it.repository.EditionRepository;
 import it.repository.PublisherRepository;
 import it.repository.CategoryRepository;
-import it.exception.NoIsbnFoundException;
+import it.exception.repository.BookNotFoundException;
+import it.exception.repository.InsertAuthorException;
+import it.exception.repository.InsertBookNameException;
+import it.exception.repository.InsertCategoryException;
+import it.exception.repository.InsertPublisherException;
+import it.exception.repository.NoBookIdFoundException;
+import it.exception.repository.NoIsbnFoundException;
+import it.exception.service.InsertBookServiceException;
 
 
 

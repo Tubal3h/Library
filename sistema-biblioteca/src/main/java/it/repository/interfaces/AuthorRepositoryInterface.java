@@ -2,9 +2,10 @@ package it.repository.interfaces;
 
 import java.util.List;
 
+
 import it.entity.Author;
-import it.exception.InsertAuthorException;
 import it.exception.SelectAllAuthorException;
+import it.exception.repository.InsertAuthorException;
 
 public interface AuthorRepositoryInterface {
 	public List<Author> getAllAuthors() throws SelectAllAuthorException;

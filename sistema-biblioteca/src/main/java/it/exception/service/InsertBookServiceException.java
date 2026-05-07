@@ -1,4 +1,4 @@
-package it.exception;
+package it.exception.service;
 
 /**
  * Eccezione personalizzata per gestire l'errore: InsertBookServiceException.

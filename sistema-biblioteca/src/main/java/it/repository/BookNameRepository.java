@@ -18,8 +18,8 @@ import org.springframework.stereotype.Repository;
 import it.dto.BookNameDto;
 import it.entity.BookName;
 import it.exception.BookNamesRepositoryException;
-import it.exception.InsertBookNameException;
 import it.exception.SelectAllBookNamesException;
+import it.exception.repository.InsertBookNameException;
 import it.mapper.BookNameRowMapper;
 import it.repository.interfaces.BookNameRepositoryInterface;
 

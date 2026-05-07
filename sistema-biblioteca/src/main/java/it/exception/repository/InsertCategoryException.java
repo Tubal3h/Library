@@ -1,4 +1,4 @@
-package it.exception;
+package it.exception.repository;
 
 /**
  * Eccezione personalizzata per gestire l'errore: InsertCategoryException.

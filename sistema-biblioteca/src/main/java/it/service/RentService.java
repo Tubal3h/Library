@@ -19,8 +19,7 @@ import it.dto.RentalRecordDto;
 import it.entity.RentalRecord;
 import it.entity.Book;
 import it.entity.User;
-
-import it.exception.HistoryNotFoundException;
+import it.exception.repository.HistoryNotFoundException;
 import it.repository.RentRecordRepository;
 
 /**

@@ -14,7 +14,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import it.entity.Category;
-import it.exception.InsertCategoryException;
+import it.exception.repository.InsertCategoryException;
 import it.mapper.CategoryRowMapper;
 import it.repository.interfaces.CategoryRepositoryInterface;
 
