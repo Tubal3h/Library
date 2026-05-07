@@ -13,6 +13,8 @@ import org.springframework.stereotype.Repository;
 
 import it.entity.RentalRecord;
 import it.exception.repository.HistoryNotFoundException;
+import it.exception.repository.RentalRecordExceptionRepository;
+
 import it.mapper.RentRecordRowMapper;
 import it.mapper.response.BookRecordJoinResponseRowMapper;
 import it.mapper.response.RentalRecordJoinResponseRowMapper;
@@ -92,9 +94,14 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
      * @param userId ID dell'utente
      * @return Numero di noleggi attivi dell'utente specificato
      */
-    public int countRentsByUserId(int userId) {
-        String sql = "SELECT COUNT(*) FROM rental_record where users_id = ? and rental_expired is not null and rental_ended is null";
-        return jdbcTemplate.queryForObject(sql, Integer.class, userId);
+    public int countRentsByUserId(int userId) throws RentalRecordExceptionRepository{
+        try{
+            String sql = "SELECT COUNT(*) FROM rental_record where users_id = ? and rental_expired is not null and rental_ended is null";
+            return jdbcTemplate.queryForObject(sql, Integer.class, userId);
+        }catch (DataAccessException ex) {
+            System.out.println(ex.getMessage());
+            throw new RentalRecordExceptionRepository().throwExceptionIfUserIdIsInvalid(userId);
+        }
     }
 
     /**
@@ -103,9 +110,14 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
      * @param userId ID dell'utente
      * @return Numero di copie prenotate dall'utente specificato
      */
-    public int countBooksBookedByUserId(int userId) {
-        String sql = "SELECT COUNT(*) FROM rental_record where users_id = ? and booking_date is not null and rental_expired is null and rental_ended is null";
-        return jdbcTemplate.queryForObject(sql, Integer.class, userId);
+    public int countBooksBookedByUserId(int userId) throws RentalRecordExceptionRepository{
+        try{
+            String sql = "SELECT COUNT(*) FROM rental_record where users_id = ? and booking_date is not null and rental_expired is null and rental_ended is null";
+            return jdbcTemplate.queryForObject(sql, Integer.class, userId);
+        }catch (DataAccessException ex) {
+            System.out.println(ex.getMessage());
+            throw new RentalRecordExceptionRepository().throwExceptionIfUserIdIsInvalid(userId);
+        }
     }
 
     /**
@@ -158,7 +170,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
      * @return Lista di {@link RentalRecord} con i dati del noleggio e del libro
      *         associato
      */
-    public List<RentalRecord> getActiveRentsByUserId(int userId) {
+    public List<RentalRecord> getActiveRentsByUserId(int userId) throws RentalRecordExceptionRepository{
         String sql = """
                 SELECT
                     r.rental_id, r.users_id, r.book_id,
@@ -189,7 +201,7 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
 
         } catch (DataAccessException ex) {
             System.out.println(ex.getMessage());
-            throw new RuntimeException();
+            throw new RentalRecordExceptionRepository().throwExceptionIfUserIdIsInvalid(userId);
         }
     }
 
@@ -199,22 +211,32 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
      * @param rental Entità {@link RentalRecord} contenente i dati del noleggio da
      *               inserire
      */
-    public void createRental(RentalRecord rental) {
-        String sql = """
-                UPDATE rental_record
-                SET rental_date = ?,
-                    rental_expired = ?
-                WHERE rental_id = ?
+    public void createRental(RentalRecord rental) throws RentalRecordExceptionRepository {
+        try{
+            String sql = """
+                    UPDATE rental_record
+                    SET rental_date = ?,
+                        rental_expired = ?
+                    WHERE rental_id = ?
                 """;
         jdbcTemplate.update(sql, rental.getRentalDate(), rental.getRentalExpired(), rental.getRentalId());
+    } catch (DataAccessException ex) {
+        System.out.println(ex.getMessage());
+        throw new RentalRecordExceptionRepository().throwExceptionIfRentalRecordIsInvalid(rental);
+    }
     }
 
-    public void createABookedDate(RentalRecord rental) {
-        String sql = """
-                INSERT INTO rental_record (users_id, book_id, booking_date)
-                VALUES (?, ?, ?)
-                """;
-        jdbcTemplate.update(sql, rental.getUser().getUserId(), rental.getBook().getBookId(), rental.getBookingDate());
+    public void createABookedDate(RentalRecord rental) throws RentalRecordExceptionRepository{
+        try{
+            String sql = """
+                    INSERT INTO rental_record (users_id, book_id, booking_date)
+                    VALUES (?, ?, ?)
+                    """;
+            jdbcTemplate.update(sql, rental.getUser().getUserId(), rental.getBook().getBookId(), rental.getBookingDate());
+        } catch (DataAccessException ex) {
+            System.out.println(ex.getMessage());
+            throw new RentalRecordExceptionRepository().throwExceptionIfRentalRecordIsInvalid(rental);
+        }
     }
 
     /**
@@ -224,9 +246,14 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
      * @param bookId ID del libro restituito
      * @param rentId ID del record di noleggio da chiudere
      */
-    public void endRental(int bookId, int rentId) {
+    public void endRental(int bookId, int rentId) throws RentalRecordExceptionRepository {
+        try{
         updateRentalEnded(rentId);
         updateRentalStatusOk(bookId);
+    } catch (DataAccessException ex) {
+        System.out.println(ex.getMessage());
+        throw new RentalRecordExceptionRepository().throwExceptionIfBookIdAndRentalIdAreInvalid(bookId, rentId);
+    }
     }
 
     /**
@@ -234,7 +261,8 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
      *
      * @param bookId ID del libro di cui aggiornare lo stato
      */
-    public void updateRentalStatusOk(int bookId) {
+    public void updateRentalStatusOk(int bookId) throws RentalRecordExceptionRepository {
+        try{
         String sql = """
                 UPDATE books
                 SET status = CASE
@@ -245,9 +273,14 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                 WHERE book_id = ?
                 """;
         jdbcTemplate.update(sql, bookId);
+        } catch (DataAccessException ex) {
+            System.out.println(ex.getMessage());
+            throw new RentalRecordExceptionRepository().throwExceptionIfBookIdIsInvalid(bookId);
+        }
     }
 
-    public void updateRentalStatusNotOk(int bookId) {
+    public void updateRentalStatusNotOk(int bookId) throws RentalRecordExceptionRepository {
+        try {
         String sql = """
                 UPDATE books
                 SET status = CASE
@@ -256,6 +289,10 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                 WHERE book_id = ?
                 		""";
         jdbcTemplate.update(sql, bookId);
+    } catch (DataAccessException ex) {
+        System.out.println(ex.getMessage());
+        throw new RentalRecordExceptionRepository().throwExceptionIfBookIdIsInvalid(bookId);
+    }
     }
 
     /**
@@ -263,7 +300,8 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
      *
      * @param rentId ID del record di noleggio da aggiornare
      */
-    private void updateRentalEnded(int rentId) {
+    private void updateRentalEnded(int rentId) throws RentalRecordExceptionRepository{
+        try{
         LocalDate date = LocalDate.now();
         String sql = """
                 UPDATE rental_record
@@ -271,10 +309,15 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                 WHERE rental_id = ?
                 """;
         jdbcTemplate.update(sql, date, rentId);
+    } catch (DataAccessException ex) {
+        System.out.println(ex.getMessage());
+        throw new RentalRecordExceptionRepository().throwExceptionIfRentalNotFound(rentId);
+    }
     }
 
     @Override
-    public void updateStatusToLend(int bookId) {
+    public void updateStatusToLend(int bookId) throws RentalRecordExceptionRepository {
+        try {
         String sql = """
                 UPDATE books
                 SET status = 'prenotato'
@@ -283,15 +326,24 @@ public class RentRecordRepository implements RentRecordRepositoryInterface {
                 """;
 
         jdbcTemplate.update(sql, bookId);
+    } catch (DataAccessException ex) {
+        System.out.println(ex.getMessage());
+        throw new RentalRecordExceptionRepository().throwExceptionIfBookIdIsInvalid(bookId);
+    }
     }
 
     @Override
-    public void deleteRentalById(int rentId) {
+    public void deleteRentalById(int rentId) throws RentalRecordExceptionRepository {
+        try{
         String sql = """
                 DELETE FROM rental_record
                 WHERE rental_id = ?
                 """;
         jdbcTemplate.update(sql, rentId);
+    } catch (DataAccessException ex) {
+        System.out.println(ex.getMessage());
+        throw new RentalRecordExceptionRepository().throwExceptionIfRentalNotFound(rentId);
+    }
     }
 
     @Override
