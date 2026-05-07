@@ -7,6 +7,7 @@ package it.repository;
 import java.util.List;
 
 
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -19,7 +20,8 @@ import org.springframework.stereotype.Repository;
 
 import it.entity.Book;
 import it.entity.RentalRecord;
-import it.exception.repository.InsertBookException;
+import it.exception.QueryIsNullOrNegativeExcepetion;
+import it.exception.repository.BookRepositoryException;
 import it.mapper.response.BookJoinResponseRowMapper;
 import it.mapper.response.BookRecordJoinResponseRowMapper;
 import it.repository.interfaces.BookRepositoryInterface;
@@ -60,9 +62,13 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Nome e cognome dell'autore
      */
     @Override
-    public String getAuthorFullNameById(int authorId) {
+    public String getAuthorFullNameById(int authorId) throws BookRepositoryException {
         String sql = "SELECT author_name, author_last_name FROM author WHERE author_id = ?";
-        return jdbcTemplate.queryForObject(sql, String.class, authorId);
+        try {
+        	return jdbcTemplate.queryForObject(sql, String.class, authorId);
+        }catch(DataAccessException ex) {
+        	throw new BookRepositoryException("errore nel trovare l'autore con il seguente id: " + authorId);
+        }
     }
 
     /**
@@ -72,9 +78,13 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Nome della casa editrice
      */
     @Override
-    public String getPublisherNameById(int publisherId) {
+    public String getPublisherNameById(int publisherId) throws BookRepositoryException {
         String sql = "SELECT publisher_name FROM publisher WHERE publisher_id = ?";
-        return jdbcTemplate.queryForObject(sql, String.class, publisherId);
+        try {
+        	return jdbcTemplate.queryForObject(sql, String.class, publisherId);
+        }catch(DataAccessException ex) {
+        	throw new BookRepositoryException("impossibile trovare il publisher: " + publisherId);
+        }
     }
 
     /**
@@ -84,9 +94,13 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Codice ISBN corrispondente
      */
     @Override
-    public String getIsbnCodeById(int isbnId) {
+    public String getIsbnCodeById(int isbnId) throws BookRepositoryException{
         String sql = "SELECT code FROM isbn WHERE isbn_id = ?";
-        return jdbcTemplate.queryForObject(sql, String.class, isbnId);
+        try {
+        	return jdbcTemplate.queryForObject(sql, String.class, isbnId); 	
+        }catch(DataAccessException ex) {
+        	throw new BookRepositoryException("impossibile trovare l'isbn");
+        }
     }
 
     /**
@@ -96,9 +110,13 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Nome della categoria
      */
     @Override
-    public String getCategoryNameById(int categoryId) {
+    public String getCategoryNameById(int categoryId) throws BookRepositoryException {
         String sql = "SELECT category_name FROM category WHERE category_id = ?";
-        return jdbcTemplate.queryForObject(sql, String.class, categoryId);
+        try {
+        	return jdbcTemplate.queryForObject(sql, String.class, categoryId);	
+        }catch(BookRepositoryException ex) {
+        	throw new BookRepositoryException("impossibile trovare la categoria");
+        }
     }
 
     /**
@@ -107,9 +125,18 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Numero totale di libri presenti nella tabella books
      */
 
-    public int countAllBooks() {
+    public int countAllBooks() throws BookRepositoryException, QueryIsNullOrNegativeExcepetion{
         String sql = "SELECT COUNT(*) FROM books ";
-        return jdbcTemplate.queryForObject(sql, Integer.class);
+        Integer count = null;
+        try {
+        	count = jdbcTemplate.queryForObject(sql, Integer.class);
+        	if(count == null || count < 0) {
+        		throw new QueryIsNullOrNegativeExcepetion("attenzione errore nel recapitare il numero di libri");
+        	}
+        	return count;
+        }catch(DataAccessException ex) {
+        	throw new BookRepositoryException("libreria vuota pezzente");
+        }
     }
 
     /**
@@ -117,10 +144,18 @@ public class BookRepository implements BookRepositoryInterface {
      *
      * @return Numero di libri con stato diverso da 'eliminato'
      */
-    public int countAllNotEliminatedBookss() {
+    public int countAllNotEliminatedBookss() throws BookRepositoryException, QueryIsNullOrNegativeExcepetion{
         String sql = "SELECT COUNT(*) FROM books WHERE status != 'eliminato'";
-
-        return jdbcTemplate.queryForObject(sql, Integer.class);
+        Integer count = null;
+        try {
+        	count = jdbcTemplate.queryForObject(sql, Integer.class);
+        	if(count == null || count < 0) {
+        		throw new QueryIsNullOrNegativeExcepetion("errore grave nel trovare i libri non eliminati");
+        	}
+        	return count;
+        }catch(DataAccessException ex) {
+        	throw new BookRepositoryException("libreria vuota pezzente");
+        }
     }
 
     /**
@@ -131,7 +166,7 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Lista di oggetti {@link BookJoin} con i dati completi di ogni libro
      */
     @Override
-    public List<Book> getAllBooks() {
+    public List<Book> getAllBooks() throws BookRepositoryException {
         String sql = """
                 SELECT
                     e.edition_id,
@@ -157,7 +192,11 @@ public class BookRepository implements BookRepositoryInterface {
                 JOIN category c ON e.category_id = c.category_id
                 ORDER BY bn.title ASC
                 """;
-        return jdbcTemplate.query(sql, bookJoinMapper);
+        try {
+        	return jdbcTemplate.query(sql, bookJoinMapper);
+        }catch(DataAccessException ex) {
+        	throw new BookRepositoryException("libreria vuota");
+        }
     }
 
     /**
@@ -169,16 +208,21 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Numero di record inseriti
      */
     @Override
-    public int insertBookByIsbn(String isbn) {
+    public int insertBookByIsbn(String isbn) throws BookRepositoryException{
         String query = "INSERT INTO books(edition_id, status)\r\n"
                 + "VALUES((SELECT edition_id FROM edition WHERE isbn = :isbn), \r\n"
                 + "('disponibilita'))";
 
         SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("isbn", isbn);
         KeyHolder keyHolder = new GeneratedKeyHolder();
-        namedParameterJdbcTemplate.update(query, sqlParameters, keyHolder, new String[] { "book_id" });
+        try {
+        	namedParameterJdbcTemplate.update(query, sqlParameters, keyHolder, new String[] { "book_id" });
+        	return keyHolder.getKey().intValue();
+        
+        }catch(DataAccessException ex) {
+        	throw new BookRepositoryException("errore nell'inserire una copia fisica del libro");
+        }
 
-        return keyHolder.getKey().intValue();
     }
 
     /**
@@ -188,13 +232,17 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Numero di record aggiornati
      */
     @Override
-    public int deleteBookById(int id) {
+    public int deleteBookById(int id) throws BookRepositoryException{
         String query = "UPDATE books\r\n"
                 + "SET status = 'eliminato'\r\n"
                 + "WHERE book_id = :id";
         SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("id", id);
-        int res = namedParameterJdbcTemplate.update(query, sqlParameters);
-        return res;
+        try {
+        	int res = namedParameterJdbcTemplate.update(query, sqlParameters);
+        	return res;
+        }catch(DataAccessException ex) {
+        	throw new BookRepositoryException("errore nell'aggiornare il libro: " + id);
+        }
     }
 
     /**
@@ -206,7 +254,7 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Numero di record inseriti
      */
     @Override
-    public int insertBookByTitleAndIsbn(String title, String isbn) throws InsertBookException {
+    public int insertBookByTitleAndIsbn(String title, String isbn) throws BookRepositoryException {
       
     	System.out.println("titoloBookRepo: " + title);
     	
@@ -223,7 +271,7 @@ public class BookRepository implements BookRepositoryInterface {
         	
         } catch (DataAccessException ex) {
         	System.out.println(ex.toString());
-            throw new InsertBookException("errore nell'inserimento della copia");
+            throw new BookRepositoryException("errore nell'inserimento della copia");
         }
     }
 
@@ -234,7 +282,7 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Lista di oggetti BookJoin con i dati delle copie associate
      */
     @Override
-    public List<RentalRecord> getBooksByEditionId(int editionId, boolean includeDeleted) {
+    public List<RentalRecord> getBooksByEditionId(int editionId, boolean includeDeleted) throws BookRepositoryException {
         String filter = includeDeleted ? "" : " AND b.status != 'eliminato'";
         String sql = """
                 SELECT
@@ -275,7 +323,12 @@ public class BookRepository implements BookRepositoryInterface {
                 WHERE e.edition_id = ?
                 """
                 + filter;
-        return jdbcTemplate.query(sql, bookHistoryJoinMapper, editionId);
+        try {
+        	return jdbcTemplate.query(sql, bookHistoryJoinMapper, editionId);
+        	
+        }catch(DataAccessException ex){
+        	throw new BookRepositoryException("libro con questa edizione non trovata: " + editionId );
+        }
     }
 
     /**
@@ -284,8 +337,17 @@ public class BookRepository implements BookRepositoryInterface {
      * @return Numero totale di libri attivi
      */
     @Override
-    public int countAllNotEliminatedBooks() {
+    public int countAllNotEliminatedBooks() throws BookRepositoryException, QueryIsNullOrNegativeExcepetion {
         String query = "SELECT COUNT(*) FROM books WHERE status = 'disponibilita'";
-        return jdbcTemplate.queryForObject(query, Integer.class);
+        Integer count = null;
+        try {
+        	count = jdbcTemplate.queryForObject(query, Integer.class);
+        	if(count == null || count < 0) {
+        		throw new QueryIsNullOrNegativeExcepetion("errore grave nel cercare i libri non eliminati");
+        	}
+        	return count;
+        }catch(DataAccessException ex) {
+        	throw new BookRepositoryException("errore nel trovare i libri non eliminati");
+        }
     }
 }

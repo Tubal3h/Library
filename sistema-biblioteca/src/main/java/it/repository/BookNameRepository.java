@@ -17,9 +17,8 @@ import org.springframework.stereotype.Repository;
 
 import it.dto.BookNameDto;
 import it.entity.BookName;
-import it.exception.BookNamesRepositoryException;
-import it.exception.SelectAllBookNamesException;
-import it.exception.repository.InsertBookNameException;
+import it.exception.QueryIsNullOrNegativeExcepetion;
+import it.exception.repository.BookNamesRepositoryException;
 import it.mapper.BookNameRowMapper;
 import it.repository.interfaces.BookNameRepositoryInterface;
 
@@ -124,11 +123,20 @@ public class BookNameRepository implements BookNameRepositoryInterface {
     }
 	
     @Override
-	public Boolean isTitleOnDb(String title) {
+	public Boolean isTitleOnDb(String title) throws QueryIsNullOrNegativeExcepetion, BookNamesRepositoryException{
 		String selectBookByTitle = "SELECT COUNT(*) FROM books_names WHERE title =:title";
 		SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("title", title);
-		Integer counter = namedParameterJdbcTemplate.queryForObject(selectBookByTitle, sqlParameters, Integer.class);
-		return counter != null && counter > 0;
+		Integer counter = null;
+		try {
+			
+			counter = namedParameterJdbcTemplate.queryForObject(selectBookByTitle, sqlParameters, Integer.class);
+			if(counter == null || counter <= 0) {
+				throw new QueryIsNullOrNegativeExcepetion("errore grave nel cercare il titolo");
+			}
+			return counter != null && counter > 0;
 		
+		}catch(DataAccessException ex) {
+			throw new BookNamesRepositoryException("titolo non trovato");
+		}
 	}
 }

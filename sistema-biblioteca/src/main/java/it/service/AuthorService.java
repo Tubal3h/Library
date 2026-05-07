@@ -6,6 +6,9 @@ import org.springframework.stereotype.Service;
 import it.dto.AuthorDto;
 import it.repository.AuthorRepository;
 import it.entity.Author;
+import it.exception.QueryIsNullOrNegativeExcepetion;
+import it.exception.repository.AuthorRepositoryException;
+import it.exception.service.AuthorServiceException;
 
 /**
  * Servizio per la gestione degli autori dei libri.
@@ -69,7 +72,7 @@ public class AuthorService {
      * @param author L'autore da verificare
      * @return True se l'autore esiste, false altrimenti
      */
-    public boolean isAuthorPresent(AuthorDto authorDto) {
+    public boolean isAuthorPresent(AuthorDto authorDto) throws AuthorServiceException{
         if (authorDto == null || authorDto.getAuthorName() == null || authorDto.getAuthorLastName() == null) {
             throw new IllegalArgumentException("L'autore non può essere null");
         }
@@ -79,8 +82,12 @@ public class AuthorService {
         }
 
         Author author = toAuthorEntity(authorDto);
-
-        return authorRepository.isAuthorPresent(author.getAuthorName(), author.getAuthorLastName());
+        try {
+        	return authorRepository.isAuthorPresent(author.getAuthorName(), author.getAuthorLastName());
+        	
+        }catch(AuthorRepositoryException | QueryIsNullOrNegativeExcepetion ex) {
+        	throw new AuthorServiceException(ex.getMessage());
+        }
     }
 
     /**

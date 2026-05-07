@@ -1,4 +1,4 @@
-package it.entity.configuration;
+package it.configuration;
 
 import it.dto.request.AuthDto;
 import jakarta.servlet.http.HttpSession;

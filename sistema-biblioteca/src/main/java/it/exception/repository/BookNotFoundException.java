@@ -14,6 +14,11 @@ package it.exception.repository;
 public class BookNotFoundException extends RuntimeException {
 
     /**
+	 * 
+	 */
+	private static final long serialVersionUID = 7788434178582279353L;
+
+	/**
      * Costruisce l'eccezione con il messaggio descrittivo specificato.
      *
      * @param message Messaggio descrittivo dell'errore

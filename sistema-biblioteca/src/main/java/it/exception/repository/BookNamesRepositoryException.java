@@ -1,4 +1,4 @@
-package it.exception;
+package it.exception.repository;
 
 public class BookNamesRepositoryException extends RuntimeException {
 

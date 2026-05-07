@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import it.dto.RentalRecordDto;
+import it.configuration.UserSession;
 import it.dto.BookDto;
 import it.dto.EditionDto;
 import it.dto.UserDto;
 import it.dto.request.AuthDto;
-import it.entity.configuration.UserSession;
 import it.service.BookService;
 import it.service.RentService;
 import it.service.UserService;
