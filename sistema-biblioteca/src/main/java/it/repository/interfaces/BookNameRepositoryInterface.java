@@ -5,11 +5,12 @@ import java.util.List;
 import it.dto.BookNameDto;
 import it.entity.BookName;
 import it.exception.InsertBookNameException;
+import it.exception.SelectAllBookNamesException;
 
 public interface BookNameRepositoryInterface {
 	
-	public List<BookName> getAllBookNames();
-	public BookName getBookNameById(int titleId);
+	public List<BookName> getAllBookNames() throws SelectAllBookNamesException;
+	public BookName getBookNameById(int titleId) throws SelectAllBookNamesException;
 	public Boolean isTitleOnDb(String title);
 	public void insertBookByTitle(String title) throws InsertBookNameException;
 	public void updateBookTitle(BookNameDto bookNameDto); 

@@ -7,6 +7,7 @@ package it.repository;
 import java.util.List;
 
 
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -16,7 +17,9 @@ import org.springframework.stereotype.Repository;
 
 import it.dto.BookNameDto;
 import it.entity.BookName;
+import it.exception.BookNamesRepositoryException;
 import it.exception.InsertBookNameException;
+import it.exception.SelectAllBookNamesException;
 import it.mapper.BookNameRowMapper;
 import it.repository.interfaces.BookNameRepositoryInterface;
 
@@ -47,9 +50,13 @@ public class BookNameRepository implements BookNameRepositoryInterface {
      *
      * @return Lista di tutti i titoli dei libri presenti nel database
      */
-    public List<BookName> getAllBookNames() {
+    public List<BookName> getAllBookNames() throws BookNamesRepositoryException { 
         String sql = "SELECT * FROM books_names";
-        return jdbcTemplate.query(sql, bookNameRowMapper);
+        try {
+        	return jdbcTemplate.query(sql, bookNameRowMapper);
+        }catch(DataAccessException ex) {
+        	throw new BookNamesRepositoryException("titolo non trovato");
+        }
     }
 
     /**
@@ -58,10 +65,13 @@ public class BookNameRepository implements BookNameRepositoryInterface {
      * @param titleId ID del titolo
      * @return Titolo del libro corrispondente all'ID
      */
-    public BookName getBookNameById(int titleId) {
+    public BookName getBookNameById(int titleId) throws BookNamesRepositoryException {
         String sql = "SELECT * FROM books_names WHERE book_name_id = ?";
-        
-        return jdbcTemplate.queryForObject(sql, bookNameRowMapper, titleId);
+        try {
+        	return jdbcTemplate.queryForObject(sql, bookNameRowMapper, titleId);        	
+        }catch(DataAccessException ex) {
+        	throw new BookNamesRepositoryException(titleId);
+        }
     }
     
     /**
@@ -70,7 +80,7 @@ public class BookNameRepository implements BookNameRepositoryInterface {
      * @param title Il titolo del libro da inserire
      * @return Numero di record inseriti
      */
-    public void insertBookByTitle(String title) throws InsertBookNameException{
+    public void insertBookByTitle(String title) throws BookNamesRepositoryException{
 		
     	String insertBook = "INSERT INTO books_names(title)\r\n"
 				  		  + "VALUES(:title)";
@@ -78,7 +88,7 @@ public class BookNameRepository implements BookNameRepositoryInterface {
 		try {
 			namedParameterJdbcTemplate.update(insertBook, sqlParameters);	
 		}catch(DataAccessException ex) {
-			throw new InsertBookNameException("errore nell'inserimento del titolo del libro");
+			throw new BookNamesRepositoryException("errore nell'inserimento del titolo del libro");
 		}    
     }
 
@@ -88,10 +98,14 @@ public class BookNameRepository implements BookNameRepositoryInterface {
      * @param bookNameDto DTO del titolo da aggiornare
      */
 
-    public void updateBookTitle(BookNameDto bookNameDto) {
+    public void updateBookTitle(BookNameDto bookNameDto) throws BookNamesRepositoryException {
         String updateBook = "UPDATE books_names SET title = :title WHERE book_name_id = :book_name_id";
         SqlParameterSource sqlParameters = new MapSqlParameterSource().addValue("title", bookNameDto.getTitle()).addValue("book_name_id", bookNameDto.getBookNameId());
-        namedParameterJdbcTemplate.update(updateBook, sqlParameters);
+        try {
+        	namedParameterJdbcTemplate.update(updateBook, sqlParameters);       	
+        }catch(DataAccessException ex) {
+        	throw new BookNamesRepositoryException("titolo non modificato: " + bookNameDto.getTitle());
+        }
     }
 
     /**
@@ -100,9 +114,13 @@ public class BookNameRepository implements BookNameRepositoryInterface {
      * @param title Nome del libro
      * @return Lista dei titoli dei libri corrispondenti al nome
      */
-    public List<BookName> getBookNamesByTitle(String title) {
+    public List<BookName> getBookNamesByTitle(String title) throws BookNamesRepositoryException{
         String sql = "SELECT * FROM books_names WHERE title = ?";
-        return jdbcTemplate.query(sql, bookNameRowMapper, title);
+        try {
+        	return jdbcTemplate.query(sql, bookNameRowMapper, title);
+        }catch(DataAccessException ex) {
+        	throw new BookNamesRepositoryException("titolo non trovato: " + title);
+        }
     }
 	
     @Override

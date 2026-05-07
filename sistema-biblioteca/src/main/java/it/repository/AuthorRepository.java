@@ -7,6 +7,7 @@ package it.repository;
 import java.util.List;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -15,6 +16,9 @@ import org.springframework.stereotype.Repository;
 
 import it.entity.Author;
 import it.exception.InsertAuthorException;
+import it.exception.IsAuthorPresentException;
+import it.exception.SelectAllAuthorException;
+import it.exception.UpdateAuthorException;
 import it.mapper.AuthorRowMapper;
 import it.repository.interfaces.AuthorRepositoryInterface;
 
@@ -43,9 +47,13 @@ public class AuthorRepository implements AuthorRepositoryInterface{
      * 
      * @return Lista di tutti gli autori nel database
      */
-    public List<Author> getAllAuthors() {
-        String sql = "SELECT * FROM author";
-        return jdbcTemplate.query(sql, authorRowMapper);
+    public List<Author> getAllAuthors() throws SelectAllAuthorException {
+    	String sql = "SELECT * FROM author";
+        try {
+        	return jdbcTemplate.query(sql, authorRowMapper);
+        }catch(DataAccessException ex) {
+        	throw new SelectAllAuthorException("errore nel visualizzare gli autori");
+        }
     }
 
     /**
@@ -55,10 +63,14 @@ public class AuthorRepository implements AuthorRepositoryInterface{
      * @return Autore con l'ID specificato
      */
 
-    public Author getAuthorById(int authorId) {
+    public Author getAuthorById(int authorId) throws SelectAllAuthorException {
         String sql = "SELECT * FROM author WHERE author_id = :authorId";
         SqlParameterSource parameterSource  = new MapSqlParameterSource().addValue("authorId", authorId);
-        return namedParameterJdbcTemplate.queryForObject(sql, parameterSource, authorRowMapper);
+        try {
+        	return namedParameterJdbcTemplate.queryForObject(sql, parameterSource, authorRowMapper);        	
+        }catch(DataAccessException ex) {
+        	throw new SelectAllAuthorException(authorId);
+        }
     }
 
     /**
@@ -87,12 +99,16 @@ public class AuthorRepository implements AuthorRepositoryInterface{
      * @param author L'autore da aggiornare
      */
 
-    public void updateAuthor(Author author) {
+    public void updateAuthor(Author author) throws UpdateAuthorException {
     	String update = "UPDATE author SET author_name = :name, author_last_name = :lastName WHERE author_id = :authorId";
     	SqlParameterSource parameterSource  = new MapSqlParameterSource().addValue("name", author.getAuthorName())
     																	 .addValue("lastName", author.getAuthorLastName())
     																	 .addValue("authorId", author.getAuthorId());
-    	namedParameterJdbcTemplate.update(update, parameterSource);
+    	try {
+    		namedParameterJdbcTemplate.update(update, parameterSource);
+    	}catch(DataAccessException ex) {
+    		throw new UpdateAuthorException("errore modificare l'autore");
+    	}
     }
 
     /**
@@ -102,12 +118,16 @@ public class AuthorRepository implements AuthorRepositoryInterface{
      * @param lastName Cognome dell'autore
      * @return True se l'autore esiste, false altrimenti
      */
-    public Boolean isAuthorPresent(String name, String lastName) throws InsertAuthorException{
+    public Boolean isAuthorPresent(String name, String lastName) throws IsAuthorPresentException{
     	String sql = "SELECT COUNT(*) FROM author WHERE author_name = :name AND author_last_name = :lastName";
     	SqlParameterSource parameterSource  = new MapSqlParameterSource().addValue("name", name)
     								 .addValue("lastName", lastName);
-    	Integer count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);
-    	return count != null && count > 0;
+    	try {
+    		Integer count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);    		
+    		return count != null && count > 0;
+    	}catch(DataAccessException ex) {
+    		throw new IsAuthorPresentException("l'autore non è presente");
+    	}
     }
 
     public void insertAuthor(String authorName, String authorLastName) throws InsertAuthorException {
