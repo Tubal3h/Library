@@ -1,4 +1,4 @@
-package it.exception;
+package it.exception.Repository;
 
 /**
  * Eccezione personalizzata per gestire l'errore: InsertAuthorException.

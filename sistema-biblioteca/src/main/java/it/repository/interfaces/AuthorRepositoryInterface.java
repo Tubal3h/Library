@@ -3,7 +3,7 @@ package it.repository.interfaces;
 import java.util.List;
 
 import it.entity.Author;
-import it.exception.InsertAuthorException;
+import it.exception.Repository.InsertAuthorException;
 
 public interface AuthorRepositoryInterface {
 	public List<Author> getAllAuthors();

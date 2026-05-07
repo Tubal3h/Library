@@ -14,7 +14,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import it.entity.Author;
-import it.exception.InsertAuthorException;
+import it.exception.Repository.InsertAuthorException;
 import it.mapper.AuthorRowMapper;
 import it.repository.interfaces.AuthorRepositoryInterface;
 

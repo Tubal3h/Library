@@ -10,6 +10,8 @@ import it.dto.CategoryDto;
 import it.dto.EditionDto;
 import it.dto.PublisherDto;
 import it.entity.Edition;
+import it.exception.Repository.EditionException;
+import it.exception.Service.EditionServiceException;
 import it.repository.EditionRepository;
 
 /**
@@ -34,7 +36,8 @@ public class EditionService {
      * 
      * @return Lista di EditionDto contenente i metadati completi dell'edizione
      */
-    private List<EditionDto> getAllEditions() {
+    private List<EditionDto> getAllEditions() throws EditionServiceException{
+        try {
         List<Edition> editions = editionRepository.getAllEditions();
         return editions.stream().map(edition -> {
             AuthorDto authorDto = new AuthorDto();
@@ -61,6 +64,10 @@ public class EditionService {
             editionDto.setQuantity(edition.getQuantity());
             return editionDto;
         }).toList();
+        } catch (EditionException e) {
+            throw new EditionServiceException(e.getMessage());
+        }
+
     }
 
     /**
@@ -69,8 +76,10 @@ public class EditionService {
      * @param search Il termine di ricerca per il nome del libro
      * @return Lista di EditionDto contenente le informazioni condensate delle edizioni filtrati per nome del libro
      */
-	public List<EditionDto> getEditionListByName(String search) {
-		List<EditionDto> myList = getAllEditions();
+	public List<EditionDto> getEditionListByName(String search) throws EditionServiceException {
+		
+        try {
+        List<EditionDto> myList = getAllEditions();
 		List<EditionDto> filteredList = new ArrayList<>();
 		
 		if(search != null && !search.isBlank()) {
@@ -103,77 +112,49 @@ public class EditionService {
 		}else {
 			return filteredList;
 		}
+        } catch (EditionException e) {
+            throw new EditionServiceException(e.getMessage());
+        }
 	}
 
-    public Edition getEditionById(int editionId) {
-        return editionRepository.findById(editionId);
+    public Edition getEditionById(int editionId) throws EditionServiceException{
+        try {
+            return editionRepository.findById(editionId);
+        } catch (EditionException e) {
+            throw new EditionServiceException(e.getMessage());
+        }
     }
 
-    public void updateTitleId(EditionDto editionDto) {
-        editionRepository.updateBookTitleId(editionDto.getEditionId(), editionDto.getBookNameDto().getBookNameId());
+    public void updateTitleId(EditionDto editionDto) throws EditionServiceException{
+        try {
+            editionRepository.updateBookTitleId(editionDto.getEditionId(), editionDto.getBookNameDto().getBookNameId());
+        } catch (EditionException e) {
+            throw new EditionServiceException(e.getMessage());
+        }
     }
 
-    public void updateAuthorId(EditionDto editionDto) {
-        editionRepository.updateAuthorId(editionDto.getEditionId(), editionDto.getAuthorDto().getAuthorId());
+    public void updateAuthorId(EditionDto editionDto) throws EditionServiceException{
+        try {
+            editionRepository.updateAuthorId(editionDto.getEditionId(), editionDto.getAuthorDto().getAuthorId());
+        } catch (EditionException e) {
+            throw new EditionServiceException(e.getMessage());
+        }
     }
 
-    public void updatePublisherId(EditionDto editionDto) {
-        editionRepository.updatePublisherId(editionDto.getEditionId(), editionDto.getPublisherDto().getPublisherId());
+    public void updatePublisherId(EditionDto editionDto) throws EditionServiceException{
+        try {
+            editionRepository.updatePublisherId(editionDto.getEditionId(), editionDto.getPublisherDto().getPublisherId());
+        } catch (EditionException e) {
+            throw new EditionServiceException(e.getMessage());
+        }
     }
 
-    public void updateCategoryId(EditionDto editionDto) {
-        editionRepository.updateCategoryId(editionDto.getEditionId(), editionDto.getCategoryDto().getCategoryId());
+    public void updateCategoryId(EditionDto editionDto) throws EditionServiceException{
+        try {
+            editionRepository.updateCategoryId(editionDto.getEditionId(), editionDto.getCategoryDto().getCategoryId());
+        } catch (EditionException e) {
+            throw new EditionServiceException(e.getMessage());
+        }
     }
 
-    // private EditionDto convertEditionDto(Edition edition) {
-    //     EditionDto dto = new EditionDto();
-    //     dto.setEditionId(edition.getEditionId());
-    //     dto.setBookNameId(edition.getBookNameId());
-    //     dto.setAuthorId(edition.getAuthorId());
-    //     dto.setPublisherId(edition.getPublisherId());
-    //     dto.setCategoryId(edition.getCategoryId());
-    //     dto.setPublishingDate(edition.getPublishingDate());
-    //     dto.setIsbn(edition.getIsbn());
-    //     return dto;
-    // }
-
-    // private EditionJoinDto convertEdition(EditionJoin edition) {
-    //     EditionJoinDto dto = new EditionJoinDto();
-    //     dto.setEditionId(edition.getEditionId());
-    //     dto.setBookId(edition.getBookId());
-    //     dto.setBookName(edition.getBookName());
-    //     dto.setAuthorName(edition.getAuthor());
-    //     dto.setPublisherName(edition.getPublisher());
-    //     dto.setCategoryName(edition.getCategory());
-    //     dto.setPublicationDate(edition.getPublishingDate());
-    //     dto.setIsbnCode(edition.getIsbn());
-    //     dto.setQuantity(edition.getQuantity());
-    //     return dto;
-    // }
-
-    // private Edition convertEditionDto(EditionDto dto) {
-    //     Edition edition = new Edition();
-    //     edition.setEditionId(dto.getEditionId());
-    //     edition.setBookNameId(dto.getBookNameId());
-    //     edition.setPublishingDate(dto.getPublishingDate());
-    //     edition.setIsbn(dto.getIsbn());
-    //     edition.setAuthorId(dto.getAuthorId());
-    //     edition.setCategoryId(dto.getCategoryId());
-    //     edition.setPublisherId(dto.getPublisherId());
-    //     return edition;
-    // }
-
-    // private EditionJoin convertEditionDto(EditionJoinDto editionJoinDto) {
-    //     EditionJoin editionJoin = new EditionJoin();
-    //     editionJoin.setEditionId(editionJoinDto.getEditionId());
-    //     editionJoin.setBookId(editionJoinDto.getBookId());
-    //     editionJoin.setBookName(editionJoinDto.getBookName());
-    //     editionJoin.setAuthor(editionJoinDto.getAuthorName());
-    //     editionJoin.setPublisher(editionJoinDto.getPublisherName());
-    //     editionJoin.setCategory(editionJoinDto.getCategoryName());
-    //     editionJoin.setPublishingDate(editionJoinDto.getPublicationDate());
-    //     editionJoin.setIsbn(editionJoinDto.getIsbnCode());
-    //     editionJoin.setStatus(editionJoinDto.getStatus());
-    //     return editionJoin;
-    // }
 }

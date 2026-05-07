@@ -13,12 +13,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import it.configuration.UserSession;
 import it.dto.RentalRecordDto;
 import it.dto.BookDto;
 import it.dto.EditionDto;
 import it.dto.UserDto;
 import it.dto.request.AuthDto;
+import it.entity.configuration.UserSession;
 import it.service.BookService;
 import it.service.RentService;
 import it.service.UserService;
@@ -140,7 +140,11 @@ public class DashboardController {
             }
 
             if ("edition".equals(section) && "role_admin".equals(user.getUserDto().getUserRole())) {
-                model.addAttribute("editions", editionService.getEditionListByName(search));
+                try {
+                    model.addAttribute("editions", editionService.getEditionListByName(search));
+                } catch (RuntimeException e) {
+                    
+                }
             }
 
             if (("catalog".equals(section) || "edition".equals(section) || "settings".equals(section))
