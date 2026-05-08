@@ -8,7 +8,7 @@
             <!--  Title & Author -->
             <div class="mb-2">
                 <div class="flex align-center gap-1">
-                    <h3 class="text-2xl italicfw-700 text-brand mb-1" th:text="${book.editionDto.bookNameDto.title}"></h3>
+                    <h3 class="text-2xl italic fw-700 text-brand mb-1" th:text="${book.editionDto.bookNameDto.title}"></h3>
                     <i th:if="${user.userDto.userRole == 'role_admin'}"
                         class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
                         th:data-id="${book.editionDto.editionId}" th:data-title="${book.editionDto.bookNameDto.title}"
@@ -114,7 +114,7 @@
 
                 </div>
                 <div class="flex align-center gap-1">
-                    <p class="text-xl fw-400 opacity-80 mb-1" th:text="${edition.authorDto.authorName + ' ' + edition.authorDto.authorLastName}"></p>
+                    <p class="text-2xl fw-400 opacity-80 mb-1" th:text="${edition.authorDto.authorName + ' ' + edition.authorDto.authorLastName}"></p>
                     <i th:if="${user.userDto.userRole == 'role_admin'}" 
                        class="fa-solid fa-pen-to-square cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon"
                         th:data-id="${edition.editionId}" th:data-author="${edition.authorDto.authorName + ' ' + edition.authorDto.authorLastName}"
@@ -135,8 +135,8 @@
 
             <!-- Info book -->
             <div class="card-meta mt-auto flex align-center gap-3 opacity-70">
-                <div class="flex align-center font-size-small" th:title="${edition.publisherDto.publisherName}">
-                    <i class="fa-solid fa-building-columns text-sm text-brand pr-1"></i>
+                <div class="flex align-center" th:title="${edition.publisherDto.publisherName}">
+                    <i class="fa-solid fa-building-columns text-nm text-brand pr-1"></i>
                     <label class="fw-600" title="Editore" th:text="${edition.publisherDto.publisherName}">Editore</label>
                     <i th:if="${user.userDto.userRole == 'role_admin'}" 
                        class="fa-solid fa-pen cursor-pointer text-brand opacity-30 hover-opacity-100 transition edit-icon pl-2"
@@ -145,13 +145,13 @@
                         title="Modifica Editore"></i>
 
                 </div>
-                <div class="flex align-center font-size-small">
-                    <i class="fa-solid fa-calendar-check text-sm text-brand pr-1"></i>
+                <div class="flex align-center">
+                    <i class="fa-solid fa-calendar-check text-nm text-brand pr-1"></i>
                     <label class="fw-600" title="Pubblicato il"
                         th:text="${#temporals.format(edition.publishingDate, 'dd-MM-yyyy')}">Pubblicato il</label>
                 </div>
-                <div class="flex align-center font-size-small">
-                    <i class="fa-solid fa-barcode text-sm text-brand pr-1"></i>
+                <div class="flex align-center">
+                    <i class="fa-solid fa-barcode text-nm text-brand pr-1"></i>
                     <label class="font-mono fw-600" title="ISBN" th:text="${edition.isbn}">ISBN</label>
                 </div>
             </div>
@@ -159,7 +159,7 @@
 
         <div class="card-action-column p-2 flex flex-column justify-center align-center border-l gap-1">
             <div class="mb-1 status-context status-vibrant-active">
-                <div class="glass-indicator radius-8 font-size-xs  flex align-center p-2 px-8">
+                <div class="glass-indicator radius-8 font-size-sm flex align-center p-2 px-8">
                     <span class="fw-700" th:text="'Quantità: ' + ${edition.quantity}"></span>
                 </div>
             </div>
