@@ -10,8 +10,8 @@ import it.dto.CategoryDto;
 import it.dto.EditionDto;
 import it.dto.PublisherDto;
 import it.entity.Edition;
-import it.exception.Repository.EditionException;
-import it.exception.Service.EditionServiceException;
+import it.exception.repository.EditionException;
+import it.exception.service.EditionServiceException;
 import it.repository.EditionRepository;
 
 /**

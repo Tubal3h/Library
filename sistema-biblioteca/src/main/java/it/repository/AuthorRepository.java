@@ -6,6 +6,7 @@ package it.repository;
 
 import java.util.List;
 
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -14,7 +15,9 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import it.entity.Author;
-import it.exception.Repository.InsertAuthorException;
+import it.exception.QueryIsNullOrNegativeExcepetion;
+import it.exception.UpdateAuthorException;
+import it.exception.repository.AuthorRepositoryException;
 import it.mapper.AuthorRowMapper;
 import it.repository.interfaces.AuthorRepositoryInterface;
 
@@ -43,9 +46,13 @@ public class AuthorRepository implements AuthorRepositoryInterface{
      * 
      * @return Lista di tutti gli autori nel database
      */
-    public List<Author> getAllAuthors() {
-        String sql = "SELECT * FROM author";
-        return jdbcTemplate.query(sql, authorRowMapper);
+    public List<Author> getAllAuthors() throws AuthorRepositoryException {
+    	String sql = "SELECT * FROM author";
+        try {
+        	return jdbcTemplate.query(sql, authorRowMapper);
+        }catch(DataAccessException ex) {
+        	throw new AuthorRepositoryException("errore nel visualizzare gli autori");
+        }
     }
 
     /**
@@ -55,10 +62,14 @@ public class AuthorRepository implements AuthorRepositoryInterface{
      * @return Autore con l'ID specificato
      */
 
-    public Author getAuthorById(int authorId) {
+    public Author getAuthorById(int authorId) throws AuthorRepositoryException {
         String sql = "SELECT * FROM author WHERE author_id = :authorId";
         SqlParameterSource parameterSource  = new MapSqlParameterSource().addValue("authorId", authorId);
-        return namedParameterJdbcTemplate.queryForObject(sql, parameterSource, authorRowMapper);
+        try {
+        	return namedParameterJdbcTemplate.queryForObject(sql, parameterSource, authorRowMapper);        	
+        }catch(DataAccessException ex) {
+        	throw new AuthorRepositoryException(authorId);
+        }
     }
 
     /**
@@ -70,14 +81,14 @@ public class AuthorRepository implements AuthorRepositoryInterface{
      * @throws InsertAuthorException Se si verifica un errore durante l'inserimento
      */
     
-    public void insertAuthorByNameAndLastName(String name, String lastName) throws InsertAuthorException {
+    public void insertAuthorByNameAndLastName(String name, String lastName) throws AuthorRepositoryException {
     	String insert = "INSERT INTO author (author_name, author_last_name) VALUES (:name, :lastName)";
     	SqlParameterSource parameterSource  = new MapSqlParameterSource().addValue("name", name)
     																	 .addValue("lastName", lastName);
     	try {
     		namedParameterJdbcTemplate.update(insert, parameterSource);		
     	}catch(DataAccessException ex) {
-    		throw new InsertAuthorException("errore nell'inserimento dell'autore");
+    		throw new AuthorRepositoryException("errore nell'inserimento dell'autore");
     	}
     }
 
@@ -87,12 +98,16 @@ public class AuthorRepository implements AuthorRepositoryInterface{
      * @param author L'autore da aggiornare
      */
 
-    public void updateAuthor(Author author) {
+    public void updateAuthor(Author author) throws UpdateAuthorException {
     	String update = "UPDATE author SET author_name = :name, author_last_name = :lastName WHERE author_id = :authorId";
     	SqlParameterSource parameterSource  = new MapSqlParameterSource().addValue("name", author.getAuthorName())
     																	 .addValue("lastName", author.getAuthorLastName())
     																	 .addValue("authorId", author.getAuthorId());
-    	namedParameterJdbcTemplate.update(update, parameterSource);
+    	try {
+    		namedParameterJdbcTemplate.update(update, parameterSource);
+    	}catch(DataAccessException ex) {
+    		throw new UpdateAuthorException("errore modificare l'autore");
+    	}
     }
 
     /**
@@ -102,22 +117,30 @@ public class AuthorRepository implements AuthorRepositoryInterface{
      * @param lastName Cognome dell'autore
      * @return True se l'autore esiste, false altrimenti
      */
-    public Boolean isAuthorPresent(String name, String lastName) throws InsertAuthorException{
+    public Boolean isAuthorPresent(String name, String lastName) throws AuthorRepositoryException, QueryIsNullOrNegativeExcepetion{
     	String sql = "SELECT COUNT(*) FROM author WHERE author_name = :name AND author_last_name = :lastName";
     	SqlParameterSource parameterSource  = new MapSqlParameterSource().addValue("name", name)
     								 .addValue("lastName", lastName);
-    	Integer count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);
-    	return count != null && count > 0;
+    	Integer count = null;
+    	try {
+    		count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);    		
+    		if(count == null || count <= 0) {
+    			throw new QueryIsNullOrNegativeExcepetion("attenzione errore nel cercare l'autore");
+    		}
+    		return count != null && count > 0;
+    	}catch(DataAccessException ex) {
+    		throw new AuthorRepositoryException("l'autore non è presente");
+    	}
     }
 
-    public void insertAuthor(String authorName, String authorLastName) throws InsertAuthorException {
+    public void insertAuthor(String authorName, String authorLastName) throws AuthorRepositoryException {
         String insert = "INSERT INTO author (author_name, author_last_name) VALUES (:authorName, :authorLastName)";
         SqlParameterSource parameterSource  = new MapSqlParameterSource().addValue("authorName", authorName)
                                                                          .addValue("authorLastName", authorLastName);
         try {
             namedParameterJdbcTemplate.update(insert, parameterSource);
         }catch(DataAccessException ex) {
-            throw new InsertAuthorException("errore nell'inserimento dell'autore");
+            throw new AuthorRepositoryException("errore nell'inserimento dell'autore");
         }
     }
 }

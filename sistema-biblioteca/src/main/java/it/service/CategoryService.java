@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.dto.CategoryDto;
+import it.exception.service.CategoryServiceException;
 import it.repository.CategoryRepository;
 import it.entity.Category;
 
@@ -69,12 +70,16 @@ public class CategoryService {
      * @return true se la categoria è presente, false altrimenti
      */
     @Transactional(readOnly = true)
-    public boolean isCategoryPresent(CategoryDto categoryDto) {
-        if(categoryDto == null) {
-            return false;
+    public boolean isCategoryPresent(CategoryDto categoryDto) throws CategoryServiceException{
+        try {
+            if(categoryDto == null) {
+                return false;
+            }
+            Category category = toCategory(categoryDto);
+            return categoryRepository.isCategoryPresent(category);
+        } catch (Exception e) {
+            throw new CategoryServiceException("Errore durante la verifica della categoria: " + e.getMessage());
         }
-        Category category = toCategory(categoryDto);
-        return categoryRepository.isCategoryPresent(category);
     }
 
     /**

@@ -61,7 +61,7 @@
                         </div>
 
                         <!-- Periodo -->
-                        <div class=" col-dates center">
+                        <div class=" col-dates flex center">
                             <div class="date-range">
                                 <div class="date-item start">
                                     <i class="fa-solid fa-calendar-check"></i>
@@ -78,22 +78,22 @@
                         <!-- Stato -->
                         <div class=" col-status center">
                             <!-- Stato Prenotato (Richiesta effettuata ma non ancora consegnato) -->
-                            <div th:if="${record.rentalDate == null && record.rentalEnded == null}" class="status-indicator pending">
+                            <div th:if="${record.rentalDate == null && record.rentalEnded == null}" class="status-indicator pending center">
                                 <i class="fa-solid fa-clock"></i>
                                 <span class="status-text">Prenotato</span>
                             </div>
                             <!-- Stato In Corso (In prestito) -->
-                            <div th:if="${record.rentalDate != null && record.rentalEnded == null && (record.rentalExpired == null || record.rentalExpired >= T(java.time.LocalDate).now())}" class="status-indicator active">
+                            <div th:if="${record.rentalDate != null && record.rentalEnded == null && (record.rentalExpired == null || record.rentalExpired >= T(java.time.LocalDate).now())}" class="status-indicator active center">
                                 <span class="pulse-dot"></span>
                                 <span class="status-text">In Corso</span>
                             </div>
                             <!-- Stato Scaduto (In prestito ma non restituito entro la data di scadenza) -->
-                            <div th:if="${record.rentalDate != null && record.rentalEnded == null && record.rentalExpired != null && record.rentalExpired < T(java.time.LocalDate).now()}" class="status-indicator expired">
+                            <div th:if="${record.rentalDate != null && record.rentalEnded == null && record.rentalExpired != null && record.rentalExpired < T(java.time.LocalDate).now()}" class="status-indicator expired center">
                                 <i class="fa-solid fa-triangle-exclamation"></i>
                                 <span class="status-text">Scaduto</span>
                             </div>
                             <!-- Stato Concluso (Restituito) -->
-                            <div th:if="${record.rentalEnded != null}" class="status-indicator completed">
+                            <div th:if="${record.rentalEnded != null}" class="status-indicator completed center">
                                 <i class="fa-solid fa-circle-check"></i>
                                 <span class="status-text">Concluso</span>
                             </div>

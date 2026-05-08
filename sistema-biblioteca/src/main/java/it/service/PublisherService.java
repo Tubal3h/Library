@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import it.dto.PublisherDto;
+import it.exception.service.PublisherServiceException;
 import it.repository.PublisherRepository;
 import it.entity.Publisher;
 
@@ -134,18 +135,22 @@ public class PublisherService {
      * @param publisherDto Il publisher da verificare
      * @return True se il publisher esiste, false altrimenti
      */
-    public boolean isPublisherPresent(PublisherDto publisherDto) {
-        if (publisherDto == null || publisherDto.getPublisherName() == null) {
-            throw new IllegalArgumentException("L'editore non può essere null");
+    public boolean isPublisherPresent(PublisherDto publisherDto) throws PublisherServiceException{
+        try {
+            if (publisherDto == null || publisherDto.getPublisherName() == null) {
+                throw new IllegalArgumentException("L'editore non può essere null");
+            }
+
+            if(publisherDto.getPublisherName().isBlank()) {
+                throw new IllegalArgumentException("L'editore non può essere vuoto");
+            }
+
+            Publisher publisher = toPublisherEntity(publisherDto);
+
+            return publisherRepository.isPublisherPresent(publisher);
+        } catch (Exception e) {
+            throw new PublisherServiceException("Errore durante la verifica del publisher: " + e.getMessage());
         }
-
-        if(publisherDto.getPublisherName().isBlank()) {
-            throw new IllegalArgumentException("L'editore non può essere vuoto");
-        }
-
-        Publisher publisher = toPublisherEntity(publisherDto);
-
-        return publisherRepository.isPublisherPresent(publisher);
     }
 
     /**

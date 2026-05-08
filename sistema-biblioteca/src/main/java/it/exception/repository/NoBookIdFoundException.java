@@ -1,4 +1,4 @@
-package it.exception.Repository;
+package it.exception.repository;
 
 /**
  * Eccezione personalizzata per gestire l'errore: NoBookIdFoundException.
@@ -16,6 +16,6 @@ public class NoBookIdFoundException extends Exception {
 	}
 	
 	public String toString() {
-		return "id non trovato: " + id;
+		return "id " + id + " non trovato.";
 	}
 }

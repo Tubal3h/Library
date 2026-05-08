@@ -6,6 +6,7 @@ package it.repository;
 
 import java.util.List;
 
+
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -14,7 +15,8 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import it.entity.Category;
-import it.exception.Repository.InsertCategoryException;
+import it.exception.QueryIsNullOrNegativeExcepetion;
+import it.exception.repository.CategoryRepositoryException;
 import it.mapper.CategoryRowMapper;
 import it.repository.interfaces.CategoryRepositoryInterface;
 
@@ -44,9 +46,13 @@ public class CategoryRepository implements CategoryRepositoryInterface{
      * 
      * @return Lista di tutte le categorie nel database
      */
-    public List<Category> getAllCategories() {
+    public List<Category> getAllCategories() throws CategoryRepositoryException{
         String sql = "SELECT * FROM category";
-        return jdbcTemplate.query(sql, categoryRowMapper);
+        try {
+        	return jdbcTemplate.query(sql, categoryRowMapper);
+        }catch(DataAccessException ex) {
+        	throw new CategoryRepositoryException("non e' stata trovata nessuna categoria");
+        }
     }
 
     /**
@@ -58,13 +64,13 @@ public class CategoryRepository implements CategoryRepositoryInterface{
      */
 
 	@Override
-	public void insertCategoryByNameCategory(String categoryName) throws InsertCategoryException{
+	public void insertCategoryByNameCategory(String categoryName) throws CategoryRepositoryException{
 		String insert = "INSERT INTO category (category_name) VALUES (:categoryName)";
 		SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("categoryName", categoryName);
 		try {
 			namedParameterJdbcTemplate.update(insert, parameterSource);				
 		}catch(DataAccessException ex){
-			throw new InsertCategoryException("errore nell'inserimento della categoria");
+			throw new CategoryRepositoryException("errore nell'inserimento della categoria");
 		}
 	}
 
@@ -77,12 +83,16 @@ public class CategoryRepository implements CategoryRepositoryInterface{
      */
 
     @Override
-    public void updateCategory(Category category) {
+    public void updateCategory(Category category) throws CategoryRepositoryException {
         String sql = "UPDATE category SET category_name = :category_name WHERE category_id = :category_id";
         SqlParameterSource parameterSource = new MapSqlParameterSource()
                 .addValue("category_name", category.getCategoryName())
                 .addValue("category_id", category.getCategoryId());
-        namedParameterJdbcTemplate.update(sql, parameterSource);
+        try {
+        	namedParameterJdbcTemplate.update(sql, parameterSource);	
+        }catch(DataAccessException ex) {
+        	throw new CategoryRepositoryException("errore nell'effettuare l'aggiornamento");
+        }
     }
 
     /**
@@ -93,28 +103,45 @@ public class CategoryRepository implements CategoryRepositoryInterface{
      */
     @Override
    
-    public Boolean isCategoryPresent(Category category) {
+    public Boolean isCategoryPresent(Category category) throws CategoryRepositoryException, QueryIsNullOrNegativeExcepetion {
         String sql = "SELECT COUNT(*) FROM category WHERE category_id = :categoryId";
         SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("categoryId", category.getCategoryId());
-        Integer count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);
-        return count != null && count > 0;
+        Integer count = null;
+        try {
+        	count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);	
+        	if(count == null || count < 0) {
+        		throw new QueryIsNullOrNegativeExcepetion("errore grave nel trovare la categoria");
+        	}
+        	return true;
+        }catch(DataAccessException ex) {
+        	throw new CategoryRepositoryException("categoria non presente");
+        }
+        
     }
    
-    public Boolean isCategoryPresentByName(Category category) {
+    public Boolean isCategoryPresentByName(Category category) throws CategoryRepositoryException, QueryIsNullOrNegativeExcepetion {
         String sql = "SELECT COUNT(*) FROM category WHERE category_name = :categoryName";
         SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("categoryName", category.getCategoryName());
-        Integer count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);
-        return count != null && count > 0;
+        Integer count = null;
+        try {
+        	count = namedParameterJdbcTemplate.queryForObject(sql, parameterSource, Integer.class);	
+        	if(count == null || count < 0) {
+        		throw new QueryIsNullOrNegativeExcepetion("errore grave nel trovare la categoria");
+        	}
+        	return true;
+        }catch(DataAccessException ex) {
+        	throw new CategoryRepositoryException("categoria non presente");
+        }
     }
 
     @Override
-	public void insertCategory(String categoryName) throws InsertCategoryException {
+	public void insertCategory(String categoryName) throws CategoryRepositoryException {
 		String insert = "INSERT INTO category (category_name) VALUES (:categoryName)";
 		SqlParameterSource parameterSource = new MapSqlParameterSource().addValue("categoryName", categoryName);
 		try {
 			namedParameterJdbcTemplate.update(insert, parameterSource);				
 		}catch(DataAccessException ex){
-			throw new InsertCategoryException("errore nell'inserimento della categoria");
+			throw new CategoryRepositoryException("errore nell'inserimento della categoria");
 		}
 	}
 }

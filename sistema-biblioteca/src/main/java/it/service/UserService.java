@@ -16,8 +16,8 @@ import it.dto.request.AuthDto;
 import it.dto.request.ChangePasswordDto;
 import it.entity.RentalRecord;
 import it.entity.User;
-import it.exception.Repository.DeleteUserByIdException;
-import it.exception.Service.NoDeleteUserServiceException;
+import it.exception.repository.DeleteUserByIdException;
+import it.exception.service.NoDeleteUserServiceException;
 import it.repository.RentRecordRepository;
 import it.repository.UserRepository;
 

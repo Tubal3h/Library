@@ -1,4 +1,4 @@
-package it.entity.configuration;
+package it.configuration;
 
 
 import javax.sql.DataSource;

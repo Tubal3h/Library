@@ -5,7 +5,7 @@ package it.repository;
 /* -------------------------------------------------------------------------- */
 
 import it.entity.User;
-import it.exception.Repository.DeleteUserByIdException;
+import it.exception.repository.DeleteUserByIdException;
 import it.mapper.UserRowMapper;
 import it.repository.interfaces.UserRepositoryInterface;
 

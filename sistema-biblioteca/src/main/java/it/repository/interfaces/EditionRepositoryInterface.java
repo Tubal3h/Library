@@ -4,8 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 
 import it.entity.Edition;
-import it.exception.Repository.InsertEditionException;
-import it.exception.Repository.EditionException;
+import it.exception.repository.EditionException;
+import it.exception.repository.InsertEditionException;
 
 /**
  * Interfaccia per il repository delle edizioni dei libri.

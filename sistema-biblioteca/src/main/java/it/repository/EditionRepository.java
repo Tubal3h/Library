@@ -16,7 +16,7 @@ import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import it.entity.Edition;
-import it.exception.Repository.EditionException;
+import it.exception.repository.EditionException;
 import it.mapper.EditionRowMapper;
 import it.mapper.response.EditionJoinResponseRowMapper;
 import it.repository.interfaces.EditionRepositoryInterface;
